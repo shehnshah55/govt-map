@@ -301,9 +301,17 @@ people:
   - id: rashid-langrial
     name: Rashid Mahmood Langrial
     roles:
-      - { position: fed-fbr-chairman, since: "2024-08" }
-    as_of: "2025-11"
+      - { position: fed-fbr-chairman, since: "2024-08", source: { title: "Express Tribune — Rashid Mahmood Langrial appointed FBR chairman", url: "https://tribune.com.pk/story/2486293/rashid-mahmood-langrial-appointed-fbr-chairman" } }
+    as_of: "2026-01"
+    confidence: high
+  - id: hamed-yaqoob-sheikh
+    name: Hamed Yaqoob Sheikh
+    roles:
+      - { position: fed-petroleum-division-secretary, since: "2026-03", source: { title: "The News — Health secretary transferred to Petroleum Division", url: "https://www.thenews.com.pk/print/1402999" } }
+      - { position: fed-min-nhsrc-secretary, since: "2025-04", until: "2026-03", source: { title: "The News — New health secretary appointed", url: "https://www.thenews.com.pk/print/1333780" } }
+    as_of: "2026-03"
     confidence: medium
+    notes: "Federal secretary (BS-22). Moved from Health to the Petroleum Division in March 2026."
   - id: rubina-khalid
     name: Rubina Khalid
     party: party-ppp

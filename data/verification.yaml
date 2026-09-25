@@ -87,12 +87,12 @@ verification:
     checked: "2026-09-25"
     sources: [{ title: "Dawn — Govt takes commanding lead after being handed reserved seats", url: "https://www.dawn.com/news/1921759" }]
   - claim: "Party positions in the Senate"
-    status: conflict
-    finding: The reported July 2025 breakdown totals 94 of 96 seats. The January 2026 report of the Opposition Leader's election refers to 32 opposition senators, against 29 in the breakdown. Shown with two seats marked other or vacant.
+    status: verified
+    finding: "The Senate Secretariat's party-wise list of 21 April 2026 gives PPP 26, PML-N 20, PTI 14, JUI-F 7, BAP 4, ANP 3, MQM-P 3, and one each for MWM, NP, PML-Q and SIC (81 seats); the other 15 are independent or vacant. PTI was previously recorded at 13. The split of independents between the benches is approximate."
     records: [fed-senate]
     checked: "2026-09-25"
     sources:
-      - { title: "Dawn — KP Senate election result", url: "https://www.dawn.com/news/1925665" }
+      - { title: "Senate of Pakistan — party-wise list (21 April 2026)", url: "https://www.senate.gov.pk/2web/21-04-2026-PARTYWISE%20LIST.pdf" }
       - { title: "Business Recorder — Raja declared leader of opposition in Senate", url: "https://www.brecorder.com/news/40403247/raja-declared-as-leader-of-opposition-in-senate" }
   - claim: "Declared assets of Shehbaz Sharif, Maryam Nawaz and Bilawal Bhutto Zardari (2024 nomination papers)"
     status: verified
@@ -129,17 +129,22 @@ verification:
     checked: "2026-09-25"
     sources: [{ title: "SBP — Governor", url: "https://www.sbp.org.pk/about/governors/index.htm" }]
   - claim: "Federal Health Secretary"
-    status: conflict
-    finding: Search results named three different officers (Nadeem Mahbub, Dr M. Fakhr-e-Alam, Aamir Ashraf Khawaja). No holder is recorded until nhsrc.gov.pk can be checked.
-    records: [fed-min-nhsrc-secretary]
+    status: corrected
+    finding: "Nadeem Mahbub was moved in April 2025 and replaced by Hamed Yaqoob Sheikh, who was transferred to the Petroleum Division in March 2026. Special Secretary Aslam Ghauri then held additional charge. On 12 September 2026 the Power Division Secretary was given additional charge; Dawn called this the seventh health secretary in 18 months. No regular holder is recorded, and the additional-charge officer is not named here because the name could not be confirmed."
+    records: [fed-min-nhsrc-secretary, hamed-yaqoob-sheikh]
     checked: "2026-09-25"
-    sources: [{ title: "Ministry of NHSR&C", url: "https://www.nhsrc.gov.pk/" }]
+    sources:
+      - { title: "The News — New health secretary appointed", url: "https://www.thenews.com.pk/print/1333780" }
+      - { title: "The News — Health secretary transferred to Petroleum Division", url: "https://www.thenews.com.pk/print/1402999" }
+      - { title: "Dawn — Seventh health secretary in 18 months", url: "https://www.dawn.com/news/2029472" }
   - claim: "FBR Chairman"
-    status: conflict
-    finding: Our record (Rashid Mahmood Langrial, from August 2024) conflicts with a search result naming Asim Ahmad, which appears to be older. Kept at medium confidence pending the FBR site.
+    status: verified
+    finding: Rashid Mahmood Langrial has been FBR Chairman since August 2024, succeeding Malik Amjad Zubair Tiwana; the search result naming Asim Ahmad referred to an earlier period. He was still in office in January 2026.
     records: [fed-fbr-chairman, rashid-langrial]
     checked: "2026-09-25"
-    sources: [{ title: "FBR", url: "https://www.fbr.gov.pk" }]
+    sources:
+      - { title: "Express Tribune — Rashid Mahmood Langrial appointed FBR chairman", url: "https://tribune.com.pk/story/2486293/rashid-mahmood-langrial-appointed-fbr-chairman" }
+      - { title: "FBR", url: "https://www.fbr.gov.pk" }
   - claim: "Declared assets of all sitting legislators (ECP annual statements, FY 2024-25)"
     status: unverified
     finding: Every MNA, Senator and MPA filed a statement by 31 December 2025 (Elections Act 2017, s. 137), but the published figures could not be reached from the build environment. Search results only surface older press summaries. The data/assets/ importer is ready for the ECP's published statements.

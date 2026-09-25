@@ -128,12 +128,12 @@ organizations:
 
   - id: fed-senate
     composition:
-      as_of: "2025-07"
+      as_of: "2026-04"
       total: 96
-      confidence: medium
-      notes: "Party positions after the July 2025 Senate election in Khyber Pakhtunkhwa, as reported. Seven PTI-backed independents sit with the opposition and seven independents with the government. Two seats are shown as other or vacant because the reported figures total 94. Verify against senate.gov.pk."
+      confidence: high
+      notes: "Party-wise list published by the Senate Secretariat on 21 April 2026: 81 senators under party labels, the remaining 15 independent or vacant. The split of independents between the benches follows the July 2025 KP election reporting (PTI-backed independents with the opposition) and is approximate; one seat is shown as vacant or unaligned."
       sources:
-        - { title: "Senate of Pakistan (party position)", url: "https://www.senate.gov.pk" }
+        - { title: "Senate of Pakistan — party-wise list (21 April 2026)", url: "https://www.senate.gov.pk/2web/21-04-2026-PARTYWISE%20LIST.pdf" }
         - { title: "Dawn — PTI wins 6 and opposition bags 5 seats in KP", url: "https://www.dawn.com/news/1925665" }
       parties:
         - { party: party-ppp, seats: 26, side: treasury }
@@ -144,8 +144,8 @@ organizations:
         - { party: party-np, seats: 1, side: treasury }
         - { party: party-pmlq, seats: 1, side: treasury }
         - { party: independent, seats: 7, side: treasury }
-        - { party: other, seats: 2, side: other }
-        - { party: party-pti, seats: 13, side: opposition }
+        - { party: other, seats: 1, side: other }
+        - { party: party-pti, seats: 14, side: opposition }
         - { party: party-juif, seats: 7, side: opposition }
         - { party: party-mwm, seats: 1, side: opposition }
         - { party: party-sic, seats: 1, side: opposition }
