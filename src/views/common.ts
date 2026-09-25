@@ -335,3 +335,40 @@ export function graphPanel(ctx: Ctx, id: string, tabs: GraphTab[], opts: { tall?
   };
   return { body, mount };
 }
+
+/** Who headed the federal government on a date (YYYY or YYYY-MM or YYYY-MM-DD). */
+export function governmentAt(ix: GraphIndex, date: string) {
+  const d = date.length === 4 ? `${date}-07` : date;
+  return ix.g.pm_terms.find((t) => t.since <= d && (!t.until || d < t.until));
+}
+
+const CASE_STATUS: Record<string, [string, string]> = {
+  pending: ["Pending", "flag"],
+  convicted: ["Convicted", "flag-bad"],
+  convicted_on_appeal: ["Conviction upheld", "flag-bad"],
+  acquitted: ["Acquitted", "sel-elected"],
+  quashed: ["Quashed", "sel-elected"],
+  withdrawn: ["Withdrawn", "flag-info"],
+  stayed: ["Stayed", "flag"],
+  pardoned: ["Pardoned", "flag-info"],
+};
+
+export function casesTable(ix: GraphIndex, rows: { person: Human; c: NonNullable<Human["legal_cases"]>[number] }[], showPerson: boolean): Raw {
+  return html`<div class="tablewrap"><table><thead><tr>${showPerson ? html`<th>Person</th>` : ""}<th>Case</th><th>Filed</th><th>Status</th><th>Sentence, fine, custody</th><th>Source</th></tr></thead><tbody>${rows.map(({ person, c }) => {
+    const gov = governmentAt(ix, c.filed);
+    const [label, cls] = CASE_STATUS[c.status];
+    return html`<tr>
+      ${showPerson ? html`<td>${link(ix, person.id)}${person.party ? html`<div class="hint">${partyLink(ix, person.party)}</div>` : ""}</td>` : ""}
+      <td><b>${c.title}</b>${c.charges ? html`<div class="hint">${c.charges}</div>` : ""}${c.court ? html`<div class="hint">${c.court}</div>` : ""}</td>
+      <td class="num">${c.filed}${c.filed_by ? html`<div class="hint">by ${ix.org.has(c.filed_by) ? link(ix, c.filed_by, ix.shortLabel(c.filed_by)) : c.filed_by}</div>` : ""}${
+        gov ? html`<div class="hint">under PM ${link(ix, gov.person, ix.label(gov.person))}${gov.status === "caretaker" ? " (caretaker)" : ""}</div>` : ""
+      }</td>
+      <td><span class="tag ${cls}">${label}</span>${c.verdict_date ? html`<div class="hint num">${c.verdict_date}</div>` : ""}${c.outcome ? html`<div class="hint">${c.outcome}</div>` : ""}</td>
+      <td>${c.sentence ? html`<div>${c.sentence}</div>` : ""}${c.fine ? html`<div>Fine: ${c.fine}</div>` : ""}${c.custody ? html`<div class="hint">Custody: ${c.custody}</div>` : ""}</td>
+      <td>${c.sources.map((s, i) => html`${i ? html`<br />` : ""}<a href="${s.url}" target="_blank" rel="noopener">${s.title}</a>`)}</td>
+    </tr>`;
+  })}</tbody></table></div>`;
+}
+
+export const CASES_NOTE =
+  "Recorded only from reported court outcomes, with sources. A case filed is not a conviction; acquittals and stays are shown with the same prominence. The government in power is worked out from the filing date.";

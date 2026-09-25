@@ -18,6 +18,8 @@ people:
       - { position: fed-president, since: "2024-03-10", term_number: 2, source: { title: President of Pakistan, url: "https://president.gov.pk" } }
     declared_assets:
       - { amount_pkr: 758000000, as_of: "2018-06", basis: "Nomination papers, 2018 general election", notes: "Older declaration; no 2024 figure found in verifiable reporting", source: { title: "The National — Pakistani politicians' asset declarations", url: "https://www.thenationalnews.com/world/asia/pakistani-politicians-asset-declarations-reveal-deep-pockets-1.742837" } }
+    legal_cases:
+      - { title: "Fake bank accounts and related NAB references", filed: "2018-07", filed_by: fed-nab, court: "Accountability and banking courts", charges: "Money laundering and corruption through benami accounts", status: stayed, verdict_date: "2024-05", custody: "Arrested June 2019; released on bail in December 2019", outcome: "Proceedings stayed while he is President under Art. 248(2) immunity; they can resume when he leaves office", sources: [{ title: "Dawn — Zardari granted immunity from criminal proceedings", url: "https://www.dawn.com/news/1832858" }] }
     as_of: "2025-11"
     confidence: high
     notes: Previously President 2008–2013.
@@ -26,10 +28,13 @@ people:
     name_ur: محمد شہباز شریف
     party: party-pmln
     roles:
+      - { position: fed-prime-minister, since: "2022-04-11", until: "2023-08-14" }
       - { position: seat-na-123, since: "2024-02-29" }
       - { position: fed-prime-minister, since: "2024-03-04", term_number: 2, source: { title: Prime Minister's Office, url: "https://pmo.gov.pk" } }
     declared_assets:
       - { amount_pkr: 73000000, as_of: "2024-01", basis: "Nomination papers, 2024 general election", notes: "Down from Rs310 million declared in 2018–19", source: { title: "The News — Top politicians declare assets", url: "https://www.thenews.com.pk/print/1286584-top-politicians-declare-assets" } }
+    legal_cases:
+      - { title: "Rs16 billion money-laundering case", filed: "2020-11", filed_by: fed-fia, court: "Special Court (Central), Lahore", charges: "Money laundering", status: acquitted, verdict_date: "2022-10-12", outcome: "Acquitted; the court found no concrete evidence in the FIA's challan", sources: [{ title: "Al Jazeera — Pakistani court acquits PM, son in money laundering case", url: "https://www.aljazeera.com/news/2022/10/12/pakistani-court-acquits-pm-son-in-money-laundering-case" }] }
     as_of: "2025-11"
     confidence: high
     notes: Previously Prime Minister April 2022 – August 2023 and Chief Minister of Punjab.
@@ -362,6 +367,8 @@ people:
       - { position: pb-chief-minister, since: "2024-02-26", source: { title: Government of the Punjab, url: "https://punjab.gov.pk" } }
     declared_assets:
       - { amount_pkr: 800000000, as_of: "2024-01", basis: "Nomination papers, 2024 general election", notes: "Reported as over Rs800 million of assets in Pakistan", source: { title: "The News — Top politicians declare assets", url: "https://www.thenews.com.pk/print/1286584-top-politicians-declare-assets" } }
+    legal_cases:
+      - { title: "Avenfield reference (London flats)", filed: "2017-09-08", filed_by: fed-nab, court: "Accountability Court, Islamabad", charges: "Abetting corruption (NAO)", status: acquitted, verdict_date: "2022-09-29", sentence: "7 years and a £2 million fine (July 2018), set aside", custody: "About two months in 2018 before the sentence was suspended", outcome: "Acquitted by the Islamabad High Court on appeal", sources: [{ title: "Express Tribune — Maryam, Safdar acquitted in Avenfield case", url: "https://tribune.com.pk/story/2379239/court-orders-acquittal-of-maryam-safdar-in-avenfield-case" }] }
     as_of: "2025-11"
     confidence: high
     notes: First woman Chief Minister of any Pakistani province.
@@ -513,6 +520,8 @@ people:
     roles:
       - { position: fed-na-leader-of-opposition, since: "2024-04", until: "2025-08" }
       - { position: seat-na-18, since: "2024-02-29", until: "2025-08" }
+    legal_cases:
+      - { title: "9 May 2023 riots cases (Faisalabad)", filed: "2023-05", filed_by: "Punjab Police", court: "Anti-Terrorism Court, Faisalabad", charges: "Abetting violence, conspiracy to incite riots and arson", status: convicted, verdict_date: "2025-07-31", sentence: "10 years", outcome: "Convicted with 107 others; led to disqualification from the National Assembly", sources: [{ title: "Express Tribune — ATC convicts 167 in May 9 riots", url: "https://tribune.com.pk/story/2558857/may-9-cases-atc-hands-shibli-faraz-omar-ayub-top-pti-leaders-10-years-in-prison" }] }
     as_of: "2026-09"
     confidence: medium
     notes: Disqualified in 2025 following a conviction in the 9 May cases.
@@ -531,8 +540,12 @@ people:
     name: Mian Muhammad Nawaz Sharif
     party: party-pmln
     roles:
+      - { position: fed-prime-minister, since: "2013-06-05", until: "2017-07-28", term_number: 3 }
       - { position: party-pmln-head, since: "2024-05-28" }
       - { position: seat-na-130, since: "2024-02-29" }
+    legal_cases:
+      - { title: "Avenfield reference (London flats)", filed: "2017-09-08", filed_by: fed-nab, court: "Accountability Court, Islamabad", charges: "Corruption: owning assets beyond known means (NAO s. 9(a)(v))", status: acquitted, verdict_date: "2023-11-29", sentence: "10 years (July 2018), set aside", custody: "About two months in 2018 before the sentence was suspended", outcome: "Acquitted by the Islamabad High Court on appeal", sources: [{ title: "Dawn — IHC acquits Nawaz Sharif in Avenfield reference", url: "https://www.dawn.com/news/1793562" }] }
+      - { title: "Al-Azizia Steel Mills reference", filed: "2017-09-08", filed_by: fed-nab, court: "Accountability Court, Islamabad", charges: "Corruption: assets beyond known means", status: acquitted, verdict_date: "2023-12-12", sentence: "7 years and a heavy fine (December 2018), set aside", custody: "December 2018 to October 2019, then medical bail and treatment abroad until October 2023", outcome: "Acquitted by the Islamabad High Court on appeal", sources: [{ title: "Dawn — Nawaz secures acquittal in Al-Azizia case", url: "https://www.dawn.com/news/1797271" }] }
     as_of: "2026-06"
     confidence: medium
     notes: Three-time Prime Minister (1990–93, 1997–99, 2013–17).
@@ -978,3 +991,28 @@ people:
     as_of: "2026-06"
     confidence: medium
     notes: Ninth regular Wafaqi Mohtasib; four-year term.
+
+  # ── Former heads of government (used to date cases to a government) ─────
+  - id: shahid-khaqan-abbasi
+    name: Shahid Khaqan Abbasi
+    roles: [{ position: fed-prime-minister, since: "2017-08-01", until: "2018-05-31" }]
+    as_of: "2026-09"
+    confidence: high
+  - id: nasir-ul-mulk
+    name: Justice (R) Nasirul Mulk
+    roles: [{ position: fed-prime-minister, since: "2018-06-01", until: "2018-08-18", status: caretaker }]
+    background: [{ service: judiciary, rank: Chief Justice of Pakistan, retired: "2015-08" }]
+    as_of: "2026-09"
+    confidence: high
+  - id: imran-khan
+    name: Imran Khan
+    party: party-pti
+    roles: [{ position: fed-prime-minister, since: "2018-08-18", until: "2022-04-10" }]
+    as_of: "2026-09"
+    confidence: high
+    notes: Removed by a vote of no confidence in April 2022; imprisoned since August 2023.
+  - id: anwaar-ul-haq-kakar
+    name: Anwaar-ul-Haq Kakar
+    roles: [{ position: fed-prime-minister, since: "2023-08-14", until: "2024-03-04", status: caretaker }]
+    as_of: "2026-09"
+    confidence: high

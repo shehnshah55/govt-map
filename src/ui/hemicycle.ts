@@ -116,8 +116,9 @@ export function hemicycle(ix: GraphIndex, chamberId: string): Raw {
     if (people.length) byParty.set(key, people.slice(assign.length));
     for (const s of mine) {
       if (taken.has(s)) continue;
+      const href = b.party.startsWith("party-") ? `#/org/${b.party}` : `#/org/${chamberId}`;
       circles.push(
-        `<circle class="hemi-seat" cx="${(cx + s.x * R).toFixed(1)}" cy="${(cy - s.y * R).toFixed(1)}" r="${(r * R).toFixed(1)}" fill="${color(b.party)}"><title>${esc(label(b.party))} (${b.side})</title></circle>`,
+        `<a href="${href}"><circle class="hemi-seat" cx="${(cx + s.x * R).toFixed(1)}" cy="${(cy - s.y * R).toFixed(1)}" r="${(r * R).toFixed(1)}" fill="${color(b.party)}"><title>${esc(label(b.party))} (${b.side}) — member not yet recorded; click for the party</title></circle></a>`,
       );
     }
   }

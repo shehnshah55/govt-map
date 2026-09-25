@@ -462,6 +462,7 @@ export function compile(dataDir: string): CompileResult {
     const ctx = `${person._file} person ${person.id}`;
     person.roles.forEach((r) => expect(r.position, ["position"], `${ctx}.roles`));
     expect(person.party, ["organization"], `${ctx}.party`);
+    person.legal_cases?.forEach((c) => c.filed_by?.startsWith("fed-") && expect(c.filed_by, ["organization"], `${ctx}.legal_cases`));
     if (person.party && orgById.get(person.party) && orgById.get(person.party)!.kind !== "political_party")
       errors.push(`${ctx}.party: "${person.party}" is not a political_party`);
   }
@@ -631,6 +632,9 @@ export function compile(dataDir: string): CompileResult {
     people,
     laws,
     verification,
+    pm_terms: people
+      .flatMap((p) => p.roles.filter((r) => r.position === "fed-prime-minister" && r.since).map((r) => ({ person: p.id, since: r.since!, until: r.until, status: r.status })))
+      .sort((a, b) => a.since.localeCompare(b.since)),
     edges,
   };
   for (const v of verification) v.records?.forEach((r) => expect(r, ["organization", "position", "person", "law", "jurisdiction"], `verification "${v.claim}"`));

@@ -3,7 +3,7 @@ import { html } from "../ui/dom.ts";
 import { hierarchy, powerMap } from "../ui/graph-view.ts";
 import { SECTOR_LABEL, STATUS_LABEL } from "../ui/labels.ts";
 import { DIRECTORIES } from "./directory.ts";
-import { confidenceChip, graphPanel, holdingFlags, hrefFor, kindLabel, link, partyLink, postRow, selectionTag, statusChip, type Ctx, type View } from "./common.ts";
+import { casesTable, CASES_NOTE, confidenceChip, graphPanel, holdingFlags, hrefFor, kindLabel, link, partyLink, postRow, selectionTag, statusChip, type Ctx, type View } from "./common.ts";
 import { formatPkr } from "./entities.ts";
 
 const TIERS = ["pk", "pk-pb", "pk-sd", "pk-kp", "pk-ba", "pk-ict", "pk-gb", "pk-ajk"];
@@ -302,6 +302,10 @@ export function accountabilityView(ctx: Ctx): View {
       ${backgroundSection(ctx, "Retired judges and civil servants in other posts", (b) => (b.service === "judiciary" || b.service === "civil_service") && !!b.retired)}
       ${dualRoles(ctx)}
       ${assetsSection(ctx)}
+      ${(() => {
+        const rows = ix.g.people.flatMap((person) => (person.legal_cases ?? []).map((c) => ({ person, c }))).sort((a, b) => b.c.filed.localeCompare(a.c.filed));
+        return rows.length ? html`<section><h2>Criminal and accountability cases <span class="count num">${rows.length}</span></h2><p class="hint" style="margin-bottom:10px">${CASES_NOTE}</p>${casesTable(ix, rows, true)}</section>` : "";
+      })()}
       ${acting.length ? html`<section><h2>Acting and additional charge</h2><div class="posts">${acting.map((p) => postRow(ix, p, { showOrg: true }))}</div></section>` : ""}
       ${vacant.length ? html`<section><h2>Vacant</h2><div class="posts">${vacant.map((p) => postRow(ix, p, { showOrg: true }))}</div></section>` : ""}
       <section><h2>Officeholder records to verify <span class="count num">${lowPeople.length}</span></h2>

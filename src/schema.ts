@@ -278,6 +278,25 @@ export const Person = z.object({
       }),
     )
     .optional(),
+  /** Criminal and accountability cases, recorded only from reported court outcomes with a source. */
+  legal_cases: z
+    .array(
+      z.object({
+        title: z.string(),
+        filed: z.string(), // date the case/reference/FIR was filed
+        filed_by: z.string().optional(), // agency id or name (NAB, FIA, police)
+        court: z.string().optional(),
+        charges: z.string().optional(),
+        status: z.enum(["pending", "convicted", "convicted_on_appeal", "acquitted", "quashed", "withdrawn", "stayed", "pardoned"]),
+        verdict_date: z.string().optional(),
+        sentence: z.string().optional(),
+        fine: z.string().optional(),
+        custody: z.string().optional(), // time actually spent in custody
+        outcome: z.string().optional(),
+        sources: z.array(Source).min(1),
+      }),
+    )
+    .optional(),
   /** Assets declared to the ECP (nomination papers or annual statements) — not independently audited net worth. */
   declared_assets: z
     .array(z.object({ amount_pkr: z.number(), liabilities_pkr: z.number().optional(), as_of: z.string(), basis: z.string(), source: Source, notes: z.string().optional() }))
@@ -472,6 +491,8 @@ export interface Graph {
   people: (Person & { _file: string })[];
   laws: (Law & { _file: string })[];
   verification: NonNullable<DataFile["verification"]>;
+  /** Heads of the federal government by date (for "filed under which government"). */
+  pm_terms: { person: string; since: string; until?: string; status: string }[];
   /** All edges: authored relations plus those derived from parents, appointments and roles. */
   edges: (Relation & { derived: boolean })[];
 }

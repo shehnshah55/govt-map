@@ -25,6 +25,8 @@ import {
   holdingFlags,
   roleOf,
   originTag,
+  casesTable,
+  CASES_NOTE,
   type Ctx,
   type View,
 } from "./common.ts";
@@ -102,6 +104,7 @@ export function orgView(ctx: Ctx, id: string): View | undefined {
       <h1>${o.name}</h1>
       ${o.name_ur ? html`<p class="urdu" lang="ur">${o.name_ur}</p>` : ""}
       <div>${orgTags(ix, o)}</div>
+      ${top && ix.effectiveHolders(top.id).length ? html`<p><a href="#/post/${top.id}">${top.title}</a>: ${ix.effectiveHolders(top.id).map((h, i) => html`${i ? ", " : ""}<b>${link(ix, h.person.id)}</b>${h.person.party ? html` (${partyLink(ix, h.person.party)})` : ""}`)}</p>` : ""}
       ${o.description ? html`<p class="lede">${o.description}</p>` : ""}
     </header>
     <div class="layout">
@@ -381,6 +384,11 @@ export function personView(ctx: Ctx, id: string): View | undefined {
       <h1>${person.name}</h1>
       ${person.name_ur ? html`<p class="urdu" lang="ur">${person.name_ur}</p>` : ""}
       ${person.party ? html`<p class="lede">${partyLink(ix, person.party)}</p>` : ""}
+      <div class="tags">${current.map((r) => {
+        const p = ix.post.get(r.position)!;
+        const area = p.area ? ix.place.get(p.area) : undefined;
+        return html`<a class="tag sel-${p._selection}" href="#/post/${p.id}">${area?.kind === "constituency" ? area.name : p.title}</a><a class="tag tenure" href="#/org/${p.org}">${ix.shortLabel(p.org)}</a>${area ? html`<a class="tag law" href="#/place/${area.parent ?? area.id}">${ix.place.get(area.parent ?? "")?.name ?? area.name}</a>` : ""}`;
+      })}</div>
     </header>
     <div class="layout">
       <div class="stack">
@@ -407,6 +415,11 @@ export function personView(ctx: Ctx, id: string): View | undefined {
                 (a) => html`<tr><td class="num">${a.as_of}</td><td class="n">Rs ${formatPkr(a.amount_pkr)}</td><td class="n">${a.liabilities_pkr != null ? `Rs ${formatPkr(a.liabilities_pkr)}` : "—"}</td><td class="n">${a.liabilities_pkr != null ? `Rs ${formatPkr(a.amount_pkr - a.liabilities_pkr)}` : "—"}</td><td>${a.basis}${a.notes ? html`<div class="hint">${a.notes}</div>` : ""}</td><td><a href="${a.source.url}" target="_blank" rel="noopener">${a.source.title}</a></td></tr>`,
               )}</tbody></table></div>
               <p class="hint" style="margin-top:8px">Assets as declared to the Election Commission in nomination papers or annual statements. These are self-declared values, often at historical cost, not audited net worth.</p></section>`
+            : ""
+        }
+        ${
+          person.legal_cases?.length
+            ? html`<section><h2>Criminal and accountability cases <span class="count num">${person.legal_cases.length}</span></h2><p class="hint" style="margin-bottom:10px">${CASES_NOTE}</p>${casesTable(ix, person.legal_cases.map((c) => ({ person, c })), false)}</section>`
             : ""
         }
         ${

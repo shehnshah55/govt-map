@@ -147,3 +147,11 @@ verification:
     sources:
       - { title: "APP — Legislators told to submit 2024–25 asset statements", url: "https://www.app.com.pk/national/deadline-looms-legislators-told-to-submit-2024-25-asset-statements/" }
       - { title: "Election Commission of Pakistan", url: "https://www.ecp.gov.pk" }
+  - claim: "Criminal and accountability cases of current officeholders"
+    status: verified
+    finding: "Recorded from court outcomes reported by Dawn, Express Tribune and Al Jazeera. Nawaz Sharif was acquitted in Avenfield (29 Nov 2023) and Al-Azizia (12 Dec 2023). Maryam Nawaz was acquitted in Avenfield (Sept 2022). Shehbaz Sharif was acquitted in the FIA money-laundering case (Oct 2022). Omar Ayub was convicted in the 9 May case (31 Jul 2025, 10 years). Proceedings against Asif Zardari are stayed under presidential immunity (2024). Coverage is partial: other officeholders' cases are not yet researched."
+    records: [nawaz-sharif, maryam-nawaz, shehbaz-sharif, omar-ayub-khan, asif-ali-zardari]
+    checked: "2026-09-25"
+    sources:
+      - { title: "Dawn — IHC acquits Nawaz Sharif in Avenfield reference", url: "https://www.dawn.com/news/1793562" }
+      - { title: "Dawn — Zardari granted immunity from criminal proceedings", url: "https://www.dawn.com/news/1832858" }
