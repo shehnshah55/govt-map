@@ -1,0 +1,969 @@
+# Province of Punjab: constitutional offices, Provincial Assembly, High Court,
+# departments (Provincial Rules of Business), health vertical and links to the
+# Federation. Generated once from a shared provincial template, then hand-edited —
+# this file is the source of truth. Departments get generated Minister and
+# Secretary posts by convention (see docs/DATA_MODEL.md).
+organizations:
+- id: pb-government
+  name: Government of Punjab
+  kind: state
+  branch: executive
+  description: Provincial government of Punjab. Executive authority vests in the Governor and is exercised by the Provincial Government — the
+    Chief Minister and Provincial Ministers (Arts. 129–130). After the 18th Amendment, provinces are responsible for health, school education,
+    agriculture, local government, police and most social services.
+  legal_basis:
+  - law: constitution-1973
+    provision: Arts. 129–140A
+  website: https://punjab.gov.pk
+  sectors:
+  - governance
+  jurisdiction: pk-pb
+- id: pb-governor-house
+  name: Governor of Punjab
+  short_name: Governor's House
+  kind: head_of_state_office
+  branch: executive
+  parent: pb-government
+  description: Constitutional head of the province, appointed by the President on the advice of the Prime Minister (Art. 101). Acts on the advice
+    of the Cabinet or Chief Minister (Art. 105); Chancellor of public-sector universities under provincial university laws.
+  legal_basis:
+  - law: constitution-1973
+    provision: Arts. 101–105
+  jurisdiction: pk-pb
+- id: pb-cm-office
+  name: Chief Minister's Office, Punjab
+  kind: head_of_state_office
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 130
+  jurisdiction: pk-pb
+- id: pb-cabinet
+  name: Provincial Cabinet of Punjab
+  kind: cabinet
+  branch: executive
+  parent: pb-government
+  description: The Chief Minister and Provincial Ministers, collectively responsible to the Provincial Assembly (Art. 130(6)). Size capped at
+    15 members or 11% of the Assembly, whichever is higher (Art. 130(6)).
+  legal_basis:
+  - law: constitution-1973
+    provision: Arts. 130, 132
+  - law: punjab-rules-of-business-2011
+  jurisdiction: pk-pb
+- id: pb-assembly
+  name: Provincial Assembly of the Punjab
+  kind: legislature
+  branch: legislative
+  description: Unicameral provincial legislature with 371 seats (297 general, 66 women, 8 non-Muslim). Five-year term. Elects the Chief Minister
+    and the province's 23 Senators, and votes in the presidential election.
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 106
+  website: https://www.pap.gov.pk
+  sectors:
+  - governance
+  jurisdiction: pk-pb
+- id: pb-assembly-pac
+  name: Public Accounts Committee, Provincial Assembly of the Punjab
+  kind: committee
+  branch: legislative
+  parent: pb-assembly
+  description: Examines the Auditor-General's reports on the province's accounts (Art. 171).
+  sectors:
+  - accountability
+  - finance
+  jurisdiction: pk-pb
+- id: pb-assembly-sc-health
+  name: Standing Committee on Health, Provincial Assembly of the Punjab
+  kind: committee
+  branch: legislative
+  parent: pb-assembly
+  sectors:
+  - health
+  jurisdiction: pk-pb
+- id: pb-high-court
+  name: Lahore High Court
+  short_name: LHC
+  kind: court
+  branch: judicial
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 192
+  website: https://www.lhc.gov.pk
+  sectors:
+  - justice
+  description: Superior court of the province with writ jurisdiction (Art. 199) and supervision of the district judiciary.
+  jurisdiction: pk-pb
+- id: pb-district-judiciary
+  name: District Judiciary of Punjab
+  kind: court
+  branch: judicial
+  parent: pb-high-court
+  description: District and Sessions Judges, Additional Sessions Judges, Senior and Civil Judges and Judicial Magistrates in every district, under
+    the administrative control of the High Court.
+  sectors:
+  - justice
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 203
+  - law: civil-courts-ordinance-1962
+  jurisdiction: pk-pb
+- id: pb-advocate-general
+  name: Office of the Advocate-General, Punjab
+  kind: constitutional_body
+  branch: constitutional
+  parent: pb-government
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 140
+  sectors:
+  - law
+  jurisdiction: pk-pb
+- id: pb-psc
+  name: Punjab Public Service Commission
+  short_name: PPSC
+  kind: constitutional_body
+  branch: constitutional
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 242
+  website: https://www.ppsc.gop.pk
+  sectors:
+  - civil_service
+  description: Recruits provincial civil servants (Provincial Management Service and departmental posts BS-16 and above).
+  jurisdiction: pk-pb
+- id: pb-ombudsman
+  name: Ombudsman Punjab
+  kind: ombudsman
+  branch: constitutional
+  sectors:
+  - accountability
+  jurisdiction: pk-pb
+- id: pb-pfc
+  name: Provincial Finance Commission, Punjab
+  kind: intergovernmental_forum
+  branch: executive
+  parent: pb-government
+  description: Recommends distribution of provincial resources to local governments (the provincial counterpart of the NFC).
+  sectors:
+  - finance
+  - local_government
+  jurisdiction: pk-pb
+- id: pb-sgad
+  name: Services and General Administration Department, Punjab
+  short_name: S&GAD
+  kind: department
+  branch: executive
+  parent: pb-government
+  description: 'Provincial HR and cabinet secretariat: postings and transfers of provincial officers, the Provincial Management Service, and support
+    to the Chief Secretary.'
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - civil_service
+  - governance
+  jurisdiction: pk-pb
+- id: pb-pnd
+  name: Planning and Development Board, Punjab
+  short_name: P&D Board
+  kind: department
+  branch: executive
+  parent: pb-government
+  description: Prepares the Annual Development Programme and appraises development schemes (Provincial Development Working Party).
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - planning
+  jurisdiction: pk-pb
+- id: pb-board-of-revenue
+  name: Board of Revenue, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  description: Apex revenue authority for land records, land revenue and stamp duty; the revenue hierarchy of Divisional Commissioners, Deputy
+    Commissioners (Collectors), Assistant Commissioners and Tehsildars runs under it.
+  legal_basis:
+  - law: land-revenue-act-1967
+  sectors:
+  - revenue
+  - governance
+  jurisdiction: pk-pb
+- id: pb-revenue-authority
+  name: Punjab Revenue Authority
+  short_name: PRA
+  kind: attached_department
+  branch: executive
+  parent: pb-finance
+  description: Collects provincial sales tax on services (a provincial tax base after the 18th Amendment).
+  sectors:
+  - revenue
+  jurisdiction: pk-pb
+- id: pb-police
+  name: Punjab Police
+  kind: law_enforcement
+  branch: executive
+  parent: pb-home
+  legal_basis:
+  - law: police-order-2002
+  sectors:
+  - interior
+  description: Provincial police headed by the Inspector General of Police; District Police Officers command in each district.
+  jurisdiction: pk-pb
+- id: pb-cr-ace
+  name: Anti-Corruption Establishment, Punjab
+  short_name: ACE
+  kind: law_enforcement
+  branch: executive
+  parent: pb-sgad
+  sectors:
+  - accountability
+  confidence: medium
+  jurisdiction: pk-pb
+- id: pb-pdma
+  name: Provincial Disaster Management Authority, Punjab
+  short_name: PDMA
+  kind: autonomous_body
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: ndm-act-2010
+  sectors:
+  - disaster
+  jurisdiction: pk-pb
+- id: pb-local-government
+  name: Local Government System of Punjab
+  kind: local_government
+  branch: local
+  parent: pb-local-government-dept
+  description: Elected local councils required by Art. 140A (political, administrative and financial devolution), organised under the provincial
+    local-government law. Tiers and names (metropolitan/municipal corporations, municipal committees, district, tehsil, union and village/neighbourhood
+    councils) differ by province and change with each new Act; elections are held by the Election Commission of Pakistan.
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 140A
+  - law: punjab-lg-act-2022
+  sectors:
+  - local_government
+  jurisdiction: pk-pb
+- id: pb-mcl
+  name: Metropolitan Corporation Lahore
+  kind: local_government
+  branch: local
+  parent: pb-local-government
+  legal_basis:
+  - law: punjab-lg-act-2022
+  sectors:
+  - local_government
+  jurisdiction: pk-pb
+- id: pb-peoc
+  name: Provincial Emergency Operations Centre for Polio, Punjab
+  short_name: PEOC
+  kind: programme
+  branch: executive
+  parent: pb-government
+  sectors:
+  - health
+  description: Provincial arm of the Polio Eradication Initiative, coordinated by the National EOC.
+  jurisdiction: pk-pb
+- id: pb-healthcare-commission
+  name: Punjab Healthcare Commission
+  short_name: PHC
+  kind: regulator
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-healthcare-commission-act-2010
+  sectors:
+  - health
+  description: Registers and licenses public and private healthcare establishments, sets minimum service-delivery standards and acts against quackery.
+  website: https://www.phc.org.pk
+  jurisdiction: pk-pb
+- id: pb-primary-secondary-healthcare
+  name: Primary and Secondary Healthcare Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  - law: amendment-18
+  sectors:
+  - health
+  description: Runs basic health units, rural health centres, tehsil and district headquarters hospitals and preventive programmes (EPI, TB, hepatitis,
+    IRMNCH) through District Health Authorities.
+  short_name: P&SHD
+  jurisdiction: pk-pb
+- id: pb-specialized-healthcare
+  name: Specialized Healthcare and Medical Education Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  - law: amendment-18
+  sectors:
+  - health
+  description: Runs teaching hospitals and public medical and dental colleges; health-professional education.
+  short_name: SH&MED
+  jurisdiction: pk-pb
+- id: pb-dg-health-services
+  name: Directorate General of Health Services, Punjab
+  kind: attached_department
+  branch: executive
+  parent: pb-primary-secondary-healthcare
+  sectors:
+  - health
+  description: Field wing of the health department; District Health Officers / CEOs of District Health Authorities report through it.
+  jurisdiction: pk-pb
+- id: pb-phimc
+  name: Punjab Health Initiative Management Company
+  short_name: PHIMC
+  kind: corporation
+  parent: pb-specialized-healthcare
+  description: Manages the Punjab social health-insurance (Sehat Card / Maryam Nawaz Health Card) programme.
+  confidence: medium
+  branch: executive
+  sectors:
+  - health
+  jurisdiction: pk-pb
+- id: pb-mayo-hospital
+  name: Mayo Hospital, Lahore
+  kind: hospital
+  parent: pb-specialized-healthcare
+  branch: executive
+  sectors:
+  - health
+  jurisdiction: pk-pb
+- id: pb-pfa
+  name: Punjab Food Authority
+  short_name: PFA
+  kind: regulator
+  parent: pb-food
+  sectors:
+  - health
+  - agriculture
+  legal_basis:
+  - law: punjab-food-authority-act-2011
+  branch: executive
+  jurisdiction: pk-pb
+- id: pb-higher-education
+  name: Higher Education Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - education
+  jurisdiction: pk-pb
+- id: pb-school-education
+  name: School Education Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - education
+  jurisdiction: pk-pb
+- id: pb-finance
+  name: Finance Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - finance
+  description: Prepares the provincial budget and Annual Development Programme financing; manages the Provincial Consolidated Fund.
+  jurisdiction: pk-pb
+- id: pb-home
+  name: Home Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - interior
+  description: Law and order, police, prisons, counter-terrorism and civil defence.
+  jurisdiction: pk-pb
+- id: pb-local-government-dept
+  name: Local Government and Community Development Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - local_government
+  description: Supervises local councils, municipal services and local-government elections support; frames local-government rules under Art.
+    140A.
+  jurisdiction: pk-pb
+- id: pb-agriculture
+  name: Agriculture Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - agriculture
+  jurisdiction: pk-pb
+- id: pb-livestock
+  name: Livestock and Dairy Development Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - agriculture
+  jurisdiction: pk-pb
+- id: pb-food
+  name: Food Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - agriculture
+  description: Wheat procurement and food security.
+  jurisdiction: pk-pb
+- id: pb-irrigation
+  name: Irrigation Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - water
+  description: Canal network, barrages and water distribution within the province.
+  jurisdiction: pk-pb
+- id: pb-energy
+  name: Energy Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - energy
+  jurisdiction: pk-pb
+- id: pb-industries
+  name: Industries, Commerce and Investment Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - industry
+  - commerce
+  jurisdiction: pk-pb
+- id: pb-excise-taxation
+  name: Excise, Taxation and Narcotics Control Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - revenue
+  description: Collects provincial taxes such as motor-vehicle tax, property tax and excise.
+  jurisdiction: pk-pb
+- id: pb-environment
+  name: Environment Protection Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - environment
+  jurisdiction: pk-pb
+- id: pb-social-welfare
+  name: Social Welfare Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - social_protection
+  jurisdiction: pk-pb
+- id: pb-population-welfare
+  name: Population Welfare Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - population
+  - health
+  description: Provincial family-planning services, devolved in 2011.
+  jurisdiction: pk-pb
+- id: pb-law
+  name: Law and Parliamentary Affairs Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - law
+  jurisdiction: pk-pb
+- id: pb-information
+  name: Information and Culture Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - information
+  - culture
+  jurisdiction: pk-pb
+- id: pb-communication-works
+  name: Communication and Works Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - transport
+  - housing
+  jurisdiction: pk-pb
+- id: pb-transport
+  name: Transport Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - transport
+  jurisdiction: pk-pb
+- id: pb-mines-minerals
+  name: Mines and Minerals Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - industry
+  description: Mineral titles and royalties; provinces own natural resources within their territory (Art. 172(3)).
+  jurisdiction: pk-pb
+- id: pb-labour
+  name: Labour and Human Resource Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - labour
+  jurisdiction: pk-pb
+- id: pb-forest
+  name: Forest, Wildlife and Fisheries Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - environment
+  jurisdiction: pk-pb
+- id: pb-women-development
+  name: Women Development Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - human_rights
+  jurisdiction: pk-pb
+- id: pb-auqaf
+  name: Auqaf and Religious Affairs Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - religious_affairs
+  jurisdiction: pk-pb
+- id: pb-housing
+  name: Housing, Urban Development and Public Health Engineering Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - housing
+  - water
+  description: Urban development, water supply and sanitation schemes.
+  jurisdiction: pk-pb
+- id: pb-human-rights
+  name: Human Rights and Minorities Affairs Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - human_rights
+  jurisdiction: pk-pb
+- id: pb-sports
+  name: Sports and Youth Affairs Department, Punjab
+  kind: department
+  branch: executive
+  parent: pb-government
+  legal_basis:
+  - law: punjab-rules-of-business-2011
+  sectors:
+  - culture
+  jurisdiction: pk-pb
+positions:
+- id: pb-governor
+  title: Governor of Punjab
+  org: pb-governor-house
+  role: head
+  appointment:
+    method: appointment_on_advice
+    by: fed-president
+    on_advice_of: fed-prime-minister
+    notes: Holds office during the pleasure of the President.
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 101
+- id: pb-chief-minister
+  title: Chief Minister of Punjab
+  org: pb-cm-office
+  role: head
+  appointment:
+    method: indirect_election
+    by: pb-assembly
+    notes: Elected by a majority of the total membership of the Provincial Assembly.
+    removal: Vote of no confidence by a majority of the total membership of the Assembly (Art. 136)
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 130(4)
+- id: pb-provincial-minister
+  title: Provincial Minister (Punjab)
+  org: pb-cabinet
+  role: member
+  appointment:
+    method: appointment_on_advice
+    by: pb-governor
+    on_advice_of: pb-chief-minister
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 132
+- id: pb-chief-secretary
+  title: Chief Secretary, Punjab
+  org: pb-government
+  role: administrative_head
+  grade: BS-22
+  description: Head of the provincial civil service and secretary to the provincial cabinet. A federal PAS officer posted by the Federal Government
+    in consultation with the province.
+  appointment:
+    method: posting
+    by: fed-prime-minister
+    nominated_by: fed-establishment-division
+    consultation:
+    - pb-chief-minister
+- id: pb-igp
+  title: Inspector General of Police, Punjab
+  org: pb-police
+  role: head
+  grade: BS-21/22
+  appointment:
+    method: posting
+    by: fed-prime-minister
+    nominated_by: fed-establishment-division
+    consultation:
+    - pb-chief-minister
+    legal_basis:
+    - law: police-order-2002
+- id: pb-mpa
+  title: Member of the Provincial Assembly (Punjab)
+  org: pb-assembly
+  role: member
+  seats: 371
+  appointment:
+    method: direct_election
+    by: pk-electorate
+    term: 5 years
+    notes: General seats by first-past-the-post; reserved seats for women and non-Muslims by party-list proportional representation.
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 106
+    - law: elections-act-2017
+- id: pb-speaker
+  title: Speaker, Provincial Assembly of the Punjab
+  org: pb-assembly
+  role: presiding_officer
+  appointment:
+    method: indirect_election
+    by: pb-assembly
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 108
+- id: pb-deputy-speaker
+  title: Deputy Speaker, Provincial Assembly of the Punjab
+  org: pb-assembly
+  role: deputy
+  appointment:
+    method: indirect_election
+    by: pb-assembly
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 108
+- id: pb-leader-of-opposition
+  title: Leader of the Opposition, Provincial Assembly of the Punjab
+  org: pb-assembly
+  role: officer
+  appointment:
+    method: indirect_election
+    by: pb-assembly
+- id: pb-hc-chief-justice
+  title: Chief Justice, Lahore High Court
+  org: pb-high-court
+  role: chief_justice
+  appointment:
+    method: appointment
+    by: fed-president
+    nominated_by: fed-judicial-commission
+    legal_basis:
+    - law: constitution-1973
+      provision: Arts. 175A, 193
+- id: pb-hc-judge
+  title: Judge, Lahore High Court
+  org: pb-high-court
+  role: judge
+  appointment:
+    method: appointment
+    by: fed-president
+    nominated_by: fed-judicial-commission
+    legal_basis:
+    - law: constitution-1973
+      provision: Arts. 175A, 193
+- id: pb-advocate-general-post
+  title: Advocate-General, Punjab
+  org: pb-advocate-general
+  role: head
+  appointment:
+    method: appointment_on_advice
+    by: pb-governor
+    on_advice_of: pb-chief-minister
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 140
+- id: pb-psc-chairman
+  title: Chairman, Punjab Public Service Commission
+  org: pb-psc
+  role: head
+  appointment:
+    method: appointment_on_advice
+    by: pb-governor
+    on_advice_of: pb-chief-minister
+- id: pb-ombudsman-head
+  title: Ombudsman Punjab
+  org: pb-ombudsman
+  role: head
+  appointment:
+    method: appointment_on_advice
+    by: pb-governor
+    on_advice_of: pb-chief-minister
+- id: pb-smbr
+  title: Senior Member, Board of Revenue, Punjab
+  org: pb-board-of-revenue
+  role: head
+  grade: BS-21/22
+  appointment:
+    method: posting
+    by: pb-chief-minister
+    nominated_by: pb-sgad
+- id: pb-pnd-head
+  title: Chairman, Planning and Development Board
+  org: pb-pnd
+  role: head
+  grade: BS-21/22
+  appointment:
+    method: posting
+    by: pb-chief-minister
+    nominated_by: pb-sgad
+- id: pb-dg-health
+  title: Director General Health Services, Punjab
+  org: pb-dg-health-services
+  role: head
+  grade: BS-20/21
+  appointment:
+    method: posting
+    by: pb-chief-minister
+    nominated_by: pb-sgad
+- id: pb-mayor
+  title: Lord Mayor of Lahore
+  org: pb-mcl
+  role: head
+  appointment:
+    method: indirect_election
+    by: pb-mcl
+    notes: Mayoral election method is set by the provincial local-government law and has changed between Acts.
+    legal_basis:
+    - law: punjab-lg-act-2022
+  confidence: medium
+- id: pb-pdma-dg
+  title: Director General, PDMA Punjab
+  org: pb-pdma
+  role: head
+  appointment:
+    method: posting
+    by: pb-chief-minister
+- id: pb-healthcare-commission-ceo
+  title: Chief Executive Officer, Punjab Healthcare Commission
+  org: pb-healthcare-commission
+  role: head
+  appointment:
+    method: appointment
+    by: pb-government
+    legal_basis:
+    - law: punjab-healthcare-commission-act-2010
+  confidence: medium
+- id: pb-peoc-coordinator
+  title: Coordinator, Provincial EOC Punjab
+  org: pb-peoc
+  role: head
+  appointment:
+    method: appointment
+    by: pb-chief-minister
+relations:
+- from: pb-cabinet
+  to: pb-assembly
+  type: accountable_to
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 130(6)
+- from: pb-assembly
+  to: fed-senate-electoral-college
+  type: member_of
+  description: Elects the province's 23 Senators
+- from: pb-assembly
+  to: fed-electoral-college
+  type: member_of
+  description: Votes in the presidential election
+- from: pb-chief-minister
+  to: fed-cci
+  type: member_of
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 153(2)
+- from: pb-chief-minister
+  to: fed-nec
+  type: member_of
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 156(1)
+- from: pb-finance
+  to: fed-nfc
+  type: member_of
+  description: Provincial Finance Minister sits on the National Finance Commission
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 160(1)
+- from: pb-high-court
+  to: fed-supreme-court
+  type: appeals_to
+- from: fed-agp
+  to: pb-government
+  type: audits
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 171
+- from: fed-agp
+  to: pb-assembly-pac
+  type: reports_to
+  description: Provincial audit reports are submitted to the Governor for laying before the Assembly
+- from: pb-assembly-pac
+  to: pb-government
+  type: oversees
+- from: pb-assembly-sc-health
+  to: pb-primary-secondary-healthcare
+  type: oversees
+- from: pb-local-government-dept
+  to: pb-local-government
+  type: oversees
+- from: pb-local-government
+  to: fed-ecp
+  type: coordinates_with
+  description: Local-government elections are conducted by the ECP (Art. 140A(2))
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 140A(2)
+- from: fed-ecp
+  to: pb-assembly
+  type: oversees
+  description: Conducts elections to the Provincial Assembly
+- from: pb-pfc
+  to: pb-local-government
+  type: funds
+- from: fed-nfc
+  to: pb-government
+  type: funds
+  description: Provincial share of the federal divisible pool (7th NFC Award)
+- from: pb-pdma
+  to: fed-ndma
+  type: coordinates_with
+- from: pb-peoc
+  to: fed-neoc
+  type: reports_to
+- from: pb-primary-secondary-healthcare
+  to: fed-min-nhsrc
+  type: coordinates_with
+  description: Federal–provincial health coordination after devolution
+- from: pb-primary-secondary-healthcare
+  to: fed-imhpf
+  type: member_of
+  confidence: medium
+- from: fed-min-health-former
+  to: pb-primary-secondary-healthcare
+  type: devolved_to
+  description: Health devolved to the provinces on 30 June 2011
+  legal_basis:
+  - law: amendment-18
+- from: pb-healthcare-commission
+  to: pb-primary-secondary-healthcare
+  type: regulates
+  description: Licenses and inspects healthcare establishments
+- from: fed-drap
+  to: pb-primary-secondary-healthcare
+  type: coordinates_with
+  description: Provincial drug inspectors and Provincial Quality Control Boards enforce drug-sale rules under the Drugs Act 1976
+- from: pb-revenue-authority
+  to: fed-fbr
+  type: coordinates_with
+  description: Harmonisation of sales tax on goods (federal) and services (provincial)
+- from: pb-police
+  to: fed-interior-division
+  type: coordinates_with
+- from: pb-sgad
+  to: fed-establishment-division
+  type: coordinates_with
+  description: Federal cadre (PAS/PSP) officers serving in the province
+- from: pb-high-court
+  to: pb-district-judiciary
+  type: oversees
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 203
+- from: pb-specialized-healthcare
+  to: pb-primary-secondary-healthcare
+  type: coordinates_with

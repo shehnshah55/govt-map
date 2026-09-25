@@ -1,0 +1,955 @@
+# Province of Sindh: constitutional offices, Provincial Assembly, High Court,
+# departments (Provincial Rules of Business), health vertical and links to the
+# Federation. Generated once from a shared provincial template, then hand-edited —
+# this file is the source of truth. Departments get generated Minister and
+# Secretary posts by convention (see docs/DATA_MODEL.md).
+organizations:
+- id: sd-government
+  name: Government of Sindh
+  kind: state
+  branch: executive
+  description: Provincial government of Sindh. Executive authority vests in the Governor and is exercised by the Provincial Government — the Chief
+    Minister and Provincial Ministers (Arts. 129–130). After the 18th Amendment, provinces are responsible for health, school education, agriculture,
+    local government, police and most social services.
+  legal_basis:
+  - law: constitution-1973
+    provision: Arts. 129–140A
+  website: https://sindh.gov.pk
+  sectors:
+  - governance
+  jurisdiction: pk-sd
+- id: sd-governor-house
+  name: Governor of Sindh
+  short_name: Governor's House
+  kind: head_of_state_office
+  branch: executive
+  parent: sd-government
+  description: Constitutional head of the province, appointed by the President on the advice of the Prime Minister (Art. 101). Acts on the advice
+    of the Cabinet or Chief Minister (Art. 105); Chancellor of public-sector universities under provincial university laws.
+  legal_basis:
+  - law: constitution-1973
+    provision: Arts. 101–105
+  jurisdiction: pk-sd
+- id: sd-cm-office
+  name: Chief Minister's Office, Sindh
+  kind: head_of_state_office
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 130
+  jurisdiction: pk-sd
+- id: sd-cabinet
+  name: Provincial Cabinet of Sindh
+  kind: cabinet
+  branch: executive
+  parent: sd-government
+  description: The Chief Minister and Provincial Ministers, collectively responsible to the Provincial Assembly (Art. 130(6)). Size capped at
+    15 members or 11% of the Assembly, whichever is higher (Art. 130(6)).
+  legal_basis:
+  - law: constitution-1973
+    provision: Arts. 130, 132
+  - law: sindh-rules-of-business-1986
+  jurisdiction: pk-sd
+- id: sd-assembly
+  name: Provincial Assembly of Sindh
+  kind: legislature
+  branch: legislative
+  description: Unicameral provincial legislature with 168 seats (130 general, 29 women, 9 non-Muslim). Five-year term. Elects the Chief Minister
+    and the province's 23 Senators, and votes in the presidential election.
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 106
+  website: https://www.pas.gov.pk
+  sectors:
+  - governance
+  jurisdiction: pk-sd
+- id: sd-assembly-pac
+  name: Public Accounts Committee, Provincial Assembly of Sindh
+  kind: committee
+  branch: legislative
+  parent: sd-assembly
+  description: Examines the Auditor-General's reports on the province's accounts (Art. 171).
+  sectors:
+  - accountability
+  - finance
+  jurisdiction: pk-sd
+- id: sd-assembly-sc-health
+  name: Standing Committee on Health, Provincial Assembly of Sindh
+  kind: committee
+  branch: legislative
+  parent: sd-assembly
+  sectors:
+  - health
+  jurisdiction: pk-sd
+- id: sd-high-court
+  name: Sindh High Court
+  short_name: SHC
+  kind: court
+  branch: judicial
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 192
+  website: https://www.sindhhighcourt.gov.pk
+  sectors:
+  - justice
+  description: Superior court of the province with writ jurisdiction (Art. 199) and supervision of the district judiciary.
+  jurisdiction: pk-sd
+- id: sd-district-judiciary
+  name: District Judiciary of Sindh
+  kind: court
+  branch: judicial
+  parent: sd-high-court
+  description: District and Sessions Judges, Additional Sessions Judges, Senior and Civil Judges and Judicial Magistrates in every district, under
+    the administrative control of the High Court.
+  sectors:
+  - justice
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 203
+  - law: civil-courts-ordinance-1962
+  jurisdiction: pk-sd
+- id: sd-advocate-general
+  name: Office of the Advocate-General, Sindh
+  kind: constitutional_body
+  branch: constitutional
+  parent: sd-government
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 140
+  sectors:
+  - law
+  jurisdiction: pk-sd
+- id: sd-psc
+  name: Sindh Public Service Commission
+  short_name: SPSC
+  kind: constitutional_body
+  branch: constitutional
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 242
+  website: https://www.spsc.gos.pk
+  sectors:
+  - civil_service
+  description: Recruits provincial civil servants (Provincial Management Service and departmental posts BS-16 and above).
+  jurisdiction: pk-sd
+- id: sd-ombudsman
+  name: Provincial Ombudsman (Mohtasib) Sindh
+  kind: ombudsman
+  branch: constitutional
+  sectors:
+  - accountability
+  jurisdiction: pk-sd
+- id: sd-pfc
+  name: Provincial Finance Commission, Sindh
+  kind: intergovernmental_forum
+  branch: executive
+  parent: sd-government
+  description: Recommends distribution of provincial resources to local governments (the provincial counterpart of the NFC).
+  sectors:
+  - finance
+  - local_government
+  jurisdiction: pk-sd
+- id: sd-sgad
+  name: Services, General Administration and Coordination Department, Sindh
+  short_name: S&GAD
+  kind: department
+  branch: executive
+  parent: sd-government
+  description: 'Provincial HR and cabinet secretariat: postings and transfers of provincial officers, the Provincial Management Service, and support
+    to the Chief Secretary.'
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - civil_service
+  - governance
+  jurisdiction: pk-sd
+- id: sd-pnd
+  name: Planning and Development Department, Sindh
+  short_name: P&D
+  kind: department
+  branch: executive
+  parent: sd-government
+  description: Prepares the Annual Development Programme and appraises development schemes (Provincial Development Working Party).
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - planning
+  jurisdiction: pk-sd
+- id: sd-board-of-revenue
+  name: Board of Revenue, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  description: Apex revenue authority for land records, land revenue and stamp duty; the revenue hierarchy of Divisional Commissioners, Deputy
+    Commissioners (Collectors), Assistant Commissioners and Tehsildars runs under it.
+  legal_basis:
+  - law: land-revenue-act-1967
+  sectors:
+  - revenue
+  - governance
+  jurisdiction: pk-sd
+- id: sd-revenue-authority
+  name: Sindh Revenue Board
+  short_name: SRB
+  kind: attached_department
+  branch: executive
+  parent: sd-finance
+  description: Collects provincial sales tax on services (a provincial tax base after the 18th Amendment).
+  sectors:
+  - revenue
+  jurisdiction: pk-sd
+- id: sd-police
+  name: Sindh Police
+  kind: law_enforcement
+  branch: executive
+  parent: sd-home
+  legal_basis:
+  - law: police-order-2002
+  sectors:
+  - interior
+  description: Provincial police headed by the Inspector General of Police; District Police Officers command in each district.
+  jurisdiction: pk-sd
+- id: sd-cr-ace
+  name: Anti-Corruption Establishment, Sindh
+  short_name: ACE
+  kind: law_enforcement
+  branch: executive
+  parent: sd-sgad
+  sectors:
+  - accountability
+  confidence: medium
+  jurisdiction: pk-sd
+- id: sd-pdma
+  name: Provincial Disaster Management Authority, Sindh
+  short_name: PDMA
+  kind: autonomous_body
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: ndm-act-2010
+  sectors:
+  - disaster
+  jurisdiction: pk-sd
+- id: sd-local-government
+  name: Local Government System of Sindh
+  kind: local_government
+  branch: local
+  parent: sd-local-government-dept
+  description: Elected local councils required by Art. 140A (political, administrative and financial devolution), organised under the provincial
+    local-government law. Tiers and names (metropolitan/municipal corporations, municipal committees, district, tehsil, union and village/neighbourhood
+    councils) differ by province and change with each new Act; elections are held by the Election Commission of Pakistan.
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 140A
+  - law: sindh-lg-act-2013
+  sectors:
+  - local_government
+  jurisdiction: pk-sd
+- id: sd-kmc
+  name: Karachi Metropolitan Corporation
+  kind: local_government
+  branch: local
+  parent: sd-local-government
+  legal_basis:
+  - law: sindh-lg-act-2013
+  sectors:
+  - local_government
+  jurisdiction: pk-sd
+- id: sd-peoc
+  name: Provincial Emergency Operations Centre for Polio, Sindh
+  short_name: PEOC
+  kind: programme
+  branch: executive
+  parent: sd-government
+  sectors:
+  - health
+  description: Provincial arm of the Polio Eradication Initiative, coordinated by the National EOC.
+  jurisdiction: pk-sd
+- id: sd-healthcare-commission
+  name: Sindh Healthcare Commission
+  short_name: SHCC
+  kind: regulator
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-healthcare-commission-act-2013
+  sectors:
+  - health
+  description: Registers and licenses public and private healthcare establishments, sets minimum service-delivery standards and acts against quackery.
+  website: https://www.shcc.org.pk
+  jurisdiction: pk-sd
+- id: sd-health
+  name: Health Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  - law: amendment-18
+  sectors:
+  - health
+  description: Runs public hospitals, primary healthcare and preventive programmes across Sindh; many basic health units are managed under public–private
+    partnership by PPHI Sindh.
+  jurisdiction: pk-sd
+- id: sd-dg-health-services
+  name: Directorate General of Health Services, Sindh
+  kind: attached_department
+  branch: executive
+  parent: sd-health
+  sectors:
+  - health
+  description: Field wing of the health department; District Health Officers / CEOs of District Health Authorities report through it.
+  jurisdiction: pk-sd
+- id: sd-pphi
+  name: People's Primary Healthcare Initiative Sindh
+  short_name: PPHI Sindh
+  kind: autonomous_body
+  parent: sd-health
+  description: Manages primary healthcare facilities under a public–private partnership with the Health Department.
+  confidence: medium
+  branch: executive
+  sectors:
+  - health
+  jurisdiction: pk-sd
+- id: sd-jpmc
+  name: Jinnah Postgraduate Medical Centre, Karachi
+  short_name: JPMC
+  kind: hospital
+  parent: sd-health
+  description: Tertiary hospital transferred to Sindh after devolution (upheld by the Supreme Court in 2019).
+  confidence: medium
+  branch: executive
+  sectors:
+  - health
+  jurisdiction: pk-sd
+- id: sd-sfa
+  name: Sindh Food Authority
+  kind: regulator
+  parent: sd-food
+  sectors:
+  - health
+  - agriculture
+  legal_basis:
+  - law: sindh-food-authority-act-2016
+  confidence: medium
+  branch: executive
+  jurisdiction: pk-sd
+- id: sd-universities-boards
+  name: Universities and Boards Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - education
+  jurisdiction: pk-sd
+- id: sd-school-education
+  name: School Education and Literacy Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - education
+  jurisdiction: pk-sd
+- id: sd-finance
+  name: Finance Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - finance
+  description: Prepares the provincial budget and Annual Development Programme financing; manages the Provincial Consolidated Fund.
+  jurisdiction: pk-sd
+- id: sd-home
+  name: Home Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - interior
+  description: Law and order, police, prisons, counter-terrorism and civil defence.
+  jurisdiction: pk-sd
+- id: sd-local-government-dept
+  name: Local Government and Community Development Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - local_government
+  description: Supervises local councils, municipal services and local-government elections support; frames local-government rules under Art.
+    140A.
+  jurisdiction: pk-sd
+- id: sd-agriculture
+  name: Agriculture Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - agriculture
+  jurisdiction: pk-sd
+- id: sd-livestock
+  name: Livestock and Dairy Development Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - agriculture
+  jurisdiction: pk-sd
+- id: sd-food
+  name: Food Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - agriculture
+  description: Wheat procurement and food security.
+  jurisdiction: pk-sd
+- id: sd-irrigation
+  name: Irrigation Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - water
+  description: Canal network, barrages and water distribution within the province.
+  jurisdiction: pk-sd
+- id: sd-energy
+  name: Energy Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - energy
+  jurisdiction: pk-sd
+- id: sd-industries
+  name: Industries, Commerce and Investment Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - industry
+  - commerce
+  jurisdiction: pk-sd
+- id: sd-excise-taxation
+  name: Excise, Taxation and Narcotics Control Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - revenue
+  description: Collects provincial taxes such as motor-vehicle tax, property tax and excise.
+  jurisdiction: pk-sd
+- id: sd-environment
+  name: Environment Protection Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - environment
+  jurisdiction: pk-sd
+- id: sd-social-welfare
+  name: Social Welfare Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - social_protection
+  jurisdiction: pk-sd
+- id: sd-population-welfare
+  name: Population Welfare Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - population
+  - health
+  description: Provincial family-planning services, devolved in 2011.
+  jurisdiction: pk-sd
+- id: sd-law
+  name: Law and Parliamentary Affairs Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - law
+  jurisdiction: pk-sd
+- id: sd-information
+  name: Information and Culture Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - information
+  - culture
+  jurisdiction: pk-sd
+- id: sd-communication-works
+  name: Communication and Works Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - transport
+  - housing
+  jurisdiction: pk-sd
+- id: sd-transport
+  name: Transport Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - transport
+  jurisdiction: pk-sd
+- id: sd-mines-minerals
+  name: Mines and Minerals Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - industry
+  description: Mineral titles and royalties; provinces own natural resources within their territory (Art. 172(3)).
+  jurisdiction: pk-sd
+- id: sd-labour
+  name: Labour and Human Resource Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - labour
+  jurisdiction: pk-sd
+- id: sd-forest
+  name: Forest, Wildlife and Fisheries Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - environment
+  jurisdiction: pk-sd
+- id: sd-women-development
+  name: Women Development Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - human_rights
+  jurisdiction: pk-sd
+- id: sd-auqaf
+  name: Auqaf and Religious Affairs Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - religious_affairs
+  jurisdiction: pk-sd
+- id: sd-housing
+  name: Housing, Urban Development and Public Health Engineering Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - housing
+  - water
+  description: Urban development, water supply and sanitation schemes.
+  jurisdiction: pk-sd
+- id: sd-human-rights
+  name: Human Rights and Minorities Affairs Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - human_rights
+  jurisdiction: pk-sd
+- id: sd-sports
+  name: Sports and Youth Affairs Department, Sindh
+  kind: department
+  branch: executive
+  parent: sd-government
+  legal_basis:
+  - law: sindh-rules-of-business-1986
+  sectors:
+  - culture
+  jurisdiction: pk-sd
+positions:
+- id: sd-governor
+  title: Governor of Sindh
+  org: sd-governor-house
+  role: head
+  appointment:
+    method: appointment_on_advice
+    by: fed-president
+    on_advice_of: fed-prime-minister
+    notes: Holds office during the pleasure of the President.
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 101
+- id: sd-chief-minister
+  title: Chief Minister of Sindh
+  org: sd-cm-office
+  role: head
+  appointment:
+    method: indirect_election
+    by: sd-assembly
+    notes: Elected by a majority of the total membership of the Provincial Assembly.
+    removal: Vote of no confidence by a majority of the total membership of the Assembly (Art. 136)
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 130(4)
+- id: sd-provincial-minister
+  title: Provincial Minister (Sindh)
+  org: sd-cabinet
+  role: member
+  appointment:
+    method: appointment_on_advice
+    by: sd-governor
+    on_advice_of: sd-chief-minister
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 132
+- id: sd-chief-secretary
+  title: Chief Secretary, Sindh
+  org: sd-government
+  role: administrative_head
+  grade: BS-22
+  description: Head of the provincial civil service and secretary to the provincial cabinet. A federal PAS officer posted by the Federal Government
+    in consultation with the province.
+  appointment:
+    method: posting
+    by: fed-prime-minister
+    nominated_by: fed-establishment-division
+    consultation:
+    - sd-chief-minister
+- id: sd-igp
+  title: Inspector General of Police, Sindh
+  org: sd-police
+  role: head
+  grade: BS-21/22
+  appointment:
+    method: posting
+    by: fed-prime-minister
+    nominated_by: fed-establishment-division
+    consultation:
+    - sd-chief-minister
+    legal_basis:
+    - law: police-order-2002
+- id: sd-mpa
+  title: Member of the Provincial Assembly (Sindh)
+  org: sd-assembly
+  role: member
+  seats: 168
+  appointment:
+    method: direct_election
+    by: pk-electorate
+    term: 5 years
+    notes: General seats by first-past-the-post; reserved seats for women and non-Muslims by party-list proportional representation.
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 106
+    - law: elections-act-2017
+- id: sd-speaker
+  title: Speaker, Provincial Assembly of Sindh
+  org: sd-assembly
+  role: presiding_officer
+  appointment:
+    method: indirect_election
+    by: sd-assembly
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 108
+- id: sd-deputy-speaker
+  title: Deputy Speaker, Provincial Assembly of Sindh
+  org: sd-assembly
+  role: deputy
+  appointment:
+    method: indirect_election
+    by: sd-assembly
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 108
+- id: sd-leader-of-opposition
+  title: Leader of the Opposition, Provincial Assembly of Sindh
+  org: sd-assembly
+  role: officer
+  appointment:
+    method: indirect_election
+    by: sd-assembly
+- id: sd-hc-chief-justice
+  title: Chief Justice, Sindh High Court
+  org: sd-high-court
+  role: chief_justice
+  appointment:
+    method: appointment
+    by: fed-president
+    nominated_by: fed-judicial-commission
+    legal_basis:
+    - law: constitution-1973
+      provision: Arts. 175A, 193
+- id: sd-hc-judge
+  title: Judge, Sindh High Court
+  org: sd-high-court
+  role: judge
+  appointment:
+    method: appointment
+    by: fed-president
+    nominated_by: fed-judicial-commission
+    legal_basis:
+    - law: constitution-1973
+      provision: Arts. 175A, 193
+- id: sd-advocate-general-post
+  title: Advocate-General, Sindh
+  org: sd-advocate-general
+  role: head
+  appointment:
+    method: appointment_on_advice
+    by: sd-governor
+    on_advice_of: sd-chief-minister
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 140
+- id: sd-psc-chairman
+  title: Chairman, Sindh Public Service Commission
+  org: sd-psc
+  role: head
+  appointment:
+    method: appointment_on_advice
+    by: sd-governor
+    on_advice_of: sd-chief-minister
+- id: sd-ombudsman-head
+  title: Provincial Ombudsman (Mohtasib) Sindh
+  org: sd-ombudsman
+  role: head
+  appointment:
+    method: appointment_on_advice
+    by: sd-governor
+    on_advice_of: sd-chief-minister
+- id: sd-smbr
+  title: Senior Member, Board of Revenue, Sindh
+  org: sd-board-of-revenue
+  role: head
+  grade: BS-21/22
+  appointment:
+    method: posting
+    by: sd-chief-minister
+    nominated_by: sd-sgad
+- id: sd-pnd-head
+  title: Additional Chief Secretary (Development), Sindh
+  org: sd-pnd
+  role: head
+  grade: BS-21/22
+  appointment:
+    method: posting
+    by: sd-chief-minister
+    nominated_by: sd-sgad
+- id: sd-dg-health
+  title: Director General Health Services, Sindh
+  org: sd-dg-health-services
+  role: head
+  grade: BS-20/21
+  appointment:
+    method: posting
+    by: sd-chief-minister
+    nominated_by: sd-sgad
+- id: sd-mayor
+  title: Mayor of Karachi
+  org: sd-kmc
+  role: head
+  appointment:
+    method: indirect_election
+    by: sd-kmc
+    notes: Mayoral election method is set by the provincial local-government law and has changed between Acts.
+    legal_basis:
+    - law: sindh-lg-act-2013
+  confidence: medium
+- id: sd-pdma-dg
+  title: Director General, PDMA Sindh
+  org: sd-pdma
+  role: head
+  appointment:
+    method: posting
+    by: sd-chief-minister
+- id: sd-healthcare-commission-ceo
+  title: Chief Executive Officer, Sindh Healthcare Commission
+  org: sd-healthcare-commission
+  role: head
+  appointment:
+    method: appointment
+    by: sd-government
+    legal_basis:
+    - law: sindh-healthcare-commission-act-2013
+  confidence: medium
+- id: sd-peoc-coordinator
+  title: Coordinator, Provincial EOC Sindh
+  org: sd-peoc
+  role: head
+  appointment:
+    method: appointment
+    by: sd-chief-minister
+relations:
+- from: sd-cabinet
+  to: sd-assembly
+  type: accountable_to
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 130(6)
+- from: sd-assembly
+  to: fed-senate-electoral-college
+  type: member_of
+  description: Elects the province's 23 Senators
+- from: sd-assembly
+  to: fed-electoral-college
+  type: member_of
+  description: Votes in the presidential election
+- from: sd-chief-minister
+  to: fed-cci
+  type: member_of
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 153(2)
+- from: sd-chief-minister
+  to: fed-nec
+  type: member_of
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 156(1)
+- from: sd-finance
+  to: fed-nfc
+  type: member_of
+  description: Provincial Finance Minister sits on the National Finance Commission
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 160(1)
+- from: sd-high-court
+  to: fed-supreme-court
+  type: appeals_to
+- from: fed-agp
+  to: sd-government
+  type: audits
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 171
+- from: fed-agp
+  to: sd-assembly-pac
+  type: reports_to
+  description: Provincial audit reports are submitted to the Governor for laying before the Assembly
+- from: sd-assembly-pac
+  to: sd-government
+  type: oversees
+- from: sd-assembly-sc-health
+  to: sd-health
+  type: oversees
+- from: sd-local-government-dept
+  to: sd-local-government
+  type: oversees
+- from: sd-local-government
+  to: fed-ecp
+  type: coordinates_with
+  description: Local-government elections are conducted by the ECP (Art. 140A(2))
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 140A(2)
+- from: fed-ecp
+  to: sd-assembly
+  type: oversees
+  description: Conducts elections to the Provincial Assembly
+- from: sd-pfc
+  to: sd-local-government
+  type: funds
+- from: fed-nfc
+  to: sd-government
+  type: funds
+  description: Provincial share of the federal divisible pool (7th NFC Award)
+- from: sd-pdma
+  to: fed-ndma
+  type: coordinates_with
+- from: sd-peoc
+  to: fed-neoc
+  type: reports_to
+- from: sd-health
+  to: fed-min-nhsrc
+  type: coordinates_with
+  description: Federal–provincial health coordination after devolution
+- from: sd-health
+  to: fed-imhpf
+  type: member_of
+  confidence: medium
+- from: fed-min-health-former
+  to: sd-health
+  type: devolved_to
+  description: Health devolved to the provinces on 30 June 2011
+  legal_basis:
+  - law: amendment-18
+- from: sd-healthcare-commission
+  to: sd-health
+  type: regulates
+  description: Licenses and inspects healthcare establishments
+- from: fed-drap
+  to: sd-health
+  type: coordinates_with
+  description: Provincial drug inspectors and Provincial Quality Control Boards enforce drug-sale rules under the Drugs Act 1976
+- from: sd-revenue-authority
+  to: fed-fbr
+  type: coordinates_with
+  description: Harmonisation of sales tax on goods (federal) and services (provincial)
+- from: sd-police
+  to: fed-interior-division
+  type: coordinates_with
+- from: sd-sgad
+  to: fed-establishment-division
+  type: coordinates_with
+  description: Federal cadre (PAS/PSP) officers serving in the province
+- from: sd-high-court
+  to: sd-district-judiciary
+  type: oversees
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 203

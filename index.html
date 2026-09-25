@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Pakistan Government Graph</title>
+    <meta name="description" content="An open, source-cited map of Pakistan's government at every level: bodies, posts, officeholders and the laws that connect them." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Nastaliq+Urdu:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap"
+    />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="#/" aria-label="Pakistan Government Graph, home">
+          <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+            <circle cx="13" cy="5" r="3.2" fill="var(--accent)" />
+            <circle cx="5" cy="20" r="3.2" fill="var(--b-legislative)" />
+            <circle cx="21" cy="20" r="3.2" fill="var(--b-judicial)" />
+            <path d="M13 8.2 6.6 17.3M13 8.2l6.4 9.1M8.2 20h9.6" stroke="var(--line-strong)" stroke-width="1.6" fill="none" />
+          </svg>
+          <span>Pakistan Government Graph <small>Open data</small></span>
+        </a>
+        <div class="searchbox" role="search">
+          <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6" fill="none" /><path d="m11 11 3.5 3.5" stroke="currentColor" stroke-width="1.6" /></svg>
+          <input id="q" type="search" autocomplete="off" placeholder="Search bodies, posts, people, districts, laws  ( / )" aria-label="Search the graph" aria-controls="suggest" />
+          <div id="suggest" class="suggest" role="listbox" hidden></div>
+        </div>
+        <nav class="nav" aria-label="Main">
+          <a href="#/explore">Explore</a>
+          <a href="#/sectors">Sectors</a>
+          <a href="#/accountability">Accountability</a>
+          <a href="#/laws">Laws</a>
+          <a href="#/about">About</a>
+          <button id="theme" class="theme-toggle" type="button" aria-label="Toggle dark mode">◐</button>
+        </nav>
+      </div>
+    </header>
+    <main id="app"></main>
+    <footer class="foot">
+      <span>Pakistan Government Graph · open data, MIT licence · structure cited to the Constitution of 1973, Rules of Business and statute</span>
+      <span>Officeholders change often: check the as-of date on every record.</span>
+    </footer>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

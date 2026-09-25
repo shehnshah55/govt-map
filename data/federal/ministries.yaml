@@ -1,0 +1,354 @@
+# Federal Ministries and Divisions (Rules of Business 1973, Schedule I).
+#
+# Convention (applied by scripts/build-data.ts):
+#   • every `ministry` gets a generated head post  "<id>-minister"  (Federal Minister)
+#   • every `division`, and every ministry without child divisions, gets a
+#     generated administrative-head post "<id>-secretary" (Federal Secretary, BS-22)
+# unless the post is authored explicitly. The 2024–25 federal "rightsizing"
+# exercise merged or wound up several ministries; entries marked `confidence:
+# medium` should be re-checked against the current Schedule I.
+defaults:
+  organizations:
+    branch: executive
+    jurisdiction: pk
+    parent: fed-federation
+    legal_basis: [{ law: rules-of-business-1973, provision: "Schedule I" }]
+
+organizations:
+  # ── Divisions reporting directly to the Prime Minister ─────────────────────
+  - id: fed-cabinet-division
+    name: Cabinet Division
+    kind: division
+    parent: fed-pm-office
+    description: Secretariat of the Federal Cabinet and its committees (ECC, CCoE, CCLC); custodian of the Rules of Business; administrative home of several regulators and the Intelligence Bureau budget.
+    website: https://cabinet.gov.pk
+    sectors: [governance]
+  - id: fed-establishment-division
+    name: Establishment Division
+    kind: division
+    parent: fed-pm-office
+    description: Federal human-resources ministry. Manages the occupational groups of the civil service (PAS, PSP, OMG, Secretariat Group), postings and transfers of BS-20 to BS-22 officers, promotion boards and the Civil Services Academy / NSPP.
+    legal_basis: [{ law: rules-of-business-1973, provision: "Schedule I" }, { law: civil-servants-act-1973 }]
+    website: https://establishment.gov.pk
+    sectors: [civil_service]
+  - id: fed-national-security-division
+    name: National Security Division
+    kind: division
+    parent: fed-pm-office
+    description: Secretariat of the National Security Committee; headed by the National Security Adviser.
+    sectors: [defence, foreign]
+  - id: fed-boi
+    name: Board of Investment
+    short_name: BOI
+    kind: division
+    parent: fed-pm-office
+    description: Investment promotion and facilitation; secretariat support to the SIFC.
+    website: https://invest.gov.pk
+    sectors: [commerce]
+
+  # ── Line ministries ────────────────────────────────────────────────────────
+  - id: fed-min-finance
+    name: Ministry of Finance
+    kind: ministry
+    website: https://www.finance.gov.pk
+    description: Fiscal policy, the federal budget, public debt, the Federal Consolidated Fund and revenue policy.
+    sectors: [finance, revenue]
+  - id: fed-finance-division
+    name: Finance Division
+    kind: division
+    parent: fed-min-finance
+    description: Budget preparation, expenditure control, public debt (Debt Management Office), External Finance wing and Public Finance Management Act implementation.
+    legal_basis: [{ law: rules-of-business-1973, provision: "Schedule I" }, { law: pfm-act-2019 }]
+    sectors: [finance]
+  - id: fed-revenue-division
+    name: Revenue Division
+    kind: division
+    parent: fed-min-finance
+    description: Oversees the Federal Board of Revenue; the Chairman FBR is ex officio Secretary Revenue Division.
+    sectors: [revenue]
+
+  - id: fed-min-economic-affairs
+    name: Ministry of Economic Affairs
+    kind: ministry
+    description: Mobilises and manages foreign economic assistance and relations with multilateral lenders (World Bank, ADB, IsDB) and bilateral partners.
+    website: https://www.ead.gov.pk
+    sectors: [finance, foreign]
+
+  - id: fed-min-foreign-affairs
+    name: Ministry of Foreign Affairs
+    kind: ministry
+    website: https://mofa.gov.pk
+    description: Foreign policy and Pakistan's missions abroad. The Foreign Secretary heads the Foreign Service of Pakistan.
+    sectors: [foreign]
+
+  - id: fed-min-interior
+    name: Ministry of Interior and Narcotics Control
+    short_name: Ministry of Interior
+    kind: ministry
+    website: https://interior.gov.pk
+    description: Internal security, civil armed forces (Frontier Corps, Rangers, Coast Guards), immigration and passports, citizenship, the Islamabad Capital Territory administration and counter-narcotics.
+    confidence: medium
+    sectors: [interior]
+  - id: fed-interior-division
+    name: Interior Division
+    kind: division
+    parent: fed-min-interior
+    sectors: [interior]
+  - id: fed-narcotics-control-division
+    name: Narcotics Control Division
+    kind: division
+    parent: fed-min-interior
+    description: Formerly a separate ministry; brought under the Ministry of Interior. Controls the Anti-Narcotics Force.
+    confidence: medium
+    sectors: [interior]
+
+  - id: fed-min-defence
+    name: Ministry of Defence
+    kind: ministry
+    website: https://mod.gov.pk
+    description: Administrative ministry for the armed forces, cantonments, and (after the merger of the Aviation Division) civil aviation.
+    sectors: [defence]
+  - id: fed-defence-division
+    name: Defence Division
+    kind: division
+    parent: fed-min-defence
+    sectors: [defence]
+  - id: fed-aviation-division
+    name: Aviation Division
+    kind: division
+    parent: fed-min-defence
+    description: Civil aviation policy; merged into the Ministry of Defence in 2024.
+    confidence: medium
+    sectors: [transport]
+
+  - id: fed-min-defence-production
+    name: Ministry of Defence Production
+    kind: ministry
+    website: https://modp.gov.pk
+    sectors: [defence, industry]
+
+  - id: fed-min-law
+    name: Ministry of Law and Justice
+    kind: ministry
+    website: https://molaw.gov.pk
+    description: Drafting and vetting of legislation, legal advice to the Federal Government, judicial reforms, and the Pakistan Code.
+    sectors: [law, justice]
+
+  - id: fed-min-parliamentary-affairs
+    name: Ministry of Parliamentary Affairs
+    kind: ministry
+    description: Links the Federal Government with Parliament; manages government business in both Houses.
+    sectors: [governance]
+
+  - id: fed-min-planning
+    name: Ministry of Planning, Development and Special Initiatives
+    short_name: Ministry of Planning
+    kind: ministry
+    website: https://www.pc.gov.pk
+    description: Houses the Planning Commission; prepares Five-Year Plans and the Public Sector Development Programme (PSDP); chairs the Central Development Working Party; CPEC coordination.
+    sectors: [planning]
+  - id: fed-planning-commission
+    name: Planning Commission
+    kind: commission
+    parent: fed-min-planning
+    description: Chaired by the Prime Minister; the Deputy Chairman leads its day-to-day work. Appraises projects through the Central Development Working Party (CDWP).
+    sectors: [planning]
+
+  - id: fed-min-energy
+    name: Ministry of Energy
+    kind: ministry
+    description: Electricity (Power Division) and oil, gas and minerals (Petroleum Division).
+    sectors: [energy]
+  - id: fed-power-division
+    name: Power Division
+    kind: division
+    parent: fed-min-energy
+    website: https://power.gov.pk
+    sectors: [energy]
+  - id: fed-petroleum-division
+    name: Petroleum Division
+    kind: division
+    parent: fed-min-energy
+    website: https://mpnr.gov.pk
+    sectors: [energy]
+
+  - id: fed-min-water-resources
+    name: Ministry of Water Resources
+    kind: ministry
+    website: https://mowr.gov.pk
+    sectors: [water]
+
+  - id: fed-min-commerce
+    name: Ministry of Commerce
+    kind: ministry
+    website: https://www.commerce.gov.pk
+    description: Trade policy, trade agreements, tariffs and export promotion.
+    sectors: [commerce]
+
+  - id: fed-min-industries
+    name: Ministry of Industries and Production
+    kind: ministry
+    website: https://moip.gov.pk
+    sectors: [industry]
+
+  - id: fed-min-communications
+    name: Ministry of Communications
+    kind: ministry
+    website: https://communications.gov.pk
+    description: National highways and motorways and the postal service.
+    sectors: [communications, transport]
+
+  - id: fed-min-railways
+    name: Ministry of Railways
+    kind: ministry
+    website: https://www.pakrail.gov.pk
+    sectors: [transport]
+
+  - id: fed-min-maritime-affairs
+    name: Ministry of Maritime Affairs
+    kind: ministry
+    website: https://moma.gov.pk
+    description: Ports, shipping and the blue economy.
+    sectors: [transport, commerce]
+
+  - id: fed-min-it
+    name: Ministry of Information Technology and Telecommunication
+    short_name: MoITT
+    kind: ministry
+    website: https://moitt.gov.pk
+    description: Digital Pakistan policy, telecom policy, e-government and the IT export industry.
+    sectors: [it_telecom]
+
+  - id: fed-min-information
+    name: Ministry of Information and Broadcasting
+    kind: ministry
+    website: https://moib.gov.pk
+    sectors: [information, culture]
+  - id: fed-information-division
+    name: Information and Broadcasting Division
+    kind: division
+    parent: fed-min-information
+    sectors: [information]
+  - id: fed-heritage-division
+    name: National Heritage and Culture Division
+    kind: division
+    parent: fed-min-information
+    description: Museums, archives, the Pakistan National Council of the Arts, Lok Virsa and the Pakistan Academy of Letters.
+    confidence: medium
+    sectors: [culture]
+
+  - id: fed-min-education
+    name: Ministry of Federal Education and Professional Training
+    short_name: MoFEPT
+    kind: ministry
+    website: https://mofept.gov.pk
+    description: After the 18th Amendment school education is provincial; the Ministry retains national curriculum coordination, standards, higher education (via HEC), technical and vocational training (NAVTTC), and education in Islamabad.
+    sectors: [education]
+
+  - id: fed-min-climate-change
+    name: Ministry of Climate Change and Environmental Coordination
+    kind: ministry
+    website: https://mocc.gov.pk
+    description: National climate and environmental policy, UNFCCC focal ministry, and coordination with provincial environment departments.
+    sectors: [environment]
+
+  - id: fed-min-food-security
+    name: Ministry of National Food Security and Research
+    short_name: MNFSR
+    kind: ministry
+    website: https://mnfsr.gov.pk
+    description: National agriculture and food-security policy, plant protection, animal quarantine, commodity support and agricultural research (PARC).
+    sectors: [agriculture]
+
+  - id: fed-min-housing
+    name: Ministry of Housing and Works
+    kind: ministry
+    website: https://mohw.gov.pk
+    sectors: [housing]
+
+  - id: fed-min-human-rights
+    name: Ministry of Human Rights
+    kind: ministry
+    website: https://mohr.gov.pk
+    sectors: [human_rights]
+
+  - id: fed-min-ipc
+    name: Ministry of Inter-Provincial Coordination
+    short_name: Ministry of IPC
+    kind: ministry
+    website: https://ipc.gov.pk
+    description: Permanent secretariat of the Council of Common Interests; coordination of federal–provincial matters; sports.
+    sectors: [governance]
+
+  - id: fed-min-kashmir-gb
+    name: Ministry of Kashmir Affairs and Gilgit-Baltistan
+    kind: ministry
+    website: https://kagb.gov.pk
+    description: Federal coordination with the governments of Azad Jammu and Kashmir and Gilgit-Baltistan; SAFRON functions were merged in.
+    sectors: [governance]
+
+  - id: fed-min-overseas-pakistanis
+    name: Ministry of Overseas Pakistanis and Human Resource Development
+    kind: ministry
+    website: https://ophrd.gov.pk
+    description: Emigration, overseas workers' welfare, EOBI and the Workers Welfare Fund.
+    sectors: [labour]
+
+  - id: fed-min-poverty-alleviation
+    name: Ministry of Poverty Alleviation and Social Safety
+    kind: ministry
+    website: https://www.pass.gov.pk
+    description: Social-protection programmes including BISP and Pakistan Bait-ul-Mal.
+    sectors: [social_protection]
+
+  - id: fed-min-privatisation
+    name: Ministry of Privatisation
+    kind: ministry
+    website: https://privatisation.gov.pk
+    sectors: [finance, industry]
+
+  - id: fed-min-religious-affairs
+    name: Ministry of Religious Affairs and Interfaith Harmony
+    kind: ministry
+    website: https://mora.gov.pk
+    description: Hajj and Umrah arrangements, Zakat and Ushr coordination, and interfaith harmony.
+    sectors: [religious_affairs]
+
+  - id: fed-min-science-technology
+    name: Ministry of Science and Technology
+    kind: ministry
+    website: https://most.gov.pk
+    sectors: [science]
+
+  - id: fed-min-nhsrc
+    name: Ministry of National Health Services, Regulations and Coordination
+    short_name: Ministry of NHSR&C
+    name_ur: وزارتِ قومی صحت، ضوابط و رابطہ کاری
+    kind: ministry
+    website: https://www.nhsrc.gov.pk
+    established: "2013"
+    legal_basis:
+      - { law: rules-of-business-1973, provision: "Schedule I" }
+      - { law: nhsrc-notification-2013 }
+      - { law: amendment-18 }
+    description: >-
+      Pakistan's federal health ministry and the counterpart of the US Department of Health and Human Services.
+      Health became a provincial subject when the 18th Amendment (2010) removed the Concurrent List and the
+      Ministry of Health was dissolved in 2011. The residual federal functions were regrouped in 2013 as NHSR&C:
+      national health policy and coordination, drug regulation, health regulation of the Islamabad Capital
+      Territory, international health obligations (IHR, WHO, GAVI, Global Fund), communicable-disease control
+      programmes, population welfare coordination, and regulation of the medical, dental, nursing, pharmacy
+      and traditional-medicine professions.
+    functions:
+      - National health policy, strategy and inter-provincial coordination (Inter-Ministerial Health and Population Forum)
+      - Regulation of therapeutic goods through DRAP
+      - Regulation of health professions and health education through statutory councils (PMDC, PNMC, PCP, NCT, NCH)
+      - International health regulations, health security and disease surveillance (NIH, Border Health Services)
+      - National vertical programmes — EPI, polio eradication, TB, malaria, HIV/AIDS, nutrition
+      - Health financing — the Sehat Sahulat (PM National Health) Programme
+      - Health services and regulation in Islamabad Capital Territory (hospitals, IHRA)
+      - Population welfare coordination and reporting on national and international commitments
+    sectors: [health, population]
+    sources:
+      - { title: Ministry of NHSR&C — About, url: https://www.nhsrc.gov.pk }
+      - { title: "Constitution (Eighteenth Amendment) Act, 2010", url: https://na.gov.pk }

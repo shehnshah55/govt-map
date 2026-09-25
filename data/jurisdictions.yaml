@@ -1,0 +1,145 @@
+# Territorial units. Divisions and districts are generated from the compact
+# `field_administration` blocks below by scripts/build-data.ts, which also
+# creates each Divisional Commissioner / Deputy Commissioner office and post.
+jurisdictions:
+  - id: pk
+    name: Islamic Republic of Pakistan
+    name_ur: اسلامی جمہوریہ پاکستان
+    kind: country
+    capital: Islamabad
+  - id: pk-ict
+    name: Islamabad Capital Territory
+    name_ur: اسلام آباد وفاقی دارالحکومت
+    kind: federal_capital
+    parent: pk
+    capital: Islamabad
+    local_government_law: ict-lg-act-2015
+    notes: Administered directly by the Federal Government (Ministry of Interior) through the Chief Commissioner and Deputy Commissioner, Islamabad; Islamabad Metropolitan Corporation and the Capital Development Authority provide municipal services.
+  - id: pk-pb
+    name: Punjab
+    name_ur: پنجاب
+    kind: province
+    parent: pk
+    capital: Lahore
+    local_government_law: punjab-lg-act-2022
+  - id: pk-sd
+    name: Sindh
+    name_ur: سندھ
+    kind: province
+    parent: pk
+    capital: Karachi
+    local_government_law: sindh-lg-act-2013
+  - id: pk-kp
+    name: Khyber Pakhtunkhwa
+    name_ur: خیبر پختونخوا
+    kind: province
+    parent: pk
+    capital: Peshawar
+    local_government_law: kp-lg-act-2013
+    notes: Includes the former Federally Administered Tribal Areas, merged by the 25th Amendment (2018) and now organised as tribal districts.
+  - id: pk-ba
+    name: Balochistan
+    name_ur: بلوچستان
+    kind: province
+    parent: pk
+    capital: Quetta
+    local_government_law: balochistan-lg-act-2010
+  - id: pk-gb
+    name: Gilgit-Baltistan
+    name_ur: گلگت بلتستان
+    kind: special_territory
+    parent: pk
+    capital: Gilgit
+    notes: Administered under the Government of Gilgit-Baltistan Order, 2018; federal coordination through the Ministry of Kashmir Affairs and Gilgit-Baltistan. Not a province under Art. 1 of the Constitution.
+  - id: pk-ajk
+    name: Azad Jammu and Kashmir
+    name_ur: آزاد جموں و کشمیر
+    kind: special_territory
+    parent: pk
+    capital: Muzaffarabad
+    notes: Self-governing territory under the AJK Interim Constitution, 1974, with its own President, Prime Minister, Legislative Assembly and superior judiciary. Shown here because the Federal Government has constitutional and administrative links to it (Ministry of Kashmir Affairs and Gilgit-Baltistan); its status is governed by the Kashmir dispute and UN resolutions.
+
+field_administration:
+  - jurisdiction: pk-pb
+    appointing_authority: pb-chief-minister
+    revenue_authority: pb-board-of-revenue
+    as_of: "2025-06"
+    sources:
+      - title: Government of the Punjab — Districts
+        url: https://punjab.gov.pk
+    divisions:
+      - { id: bahawalpur, name: Bahawalpur, headquarters: Bahawalpur, districts: [Bahawalpur, Bahawalnagar, Rahim Yar Khan] }
+      - { id: dera-ghazi-khan, name: Dera Ghazi Khan, headquarters: Dera Ghazi Khan, districts: [Dera Ghazi Khan, Layyah, Muzaffargarh, Rajanpur, Kot Addu, Taunsa], confidence: medium }
+      - { id: faisalabad, name: Faisalabad, headquarters: Faisalabad, districts: [Faisalabad, Chiniot, Jhang, Toba Tek Singh] }
+      - { id: gujranwala, name: Gujranwala, headquarters: Gujranwala, districts: [Gujranwala, Narowal, Sialkot], confidence: medium }
+      - { id: gujrat, name: Gujrat, headquarters: Gujrat, districts: [Gujrat, Mandi Bahauddin, Hafizabad, Wazirabad], confidence: medium }
+      - { id: lahore, name: Lahore, headquarters: Lahore, districts: [Lahore, Kasur, Nankana Sahib, Sheikhupura] }
+      - { id: multan, name: Multan, headquarters: Multan, districts: [Multan, Khanewal, Lodhran, Vehari] }
+      - { id: rawalpindi, name: Rawalpindi, headquarters: Rawalpindi, districts: [Rawalpindi, Attock, Chakwal, Jhelum, Murree, Talagang], confidence: medium }
+      - { id: sahiwal, name: Sahiwal, headquarters: Sahiwal, districts: [Sahiwal, Okara, Pakpattan] }
+      - { id: sargodha, name: Sargodha, headquarters: Sargodha, districts: [Sargodha, Bhakkar, Khushab, Mianwali] }
+
+  - jurisdiction: pk-sd
+    appointing_authority: sd-chief-minister
+    revenue_authority: sd-board-of-revenue
+    as_of: "2025-06"
+    sources:
+      - title: Government of Sindh
+        url: https://sindh.gov.pk
+    divisions:
+      - { id: karachi, name: Karachi, headquarters: Karachi, districts: [Karachi Central, Karachi East, Karachi South, Karachi West, Korangi, Malir, Keamari] }
+      - { id: hyderabad, name: Hyderabad, headquarters: Hyderabad, districts: [Hyderabad, Jamshoro, Matiari, Tando Allahyar, Tando Muhammad Khan, Dadu], confidence: medium }
+      - { id: banbhore, name: Banbhore, headquarters: Thatta, districts: [Thatta, Sujawal, Badin], confidence: medium }
+      - { id: mirpurkhas, name: Mirpurkhas, headquarters: Mirpurkhas, districts: [Mirpurkhas, Umerkot, Tharparkar] }
+      - { id: shaheed-benazirabad, name: Shaheed Benazirabad, headquarters: Nawabshah, districts: [Shaheed Benazirabad, Naushahro Feroze, Sanghar] }
+      - { id: sukkur, name: Sukkur, headquarters: Sukkur, districts: [Sukkur, Khairpur, Ghotki] }
+      - { id: larkana, name: Larkana, headquarters: Larkana, districts: [Larkana, Qambar Shahdadkot, Shikarpur, Jacobabad, Kashmore] }
+
+  - jurisdiction: pk-kp
+    appointing_authority: kp-chief-minister
+    revenue_authority: kp-board-of-revenue
+    as_of: "2025-06"
+    sources:
+      - title: Government of Khyber Pakhtunkhwa
+        url: https://kp.gov.pk
+    divisions:
+      - { id: bannu, name: Bannu, headquarters: Bannu, districts: [Bannu, Lakki Marwat, North Waziristan] }
+      - { id: dera-ismail-khan, name: Dera Ismail Khan, headquarters: Dera Ismail Khan, districts: [Dera Ismail Khan, Tank, Upper South Waziristan, Lower South Waziristan], confidence: medium }
+      - { id: hazara, name: Hazara, headquarters: Abbottabad, districts: [Abbottabad, Haripur, Mansehra, Battagram, Torghar, Upper Kohistan, Lower Kohistan, Kolai-Palas] }
+      - { id: kohat, name: Kohat, headquarters: Kohat, districts: [Kohat, Hangu, Karak, Kurram, Orakzai], confidence: medium }
+      - { id: malakand, name: Malakand, headquarters: Saidu Sharif, districts: [Swat, Upper Dir, Lower Dir, Bajaur, Buner, Shangla, Malakand, Upper Chitral, Lower Chitral] }
+      - { id: mardan, name: Mardan, headquarters: Mardan, districts: [Mardan, Swabi] }
+      - { id: peshawar, name: Peshawar, headquarters: Peshawar, districts: [Peshawar, Charsadda, Nowshera, Khyber, Mohmand] }
+
+  - jurisdiction: pk-ba
+    appointing_authority: ba-chief-minister
+    revenue_authority: ba-board-of-revenue
+    as_of: "2025-06"
+    sources:
+      - title: Government of Balochistan
+        url: https://balochistan.gov.pk
+    divisions:
+      - { id: quetta, name: Quetta, headquarters: Quetta, districts: [Quetta, Pishin, Killa Abdullah, Chaman] }
+      - { id: kalat, name: Kalat, headquarters: Khuzdar, districts: [Kalat, Mastung, Khuzdar, Awaran, Lasbela, Hub, Shaheed Sikandarabad], confidence: medium }
+      - { id: makran, name: Makran, headquarters: Turbat, districts: [Kech, Gwadar, Panjgur] }
+      - { id: naseerabad, name: Naseerabad, headquarters: Dera Murad Jamali, districts: [Naseerabad, Jaffarabad, Jhal Magsi, Kachhi, Sohbatpur, Usta Muhammad], confidence: medium }
+      - { id: rakhshan, name: Rakhshan, headquarters: Kharan, districts: [Kharan, Washuk, Chagai, Nushki] }
+      - { id: sibi, name: Sibi, headquarters: Sibi, districts: [Sibi, Harnai, Ziarat, Kohlu, Dera Bugti], confidence: medium }
+      - { id: zhob, name: Zhob, headquarters: Zhob, districts: [Zhob, Sherani, Killa Saifullah] }
+      - { id: loralai, name: Loralai, headquarters: Loralai, districts: [Loralai, Barkhan, Musakhel, Duki] }
+
+  - jurisdiction: pk-gb
+    appointing_authority: gb-chief-minister
+    as_of: "2025-06"
+    divisions:
+      - { id: gilgit, name: Gilgit, headquarters: Gilgit, districts: [Gilgit, Ghizer, Hunza, Nagar, Gupis-Yasin], confidence: medium }
+      - { id: baltistan, name: Baltistan, headquarters: Skardu, districts: [Skardu, Ghanche, Shigar, Kharmang, Roundu], confidence: medium }
+      - { id: diamer-astore, name: Diamer-Astore, headquarters: Chilas, districts: [Diamer, Astore, Darel, Tangir], confidence: medium }
+
+  - jurisdiction: pk-ajk
+    appointing_authority: ajk-prime-minister
+    as_of: "2025-06"
+    divisions:
+      - { id: muzaffarabad, name: Muzaffarabad, headquarters: Muzaffarabad, districts: [Muzaffarabad, Hattian Bala, Neelum] }
+      - { id: poonch, name: Poonch, headquarters: Rawalakot, districts: [Poonch, Bagh, Haveli, Sudhnoti] }
+      - { id: mirpur, name: Mirpur, headquarters: Mirpur, districts: [Mirpur, Kotli, Bhimber] }

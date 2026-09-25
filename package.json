@@ -1,0 +1,33 @@
+{
+  "name": "pakistan-gov-graph",
+  "version": "0.1.0",
+  "private": true,
+  "description": "An open, source-cited graph of the Government of Pakistan at every level: federal, provincial, special territories, divisions, districts and local government.",
+  "type": "module",
+  "scripts": {
+    "data": "tsx scripts/build-data.ts",
+    "validate": "tsx scripts/build-data.ts --check",
+    "dev": "npm run data && vite",
+    "build": "npm run data && tsc --noEmit && vite build",
+    "build:single": "npm run data && vite build --mode single",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "cytoscape": "^3.34.3",
+    "cytoscape-dagre": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/cytoscape": "^3.21.9",
+    "@types/node": "^26.6.2",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.1",
+    "vite-plugin-singlefile": "^2.3.3",
+    "vitest": "^5.0.1",
+    "yaml": "^2.9.1",
+    "zod": "^4.6.5"
+  }
+}

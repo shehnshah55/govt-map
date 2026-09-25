@@ -1,0 +1,351 @@
+import type { Sector } from "../schema.ts";
+import { html } from "../ui/dom.ts";
+import { hierarchy, powerMap } from "../ui/graph-view.ts";
+import { SECTOR_LABEL, STATUS_LABEL } from "../ui/labels.ts";
+import { confidenceChip, graphPanel, hrefFor, kindLabel, link, postRow, statusChip, type Ctx, type View } from "./common.ts";
+
+const TIERS = ["pk", "pk-pb", "pk-sd", "pk-kp", "pk-ba", "pk-ict", "pk-gb", "pk-ajk"];
+const TIER_LABEL: Record<string, string> = {
+  pk: "Federal",
+  "pk-pb": "Punjab",
+  "pk-sd": "Sindh",
+  "pk-kp": "Khyber Pakhtunkhwa",
+  "pk-ba": "Balochistan",
+  "pk-ict": "Islamabad",
+  "pk-gb": "Gilgit-Baltistan",
+  "pk-ajk": "AJK",
+};
+const TIER_GOVT: Record<string, string> = {
+  pk: "fed-federation",
+  "pk-pb": "pb-government",
+  "pk-sd": "sd-government",
+  "pk-kp": "kp-government",
+  "pk-ba": "ba-government",
+  "pk-ict": "fed-ict-administration",
+  "pk-gb": "gb-government",
+  "pk-ajk": "ajk-government",
+};
+const TIER_HEADS: Record<string, [string, string][]> = {
+  pk: [["President", "fed-president"], ["Prime Minister", "fed-prime-minister"], ["Chief Justice", "fed-chief-justice"], ["Speaker NA", "fed-na-speaker"]],
+  "pk-pb": [["Governor", "pb-governor"], ["Chief Minister", "pb-chief-minister"], ["Chief Justice LHC", "pb-hc-chief-justice"]],
+  "pk-sd": [["Governor", "sd-governor"], ["Chief Minister", "sd-chief-minister"], ["Mayor of Karachi", "sd-mayor"]],
+  "pk-kp": [["Governor", "kp-governor"], ["Chief Minister", "kp-chief-minister"], ["Speaker", "kp-speaker"]],
+  "pk-ba": [["Governor", "ba-governor"], ["Chief Minister", "ba-chief-minister"], ["Speaker", "ba-speaker"]],
+  "pk-ict": [["Chief Commissioner", "fed-ict-chief-commissioner"], ["Chief Justice IHC", "fed-ihc-chief-justice"]],
+  "pk-gb": [["Governor", "gb-governor"], ["Chief Minister", "gb-chief-minister"]],
+  "pk-ajk": [["President", "ajk-president"], ["Prime Minister", "ajk-prime-minister"]],
+};
+
+function holderName(ctx: Ctx, postId: string) {
+  const h = ctx.ix.effectiveHolders(postId)[0];
+  return h ? link(ctx.ix, h.person.id) : html`<span class="hint">not recorded</span>`;
+}
+
+export function homeView(ctx: Ctx): View {
+  const { ix } = ctx;
+  const c = ix.g.meta.counts;
+  const districts = ix.g.jurisdictions.filter((j) => j.kind === "district").length;
+  const featured = ix.org.get("fed-min-nhsrc")!;
+  const sectorsInUse = (Object.keys(SECTOR_LABEL) as Sector[]).filter((s) => ix.bySector(s).length >= 4);
+  const power = graphPanel(
+    ctx,
+    "g-home",
+    [
+      { key: "power", label: "Who appoints whom (federal)", data: () => powerMap(ix, (j) => j === "pk"), layout: "cose" },
+      { key: "tree", label: "Federal structure", data: () => hierarchy(ix, "fed-federation", 1), layout: "concentric" },
+    ],
+    { tall: true },
+  );
+  const body = html`
+    <section class="hero">
+      <div class="eyebrow">Government of Pakistan · every level · open data</div>
+      <h1>Who governs Pakistan, and who put them there.</h1>
+      <p class="lede">A connected map of Pakistan's federal, provincial, territorial, divisional and district government. It covers every body, the posts that lead it, the people in those posts, and the constitutional article or statute behind each link.</p>
+      <div class="btnrow">
+        <a class="btn" href="#/org/fed-min-nhsrc">Start with the Ministry of Health</a>
+        <a class="btn ghost" href="#/explore">Explore the whole graph</a>
+      </div>
+    </section>
+    <div class="stats">
+      <div class="stat"><b>${c.organizations}</b><span>Government bodies</span></div>
+      <div class="stat"><b>${c.positions}</b><span>Posts</span></div>
+      <div class="stat"><b>${c.people}</b><span>Officeholders</span></div>
+      <div class="stat"><b>${districts}</b><span>Districts</span></div>
+      <div class="stat"><b>${c.laws}</b><span>Laws cited</span></div>
+      <div class="stat"><b>${c.edges.toLocaleString()}</b><span>Connections</span></div>
+    </div>
+    <div class="stack">
+      <section class="feature">
+        <div style="display:grid;gap:10px">
+          <div class="eyebrow">Pakistan's counterpart to the US Department of Health and Human Services</div>
+          <h2><a href="#/org/fed-min-nhsrc" style="color:inherit;text-decoration:none">${featured.name}</a></h2>
+          <p>Health became a provincial subject in 2011. The federal ministry that remains regulates medicines and the health professions, runs the polio, immunisation, TB, malaria and HIV programmes, and coordinates the four provincial health departments.</p>
+          <div class="btnrow"><a class="btn" href="#/org/fed-min-nhsrc">Open the ministry</a><a class="btn ghost" href="#/sector/health">Health in every government</a></div>
+        </div>
+        <ul class="plain">
+          ${["fed-drap", "fed-pmdc", "fed-nih", "fed-neoc", "fed-sehat-sahulat", "pb-primary-secondary-healthcare", "sd-health", "kp-health", "ba-health"].map(
+            (id) => html`<li>${link(ix, id, ix.shortLabel(id))} <span class="hint">· ${kindLabel(ix.org.get(id)!.kind)}${ix.org.get(id)!.jurisdiction !== "pk" ? " · " + TIER_LABEL[ix.tierOf(ix.org.get(id)!.jurisdiction)!.id] : ""}</span></li>`,
+          )}
+        </ul>
+      </section>
+      <section>
+        <h2>Governments <span class="count">Federation, four provinces, the capital and two territories</span></h2>
+        <div class="tiers">
+          ${TIERS.map((t) => {
+            const place = ix.place.get(t)!;
+            const divs = (ix.placeChildren.get(t) ?? []).filter((j) => j.kind === "division").length;
+            const dist = ix.g.jurisdictions.filter((j) => j.kind === "district" && ix.placeTrail(j.id)[1]?.id === t).length;
+            const n = t === "pk" ? ix.g.organizations.filter((o) => o.jurisdiction === "pk").length : ix.g.organizations.filter((o) => ix.tierOf(o.jurisdiction)?.id === t).length;
+            return html`<div class="tier">
+              <h3><a href="${t === "pk" ? "#/org/fed-federation" : `#/place/${t}`}">${t === "pk" ? "Federal Government" : place.name}</a></h3>
+              ${place.name_ur ? html`<div class="urdu" lang="ur">${place.name_ur}</div>` : ""}
+              <dl>${(TIER_HEADS[t] ?? []).map(([label, pid]) => html`<dt>${label}</dt><dd>${holderName(ctx, pid)}</dd>`)}</dl>
+              <div class="hint num">${n} bodies${divs ? ` · ${divs} divisions · ${dist} districts` : ""}</div>
+            </div>`;
+          })}
+        </div>
+      </section>
+      <section><h2>The power map</h2>
+        <p class="hint" style="margin-bottom:10px">Amber lines show who appoints, elects or nominates each federal office. Follow them back and they end at the voters, the National Assembly, or the President acting on the Prime Minister's advice.</p>
+        ${power.body}
+      </section>
+      <section><h2>By sector</h2>
+        <div class="sectors">${sectorsInUse.map((s) => html`<a href="#/sector/${s}">${SECTOR_LABEL[s]} <span class="num hint">${ix.bySector(s).length}</span></a>`)}</div>
+      </section>
+      <p class="notice">Officeholder records are dated (latest ${ix.g.meta.data_as_of}) and flagged <b>Verify</b> where they come from secondary reporting. Structural records cite the Constitution, Rules of Business or statute. See <a href="#/about">method and sources</a>.</p>
+    </div>`;
+  return { title: "Pakistan Government Graph", body, mount: power.mount };
+}
+
+export function exploreView(ctx: Ctx, params: URLSearchParams): View {
+  const { ix } = ctx;
+  const tier = TIERS.includes(params.get("tier") ?? "") ? params.get("tier")! : "pk";
+  const mode = params.get("mode") === "power" ? "power" : "structure";
+  const inTier = (j: string) => (tier === "pk" ? j === "pk" : ix.tierOf(j)?.id === tier);
+  const panel = graphPanel(
+    ctx,
+    "g-explore",
+    mode === "power"
+      ? [
+          { key: "force", label: "Network", data: () => powerMap(ix, inTier), layout: "cose" },
+          { key: "lr", label: "Ranked", data: () => powerMap(ix, inTier), layout: "dagre-tb" },
+        ]
+      : [
+          { key: "tree", label: "Tree", data: () => hierarchy(ix, TIER_GOVT[tier], 3), layout: "dagre-lr" },
+          { key: "net", label: "Network", data: () => hierarchy(ix, TIER_GOVT[tier], 3), layout: "cose" },
+          { key: "field", label: "With districts", data: () => hierarchy(ix, TIER_GOVT[tier], 6, true), layout: "dagre-lr" },
+        ],
+    { tall: true },
+  );
+  const q = (k: string, v: string) => {
+    const p = new URLSearchParams({ tier, mode });
+    p.set(k, v);
+    return `#/explore?${p}`;
+  };
+  const body = html`
+    <header class="pagehead">
+      <div class="eyebrow">Explore</div>
+      <h1>The whole graph</h1>
+      <p class="lede">Browse any government's structure, or switch to the power map to see which office appoints, elects or nominates which.</p>
+    </header>
+    <div class="filters" style="margin-bottom:14px">
+      <div class="seg" role="group" aria-label="View">
+        <button type="button" aria-pressed="${String(mode === "structure")}" data-href="${q("mode", "structure")}">Structure</button>
+        <button type="button" aria-pressed="${String(mode === "power")}" data-href="${q("mode", "power")}">Power map</button>
+      </div>
+      <label for="tier-select">Government
+        <select id="tier-select">${TIERS.map((t) => html`<option value="${t}" ${t === tier ? "selected" : ""}>${TIER_LABEL[t]}</option>`)}</select>
+      </label>
+    </div>
+    ${panel.body}`;
+  return {
+    title: "Explore",
+    body,
+    mount: (root) => {
+      root.querySelectorAll<HTMLButtonElement>("[data-href]").forEach((b) => b.addEventListener("click", () => ctx.go(b.dataset.href!.slice(1))));
+      root.querySelector<HTMLSelectElement>("#tier-select")?.addEventListener("change", (e) => ctx.go(q("tier", (e.target as HTMLSelectElement).value).slice(1)));
+      return panel.mount(root);
+    },
+  };
+}
+
+export function sectorsView(ctx: Ctx): View {
+  const { ix } = ctx;
+  const sectors = (Object.keys(SECTOR_LABEL) as Sector[]).filter((s) => ix.bySector(s).length);
+  const count = (s: Sector, t: string) => ix.bySector(s).filter((o) => !o.abolished && (t === "pk" ? o.jurisdiction === "pk" : ix.tierOf(o.jurisdiction)?.id === t)).length;
+  const max = Math.max(...sectors.flatMap((s) => TIERS.map((t) => count(s, t))));
+  const body = html`
+    <header class="pagehead">
+      <div class="eyebrow">Sectors and devolution</div>
+      <h1>Who is responsible for what</h1>
+      <p class="lede">The 18th Amendment (2010) abolished the Concurrent Legislative List and moved health, school education, agriculture, local government, labour, population welfare and social welfare to the provinces. The table counts the bodies each government runs in every sector. Open a sector to compare them side by side.</p>
+    </header>
+    <div class="tablewrap">
+      <table class="heat">
+        <thead><tr><th>Sector</th>${TIERS.map((t) => html`<th class="n">${TIER_LABEL[t]}</th>`)}</tr></thead>
+        <tbody>${sectors.map(
+          (s) => html`<tr><td><a href="#/sector/${s}">${SECTOR_LABEL[s]}</a></td>${TIERS.map((t) => {
+            const n = count(s, t);
+            const a = n ? 0.1 + (0.75 * n) / max : 0;
+            return html`<td class="n">${n ? html`<a href="#/sector/${s}" style="background:color-mix(in srgb, var(--accent) ${Math.round(a * 100)}%, transparent)">${n}</a>` : html`<span class="hint">·</span>`}</td>`;
+          })}</tr>`,
+        )}</tbody>
+      </table>
+    </div>
+    <section class="prose" style="margin-top:28px">
+      <h2>How federal and provincial powers fit together</h2>
+      <ul>
+        <li><b>Federal Legislative List, Part I</b> (Fourth Schedule): defence, foreign affairs, currency, citizenship and other exclusively federal subjects. The Federal Government acts alone.</li>
+        <li><b>Federal Legislative List, Part II</b>: railways, electricity, oil and gas, census and inter-provincial matters. Policy is set by the ${link(ix, "fed-cci")}, chaired by the Prime Minister with all four Chief Ministers.</li>
+        <li><b>Residual subjects</b>: everything not listed, including health, school education and local government, belongs to the provinces (Art. 142(c)).</li>
+        <li><b>Money</b>: the ${link(ix, "fed-nfc")} divides federal taxes between the Federation and provinces. Each province's Provincial Finance Commission passes funds on to local governments.</li>
+        <li><b>Local government</b>: Art. 140A obliges each province to devolve political, administrative and financial authority to elected local governments, with elections held by the ${link(ix, "fed-ecp")}.</li>
+      </ul>
+    </section>`;
+  return { title: "Sectors", body };
+}
+
+export function sectorView(ctx: Ctx, sector: Sector): View | undefined {
+  const { ix } = ctx;
+  if (!SECTOR_LABEL[sector]) return;
+  const orgs = ix.bySector(sector).filter((o) => !o.abolished);
+  const cols = TIERS.map((t) => ({
+    t,
+    items: orgs
+      .filter((o) => (t === "pk" ? o.jurisdiction === "pk" : ix.tierOf(o.jurisdiction)?.id === t))
+      .sort((a, b) => depth(ix, a.id) - depth(ix, b.id) || a.name.localeCompare(b.name)),
+  })).filter((c) => c.items.length);
+  const body = html`
+    <nav class="trail"><a href="#/">Pakistan</a><span aria-hidden="true">›</span><a href="#/sectors">Sectors</a></nav>
+    <header class="pagehead">
+      <div class="eyebrow">Sector</div>
+      <h1>${SECTOR_LABEL[sector]} in every government</h1>
+      <p class="lede">${orgs.length} bodies across ${cols.length} governments, with the minister or head of each where known.</p>
+    </header>
+    <div class="columns">
+      ${cols.map(
+        (c) => html`<div class="column"><h3>${TIER_LABEL[c.t]} <span class="hint num">${c.items.length}</span></h3>
+          <ul>${c.items.map((o) => {
+            const head = ix.leadership(o.id).find((p) => p.role === "head" || p.role === "chief_justice");
+            const holder = head ? ix.effectiveHolders(head.id)[0] : undefined;
+            return html`<li><a href="#/org/${o.id}">${o.short_name ?? o.name}</a> ${confidenceChip(o.confidence)}
+              <small>${kindLabel(o.kind)}${holder ? html` · ${holder.person.name}` : ""}</small></li>`;
+          })}</ul></div>`,
+      )}
+    </div>`;
+  return { title: SECTOR_LABEL[sector], body };
+}
+
+function depth(ix: Ctx["ix"], id: string) {
+  return ix.orgTrail(id).length;
+}
+
+export function accountabilityView(ctx: Ctx): View {
+  const { ix } = ctx;
+  const authored = ix.g.positions.filter((p) => !p.generated && !p.seats && p.role !== "judge" && p.role !== "member");
+  const acting = ix.g.positions.filter((p) => ix.seatStatus(p.id) === "acting");
+  const vacant = ix.g.positions.filter((p) => ix.seatStatus(p.id) === "vacant");
+  const unknown = authored.filter((p) => ix.seatStatus(p.id) === "unknown");
+  const lowPeople = ix.g.people.filter((p) => p.confidence !== "high").sort((a, b) => a.as_of.localeCompare(b.as_of));
+  const lowOrgs = ix.g.organizations.filter((o) => o.confidence === "low" || (o.confidence === "medium" && o.kind !== "field_administration"));
+  const filled = authored.length - unknown.length;
+  const body = html`
+    <header class="pagehead">
+      <div class="eyebrow">Accountability</div>
+      <h1>Vacancies, acting officials and data gaps</h1>
+      <p class="lede">In Pakistan, senior posts are often held on "additional charge" or by acting officials. This page lists every recorded acting or vacant post, and every key post whose holder is not yet in the dataset.</p>
+    </header>
+    <div class="stats">
+      <div class="stat"><b>${filled}/${authored.length}</b><span>Key posts with a recorded holder</span></div>
+      <div class="stat"><b>${acting.length}</b><span>${STATUS_LABEL.acting}</span></div>
+      <div class="stat"><b>${vacant.length}</b><span>Recorded vacant</span></div>
+      <div class="stat"><b>${lowPeople.length}</b><span>Officeholder records to verify</span></div>
+    </div>
+    <div class="stack">
+      ${acting.length ? html`<section><h2>Acting and additional charge</h2><div class="posts">${acting.map((p) => postRow(ix, p, { showOrg: true }))}</div></section>` : ""}
+      ${vacant.length ? html`<section><h2>Vacant</h2><div class="posts">${vacant.map((p) => postRow(ix, p, { showOrg: true }))}</div></section>` : ""}
+      <section><h2>Officeholder records to verify <span class="count num">${lowPeople.length}</span></h2>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Person</th><th>Current post</th><th>As of</th><th>Confidence</th></tr></thead>
+          <tbody>${lowPeople.map(
+            (p) => html`<tr><td>${link(ix, p.id)}</td><td>${p.roles.filter((r) => !r.until).map((r, i) => html`${i ? html`<br />` : ""}${link(ix, r.position)}`)}</td><td class="num">${p.as_of}</td><td>${confidenceChip(p.confidence)}</td></tr>`,
+          )}</tbody>
+        </table></div>
+      </section>
+      <section><h2>Key posts without a recorded holder <span class="count num">${unknown.length}</span></h2>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Post</th><th>Body</th><th>Status</th></tr></thead>
+          <tbody>${unknown.map((p) => html`<tr><td><a href="${hrefFor(ix, p.id)}">${p.title}</a></td><td>${link(ix, p.org, ix.shortLabel(p.org))}</td><td>${statusChip(ix, p.id)}</td></tr>`)}</tbody>
+        </table></div>
+      </section>
+      <section><h2>Structural records to verify <span class="count num">${lowOrgs.length}</span></h2>
+        <div class="cards">${lowOrgs.map((o) => html`<a class="card" href="#/org/${o.id}"><span class="t">${o.name}</span><span class="s">${kindLabel(o.kind)} ${confidenceChip(o.confidence)}</span></a>`)}</div>
+      </section>
+    </div>`;
+  return { title: "Accountability", body };
+}
+
+export function lawsView(ctx: Ctx): View {
+  const { ix } = ctx;
+  const laws = [...ix.g.laws].sort((a, b) => (a.kind === "constitution" ? -1 : 0) - (b.kind === "constitution" ? -1 : 0) || (a.year ?? 0) - (b.year ?? 0));
+  const body = html`
+    <header class="pagehead"><div class="eyebrow">Legal sources</div><h1>Laws behind the graph</h1>
+      <p class="lede">Every body and appointment in the graph points to the constitutional article, Rules of Business schedule, statute or order that creates it.</p></header>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Instrument</th><th>Type</th><th class="n">Year</th><th>Jurisdiction</th><th class="n">Bodies</th></tr></thead>
+      <tbody>${laws.map((l) => html`<tr><td>${link(ix, l.id)} ${confidenceChip(l.confidence)}</td><td>${l.kind}</td><td class="n">${l.year ?? ""}</td><td>${ix.place.get(l.jurisdiction)?.name}</td><td class="n">${ix.enactedBodies(l.id).length}</td></tr>`)}</tbody>
+    </table></div>`;
+  return { title: "Laws", body };
+}
+
+export function searchView(ctx: Ctx, q: string): View {
+  const { ix } = ctx;
+  const results = ix.search(q, 200);
+  const body = html`
+    <header class="pagehead"><div class="eyebrow">Search</div><h1>Results for “${q}”</h1><p class="hint">${results.length} matches</p></header>
+    <div class="rels">${results.map((r) => html`<div class="rel"><div class="verb">${r.kind}</div><div><a href="${hrefFor(ix, r.id)}">${r.label}</a></div>${r.sub ? html`<div class="desc">${r.sub}</div>` : ""}</div>`)}</div>`;
+  return { title: `Search: ${q}`, body };
+}
+
+export function aboutView(ctx: Ctx, single: boolean): View {
+  const { ix } = ctx;
+  const files = ["organizations.csv", "positions.csv", "tenures.csv", "jurisdictions.csv", "laws.csv", "edges.csv", "popolo.json"];
+  const body = html`
+    <header class="pagehead"><div class="eyebrow">About</div><h1>Method, model and sources</h1>
+      <p class="lede">An open, source-cited model of the Pakistani state, modelled on CivLab's US and San Francisco Government Graphs and on open machinery-of-government registers in other countries.</p></header>
+    <div class="layout"><div class="prose">
+      <h2>What is in the graph</h2>
+      <ul>
+        <li><b>Bodies</b>: the Federation, Parliament, the superior courts, independent constitutional bodies, ministries and their Divisions (Rules of Business 1973, Schedule I), attached departments, regulators and state enterprises. Also every province's Governor, Chief Minister, cabinet, Assembly, High Court and departments, plus Gilgit-Baltistan and AJK.</li>
+        <li><b>Field administration</b>: every division and district, with its Commissioner and Deputy Commissioner.</li>
+        <li><b>Posts</b>: how each post is filled (elected, appointed, appointed on advice, ex officio, civil-service posting), by whom, after whose nomination or consultation, and with whose confirmation, citing the constitutional article or statute.</li>
+        <li><b>People</b>: current officeholders with a start date, the date the record was checked, and a confidence level.</li>
+        <li><b>Relationships</b>: part of, oversees, accountable to, audits, regulates, funds, appeals to, coordinates with, member of, devolved to and successor of. Every edge is typed and can carry a legal citation.</li>
+      </ul>
+      <h2>Standard posts</h2>
+      <p>Some posts follow a fixed pattern. Every federal Division has a Federal Secretary, every Ministry has a Federal Minister, and every provincial department has a Minister and a Secretary. The build creates these posts automatically and marks them “Standard post”. A post written out explicitly in the data replaces the generated one.</p>
+      <h2>Confidence</h2>
+      <p>Records are <b>high</b> confidence when checked against the Constitution, a statute or an official website. <b>Verify</b> marks records from reliable public reporting, and <b>Provisional</b> marks records that still need checking. Officeholders change often, so each person record carries an as-of date.</p>
+      <h2>Inspirations</h2>
+      <ul>
+        <li>CivLab's US Gov Graph and SF Gov Graph: entities, positions and people linked by legal relationships, with vacancy and acting tracking.</li>
+        <li>Popolo / Open Civic Data: Organization, Post, Person and Membership. The Popolo export uses this format.</li>
+        <li>GOV.UK organisations register and the Institute for Government's Whitehall Monitor: typed bodies with parent departments and change over time.</li>
+        <li>Canada's GC InfoBase, Australia's Directory of Government (AGOR) and Singapore's Government Directory: complete directories with a type and legal basis for each body.</li>
+        <li>India's Local Government Directory: stable codes for every district and local body, which suits Pakistan's own layered local government.</li>
+      </ul>
+      <p class="hint">The repository's docs/RESEARCH.md has the full comparison.</p>
+    </div>
+    <aside class="rail">
+      <div class="panel"><h3>Open data</h3>
+        ${
+          single
+            ? html`<p class="hint">Downloads are available from the repository build (<span class="mono">npm run data</span> writes them to <span class="mono">public/data/export/</span>).</p>`
+            : html`<ul class="plain">${files.map((f) => html`<li><a href="data/export/${f}">${f}</a></li>`)}<li><a href="data/graph.json">graph.json</a> (everything)</li></ul>`
+        }
+        <p class="hint" style="margin-top:10px">Built ${ix.g.meta.generated.slice(0, 10)} · officeholders as of ${ix.g.meta.data_as_of}</p>
+      </div>
+      <div class="panel"><h3>Contribute</h3><p class="hint">Every record lives in a YAML file in <a href="${ctx.repo}/tree/main/data" target="_blank" rel="noopener">data/</a>. Each page links to its file. Add a source with every change. <span class="mono">npm run validate</span> checks every reference before merge.</p></div>
+    </aside></div>`;
+  return { title: "About", body };
+}

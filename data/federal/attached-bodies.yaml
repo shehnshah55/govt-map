@@ -1,0 +1,169 @@
+# Federal attached departments, autonomous bodies, regulators and state-owned
+# enterprises. `parent` is the Division/Ministry exercising administrative
+# control (Rules of Business 1973, Schedule III for attached departments).
+# Statutory regulators are independent in their decisions; their `parent` is the
+# administrative link only.
+defaults:
+  organizations:
+    branch: executive
+    jurisdiction: pk
+
+organizations:
+  # Finance / Revenue
+  - { id: fed-sbp, name: State Bank of Pakistan, short_name: SBP, kind: regulator, parent: fed-finance-division, legal_basis: [{ law: sbp-act-1956 }], website: "https://www.sbp.org.pk", sectors: [finance], description: "Central bank; monetary policy, banking supervision, foreign-exchange reserves. Autonomy strengthened by the SBP (Amendment) Act 2022." }
+  - { id: fed-secp, name: Securities and Exchange Commission of Pakistan, short_name: SECP, kind: regulator, parent: fed-finance-division, legal_basis: [{ law: secp-act-1997 }], website: "https://www.secp.gov.pk", sectors: [finance], description: "Regulates companies, capital markets, insurance and non-bank financial companies." }
+  - { id: fed-ccp, name: Competition Commission of Pakistan, short_name: CCP, kind: regulator, parent: fed-finance-division, legal_basis: [{ law: competition-act-2010 }], website: "https://www.cc.gov.pk", sectors: [commerce], confidence: medium }
+  - { id: fed-fbr, name: Federal Board of Revenue, short_name: FBR, name_ur: فیڈرل بورڈ آف ریونیو, kind: attached_department, parent: fed-revenue-division, legal_basis: [{ law: fbr-act-2007 }], website: "https://www.fbr.gov.pk", sectors: [revenue], description: "Administers federal taxes: income tax, sales tax on goods, customs and federal excise. Provinces collect sales tax on services." }
+  - { id: fed-cga, name: Controller General of Accounts, short_name: CGA, kind: attached_department, parent: fed-finance-division, sectors: [finance], description: "Maintains the accounts of the Federal and Provincial Governments; the Accountant General Pakistan Revenues (AGPR) and provincial Accountants General operate under it." }
+  - { id: fed-ppra, name: Public Procurement Regulatory Authority, short_name: PPRA, kind: regulator, parent: fed-finance-division, legal_basis: [{ law: ppra-ordinance-2002 }], website: "https://www.ppra.org.pk", sectors: [finance, accountability] }
+  - { id: fed-national-savings, name: Central Directorate of National Savings, kind: attached_department, parent: fed-finance-division, sectors: [finance] }
+
+  # Interior
+  - { id: fed-fia, name: Federal Investigation Agency, short_name: FIA, kind: law_enforcement, parent: fed-interior-division, legal_basis: [{ law: fia-act-1974 }], website: "https://www.fia.gov.pk", sectors: [interior], description: "Federal law-enforcement agency for immigration, human smuggling, economic crime and corruption in federal bodies. Cybercrime functions were moved to a separate National Cyber Crime Investigation Agency (NCCIA) in 2024–25." }
+  - { id: fed-nadra, name: National Database and Registration Authority, short_name: NADRA, kind: autonomous_body, parent: fed-interior-division, legal_basis: [{ law: nadra-ordinance-2000 }], website: "https://www.nadra.gov.pk", sectors: [interior], description: "Civil registration and national identity (CNIC) database; underpins electoral rolls, BISP targeting and health insurance eligibility." }
+  - { id: fed-passports, name: Directorate General of Immigration and Passports, kind: attached_department, parent: fed-interior-division, sectors: [interior] }
+  - { id: fed-fc-north, name: Frontier Corps Khyber Pakhtunkhwa (North), kind: law_enforcement, parent: fed-interior-division, sectors: [interior], description: "Civil armed force under the Ministry of Interior, officered by the Army." }
+  - { id: fed-fc-south, name: Frontier Corps Balochistan (South), kind: law_enforcement, parent: fed-interior-division, sectors: [interior] }
+  - { id: fed-rangers-punjab, name: Pakistan Rangers (Punjab), kind: law_enforcement, parent: fed-interior-division, sectors: [interior] }
+  - { id: fed-rangers-sindh, name: Pakistan Rangers (Sindh), kind: law_enforcement, parent: fed-interior-division, sectors: [interior] }
+  - { id: fed-coast-guards, name: Pakistan Coast Guards, kind: law_enforcement, parent: fed-interior-division, sectors: [interior] }
+  - { id: fed-nacta, name: National Counter Terrorism Authority, short_name: NACTA, kind: autonomous_body, parent: fed-interior-division, sectors: [interior] }
+  - { id: fed-anf, name: Anti-Narcotics Force, short_name: ANF, kind: law_enforcement, parent: fed-narcotics-control-division, sectors: [interior] }
+  - { id: fed-ict-administration, name: Islamabad Capital Territory Administration, short_name: ICT Administration, kind: field_administration, parent: fed-interior-division, jurisdiction: pk-ict, sectors: [interior, local_government], description: "Headed by the Chief Commissioner; the Deputy Commissioner Islamabad handles revenue, magistracy and district administration." }
+  - { id: fed-ict-police, name: Islamabad Capital Territory Police, kind: law_enforcement, parent: fed-interior-division, jurisdiction: pk-ict, sectors: [interior] }
+  - { id: fed-cda, name: Capital Development Authority, short_name: CDA, kind: autonomous_body, parent: fed-interior-division, jurisdiction: pk-ict, website: "https://www.cda.gov.pk", sectors: [housing, local_government], description: "Planning and development authority for Islamabad." }
+  - { id: fed-imc, name: Islamabad Metropolitan Corporation, kind: local_government, branch: local, parent: fed-ict-administration, jurisdiction: pk-ict, legal_basis: [{ law: ict-lg-act-2015 }], sectors: [local_government] }
+
+  # Defence
+  - { id: fed-caa, name: Pakistan Civil Aviation Authority, kind: regulator, legal_basis: [{ law: caa-ordinance-1982 }], parent: fed-aviation-division, sectors: [transport], confidence: medium, description: "Aviation safety regulator; airport operations transferred to the Pakistan Airports Authority in 2023." }
+  - { id: fed-paa, name: Pakistan Airports Authority, kind: autonomous_body, parent: fed-aviation-division, sectors: [transport], confidence: medium }
+  - { id: fed-asf, name: Airports Security Force, short_name: ASF, kind: law_enforcement, parent: fed-aviation-division, sectors: [transport, interior], confidence: medium }
+  - { id: fed-pmd, name: Pakistan Meteorological Department, short_name: PMD, kind: attached_department, parent: fed-aviation-division, sectors: [environment, disaster], confidence: medium }
+  - { id: fed-survey-of-pakistan, name: Survey of Pakistan, kind: attached_department, parent: fed-defence-division, sectors: [defence] }
+  - { id: fed-mlc, name: Military Lands and Cantonments Department, kind: attached_department, parent: fed-defence-division, sectors: [defence, local_government], description: "Administers cantonment boards, which are elected local governments for military cantonment areas." }
+  - { id: fed-msa, name: Pakistan Maritime Security Agency, kind: law_enforcement, parent: fed-defence-division, sectors: [defence] }
+
+  # Planning
+  - { id: fed-pbs, name: Pakistan Bureau of Statistics, short_name: PBS, kind: attached_department, parent: fed-min-planning, legal_basis: [{ law: general-statistics-act-2011 }], website: "https://www.pbs.gov.pk", sectors: [planning], description: "Official statistics, the population and housing census, labour force and household surveys." }
+  - { id: fed-pide, name: Pakistan Institute of Development Economics, short_name: PIDE, kind: research_institute, parent: fed-min-planning, sectors: [planning] }
+
+  # Energy
+  - { id: fed-nepra, name: National Electric Power Regulatory Authority, short_name: NEPRA, kind: regulator, parent: fed-power-division, legal_basis: [{ law: nepra-act-1997 }], website: "https://nepra.org.pk", sectors: [energy], description: "Licenses power generation, transmission and distribution and determines tariffs." }
+  - { id: fed-cppa, name: Central Power Purchasing Agency (Guarantee) Ltd, short_name: CPPA-G, kind: corporation, parent: fed-power-division, sectors: [energy] }
+  - { id: fed-ngc, name: National Grid Company of Pakistan, short_name: NGC (formerly NTDC), kind: corporation, parent: fed-power-division, sectors: [energy], confidence: medium }
+  - { id: fed-discos, name: Electricity Distribution Companies (DISCOs), kind: corporation, parent: fed-power-division, sectors: [energy], description: "State-owned distribution companies including LESCO, IESCO, FESCO, GEPCO, MEPCO, PESCO, HESCO, SEPCO, QESCO and TESCO (K-Electric is private)." }
+  - { id: fed-ogra, name: Oil and Gas Regulatory Authority, short_name: OGRA, kind: regulator, parent: fed-petroleum-division, legal_basis: [{ law: ogra-ordinance-2002 }], website: "https://www.ogra.org.pk", sectors: [energy] }
+  - { id: fed-ogdcl, name: Oil and Gas Development Company Limited, short_name: OGDCL, kind: corporation, parent: fed-petroleum-division, sectors: [energy] }
+  - { id: fed-ppl, name: Pakistan Petroleum Limited, short_name: PPL, kind: corporation, parent: fed-petroleum-division, sectors: [energy] }
+  - { id: fed-sngpl, name: Sui Northern Gas Pipelines Limited, short_name: SNGPL, kind: corporation, parent: fed-petroleum-division, sectors: [energy] }
+  - { id: fed-ssgc, name: Sui Southern Gas Company Limited, short_name: SSGC, kind: corporation, parent: fed-petroleum-division, sectors: [energy] }
+  - { id: fed-gsp, name: Geological Survey of Pakistan, kind: attached_department, parent: fed-petroleum-division, sectors: [energy, science] }
+
+  # Water
+  - { id: fed-wapda, name: Water and Power Development Authority, short_name: WAPDA, kind: autonomous_body, parent: fed-min-water-resources, website: "https://www.wapda.gov.pk", sectors: [water, energy], description: "Develops dams, hydropower and large water infrastructure." }
+  - { id: fed-irsa, name: Indus River System Authority, short_name: IRSA, kind: regulator, legal_basis: [{ law: irsa-act-1992 }], parent: fed-min-water-resources, sectors: [water], description: "Regulates distribution of Indus waters among the provinces under the 1991 Water Apportionment Accord; disputes can be referred to the CCI." }
+  - { id: fed-pciw, name: Pakistan Commissioner for Indus Waters, kind: attached_department, parent: fed-min-water-resources, sectors: [water, foreign] }
+  - { id: fed-ffc, name: Federal Flood Commission, kind: attached_department, parent: fed-min-water-resources, sectors: [water, disaster] }
+
+  # Commerce & industry
+  - { id: fed-tdap, name: Trade Development Authority of Pakistan, short_name: TDAP, kind: autonomous_body, parent: fed-min-commerce, sectors: [commerce] }
+  - { id: fed-ntc, name: National Tariff Commission, short_name: NTC, kind: regulator, legal_basis: [{ law: ntc-act-2015 }], parent: fed-min-commerce, sectors: [commerce] }
+  - { id: fed-tcp, name: Trading Corporation of Pakistan, short_name: TCP, kind: corporation, parent: fed-min-commerce, sectors: [commerce] }
+  - { id: fed-edb, name: Engineering Development Board, kind: autonomous_body, parent: fed-min-industries, sectors: [industry] }
+  - { id: fed-smeda, name: Small and Medium Enterprises Development Authority, short_name: SMEDA, kind: autonomous_body, parent: fed-min-industries, sectors: [industry] }
+  - { id: fed-psm, name: Pakistan Steel Mills, kind: corporation, parent: fed-min-industries, sectors: [industry] }
+
+  # Communications / transport
+  - { id: fed-nha, name: National Highway Authority, short_name: NHA, kind: autonomous_body, parent: fed-min-communications, website: "https://nha.gov.pk", sectors: [transport] }
+  - { id: fed-nhmp, name: National Highways and Motorway Police, short_name: NH&MP, kind: law_enforcement, parent: fed-min-communications, sectors: [transport, interior] }
+  - { id: fed-pakistan-post, name: Pakistan Post, kind: attached_department, parent: fed-min-communications, sectors: [communications] }
+  - { id: fed-pakistan-railways, name: Pakistan Railways, kind: corporation, parent: fed-min-railways, website: "https://www.pakrail.gov.pk", sectors: [transport], description: "State railway; Secretary Railways is ex officio Chairman of the Railways Board." }
+  - { id: fed-kpt, name: Karachi Port Trust, kind: autonomous_body, parent: fed-min-maritime-affairs, sectors: [transport] }
+  - { id: fed-pqa, name: Port Qasim Authority, kind: autonomous_body, parent: fed-min-maritime-affairs, sectors: [transport] }
+  - { id: fed-gpa, name: Gwadar Port Authority, kind: autonomous_body, parent: fed-min-maritime-affairs, jurisdiction: pk-ba, sectors: [transport] }
+  - { id: fed-pnsc, name: Pakistan National Shipping Corporation, short_name: PNSC, kind: corporation, parent: fed-min-maritime-affairs, sectors: [transport] }
+
+  # IT & telecom
+  - { id: fed-pta, name: Pakistan Telecommunication Authority, short_name: PTA, kind: regulator, parent: fed-min-it, legal_basis: [{ law: telecom-act-1996 }], website: "https://www.pta.gov.pk", sectors: [it_telecom] }
+  - { id: fed-usf, name: Universal Service Fund, short_name: USF, kind: autonomous_body, parent: fed-min-it, sectors: [it_telecom] }
+  - { id: fed-nitb, name: National Information Technology Board, short_name: NITB, kind: autonomous_body, parent: fed-min-it, sectors: [it_telecom, governance] }
+  - { id: fed-pseb, name: Pakistan Software Export Board, short_name: PSEB, kind: autonomous_body, parent: fed-min-it, sectors: [it_telecom, commerce] }
+
+  # Information & culture
+  - { id: fed-pemra, name: Pakistan Electronic Media Regulatory Authority, short_name: PEMRA, kind: regulator, parent: fed-information-division, legal_basis: [{ law: pemra-ordinance-2002 }], website: "https://pemra.gov.pk", sectors: [information] }
+  - { id: fed-ptv, name: Pakistan Television Corporation, short_name: PTV, kind: corporation, parent: fed-information-division, sectors: [information] }
+  - { id: fed-pbc, name: Pakistan Broadcasting Corporation (Radio Pakistan), short_name: PBC, kind: corporation, parent: fed-information-division, sectors: [information] }
+  - { id: fed-app, name: Associated Press of Pakistan, short_name: APP, kind: corporation, parent: fed-information-division, sectors: [information] }
+  - { id: fed-pid, name: Press Information Department, short_name: PID, kind: attached_department, parent: fed-information-division, website: "https://pid.gov.pk", sectors: [information] }
+  - { id: fed-pnca, name: Pakistan National Council of the Arts, short_name: PNCA, kind: autonomous_body, parent: fed-heritage-division, sectors: [culture] }
+  - { id: fed-lok-virsa, name: Lok Virsa (National Institute of Folk and Traditional Heritage), kind: autonomous_body, parent: fed-heritage-division, sectors: [culture] }
+
+  # Education
+  - { id: fed-hec, name: Higher Education Commission, short_name: HEC, kind: regulator, parent: fed-min-education, legal_basis: [{ law: hec-ordinance-2002 }], website: "https://www.hec.gov.pk", sectors: [education], description: "Funds, regulates and accredits universities. Punjab and Sindh have created provincial HECs after devolution." }
+  - { id: fed-navttc, name: National Vocational and Technical Training Commission, short_name: NAVTTC, kind: regulator, legal_basis: [{ law: navttc-act-2011 }], parent: fed-min-education, sectors: [education, labour] }
+  - { id: fed-fde, name: Federal Directorate of Education, kind: attached_department, parent: fed-min-education, jurisdiction: pk-ict, sectors: [education], description: "Runs public schools and colleges in Islamabad." }
+  - { id: fed-fbise, name: Federal Board of Intermediate and Secondary Education, short_name: FBISE, kind: autonomous_body, parent: fed-min-education, sectors: [education] }
+  - { id: fed-ibcc, name: Inter Board Coordination Commission, short_name: IBCC, kind: autonomous_body, parent: fed-min-education, sectors: [education] }
+
+  # Climate, food, housing, rights
+  - { id: fed-pak-epa, name: Pakistan Environmental Protection Agency, short_name: Pak-EPA, kind: regulator, legal_basis: [{ law: pepa-1997 }], parent: fed-min-climate-change, sectors: [environment] }
+  - { id: fed-ndma, name: National Disaster Management Authority, short_name: NDMA, kind: autonomous_body, parent: fed-pm-office, legal_basis: [{ law: ndm-act-2010 }], website: "https://www.ndma.gov.pk", sectors: [disaster], confidence: medium, description: "Executive arm of the National Disaster Management Commission (chaired by the PM); coordinates provincial and district disaster management authorities." }
+  - { id: fed-parc, name: Pakistan Agricultural Research Council, short_name: PARC, kind: research_institute, parent: fed-min-food-security, sectors: [agriculture, science] }
+  - { id: fed-dpp, name: Department of Plant Protection, kind: attached_department, parent: fed-min-food-security, sectors: [agriculture] }
+  - { id: fed-fgeha, name: Federal Government Employees Housing Authority, short_name: FGEHA, kind: autonomous_body, parent: fed-min-housing, sectors: [housing] }
+  - { id: fed-estate-office, name: Estate Office, kind: attached_department, parent: fed-min-housing, sectors: [housing] }
+  - { id: fed-nchr, name: National Commission for Human Rights, short_name: NCHR, kind: commission, parent: fed-min-human-rights, branch: constitutional, sectors: [human_rights], description: "Statutory independent human-rights institution (2012)." }
+  - { id: fed-ncsw, name: National Commission on the Status of Women, short_name: NCSW, kind: commission, parent: fed-min-human-rights, sectors: [human_rights] }
+  - { id: fed-ncrc, name: National Commission on the Rights of Child, short_name: NCRC, kind: commission, parent: fed-min-human-rights, sectors: [human_rights] }
+
+  # IPC, KA&GB, overseas, poverty, religious, S&T, privatisation
+  - { id: fed-psb, name: Pakistan Sports Board, kind: autonomous_body, parent: fed-min-ipc, sectors: [culture] }
+  - { id: fed-opf, name: Overseas Pakistanis Foundation, short_name: OPF, kind: autonomous_body, parent: fed-min-overseas-pakistanis, sectors: [labour] }
+  - { id: fed-beoe, name: Bureau of Emigration and Overseas Employment, kind: attached_department, parent: fed-min-overseas-pakistanis, sectors: [labour] }
+  - { id: fed-eobi, name: Employees' Old-Age Benefits Institution, short_name: EOBI, kind: autonomous_body, parent: fed-min-overseas-pakistanis, sectors: [labour, social_protection] }
+  - { id: fed-wwf, name: Workers Welfare Fund, kind: autonomous_body, parent: fed-min-overseas-pakistanis, sectors: [labour, social_protection] }
+  - { id: fed-bisp, name: Benazir Income Support Programme, short_name: BISP, kind: programme, parent: fed-min-poverty-alleviation, legal_basis: [{ law: bisp-act-2010 }], website: "https://bisp.gov.pk", sectors: [social_protection], description: "Largest social safety net: unconditional cash transfers (Kafaalat), conditional transfers for education (Taleemi Wazaif) and nutrition (Nashonuma), targeted through the National Socio-Economic Registry." }
+  - { id: fed-pbm, name: Pakistan Bait-ul-Mal, short_name: PBM, kind: autonomous_body, parent: fed-min-poverty-alleviation, sectors: [social_protection] }
+  - { id: fed-ppaf, name: Pakistan Poverty Alleviation Fund, short_name: PPAF, kind: autonomous_body, parent: fed-min-poverty-alleviation, sectors: [social_protection] }
+  - { id: fed-etpb, name: Evacuee Trust Property Board, kind: autonomous_body, parent: fed-min-religious-affairs, sectors: [religious_affairs] }
+  - { id: fed-pcsir, name: Pakistan Council of Scientific and Industrial Research, short_name: PCSIR, kind: research_institute, parent: fed-min-science-technology, sectors: [science] }
+  - { id: fed-psqca, name: Pakistan Standards and Quality Control Authority, short_name: PSQCA, kind: regulator, legal_basis: [{ law: psqca-act-1996 }], parent: fed-min-science-technology, sectors: [science, commerce] }
+  - { id: fed-pcrwr, name: Pakistan Council of Research in Water Resources, short_name: PCRWR, kind: research_institute, parent: fed-min-science-technology, sectors: [water, science] }
+  - { id: fed-privatisation-commission, name: Privatisation Commission, kind: commission, parent: fed-min-privatisation, sectors: [finance, industry] }
+
+  # Strategic
+  - { id: fed-nca, name: National Command Authority, short_name: NCA, kind: committee, parent: fed-pm-office, branch: military, sectors: [defence], confidence: medium, description: "Apex body for nuclear policy and strategic forces, chaired by the Prime Minister; the Strategic Plans Division is its secretariat." }
+  - { id: fed-paec, name: Pakistan Atomic Energy Commission, short_name: PAEC, kind: autonomous_body, parent: fed-pm-office, sectors: [energy, science], confidence: medium }
+  - { id: fed-pnra, name: Pakistan Nuclear Regulatory Authority, short_name: PNRA, kind: regulator, legal_basis: [{ law: pnra-ordinance-2001 }], parent: fed-pm-office, sectors: [energy], confidence: medium }
+  - { id: fed-suparco, name: Space and Upper Atmosphere Research Commission, short_name: SUPARCO, kind: research_institute, parent: fed-nca, sectors: [science], confidence: medium }
+
+positions:
+  - { id: fed-sbp-governor, title: Governor, State Bank of Pakistan, org: fed-sbp, role: head, appointment: { method: appointment_on_advice, by: fed-president, on_advice_of: fed-prime-minister, term: 5 years, legal_basis: [{ law: sbp-act-1956 }] } }
+  - { id: fed-secp-chairman, title: Chairman, SECP, org: fed-secp, role: head, appointment: { method: appointment, by: fed-federation, legal_basis: [{ law: secp-act-1997 }] } }
+  - { id: fed-fbr-chairman, title: Chairman, Federal Board of Revenue, org: fed-fbr, role: head, grade: BS-22, description: "Ex officio Secretary, Revenue Division.", appointment: { method: posting, by: fed-prime-minister, nominated_by: fed-establishment-division } }
+  - { id: fed-planning-deputy-chairman, title: Deputy Chairman, Planning Commission, org: fed-planning-commission, role: deputy, appointment: { method: appointment, by: fed-prime-minister } }
+  - { id: fed-planning-commission-chair, title: Chairman, Planning Commission, org: fed-planning-commission, role: head, ex_officio_of: fed-prime-minister, appointment: { method: ex_officio } }
+  - { id: fed-nadra-chairman, title: Chairman, NADRA, org: fed-nadra, role: head, appointment: { method: appointment, by: fed-federation, legal_basis: [{ law: nadra-ordinance-2000 }] } }
+  - { id: fed-fia-dg, title: Director-General, FIA, org: fed-fia, role: head, grade: BS-22, appointment: { method: posting, by: fed-prime-minister, nominated_by: fed-establishment-division } }
+  - { id: fed-ict-chief-commissioner, title: Chief Commissioner, Islamabad, org: fed-ict-administration, role: head, appointment: { method: posting, by: fed-prime-minister, nominated_by: fed-establishment-division } }
+  - { id: fed-ict-deputy-commissioner, title: Deputy Commissioner, Islamabad, org: fed-ict-administration, role: officer, grade: BS-19/20, appointment: { method: posting, by: fed-establishment-division } }
+  - { id: fed-ict-igp, title: Inspector General of Police, Islamabad, org: fed-ict-police, role: head, appointment: { method: posting, by: fed-establishment-division } }
+  - { id: fed-cda-chairman, title: Chairman, Capital Development Authority, org: fed-cda, role: head, appointment: { method: appointment, by: fed-federation } }
+  - { id: fed-imc-mayor, title: Mayor of Islamabad, org: fed-imc, role: head, description: "Elected office under the ICT Local Government Act 2015; the CDA Chairman has at times held the Metropolitan Corporation's administration while local elections were pending.", appointment: { method: indirect_election, by: pk-electorate, legal_basis: [{ law: ict-lg-act-2015 }] }, confidence: medium }
+  - { id: fed-hec-chairman, title: Chairman, Higher Education Commission, org: fed-hec, role: head, appointment: { method: appointment, by: fed-prime-minister, legal_basis: [{ law: hec-ordinance-2002 }] } }
+  - { id: fed-bisp-chairperson, title: Chairperson, BISP, org: fed-bisp, role: head, appointment: { method: appointment, by: fed-prime-minister, legal_basis: [{ law: bisp-act-2010 }] } }
+  - { id: fed-nepra-chairman, title: Chairman, NEPRA, org: fed-nepra, role: head, appointment: { method: appointment, by: fed-federation, legal_basis: [{ law: nepra-act-1997 }] } }
+  - { id: fed-ndma-chairman, title: Chairman, NDMA, org: fed-ndma, role: head, appointment: { method: appointment, by: fed-prime-minister }, description: "Traditionally a serving Lieutenant-General." }
+  - { id: fed-pbs-chief-statistician, title: Chief Statistician, Pakistan Bureau of Statistics, org: fed-pbs, role: head, appointment: { method: appointment, by: fed-federation } }
+  - { id: fed-wapda-chairman, title: Chairman, WAPDA, org: fed-wapda, role: head, appointment: { method: appointment, by: fed-federation } }
+  - { id: fed-nsa, title: National Security Adviser, org: fed-national-security-division, role: head, appointment: { method: appointment, by: fed-prime-minister }, confidence: medium, description: "Has at times been held concurrently by the DG ISI." }
+
+relations:
+  - { from: fed-sbp, to: fed-federation, type: regulates, description: "Banking and payment-system supervision" }
+  - { from: fed-irsa, to: fed-cci, type: reports_to, description: "Water-apportionment disputes can be referred to the CCI" }
+  - { from: fed-ndma, to: fed-cci, type: coordinates_with }
+  - { from: fed-cga, to: fed-agp, type: coordinates_with, description: "Accounts function was separated from audit in 2001; CGA prepares accounts that the AGP audits" }
+  - { from: fed-agp, to: fed-cga, type: audits }
+  - { from: fed-pbs, to: fed-cci, type: reports_to, description: "Census results require CCI approval (census is on FLL Part II)" }
+  - { from: fed-nadra, to: fed-ecp, type: coordinates_with, description: "Electoral rolls are generated from NADRA's CNIC database" }
+  - { from: fed-nadra, to: fed-bisp, type: coordinates_with, description: "National Socio-Economic Registry and CNIC-based targeting" }

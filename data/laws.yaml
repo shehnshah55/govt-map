@@ -1,0 +1,368 @@
+# Legal instruments that establish or empower bodies in the graph.
+# Constitutional provisions are referenced as { law: constitution-1973, provision: "Art. N" }.
+# Pakistan Code (federal statutes): https://pakistancode.gov.pk
+laws:
+  # ── Constitution and amendments ────────────────────────────────────────────
+  - id: constitution-1973
+    title: Constitution of the Islamic Republic of Pakistan, 1973
+    short: Constitution
+    kind: constitution
+    year: 1973
+    jurisdiction: pk
+    url: https://na.gov.pk/uploads/documents/1333523681_951.pdf
+    summary: Supreme law of Pakistan. Establishes a federal parliamentary republic with a bicameral Majlis-e-Shoora (Parliament), four provinces, an independent judiciary and constitutional bodies such as the ECP, Auditor-General and FPSC.
+  - id: amendment-8
+    title: Constitution (Eighth Amendment) Act, 1985
+    kind: amendment
+    year: 1985
+    jurisdiction: pk
+    summary: Expanded presidential powers, including the (later repealed) Art. 58(2)(b) power to dissolve the National Assembly.
+  - id: amendment-18
+    title: Constitution (Eighteenth Amendment) Act, 2010
+    short: 18th Amendment
+    kind: amendment
+    year: 2010
+    jurisdiction: pk
+    summary: Abolished the Concurrent Legislative List and devolved 17 federal ministries (including health, education, labour, population welfare and social welfare) to the provinces; strengthened the Council of Common Interests; inserted Art. 140A-backed local government obligations, Art. 175A judicial appointments and Art. 25A right to education.
+  - id: amendment-25
+    title: Constitution (Twenty-fifth Amendment) Act, 2018
+    short: 25th Amendment
+    kind: amendment
+    year: 2018
+    jurisdiction: pk
+    summary: Merged the Federally Administered Tribal Areas (FATA) into Khyber Pakhtunkhwa.
+  - id: amendment-26
+    title: Constitution (Twenty-sixth Amendment) Act, 2024
+    short: 26th Amendment
+    kind: amendment
+    year: 2024
+    jurisdiction: pk
+    summary: Chief Justice of Pakistan nominated by a Special Parliamentary Committee from the three most senior Supreme Court judges for a fixed three-year term; reconstituted the Judicial Commission with parliamentary members; created constitutional benches in the Supreme Court and High Courts.
+  - id: amendment-27
+    title: Constitution (Twenty-seventh Amendment) Act, 2025
+    short: 27th Amendment
+    kind: amendment
+    year: 2025
+    jurisdiction: pk
+    confidence: medium
+    summary: Created a Federal Constitutional Court to hear constitutional matters and restructured the higher military command around a Chief of Defence Forces, abolishing the office of Chairman Joint Chiefs of Staff Committee. Details should be verified against the gazetted text.
+
+  # ── Federal machinery of government ────────────────────────────────────────
+  - id: rules-of-business-1973
+    title: Rules of Business, 1973 (Federal Government)
+    short: Rules of Business 1973
+    kind: rules
+    year: 1973
+    jurisdiction: pk
+    url: https://cabinet.gov.pk
+    summary: Framed under Arts. 90 and 99. Schedule I lists Ministries and their Divisions; Schedule II distributes business among Divisions; Schedule III lists attached departments. Each Division is headed by a Federal Secretary.
+  - id: civil-servants-act-1973
+    title: Civil Servants Act, 1973
+    kind: act
+    year: 1973
+    jurisdiction: pk
+    summary: Governs appointment, posting, promotion and terms of federal civil servants (BPS 1–22).
+  - id: fpsc-ordinance-1977
+    title: Federal Public Service Commission Ordinance, 1977
+    kind: ordinance
+    year: 1977
+    jurisdiction: pk
+  - id: elections-act-2017
+    title: Elections Act, 2017
+    kind: act
+    year: 2017
+    jurisdiction: pk
+    summary: Consolidated election law; ECP powers, delimitation, electoral rolls and conduct of general, Senate and local elections in the federal area.
+  - id: nab-ordinance-1999
+    title: National Accountability Ordinance, 1999
+    kind: ordinance
+    year: 1999
+    jurisdiction: pk
+    summary: Establishes the National Accountability Bureau. Substantially amended in 2022–2023.
+  - id: sbp-act-1956
+    title: State Bank of Pakistan Act, 1956
+    kind: act
+    year: 1956
+    jurisdiction: pk
+    summary: Establishes the central bank; amended in 2022 to strengthen autonomy.
+  - id: secp-act-1997
+    title: Securities and Exchange Commission of Pakistan Act, 1997
+    kind: act
+    year: 1997
+    jurisdiction: pk
+  - id: competition-act-2010
+    title: Competition Act, 2010
+    kind: act
+    year: 2010
+    jurisdiction: pk
+  - id: nepra-act-1997
+    title: Regulation of Generation, Transmission and Distribution of Electric Power Act, 1997
+    short: NEPRA Act
+    kind: act
+    year: 1997
+    jurisdiction: pk
+  - id: ogra-ordinance-2002
+    title: Oil and Gas Regulatory Authority Ordinance, 2002
+    kind: ordinance
+    year: 2002
+    jurisdiction: pk
+  - id: telecom-act-1996
+    title: Pakistan Telecommunication (Re-organization) Act, 1996
+    kind: act
+    year: 1996
+    jurisdiction: pk
+  - id: pemra-ordinance-2002
+    title: Pakistan Electronic Media Regulatory Authority Ordinance, 2002
+    kind: ordinance
+    year: 2002
+    jurisdiction: pk
+  - id: nadra-ordinance-2000
+    title: National Database and Registration Authority Ordinance, 2000
+    kind: ordinance
+    year: 2000
+    jurisdiction: pk
+  - id: fia-act-1974
+    title: Federal Investigation Agency Act, 1974
+    kind: act
+    year: 1974
+    jurisdiction: pk
+  - id: fbr-act-2007
+    title: Federal Board of Revenue Act, 2007
+    kind: act
+    year: 2007
+    jurisdiction: pk
+  - id: hec-ordinance-2002
+    title: Higher Education Commission Ordinance, 2002
+    kind: ordinance
+    year: 2002
+    jurisdiction: pk
+  - id: ndm-act-2010
+    title: National Disaster Management Act, 2010
+    kind: act
+    year: 2010
+    jurisdiction: pk
+    summary: Establishes the National Disaster Management Commission and Authority, and provincial/district disaster management authorities.
+  - id: bisp-act-2010
+    title: Benazir Income Support Programme Act, 2010
+    kind: act
+    year: 2010
+    jurisdiction: pk
+  - id: ppra-ordinance-2002
+    title: Public Procurement Regulatory Authority Ordinance, 2002
+    kind: ordinance
+    year: 2002
+    jurisdiction: pk
+  - id: wafaqi-mohtasib-order-1983
+    title: Establishment of the Office of Wafaqi Mohtasib (Ombudsman) Order, 1983
+    kind: order
+    year: 1983
+    jurisdiction: pk
+  - id: general-statistics-act-2011
+    title: General Statistics (Reorganization) Act, 2011
+    kind: act
+    year: 2011
+    jurisdiction: pk
+  - id: auditor-general-ordinance-2001
+    title: Auditor-General's (Functions, Powers and Terms and Conditions of Service) Ordinance, 2001
+    kind: ordinance
+    year: 2001
+    jurisdiction: pk
+  - id: pfm-act-2019
+    title: Public Finance Management Act, 2019
+    kind: act
+    year: 2019
+    jurisdiction: pk
+  - id: ict-lg-act-2015
+    title: Islamabad Capital Territory Local Government Act, 2015
+    kind: act
+    year: 2015
+    jurisdiction: pk-ict
+  - id: gb-governance-order-2018
+    title: Government of Gilgit-Baltistan Order, 2018
+    kind: order
+    year: 2018
+    jurisdiction: pk-gb
+    summary: Framework for the Gilgit-Baltistan Assembly, Governor, Chief Minister and Chief Court (succeeding the Gilgit-Baltistan (Empowerment and Self-Governance) Order, 2009).
+  - id: ajk-interim-constitution-1974
+    title: Azad Jammu and Kashmir Interim Constitution, 1974
+    kind: constitution
+    year: 1974
+    jurisdiction: pk-ajk
+    summary: Establishes the AJK President, Prime Minister, Legislative Assembly, Supreme Court and High Court. Substantially amended by the 13th Amendment (2018).
+
+  # ── Health (flagship vertical) ─────────────────────────────────────────────
+  - id: drap-act-2012
+    title: Drug Regulatory Authority of Pakistan Act, 2012
+    kind: act
+    year: 2012
+    jurisdiction: pk
+    summary: Establishes DRAP to regulate manufacture, import, export, storage, distribution and sale of therapeutic goods.
+  - id: drugs-act-1976
+    title: Drugs Act, 1976
+    kind: act
+    year: 1976
+    jurisdiction: pk
+    summary: Principal law on drug registration, licensing, pricing and quality control; enforced by DRAP and provincial drug inspectors.
+  - id: pmdc-act-2022
+    title: Pakistan Medical and Dental Council Act, 2022
+    short: PMDC Act
+    kind: act
+    year: 2022
+    jurisdiction: pk
+    confidence: medium
+    summary: Re-established the Pakistan Medical and Dental Council (replacing the Pakistan Medical Commission created under the PMC Act 2020) to register practitioners and regulate medical and dental education.
+  - id: pnmc-act-2023
+    title: Pakistan Nursing and Midwifery Council Act, 2023
+    kind: act
+    year: 2023
+    jurisdiction: pk
+    confidence: medium
+    summary: Reconstituted the Pakistan Nursing Council (Pakistan Nursing Council Act, 1973) as the Pakistan Nursing and Midwifery Council.
+  - id: pharmacy-act-1967
+    title: Pharmacy Act, 1967
+    kind: act
+    year: 1967
+    jurisdiction: pk
+    summary: Establishes the Pharmacy Council of Pakistan and provincial pharmacy councils.
+  - id: uah-practitioners-act-1965
+    title: Unani, Ayurvedic and Homoeopathic Practitioners Act, 1965
+    kind: act
+    year: 1965
+    jurisdiction: pk
+    summary: Establishes the National Council for Tibb and the National Council for Homoeopathy.
+  - id: nih-ordinance-1980
+    title: National Institute of Health (Re-organization) Ordinance, 1980
+    kind: ordinance
+    year: 1980
+    jurisdiction: pk
+    confidence: medium
+  - id: hsa-ordinance-2002
+    title: Health Services Academy Ordinance, 2002
+    kind: ordinance
+    year: 2002
+    jurisdiction: pk
+    confidence: medium
+  - id: ihra-act-2018
+    title: Islamabad Healthcare Regulation Act, 2018
+    kind: act
+    year: 2018
+    jurisdiction: pk-ict
+    confidence: medium
+  - id: szabmu-act-2013
+    title: Shaheed Zulfiqar Ali Bhutto Medical University Islamabad Act, 2013
+    kind: act
+    year: 2013
+    jurisdiction: pk-ict
+    confidence: medium
+  - id: nhsrc-notification-2013
+    title: Cabinet Division notification creating the Ministry of National Health Services, Regulations and Coordination
+    kind: notification
+    year: 2013
+    jurisdiction: pk
+    summary: After devolution of health (2011), residual federal health functions were grouped first under the Ministry of National Regulations and Services and in 2013 under the Ministry of NHSR&C, via amendments to the Rules of Business.
+  - id: punjab-healthcare-commission-act-2010
+    title: Punjab Healthcare Commission Act, 2010
+    kind: act
+    year: 2010
+    jurisdiction: pk-pb
+  - id: sindh-healthcare-commission-act-2013
+    title: Sindh Healthcare Commission Act, 2013
+    kind: act
+    year: 2013
+    jurisdiction: pk-sd
+  - id: kp-healthcare-commission-act-2015
+    title: Khyber Pakhtunkhwa Health Care Commission Act, 2015
+    kind: act
+    year: 2015
+    jurisdiction: pk-kp
+  - id: balochistan-healthcare-commission-act-2019
+    title: Balochistan Healthcare Commission Act, 2019
+    kind: act
+    year: 2019
+    jurisdiction: pk-ba
+    confidence: medium
+  - id: kp-mti-act-2015
+    title: Khyber Pakhtunkhwa Medical Teaching Institutions Reforms Act, 2015
+    kind: act
+    year: 2015
+    jurisdiction: pk-kp
+    summary: Grants autonomy to public teaching hospitals (MTIs) under Boards of Governors.
+  - id: sehat-card-kp-act-2022
+    title: Khyber Pakhtunkhwa Universal Health Coverage (Sehat Card Plus) framework
+    kind: act
+    year: 2022
+    jurisdiction: pk-kp
+    confidence: low
+
+  # ── Provincial frameworks ──────────────────────────────────────────────────
+  - id: punjab-rules-of-business-2011
+    title: Punjab Government Rules of Business, 2011
+    kind: rules
+    year: 2011
+    jurisdiction: pk-pb
+  - id: sindh-rules-of-business-1986
+    title: Sindh Government Rules of Business, 1986
+    kind: rules
+    year: 1986
+    jurisdiction: pk-sd
+  - id: kp-rules-of-business-1985
+    title: Khyber Pakhtunkhwa Government Rules of Business, 1985
+    kind: rules
+    year: 1985
+    jurisdiction: pk-kp
+  - id: balochistan-rules-of-business-2012
+    title: Balochistan Government Rules of Business, 2012
+    kind: rules
+    year: 2012
+    jurisdiction: pk-ba
+  - id: punjab-lg-act-2022
+    title: Punjab Local Government Act, 2022 (as amended / succeeded by later Punjab local government legislation)
+    kind: act
+    year: 2022
+    jurisdiction: pk-pb
+    confidence: medium
+  - id: sindh-lg-act-2013
+    title: Sindh Local Government Act, 2013
+    kind: act
+    year: 2013
+    jurisdiction: pk-sd
+  - id: kp-lg-act-2013
+    title: Khyber Pakhtunkhwa Local Government Act, 2013 (amended 2019)
+    kind: act
+    year: 2013
+    jurisdiction: pk-kp
+  - id: balochistan-lg-act-2010
+    title: Balochistan Local Government Act, 2010
+    kind: act
+    year: 2010
+    jurisdiction: pk-ba
+  - id: police-order-2002
+    title: Police Order, 2002
+    kind: order
+    year: 2002
+    jurisdiction: pk
+    summary: Framework for provincial police (retained/adapted by Punjab, Balochistan; Sindh restored it with amendments in 2019; KP enacted the KP Police Act 2017).
+  - id: kp-police-act-2017
+    title: Khyber Pakhtunkhwa Police Act, 2017
+    kind: act
+    year: 2017
+    jurisdiction: pk-kp
+  - id: land-revenue-act-1967
+    title: West Pakistan Land Revenue Act, 1967
+    kind: act
+    year: 1967
+    jurisdiction: pk
+    summary: Establishes Boards of Revenue and the revenue hierarchy (Commissioner, Collector/Deputy Commissioner, Assistant Commissioner, Tehsildar) in the provinces.
+
+  # ── Other federal regulators ───────────────────────────────────────────────
+  - { id: caa-ordinance-1982, title: "Pakistan Civil Aviation Authority Ordinance, 1982", kind: ordinance, year: 1982, jurisdiction: pk }
+  - { id: irsa-act-1992, title: "Indus River System Authority Act, 1992", kind: act, year: 1992, jurisdiction: pk, summary: "Establishes IRSA to implement the 1991 Water Apportionment Accord among the provinces." }
+  - { id: ntc-act-2015, title: "National Tariff Commission Act, 2015", kind: act, year: 2015, jurisdiction: pk }
+  - { id: navttc-act-2011, title: "National Vocational and Technical Training Commission Act, 2011", kind: act, year: 2011, jurisdiction: pk }
+  - { id: pepa-1997, title: "Pakistan Environmental Protection Act, 1997", kind: act, year: 1997, jurisdiction: pk, summary: "Establishes the Pakistan Environmental Protection Agency and Council. Provinces enacted their own environmental protection laws after the 18th Amendment." }
+  - { id: psqca-act-1996, title: "Pakistan Standards and Quality Control Authority Act, 1996", kind: act, year: 1996, jurisdiction: pk }
+  - { id: pnra-ordinance-2001, title: "Pakistan Nuclear Regulatory Authority Ordinance, 2001", kind: ordinance, year: 2001, jurisdiction: pk }
+  - { id: civil-courts-ordinance-1962, title: "West Pakistan Civil Courts Ordinance, 1962", kind: ordinance, year: 1962, jurisdiction: pk, summary: "Establishes the District Courts and Civil Judges; criminal courts of Session are constituted under the Code of Criminal Procedure, 1898." }
+  - { id: punjab-food-authority-act-2011, title: "Punjab Food Authority Act, 2011", kind: act, year: 2011, jurisdiction: pk-pb }
+  - { id: sindh-food-authority-act-2016, title: "Sindh Food Authority Act, 2016", kind: act, year: 2016, jurisdiction: pk-sd, confidence: medium }
+  - { id: kp-food-authority-act-2014, title: "Khyber Pakhtunkhwa Food Safety and Halal Food Authority Act, 2014", kind: act, year: 2014, jurisdiction: pk-kp, confidence: medium }

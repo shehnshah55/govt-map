@@ -1,0 +1,978 @@
+# Province of Khyber Pakhtunkhwa: constitutional offices, Provincial Assembly, High Court,
+# departments (Provincial Rules of Business), health vertical and links to the
+# Federation. Generated once from a shared provincial template, then hand-edited —
+# this file is the source of truth. Departments get generated Minister and
+# Secretary posts by convention (see docs/DATA_MODEL.md).
+organizations:
+- id: kp-government
+  name: Government of Khyber Pakhtunkhwa
+  kind: state
+  branch: executive
+  description: Provincial government of Khyber Pakhtunkhwa. Executive authority vests in the Governor and is exercised by the Provincial Government
+    — the Chief Minister and Provincial Ministers (Arts. 129–130). After the 18th Amendment, provinces are responsible for health, school education,
+    agriculture, local government, police and most social services.
+  legal_basis:
+  - law: constitution-1973
+    provision: Arts. 129–140A
+  website: https://kp.gov.pk
+  sectors:
+  - governance
+  jurisdiction: pk-kp
+- id: kp-governor-house
+  name: Governor of Khyber Pakhtunkhwa
+  short_name: Governor's House
+  kind: head_of_state_office
+  branch: executive
+  parent: kp-government
+  description: Constitutional head of the province, appointed by the President on the advice of the Prime Minister (Art. 101). Acts on the advice
+    of the Cabinet or Chief Minister (Art. 105); Chancellor of public-sector universities under provincial university laws.
+  legal_basis:
+  - law: constitution-1973
+    provision: Arts. 101–105
+  jurisdiction: pk-kp
+- id: kp-cm-office
+  name: Chief Minister's Office, Khyber Pakhtunkhwa
+  kind: head_of_state_office
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 130
+  jurisdiction: pk-kp
+- id: kp-cabinet
+  name: Provincial Cabinet of Khyber Pakhtunkhwa
+  kind: cabinet
+  branch: executive
+  parent: kp-government
+  description: The Chief Minister and Provincial Ministers, collectively responsible to the Provincial Assembly (Art. 130(6)). Size capped at
+    15 members or 11% of the Assembly, whichever is higher (Art. 130(6)).
+  legal_basis:
+  - law: constitution-1973
+    provision: Arts. 130, 132
+  - law: kp-rules-of-business-1985
+  jurisdiction: pk-kp
+- id: kp-assembly
+  name: Provincial Assembly of Khyber Pakhtunkhwa
+  kind: legislature
+  branch: legislative
+  description: Unicameral provincial legislature with 145 seats (115 general, 26 women, 4 non-Muslim (after FATA merger)). Five-year term. Elects
+    the Chief Minister and the province's 23 Senators, and votes in the presidential election.
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 106
+  website: https://www.pakp.gov.pk
+  sectors:
+  - governance
+  jurisdiction: pk-kp
+- id: kp-assembly-pac
+  name: Public Accounts Committee, Provincial Assembly of Khyber Pakhtunkhwa
+  kind: committee
+  branch: legislative
+  parent: kp-assembly
+  description: Examines the Auditor-General's reports on the province's accounts (Art. 171).
+  sectors:
+  - accountability
+  - finance
+  jurisdiction: pk-kp
+- id: kp-assembly-sc-health
+  name: Standing Committee on Health, Provincial Assembly of Khyber Pakhtunkhwa
+  kind: committee
+  branch: legislative
+  parent: kp-assembly
+  sectors:
+  - health
+  jurisdiction: pk-kp
+- id: kp-high-court
+  name: Peshawar High Court
+  short_name: PHC
+  kind: court
+  branch: judicial
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 192
+  website: https://www.peshawarhighcourt.gov.pk
+  sectors:
+  - justice
+  description: Superior court of the province with writ jurisdiction (Art. 199) and supervision of the district judiciary.
+  jurisdiction: pk-kp
+- id: kp-district-judiciary
+  name: District Judiciary of Khyber Pakhtunkhwa
+  kind: court
+  branch: judicial
+  parent: kp-high-court
+  description: District and Sessions Judges, Additional Sessions Judges, Senior and Civil Judges and Judicial Magistrates in every district, under
+    the administrative control of the High Court.
+  sectors:
+  - justice
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 203
+  - law: civil-courts-ordinance-1962
+  jurisdiction: pk-kp
+- id: kp-advocate-general
+  name: Office of the Advocate-General, Khyber Pakhtunkhwa
+  kind: constitutional_body
+  branch: constitutional
+  parent: kp-government
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 140
+  sectors:
+  - law
+  jurisdiction: pk-kp
+- id: kp-psc
+  name: Khyber Pakhtunkhwa Public Service Commission
+  short_name: KPPSC
+  kind: constitutional_body
+  branch: constitutional
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 242
+  website: https://www.kppsc.gov.pk
+  sectors:
+  - civil_service
+  description: Recruits provincial civil servants (Provincial Management Service and departmental posts BS-16 and above).
+  jurisdiction: pk-kp
+- id: kp-ombudsman
+  name: Provincial Ombudsperson Khyber Pakhtunkhwa
+  kind: ombudsman
+  branch: constitutional
+  sectors:
+  - accountability
+  jurisdiction: pk-kp
+- id: kp-pfc
+  name: Provincial Finance Commission, Khyber Pakhtunkhwa
+  kind: intergovernmental_forum
+  branch: executive
+  parent: kp-government
+  description: Recommends distribution of provincial resources to local governments (the provincial counterpart of the NFC).
+  sectors:
+  - finance
+  - local_government
+  jurisdiction: pk-kp
+- id: kp-sgad
+  name: Establishment and Administration Department, Khyber Pakhtunkhwa
+  short_name: E&AD
+  kind: department
+  branch: executive
+  parent: kp-government
+  description: 'Provincial HR and cabinet secretariat: postings and transfers of provincial officers, the Provincial Management Service, and support
+    to the Chief Secretary.'
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - civil_service
+  - governance
+  jurisdiction: pk-kp
+- id: kp-pnd
+  name: Planning and Development Department, Khyber Pakhtunkhwa
+  short_name: P&D
+  kind: department
+  branch: executive
+  parent: kp-government
+  description: Prepares the Annual Development Programme and appraises development schemes (Provincial Development Working Party).
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - planning
+  jurisdiction: pk-kp
+- id: kp-board-of-revenue
+  name: Board of Revenue, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  description: Apex revenue authority for land records, land revenue and stamp duty; the revenue hierarchy of Divisional Commissioners, Deputy
+    Commissioners (Collectors), Assistant Commissioners and Tehsildars runs under it.
+  legal_basis:
+  - law: land-revenue-act-1967
+  sectors:
+  - revenue
+  - governance
+  jurisdiction: pk-kp
+- id: kp-revenue-authority
+  name: Khyber Pakhtunkhwa Revenue Authority
+  short_name: KPRA
+  kind: attached_department
+  branch: executive
+  parent: kp-finance
+  description: Collects provincial sales tax on services (a provincial tax base after the 18th Amendment).
+  sectors:
+  - revenue
+  jurisdiction: pk-kp
+- id: kp-police
+  name: Khyber Pakhtunkhwa Police
+  kind: law_enforcement
+  branch: executive
+  parent: kp-home
+  legal_basis:
+  - law: kp-police-act-2017
+  sectors:
+  - interior
+  description: Provincial police headed by the Inspector General of Police; District Police Officers command in each district.
+  jurisdiction: pk-kp
+- id: kp-cr-ace
+  name: Anti-Corruption Establishment, Khyber Pakhtunkhwa
+  short_name: ACE
+  kind: law_enforcement
+  branch: executive
+  parent: kp-sgad
+  sectors:
+  - accountability
+  confidence: medium
+  jurisdiction: pk-kp
+- id: kp-pdma
+  name: Provincial Disaster Management Authority, Khyber Pakhtunkhwa
+  short_name: PDMA
+  kind: autonomous_body
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: ndm-act-2010
+  sectors:
+  - disaster
+  jurisdiction: pk-kp
+- id: kp-local-government
+  name: Local Government System of Khyber Pakhtunkhwa
+  kind: local_government
+  branch: local
+  parent: kp-local-government-dept
+  description: Elected local councils required by Art. 140A (political, administrative and financial devolution), organised under the provincial
+    local-government law. Tiers and names (metropolitan/municipal corporations, municipal committees, district, tehsil, union and village/neighbourhood
+    councils) differ by province and change with each new Act; elections are held by the Election Commission of Pakistan.
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 140A
+  - law: kp-lg-act-2013
+  sectors:
+  - local_government
+  jurisdiction: pk-kp
+- id: kp-peshawar-clg
+  name: City Local Government Peshawar
+  kind: local_government
+  branch: local
+  parent: kp-local-government
+  legal_basis:
+  - law: kp-lg-act-2013
+  sectors:
+  - local_government
+  jurisdiction: pk-kp
+- id: kp-peoc
+  name: Provincial Emergency Operations Centre for Polio, Khyber Pakhtunkhwa
+  short_name: PEOC
+  kind: programme
+  branch: executive
+  parent: kp-government
+  sectors:
+  - health
+  description: Provincial arm of the Polio Eradication Initiative, coordinated by the National EOC.
+  jurisdiction: pk-kp
+- id: kp-healthcare-commission
+  name: Khyber Pakhtunkhwa Health Care Commission
+  short_name: KP HCC
+  kind: regulator
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-healthcare-commission-act-2015
+  sectors:
+  - health
+  description: Registers and licenses public and private healthcare establishments, sets minimum service-delivery standards and acts against quackery.
+  website: https://www.hcc.kp.gov.pk
+  jurisdiction: pk-kp
+- id: kp-health
+  name: Health Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  - law: amendment-18
+  sectors:
+  - health
+  description: Runs district health services and public hospitals; major teaching hospitals are autonomous Medical Teaching Institutions (MTIs)
+    under the KP MTI Reforms Act 2015.
+  jurisdiction: pk-kp
+- id: kp-dg-health-services
+  name: Directorate General of Health Services, Khyber Pakhtunkhwa
+  kind: attached_department
+  branch: executive
+  parent: kp-health
+  sectors:
+  - health
+  description: Field wing of the health department; District Health Officers / CEOs of District Health Authorities report through it.
+  jurisdiction: pk-kp
+- id: kp-sehat-card
+  name: Sehat Card Plus (Social Health Protection Initiative)
+  kind: programme
+  parent: kp-health
+  sectors:
+  - health
+  - social_protection
+  description: Universal health-insurance scheme covering the province's residents for in-patient care at empanelled hospitals.
+  legal_basis:
+  - law: sehat-card-kp-act-2022
+  confidence: medium
+  branch: executive
+  jurisdiction: pk-kp
+- id: kp-lrh
+  name: Lady Reading Hospital MTI, Peshawar
+  short_name: LRH
+  kind: hospital
+  parent: kp-health
+  legal_basis:
+  - law: kp-mti-act-2015
+  description: Autonomous Medical Teaching Institution governed by a Board of Governors.
+  branch: executive
+  sectors:
+  - health
+  jurisdiction: pk-kp
+- id: kp-khyber-teaching-hospital
+  name: Khyber Teaching Hospital MTI, Peshawar
+  kind: hospital
+  parent: kp-health
+  legal_basis:
+  - law: kp-mti-act-2015
+  branch: executive
+  sectors:
+  - health
+  jurisdiction: pk-kp
+- id: kp-hmc
+  name: Hayatabad Medical Complex MTI, Peshawar
+  kind: hospital
+  parent: kp-health
+  legal_basis:
+  - law: kp-mti-act-2015
+  branch: executive
+  sectors:
+  - health
+  jurisdiction: pk-kp
+- id: kp-food-authority
+  name: Khyber Pakhtunkhwa Food Safety and Halal Food Authority
+  kind: regulator
+  parent: kp-food
+  sectors:
+  - health
+  - agriculture
+  legal_basis:
+  - law: kp-food-authority-act-2014
+  confidence: medium
+  branch: executive
+  jurisdiction: pk-kp
+- id: kp-higher-education
+  name: Higher Education, Archives and Libraries Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - education
+  jurisdiction: pk-kp
+- id: kp-elementary-secondary-education
+  name: Elementary and Secondary Education Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - education
+  jurisdiction: pk-kp
+- id: kp-finance
+  name: Finance Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - finance
+  description: Prepares the provincial budget and Annual Development Programme financing; manages the Provincial Consolidated Fund.
+  jurisdiction: pk-kp
+- id: kp-home
+  name: Home Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - interior
+  description: Law and order, police, prisons, counter-terrorism and civil defence.
+  jurisdiction: pk-kp
+- id: kp-local-government-dept
+  name: Local Government and Community Development Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - local_government
+  description: Supervises local councils, municipal services and local-government elections support; frames local-government rules under Art.
+    140A.
+  jurisdiction: pk-kp
+- id: kp-agriculture
+  name: Agriculture Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - agriculture
+  jurisdiction: pk-kp
+- id: kp-livestock
+  name: Livestock and Dairy Development Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - agriculture
+  jurisdiction: pk-kp
+- id: kp-food
+  name: Food Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - agriculture
+  description: Wheat procurement and food security.
+  jurisdiction: pk-kp
+- id: kp-irrigation
+  name: Irrigation Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - water
+  description: Canal network, barrages and water distribution within the province.
+  jurisdiction: pk-kp
+- id: kp-energy
+  name: Energy Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - energy
+  jurisdiction: pk-kp
+- id: kp-industries
+  name: Industries, Commerce and Investment Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - industry
+  - commerce
+  jurisdiction: pk-kp
+- id: kp-excise-taxation
+  name: Excise, Taxation and Narcotics Control Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - revenue
+  description: Collects provincial taxes such as motor-vehicle tax, property tax and excise.
+  jurisdiction: pk-kp
+- id: kp-environment
+  name: Environment Protection Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - environment
+  jurisdiction: pk-kp
+- id: kp-social-welfare
+  name: Social Welfare Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - social_protection
+  jurisdiction: pk-kp
+- id: kp-population-welfare
+  name: Population Welfare Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - population
+  - health
+  description: Provincial family-planning services, devolved in 2011.
+  jurisdiction: pk-kp
+- id: kp-law
+  name: Law and Parliamentary Affairs Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - law
+  jurisdiction: pk-kp
+- id: kp-information
+  name: Information and Culture Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - information
+  - culture
+  jurisdiction: pk-kp
+- id: kp-communication-works
+  name: Communication and Works Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - transport
+  - housing
+  jurisdiction: pk-kp
+- id: kp-transport
+  name: Transport Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - transport
+  jurisdiction: pk-kp
+- id: kp-mines-minerals
+  name: Mines and Minerals Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - industry
+  description: Mineral titles and royalties; provinces own natural resources within their territory (Art. 172(3)).
+  jurisdiction: pk-kp
+- id: kp-labour
+  name: Labour and Human Resource Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - labour
+  jurisdiction: pk-kp
+- id: kp-forest
+  name: Forest, Wildlife and Fisheries Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - environment
+  jurisdiction: pk-kp
+- id: kp-women-development
+  name: Women Development Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - human_rights
+  jurisdiction: pk-kp
+- id: kp-auqaf
+  name: Auqaf and Religious Affairs Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - religious_affairs
+  jurisdiction: pk-kp
+- id: kp-housing
+  name: Housing, Urban Development and Public Health Engineering Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - housing
+  - water
+  description: Urban development, water supply and sanitation schemes.
+  jurisdiction: pk-kp
+- id: kp-human-rights
+  name: Human Rights and Minorities Affairs Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - human_rights
+  jurisdiction: pk-kp
+- id: kp-sports
+  name: Sports and Youth Affairs Department, Khyber Pakhtunkhwa
+  kind: department
+  branch: executive
+  parent: kp-government
+  legal_basis:
+  - law: kp-rules-of-business-1985
+  sectors:
+  - culture
+  jurisdiction: pk-kp
+positions:
+- id: kp-governor
+  title: Governor of Khyber Pakhtunkhwa
+  org: kp-governor-house
+  role: head
+  appointment:
+    method: appointment_on_advice
+    by: fed-president
+    on_advice_of: fed-prime-minister
+    notes: Holds office during the pleasure of the President.
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 101
+- id: kp-chief-minister
+  title: Chief Minister of Khyber Pakhtunkhwa
+  org: kp-cm-office
+  role: head
+  appointment:
+    method: indirect_election
+    by: kp-assembly
+    notes: Elected by a majority of the total membership of the Provincial Assembly.
+    removal: Vote of no confidence by a majority of the total membership of the Assembly (Art. 136)
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 130(4)
+- id: kp-provincial-minister
+  title: Provincial Minister (Khyber Pakhtunkhwa)
+  org: kp-cabinet
+  role: member
+  appointment:
+    method: appointment_on_advice
+    by: kp-governor
+    on_advice_of: kp-chief-minister
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 132
+- id: kp-chief-secretary
+  title: Chief Secretary, Khyber Pakhtunkhwa
+  org: kp-government
+  role: administrative_head
+  grade: BS-22
+  description: Head of the provincial civil service and secretary to the provincial cabinet. A federal PAS officer posted by the Federal Government
+    in consultation with the province.
+  appointment:
+    method: posting
+    by: fed-prime-minister
+    nominated_by: fed-establishment-division
+    consultation:
+    - kp-chief-minister
+- id: kp-igp
+  title: Inspector General of Police, Khyber Pakhtunkhwa
+  org: kp-police
+  role: head
+  grade: BS-21/22
+  appointment:
+    method: posting
+    by: fed-prime-minister
+    nominated_by: fed-establishment-division
+    consultation:
+    - kp-chief-minister
+    legal_basis:
+    - law: kp-police-act-2017
+- id: kp-mpa
+  title: Member of the Provincial Assembly (Khyber Pakhtunkhwa)
+  org: kp-assembly
+  role: member
+  seats: 145
+  appointment:
+    method: direct_election
+    by: pk-electorate
+    term: 5 years
+    notes: General seats by first-past-the-post; reserved seats for women and non-Muslims by party-list proportional representation.
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 106
+    - law: elections-act-2017
+- id: kp-speaker
+  title: Speaker, Provincial Assembly of Khyber Pakhtunkhwa
+  org: kp-assembly
+  role: presiding_officer
+  appointment:
+    method: indirect_election
+    by: kp-assembly
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 108
+- id: kp-deputy-speaker
+  title: Deputy Speaker, Provincial Assembly of Khyber Pakhtunkhwa
+  org: kp-assembly
+  role: deputy
+  appointment:
+    method: indirect_election
+    by: kp-assembly
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 108
+- id: kp-leader-of-opposition
+  title: Leader of the Opposition, Provincial Assembly of Khyber Pakhtunkhwa
+  org: kp-assembly
+  role: officer
+  appointment:
+    method: indirect_election
+    by: kp-assembly
+- id: kp-hc-chief-justice
+  title: Chief Justice, Peshawar High Court
+  org: kp-high-court
+  role: chief_justice
+  appointment:
+    method: appointment
+    by: fed-president
+    nominated_by: fed-judicial-commission
+    legal_basis:
+    - law: constitution-1973
+      provision: Arts. 175A, 193
+- id: kp-hc-judge
+  title: Judge, Peshawar High Court
+  org: kp-high-court
+  role: judge
+  appointment:
+    method: appointment
+    by: fed-president
+    nominated_by: fed-judicial-commission
+    legal_basis:
+    - law: constitution-1973
+      provision: Arts. 175A, 193
+- id: kp-advocate-general-post
+  title: Advocate-General, Khyber Pakhtunkhwa
+  org: kp-advocate-general
+  role: head
+  appointment:
+    method: appointment_on_advice
+    by: kp-governor
+    on_advice_of: kp-chief-minister
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 140
+- id: kp-psc-chairman
+  title: Chairman, Khyber Pakhtunkhwa Public Service Commission
+  org: kp-psc
+  role: head
+  appointment:
+    method: appointment_on_advice
+    by: kp-governor
+    on_advice_of: kp-chief-minister
+- id: kp-ombudsman-head
+  title: Provincial Ombudsperson Khyber Pakhtunkhwa
+  org: kp-ombudsman
+  role: head
+  appointment:
+    method: appointment_on_advice
+    by: kp-governor
+    on_advice_of: kp-chief-minister
+- id: kp-smbr
+  title: Senior Member, Board of Revenue, Khyber Pakhtunkhwa
+  org: kp-board-of-revenue
+  role: head
+  grade: BS-21/22
+  appointment:
+    method: posting
+    by: kp-chief-minister
+    nominated_by: kp-sgad
+- id: kp-pnd-head
+  title: Additional Chief Secretary (Development), Khyber Pakhtunkhwa
+  org: kp-pnd
+  role: head
+  grade: BS-21/22
+  appointment:
+    method: posting
+    by: kp-chief-minister
+    nominated_by: kp-sgad
+- id: kp-dg-health
+  title: Director General Health Services, Khyber Pakhtunkhwa
+  org: kp-dg-health-services
+  role: head
+  grade: BS-20/21
+  appointment:
+    method: posting
+    by: kp-chief-minister
+    nominated_by: kp-sgad
+- id: kp-mayor
+  title: Mayor of Peshawar
+  org: kp-peshawar-clg
+  role: head
+  appointment:
+    method: direct_election
+    by: pk-electorate
+    notes: Mayoral election method is set by the provincial local-government law and has changed between Acts.
+    legal_basis:
+    - law: kp-lg-act-2013
+  confidence: medium
+- id: kp-pdma-dg
+  title: Director General, PDMA Khyber Pakhtunkhwa
+  org: kp-pdma
+  role: head
+  appointment:
+    method: posting
+    by: kp-chief-minister
+- id: kp-healthcare-commission-ceo
+  title: Chief Executive Officer, Khyber Pakhtunkhwa Health Care Commission
+  org: kp-healthcare-commission
+  role: head
+  appointment:
+    method: appointment
+    by: kp-government
+    legal_basis:
+    - law: kp-healthcare-commission-act-2015
+  confidence: medium
+- id: kp-peoc-coordinator
+  title: Coordinator, Provincial EOC Khyber Pakhtunkhwa
+  org: kp-peoc
+  role: head
+  appointment:
+    method: appointment
+    by: kp-chief-minister
+relations:
+- from: kp-cabinet
+  to: kp-assembly
+  type: accountable_to
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 130(6)
+- from: kp-assembly
+  to: fed-senate-electoral-college
+  type: member_of
+  description: Elects the province's 23 Senators
+- from: kp-assembly
+  to: fed-electoral-college
+  type: member_of
+  description: Votes in the presidential election
+- from: kp-chief-minister
+  to: fed-cci
+  type: member_of
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 153(2)
+- from: kp-chief-minister
+  to: fed-nec
+  type: member_of
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 156(1)
+- from: kp-finance
+  to: fed-nfc
+  type: member_of
+  description: Provincial Finance Minister sits on the National Finance Commission
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 160(1)
+- from: kp-high-court
+  to: fed-supreme-court
+  type: appeals_to
+- from: fed-agp
+  to: kp-government
+  type: audits
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 171
+- from: fed-agp
+  to: kp-assembly-pac
+  type: reports_to
+  description: Provincial audit reports are submitted to the Governor for laying before the Assembly
+- from: kp-assembly-pac
+  to: kp-government
+  type: oversees
+- from: kp-assembly-sc-health
+  to: kp-health
+  type: oversees
+- from: kp-local-government-dept
+  to: kp-local-government
+  type: oversees
+- from: kp-local-government
+  to: fed-ecp
+  type: coordinates_with
+  description: Local-government elections are conducted by the ECP (Art. 140A(2))
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 140A(2)
+- from: fed-ecp
+  to: kp-assembly
+  type: oversees
+  description: Conducts elections to the Provincial Assembly
+- from: kp-pfc
+  to: kp-local-government
+  type: funds
+- from: fed-nfc
+  to: kp-government
+  type: funds
+  description: Provincial share of the federal divisible pool (7th NFC Award)
+- from: kp-pdma
+  to: fed-ndma
+  type: coordinates_with
+- from: kp-peoc
+  to: fed-neoc
+  type: reports_to
+- from: kp-health
+  to: fed-min-nhsrc
+  type: coordinates_with
+  description: Federal–provincial health coordination after devolution
+- from: kp-health
+  to: fed-imhpf
+  type: member_of
+  confidence: medium
+- from: fed-min-health-former
+  to: kp-health
+  type: devolved_to
+  description: Health devolved to the provinces on 30 June 2011
+  legal_basis:
+  - law: amendment-18
+- from: kp-healthcare-commission
+  to: kp-health
+  type: regulates
+  description: Licenses and inspects healthcare establishments
+- from: fed-drap
+  to: kp-health
+  type: coordinates_with
+  description: Provincial drug inspectors and Provincial Quality Control Boards enforce drug-sale rules under the Drugs Act 1976
+- from: kp-revenue-authority
+  to: fed-fbr
+  type: coordinates_with
+  description: Harmonisation of sales tax on goods (federal) and services (provincial)
+- from: kp-police
+  to: fed-interior-division
+  type: coordinates_with
+- from: kp-sgad
+  to: fed-establishment-division
+  type: coordinates_with
+  description: Federal cadre (PAS/PSP) officers serving in the province
+- from: kp-high-court
+  to: kp-district-judiciary
+  type: oversees
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 203

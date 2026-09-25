@@ -1,0 +1,864 @@
+# Federal constitutional core: head of state, executive, Parliament,
+# superior judiciary, independent constitutional bodies, intergovernmental
+# forums and the armed forces.
+organizations:
+  # ── The Federation ─────────────────────────────────────────────────────────
+  - id: fed-federation
+    name: Federal Government of Pakistan
+    short_name: Federal Government
+    name_ur: وفاقی حکومت پاکستان
+    kind: state
+    branch: executive
+    jurisdiction: pk
+    description: The Federation of Pakistan. Executive authority is exercised in the name of the President by the Federal Government, consisting of the Prime Minister and the Federal Ministers (Art. 90).
+    legal_basis: [{ law: constitution-1973, provision: "Arts. 90–99" }]
+    website: https://pakistan.gov.pk
+    sources: [{ title: Constitution of Pakistan, Part III, url: https://na.gov.pk/uploads/documents/1333523681_951.pdf }]
+
+  - id: fed-president-office
+    name: Office of the President of Pakistan
+    short_name: Aiwan-e-Sadr
+    name_ur: ایوانِ صدر
+    kind: head_of_state_office
+    branch: executive
+    jurisdiction: pk
+    parent: fed-federation
+    description: The President is Head of State and represents the unity of the Republic (Art. 41). Acts on the advice of the Cabinet or the Prime Minister (Art. 48), appoints Governors, service chiefs, the Chief Election Commissioner, the Auditor-General and superior-court judges through the procedures set by the Constitution, and is Supreme Commander of the Armed Forces (Art. 243).
+    legal_basis: [{ law: constitution-1973, provision: "Arts. 41–49" }]
+    website: https://president.gov.pk
+    sectors: [governance]
+
+  - id: fed-electoral-college
+    name: Presidential Electoral College
+    kind: other
+    branch: legislative
+    jurisdiction: pk
+    description: Members of both Houses of Parliament and of the four Provincial Assemblies, who elect the President by secret ballot (Art. 41(3) and Second Schedule). Each Provincial Assembly's vote is weighted to equal the smallest Assembly (Balochistan).
+    legal_basis: [{ law: constitution-1973, provision: "Art. 41(3), Second Schedule" }]
+
+  - id: pk-electorate
+    name: Electorate of Pakistan (registered voters)
+    short_name: Voters
+    kind: other
+    branch: legislative
+    jurisdiction: pk
+    description: Citizens aged 18 and over on the electoral rolls maintained by the Election Commission. They directly elect the National Assembly, the Provincial Assemblies and local councils.
+    legal_basis: [{ law: constitution-1973, provision: "Arts. 51(2), 106(2), 219" }, { law: elections-act-2017 }]
+    sectors: [elections]
+
+  - id: fed-senate-electoral-college
+    name: Senate Electoral College
+    kind: other
+    branch: legislative
+    jurisdiction: pk
+    description: Each Provincial Assembly elects its province's 23 Senators by single transferable vote; members of the National Assembly elect the four Senators for the Islamabad Capital Territory.
+    legal_basis: [{ law: constitution-1973, provision: "Art. 59(2)" }]
+    sectors: [elections]
+
+  - id: fed-pm-office
+    name: Prime Minister's Office
+    short_name: PMO
+    name_ur: وزیراعظم آفس
+    kind: head_of_state_office
+    branch: executive
+    jurisdiction: pk
+    parent: fed-federation
+    description: Office of the Chief Executive of the Federation. The Prime Minister is elected by the National Assembly, heads the Federal Cabinet and chairs the Council of Common Interests and the National Economic Council.
+    legal_basis: [{ law: constitution-1973, provision: "Arts. 90–91" }]
+    website: https://pmo.gov.pk
+    sectors: [governance]
+
+  - id: fed-cabinet
+    name: Federal Cabinet
+    name_ur: وفاقی کابینہ
+    kind: cabinet
+    branch: executive
+    jurisdiction: pk
+    parent: fed-federation
+    description: The Prime Minister and Federal Ministers, collectively responsible to the Senate and the National Assembly (Art. 91(6)). The Cabinet Division serves as its secretariat. Size is capped at 11% of the total membership of Parliament (Art. 92(1)).
+    legal_basis: [{ law: constitution-1973, provision: "Arts. 90–92" }, { law: rules-of-business-1973 }]
+    website: https://cabinet.gov.pk
+    sectors: [governance]
+
+  # ── Parliament ─────────────────────────────────────────────────────────────
+  - id: fed-parliament
+    name: Majlis-e-Shoora (Parliament)
+    short_name: Parliament
+    name_ur: مجلسِ شوریٰ
+    kind: legislature
+    branch: legislative
+    jurisdiction: pk
+    description: Bicameral federal legislature consisting of the President, the National Assembly and the Senate (Art. 50). Legislates on the Federal Legislative List (Fourth Schedule).
+    legal_basis: [{ law: constitution-1973, provision: "Art. 50" }]
+    website: https://na.gov.pk
+    sectors: [governance]
+
+  - id: fed-national-assembly
+    name: National Assembly of Pakistan
+    short_name: National Assembly
+    name_ur: قومی اسمبلی
+    kind: chamber
+    branch: legislative
+    jurisdiction: pk
+    parent: fed-parliament
+    description: Lower house; 336 seats — 266 general seats elected directly from single-member constituencies, 60 reserved for women and 10 for non-Muslims filled by proportional representation. Five-year term. Elects the Prime Minister, passes the budget (money bills originate here) and can remove the Prime Minister by a vote of no confidence (Art. 95).
+    legal_basis: [{ law: constitution-1973, provision: "Art. 51" }]
+    website: https://na.gov.pk
+
+  - id: fed-senate
+    name: Senate of Pakistan
+    short_name: Senate
+    name_ur: ایوانِ بالا (سینیٹ)
+    kind: chamber
+    branch: legislative
+    jurisdiction: pk
+    parent: fed-parliament
+    description: Upper house giving equal representation to the federating units; 96 members elected indirectly — 23 from each Provincial Assembly (14 general, 4 women, 4 technocrats/ulema, 1 non-Muslim) and 4 from Islamabad. Six-year staggered terms; half retire every three years. Not dissolvable.
+    legal_basis: [{ law: constitution-1973, provision: "Art. 59" }]
+    website: https://senate.gov.pk
+
+  - id: fed-na-secretariat
+    name: National Assembly Secretariat
+    kind: secretariat
+    branch: legislative
+    jurisdiction: pk
+    parent: fed-national-assembly
+    legal_basis: [{ law: constitution-1973, provision: "Art. 87" }]
+
+  - id: fed-senate-secretariat
+    name: Senate Secretariat
+    kind: secretariat
+    branch: legislative
+    jurisdiction: pk
+    parent: fed-senate
+    legal_basis: [{ law: constitution-1973, provision: "Art. 87" }]
+
+  - id: fed-na-pac
+    name: Public Accounts Committee
+    short_name: PAC
+    kind: committee
+    branch: legislative
+    jurisdiction: pk
+    parent: fed-national-assembly
+    description: Examines the Auditor-General's reports on the accounts of the Federation (Art. 171) and the appropriation accounts. By convention chaired by a member of the opposition.
+    legal_basis: [{ law: constitution-1973, provision: "Art. 171" }]
+    sectors: [accountability, finance]
+
+  - id: fed-na-sc-finance
+    name: National Assembly Standing Committee on Finance and Revenue
+    kind: committee
+    branch: legislative
+    jurisdiction: pk
+    parent: fed-national-assembly
+    sectors: [finance, revenue]
+
+  - id: fed-senate-sc-finance
+    name: Senate Standing Committee on Finance and Revenue
+    kind: committee
+    branch: legislative
+    jurisdiction: pk
+    parent: fed-senate
+    description: Scrutinises the Finance Bill; the Senate may make recommendations on money bills within 14 days (Art. 73).
+    legal_basis: [{ law: constitution-1973, provision: "Art. 73" }]
+    sectors: [finance, revenue]
+
+  - id: fed-special-parliamentary-committee-cjp
+    name: Special Parliamentary Committee (appointment of Chief Justice)
+    kind: committee
+    branch: legislative
+    jurisdiction: pk
+    parent: fed-parliament
+    description: Twelve-member committee (eight MNAs, four Senators, proportional to party strength) that nominates the Chief Justice of Pakistan from the three most senior Supreme Court judges, introduced by the 26th Amendment.
+    legal_basis: [{ law: amendment-26 }, { law: constitution-1973, provision: "Art. 175A(3A)" }]
+    sectors: [justice]
+
+  - id: fed-parliamentary-committee-cec
+    name: Parliamentary Committee on appointment of the Chief Election Commissioner and Members
+    kind: committee
+    branch: legislative
+    jurisdiction: pk
+    parent: fed-parliament
+    description: Bipartisan committee (half treasury, half opposition) that confirms one of the nominees sent by the Prime Minister after consultation with the Leader of the Opposition (Art. 213(2A)–(2B)).
+    legal_basis: [{ law: constitution-1973, provision: "Art. 213" }]
+    sectors: [elections]
+
+  # ── Superior judiciary ─────────────────────────────────────────────────────
+  - id: fed-supreme-court
+    name: Supreme Court of Pakistan
+    short_name: Supreme Court
+    name_ur: عدالتِ عظمیٰ پاکستان
+    kind: court
+    branch: judicial
+    jurisdiction: pk
+    description: Apex court with original, appellate and advisory jurisdiction (Arts. 184–186). The 27th Amendment (2025) moved constitutional-interpretation jurisdiction to the Federal Constitutional Court.
+    legal_basis: [{ law: constitution-1973, provision: "Art. 176" }]
+    website: https://www.supremecourt.gov.pk
+    sectors: [justice]
+
+  - id: fed-constitutional-court
+    name: Federal Constitutional Court of Pakistan
+    short_name: Federal Constitutional Court
+    kind: court
+    branch: judicial
+    jurisdiction: pk
+    description: Court created by the 27th Amendment (2025) to decide constitutional petitions, references and disputes between governments, previously heard by the Supreme Court's original and constitutional-bench jurisdiction.
+    legal_basis: [{ law: amendment-27 }]
+    confidence: medium
+    sectors: [justice]
+
+  - id: fed-federal-shariat-court
+    name: Federal Shariat Court
+    name_ur: وفاقی شرعی عدالت
+    kind: court
+    branch: judicial
+    jurisdiction: pk
+    description: Examines whether laws are repugnant to the injunctions of Islam and hears appeals in Hudood cases (Chapter 3A). Appeals lie to the Shariat Appellate Bench of the Supreme Court.
+    legal_basis: [{ law: constitution-1973, provision: "Art. 203C" }]
+    website: https://www.federalshariatcourt.gov.pk
+    sectors: [justice, religious_affairs]
+
+  - id: fed-islamabad-high-court
+    name: Islamabad High Court
+    kind: court
+    branch: judicial
+    jurisdiction: pk-ict
+    description: High Court for the Islamabad Capital Territory, established in 2010.
+    legal_basis: [{ law: constitution-1973, provision: "Art. 192" }, { law: amendment-18 }]
+    website: https://www.ihc.gov.pk
+    sectors: [justice]
+
+  - id: fed-judicial-commission
+    name: Judicial Commission of Pakistan
+    short_name: JCP
+    kind: judicial_council
+    branch: judicial
+    jurisdiction: pk
+    description: Nominates judges for appointment to the Supreme Court, High Courts and Federal Shariat Court. Reconstituted by the 26th Amendment to include senior judges, the Federal Law Minister, the Attorney-General, a Pakistan Bar Council nominee, two MNAs, two Senators and a woman/non-Muslim member.
+    legal_basis: [{ law: constitution-1973, provision: "Art. 175A" }, { law: amendment-26 }]
+    sectors: [justice]
+
+  - id: fed-supreme-judicial-council
+    name: Supreme Judicial Council
+    short_name: SJC
+    kind: judicial_council
+    branch: judicial
+    jurisdiction: pk
+    description: Inquires into misconduct or incapacity of superior-court judges and certain constitutional office-holders, and may recommend removal to the President (Art. 209).
+    legal_basis: [{ law: constitution-1973, provision: "Art. 209" }]
+    sectors: [justice, accountability]
+
+  - id: fed-law-justice-commission
+    name: Law and Justice Commission of Pakistan
+    kind: commission
+    branch: judicial
+    jurisdiction: pk
+    description: Chaired by the Chief Justice; recommends law reform and judicial policy (National Judicial Policy Making Committee secretariat).
+    website: https://ljcp.gov.pk
+    sectors: [justice]
+
+  # ── Independent constitutional bodies ──────────────────────────────────────
+  - id: fed-ecp
+    name: Election Commission of Pakistan
+    short_name: ECP
+    name_ur: الیکشن کمیشن آف پاکستان
+    kind: constitutional_body
+    branch: constitutional
+    jurisdiction: pk
+    description: Organises and conducts elections to Parliament, Provincial Assemblies and local governments; prepares electoral rolls; delimits constituencies. Chief Election Commissioner plus four members, one from each province.
+    legal_basis: [{ law: constitution-1973, provision: "Arts. 213–226" }, { law: elections-act-2017 }]
+    website: https://www.ecp.gov.pk
+    sectors: [elections]
+
+  - id: fed-agp
+    name: Auditor-General of Pakistan
+    short_name: AGP
+    name_ur: آڈیٹر جنرل آف پاکستان
+    kind: constitutional_body
+    branch: constitutional
+    jurisdiction: pk
+    description: Audits the accounts of the Federation, the Provinces and bodies they control. Reports on federal accounts go to the President for laying before the National Assembly; provincial reports go to Governors for the Provincial Assemblies (Arts. 168–171).
+    legal_basis: [{ law: constitution-1973, provision: "Arts. 168–171" }, { law: auditor-general-ordinance-2001 }]
+    website: https://agp.gov.pk
+    sectors: [accountability, finance]
+
+  - id: fed-fpsc
+    name: Federal Public Service Commission
+    short_name: FPSC
+    kind: constitutional_body
+    branch: constitutional
+    jurisdiction: pk
+    description: Recruits to federal civil services (including the Central Superior Services, CSS) and advises on service matters.
+    legal_basis: [{ law: constitution-1973, provision: "Art. 242" }, { law: fpsc-ordinance-1977 }]
+    website: https://www.fpsc.gov.pk
+    sectors: [civil_service]
+
+  - id: fed-cii
+    name: Council of Islamic Ideology
+    short_name: CII
+    kind: constitutional_body
+    branch: constitutional
+    jurisdiction: pk
+    description: Advisory body that recommends ways to bring laws into conformity with Islamic injunctions (Arts. 227–231). Members appointed by the President.
+    legal_basis: [{ law: constitution-1973, provision: "Art. 228" }]
+    website: https://cii.gov.pk
+    sectors: [religious_affairs, law]
+
+  - id: fed-attorney-general-office
+    name: Office of the Attorney-General for Pakistan
+    kind: constitutional_body
+    branch: constitutional
+    jurisdiction: pk
+    description: Principal law officer of the Federal Government (Art. 100).
+    legal_basis: [{ law: constitution-1973, provision: "Art. 100" }]
+    sectors: [law]
+
+  - id: fed-wafaqi-mohtasib
+    name: Wafaqi Mohtasib (Federal Ombudsman)
+    kind: ombudsman
+    branch: constitutional
+    jurisdiction: pk
+    description: Investigates maladministration by federal agencies. Other federal ombudsmen include the Federal Tax Ombudsman, Banking Mohtasib, Federal Insurance Ombudsman and the Federal Ombudsman for Protection against Harassment.
+    legal_basis: [{ law: wafaqi-mohtasib-order-1983 }]
+    website: https://mohtasib.gov.pk
+    sectors: [accountability]
+
+  - id: fed-nab
+    name: National Accountability Bureau
+    short_name: NAB
+    name_ur: قومی احتساب بیورو
+    kind: law_enforcement
+    branch: constitutional
+    jurisdiction: pk
+    description: Federal anti-corruption investigation and prosecution agency. Chairman appointed by the President after consultation between the Prime Minister and Leader of the Opposition, with a parliamentary committee as tie-breaker.
+    legal_basis: [{ law: nab-ordinance-1999 }]
+    website: https://www.nab.gov.pk
+    sectors: [accountability]
+
+  # ── Intergovernmental forums ───────────────────────────────────────────────
+  - id: fed-cci
+    name: Council of Common Interests
+    short_name: CCI
+    name_ur: مشترکہ مفادات کونسل
+    kind: intergovernmental_forum
+    branch: executive
+    jurisdiction: pk
+    description: Constitutional forum that formulates and regulates policy on Part II of the Federal Legislative List (e.g. railways, electricity, census, oil and gas) and resolves water and other federal–provincial disputes. Chaired by the Prime Minister; members are the four Chief Ministers and three federal nominees. Must meet at least once every 90 days; answerable to Parliament. Its permanent secretariat sits in the Inter-Provincial Coordination Division.
+    legal_basis: [{ law: constitution-1973, provision: "Arts. 153–155" }, { law: amendment-18 }]
+    sectors: [governance]
+
+  - id: fed-nec
+    name: National Economic Council
+    short_name: NEC
+    kind: intergovernmental_forum
+    branch: executive
+    jurisdiction: pk
+    description: Reviews the overall economic condition of the country and approves national development plans and the federal and provincial annual development programmes. Chaired by the Prime Minister with all four Chief Ministers. ECNEC is its executive committee for project approvals.
+    legal_basis: [{ law: constitution-1973, provision: "Art. 156" }]
+    sectors: [planning, finance]
+
+  - id: fed-ecnec
+    name: Executive Committee of the National Economic Council
+    short_name: ECNEC
+    kind: committee
+    branch: executive
+    jurisdiction: pk
+    parent: fed-nec
+    description: Approves public-sector development projects above the threshold of the Central Development Working Party (CDWP).
+    sectors: [planning]
+
+  - id: fed-nfc
+    name: National Finance Commission
+    short_name: NFC
+    kind: intergovernmental_forum
+    branch: executive
+    jurisdiction: pk
+    description: Constituted by the President at intervals of not more than five years to recommend the distribution of the divisible pool of taxes between the Federation and the Provinces. The 7th NFC Award (2009) remains in force.
+    legal_basis: [{ law: constitution-1973, provision: "Art. 160" }]
+    sectors: [finance]
+
+  - id: fed-nsc
+    name: National Security Committee
+    short_name: NSC
+    kind: committee
+    branch: executive
+    jurisdiction: pk
+    description: Principal civil-military forum on national security, chaired by the Prime Minister with key federal ministers and the service chiefs. The National Security Division serves as its secretariat.
+    sectors: [defence, interior, foreign]
+
+  - id: fed-sifc
+    name: Special Investment Facilitation Council
+    short_name: SIFC
+    kind: committee
+    branch: executive
+    jurisdiction: pk
+    description: Civil-military "single window" for large foreign investment in agriculture, mining, IT, energy and defence production, created in 2023. Apex committee chaired by the Prime Minister with Chief Ministers and the Army Chief.
+    confidence: medium
+    sectors: [commerce, planning]
+
+  # ── Armed forces ───────────────────────────────────────────────────────────
+  - id: fed-armed-forces
+    name: Pakistan Armed Forces
+    kind: military_hq
+    branch: military
+    jurisdiction: pk
+    description: The Federal Government has control and command of the Armed Forces; supreme command vests in the President (Art. 243). Administrative control via the Ministry of Defence.
+    legal_basis: [{ law: constitution-1973, provision: "Arts. 243–245" }]
+    sectors: [defence]
+
+  - id: fed-jshq
+    name: Joint Staff Headquarters
+    short_name: JS HQ
+    kind: military_hq
+    branch: military
+    jurisdiction: pk
+    parent: fed-armed-forces
+    description: Tri-service coordination headquarters in Rawalpindi. Previously headed by the Chairman Joint Chiefs of Staff Committee (CJCSC); under the 27th Amendment the higher command was reorganised around a Chief of Defence Forces.
+    confidence: medium
+    sectors: [defence]
+
+  - id: fed-army
+    name: Pakistan Army
+    short_name: Army (GHQ)
+    kind: armed_service
+    branch: military
+    jurisdiction: pk
+    parent: fed-armed-forces
+    website: https://www.pakistanarmy.gov.pk
+    sectors: [defence]
+
+  - id: fed-navy
+    name: Pakistan Navy
+    kind: armed_service
+    branch: military
+    jurisdiction: pk
+    parent: fed-armed-forces
+    website: https://www.paknavy.gov.pk
+    sectors: [defence]
+
+  - id: fed-air-force
+    name: Pakistan Air Force
+    kind: armed_service
+    branch: military
+    jurisdiction: pk
+    parent: fed-armed-forces
+    website: https://www.paf.gov.pk
+    sectors: [defence]
+
+  - id: fed-ispr
+    name: Inter-Services Public Relations
+    short_name: ISPR
+    kind: attached_department
+    branch: military
+    jurisdiction: pk
+    parent: fed-armed-forces
+    website: https://www.ispr.gov.pk
+    sectors: [defence, information]
+
+  - id: fed-isi
+    name: Inter-Services Intelligence
+    short_name: ISI
+    kind: intelligence
+    branch: military
+    jurisdiction: pk
+    parent: fed-armed-forces
+    description: Principal military intelligence agency. Its Director-General, a serving Lieutenant-General, is appointed by the Prime Minister.
+    sectors: [defence, interior]
+
+  - id: fed-ib
+    name: Intelligence Bureau
+    short_name: IB
+    kind: intelligence
+    branch: executive
+    jurisdiction: pk
+    parent: fed-pm-office
+    description: Civilian intelligence agency reporting to the Prime Minister.
+    sectors: [interior]
+
+positions:
+  # Head of state & executive
+  - id: fed-president
+    title: President of Pakistan
+    org: fed-president-office
+    role: head
+    description: Head of State; Supreme Commander of the Armed Forces.
+    appointment:
+      method: indirect_election
+      by: fed-electoral-college
+      term: 5 years; eligible for one further consecutive term (Art. 44)
+      removal: Impeachment by two-thirds of the total membership of Parliament in joint sitting (Art. 47)
+      legal_basis: [{ law: constitution-1973, provision: "Art. 41(3)" }]
+  - id: fed-prime-minister
+    title: Prime Minister of Pakistan
+    org: fed-pm-office
+    role: head
+    description: Chief Executive of the Federation; chairs the Federal Cabinet, CCI, NEC and NSC.
+    appointment:
+      method: indirect_election
+      by: fed-national-assembly
+      notes: Elected by a majority of the total membership of the National Assembly; the President administers the oath.
+      removal: Vote of no confidence by a majority of the total membership of the National Assembly (Art. 95)
+      legal_basis: [{ law: constitution-1973, provision: "Art. 91(3)–(4)" }]
+  - id: fed-deputy-prime-minister
+    title: Deputy Prime Minister
+    org: fed-cabinet
+    role: deputy
+    description: Non-constitutional title conferred by notification on a Federal Minister.
+    appointment:
+      method: appointment_on_advice
+      by: fed-president
+      on_advice_of: fed-prime-minister
+  - id: fed-federal-minister
+    title: Federal Minister
+    org: fed-cabinet
+    role: member
+    appointment:
+      method: appointment_on_advice
+      by: fed-president
+      on_advice_of: fed-prime-minister
+      notes: Up to one-fourth of Federal Ministers may be Senators (Art. 92(1)).
+      legal_basis: [{ law: constitution-1973, provision: "Art. 92" }]
+  - id: fed-cabinet-secretary
+    title: Cabinet Secretary
+    org: fed-cabinet
+    role: administrative_head
+    grade: BS-22
+    description: Senior-most federal civil servant; Secretary of the Cabinet Division.
+    appointment:
+      method: posting
+      by: fed-prime-minister
+      nominated_by: fed-establishment-division
+
+  # Parliament
+  - id: fed-mna
+    title: Member of the National Assembly (MNA)
+    org: fed-national-assembly
+    role: member
+    seats: 336
+    appointment:
+      method: direct_election
+      by: pk-electorate
+      term: 5 years
+      notes: 266 general seats by first-past-the-post; 60 women's and 10 non-Muslim reserved seats by party-list proportional representation. The ECP conducts the election; voters elect.
+      legal_basis: [{ law: constitution-1973, provision: "Art. 51" }, { law: elections-act-2017 }]
+  - id: fed-na-speaker
+    title: Speaker of the National Assembly
+    org: fed-national-assembly
+    role: presiding_officer
+    appointment:
+      method: indirect_election
+      by: fed-national-assembly
+      legal_basis: [{ law: constitution-1973, provision: "Art. 53" }]
+  - id: fed-na-deputy-speaker
+    title: Deputy Speaker of the National Assembly
+    org: fed-national-assembly
+    role: deputy
+    appointment:
+      method: indirect_election
+      by: fed-national-assembly
+      legal_basis: [{ law: constitution-1973, provision: "Art. 53" }]
+  - id: fed-na-leader-of-opposition
+    title: Leader of the Opposition in the National Assembly
+    org: fed-national-assembly
+    role: officer
+    description: Consulted on appointments of the Chief Election Commissioner, NAB Chairman and the caretaker Prime Minister.
+    appointment:
+      method: indirect_election
+      by: fed-national-assembly
+      notes: Declared by the Speaker on the basis of the largest numerical strength among opposition members.
+  - id: fed-senator
+    title: Senator
+    org: fed-senate
+    role: member
+    seats: 96
+    appointment:
+      method: indirect_election
+      by: fed-senate-electoral-college
+      term: 6 years (half retire every 3 years)
+      notes: Elected by the Provincial Assemblies (23 per province) and by MNAs for Islamabad seats, by single transferable vote.
+      legal_basis: [{ law: constitution-1973, provision: "Art. 59" }]
+  - id: fed-senate-chairman
+    title: Chairman of the Senate
+    org: fed-senate
+    role: presiding_officer
+    description: Acts as President when the office is vacant or the President is absent (Art. 49).
+    appointment:
+      method: indirect_election
+      by: fed-senate
+      term: 3 years
+      legal_basis: [{ law: constitution-1973, provision: "Art. 60" }]
+  - id: fed-senate-deputy-chairman
+    title: Deputy Chairman of the Senate
+    org: fed-senate
+    role: deputy
+    appointment:
+      method: indirect_election
+      by: fed-senate
+      legal_basis: [{ law: constitution-1973, provision: "Art. 60" }]
+  - id: fed-pac-chair
+    title: Chairman, Public Accounts Committee
+    org: fed-na-pac
+    role: head
+    appointment:
+      method: indirect_election
+      by: fed-na-pac
+
+  # Judiciary
+  - id: fed-chief-justice
+    title: Chief Justice of Pakistan
+    org: fed-supreme-court
+    role: chief_justice
+    appointment:
+      method: appointment
+      by: fed-president
+      nominated_by: fed-special-parliamentary-committee-cjp
+      term: 3 years (or until age 65, whichever is earlier)
+      notes: Nominated from among the three most senior Supreme Court judges (26th Amendment).
+      legal_basis: [{ law: constitution-1973, provision: "Art. 175A(3)" }, { law: amendment-26 }]
+  - id: fed-sc-judge
+    title: Judge of the Supreme Court
+    org: fed-supreme-court
+    role: judge
+    appointment:
+      method: appointment
+      by: fed-president
+      nominated_by: fed-judicial-commission
+      legal_basis: [{ law: constitution-1973, provision: "Arts. 175A, 177" }]
+  - id: fed-fcc-chief-justice
+    title: Chief Justice of the Federal Constitutional Court
+    org: fed-constitutional-court
+    role: chief_justice
+    confidence: medium
+    appointment:
+      method: appointment
+      by: fed-president
+      legal_basis: [{ law: amendment-27 }]
+      notes: Appointment mechanism set by the 27th Amendment; verify against gazetted text.
+  - id: fed-fsc-chief-justice
+    title: Chief Justice of the Federal Shariat Court
+    org: fed-federal-shariat-court
+    role: chief_justice
+    appointment:
+      method: appointment
+      by: fed-president
+      nominated_by: fed-judicial-commission
+      legal_basis: [{ law: constitution-1973, provision: "Art. 203C" }]
+  - id: fed-ihc-chief-justice
+    title: Chief Justice of the Islamabad High Court
+    org: fed-islamabad-high-court
+    role: chief_justice
+    appointment:
+      method: appointment
+      by: fed-president
+      nominated_by: fed-judicial-commission
+      legal_basis: [{ law: constitution-1973, provision: "Arts. 175A, 193" }]
+
+  # Constitutional bodies
+  - id: fed-cec
+    title: Chief Election Commissioner
+    org: fed-ecp
+    role: head
+    appointment:
+      method: appointment
+      by: fed-president
+      nominated_by: fed-prime-minister
+      consultation: [fed-na-leader-of-opposition]
+      confirmation: fed-parliamentary-committee-cec
+      term: 5 years
+      legal_basis: [{ law: constitution-1973, provision: "Art. 213" }]
+  - id: fed-ecp-member
+    title: Member, Election Commission (one per province)
+    org: fed-ecp
+    role: member
+    seats: 4
+    appointment:
+      method: appointment
+      by: fed-president
+      nominated_by: fed-prime-minister
+      consultation: [fed-na-leader-of-opposition]
+      confirmation: fed-parliamentary-committee-cec
+      legal_basis: [{ law: constitution-1973, provision: "Arts. 213, 218" }]
+  - id: fed-ecp-secretary
+    title: Secretary, Election Commission of Pakistan
+    org: fed-ecp
+    role: administrative_head
+    grade: BS-22
+    appointment: { method: appointment, by: fed-ecp }
+  - id: fed-auditor-general
+    title: Auditor-General of Pakistan
+    org: fed-agp
+    role: head
+    appointment:
+      method: appointment_on_advice
+      by: fed-president
+      on_advice_of: fed-prime-minister
+      term: 4 years
+      removal: Only on the grounds and in the manner of a Supreme Court judge (Art. 168(5))
+      legal_basis: [{ law: constitution-1973, provision: "Art. 168" }]
+  - id: fed-fpsc-chairman
+    title: Chairman, Federal Public Service Commission
+    org: fed-fpsc
+    role: head
+    appointment:
+      method: appointment_on_advice
+      by: fed-president
+      on_advice_of: fed-prime-minister
+      legal_basis: [{ law: fpsc-ordinance-1977 }]
+  - id: fed-cii-chairman
+    title: Chairman, Council of Islamic Ideology
+    org: fed-cii
+    role: head
+    appointment:
+      method: appointment_on_advice
+      by: fed-president
+      on_advice_of: fed-prime-minister
+      legal_basis: [{ law: constitution-1973, provision: "Art. 228" }]
+  - id: fed-attorney-general
+    title: Attorney-General for Pakistan
+    org: fed-attorney-general-office
+    role: head
+    appointment:
+      method: appointment_on_advice
+      by: fed-president
+      on_advice_of: fed-prime-minister
+      notes: Must be qualified to be a Supreme Court judge; holds office during the pleasure of the President.
+      legal_basis: [{ law: constitution-1973, provision: "Art. 100" }]
+  - id: fed-wafaqi-mohtasib-head
+    title: Wafaqi Mohtasib
+    org: fed-wafaqi-mohtasib
+    role: head
+    appointment:
+      method: appointment_on_advice
+      by: fed-president
+      on_advice_of: fed-prime-minister
+      term: 4 years
+      legal_basis: [{ law: wafaqi-mohtasib-order-1983 }]
+  - id: fed-nab-chairman
+    title: Chairman, National Accountability Bureau
+    org: fed-nab
+    role: head
+    appointment:
+      method: appointment
+      by: fed-president
+      consultation: [fed-prime-minister, fed-na-leader-of-opposition]
+      term: 3 years
+      legal_basis: [{ law: nab-ordinance-1999 }]
+
+  # Intergovernmental forums
+  - id: fed-cci-chair
+    title: Chairman, Council of Common Interests
+    org: fed-cci
+    role: head
+    ex_officio_of: fed-prime-minister
+    appointment: { method: ex_officio, legal_basis: [{ law: constitution-1973, provision: "Art. 153(2)" }] }
+  - id: fed-nec-chair
+    title: Chairman, National Economic Council
+    org: fed-nec
+    role: head
+    ex_officio_of: fed-prime-minister
+    appointment: { method: ex_officio, legal_basis: [{ law: constitution-1973, provision: "Art. 156(1)" }] }
+  - id: fed-ecnec-chair
+    title: Chairman, ECNEC
+    org: fed-ecnec
+    role: head
+    ex_officio_of: fed-min-finance-minister
+    description: Chaired by the Finance Minister (or the Prime Minister/Deputy Prime Minister when notified).
+    appointment: { method: ex_officio }
+  - id: fed-nfc-chair
+    title: Chairman, National Finance Commission
+    org: fed-nfc
+    role: head
+    ex_officio_of: fed-min-finance-minister
+    appointment: { method: ex_officio, legal_basis: [{ law: constitution-1973, provision: "Art. 160(1)" }] }
+  - id: fed-nsc-chair
+    title: Chairman, National Security Committee
+    org: fed-nsc
+    role: head
+    ex_officio_of: fed-prime-minister
+    appointment: { method: ex_officio }
+
+  # Armed forces
+  - id: fed-supreme-commander
+    title: Supreme Commander of the Armed Forces
+    org: fed-armed-forces
+    role: head
+    ex_officio_of: fed-president
+    appointment: { method: ex_officio, legal_basis: [{ law: constitution-1973, provision: "Art. 243(2)" }] }
+  - id: fed-cdf
+    title: Chief of Defence Forces
+    org: fed-jshq
+    role: chief
+    confidence: medium
+    description: Office created by the 27th Amendment (2025), held by the Chief of Army Staff, replacing the Chairman Joint Chiefs of Staff Committee as the head of the higher defence organisation.
+    appointment:
+      method: appointment_on_advice
+      by: fed-president
+      on_advice_of: fed-prime-minister
+      legal_basis: [{ law: amendment-27 }, { law: constitution-1973, provision: "Art. 243" }]
+  - id: fed-coas
+    title: Chief of the Army Staff
+    org: fed-army
+    role: chief
+    grade: General / Field Marshal
+    appointment:
+      method: appointment_on_advice
+      by: fed-president
+      on_advice_of: fed-prime-minister
+      legal_basis: [{ law: constitution-1973, provision: "Art. 243(4)" }]
+  - id: fed-cns
+    title: Chief of the Naval Staff
+    org: fed-navy
+    role: chief
+    grade: Admiral
+    appointment:
+      method: appointment_on_advice
+      by: fed-president
+      on_advice_of: fed-prime-minister
+      legal_basis: [{ law: constitution-1973, provision: "Art. 243(4)" }]
+  - id: fed-cas
+    title: Chief of the Air Staff
+    org: fed-air-force
+    role: chief
+    grade: Air Chief Marshal
+    appointment:
+      method: appointment_on_advice
+      by: fed-president
+      on_advice_of: fed-prime-minister
+      legal_basis: [{ law: constitution-1973, provision: "Art. 243(4)" }]
+  - id: fed-dg-isi
+    title: Director-General, Inter-Services Intelligence
+    org: fed-isi
+    role: head
+    grade: Lieutenant-General
+    appointment:
+      method: appointment
+      by: fed-prime-minister
+      notes: By convention the PM selects from a panel proposed by the Army Chief.
+  - id: fed-dg-ispr
+    title: Director-General, ISPR
+    org: fed-ispr
+    role: head
+    grade: Lieutenant-General
+    appointment: { method: posting, by: fed-coas }
+  - id: fed-dg-ib
+    title: Director-General, Intelligence Bureau
+    org: fed-ib
+    role: head
+    appointment: { method: appointment, by: fed-prime-minister }
+
+relations:
+  - { from: fed-cabinet, to: fed-national-assembly, type: accountable_to, description: "Collectively responsible to the Senate and the National Assembly", legal_basis: [{ law: constitution-1973, provision: "Art. 91(6)" }] }
+  - { from: fed-cabinet, to: fed-senate, type: accountable_to, legal_basis: [{ law: constitution-1973, provision: "Art. 91(6)" }] }
+  - { from: fed-agp, to: fed-na-pac, type: reports_to, description: "Audit reports laid before the National Assembly via the President and examined by the PAC", legal_basis: [{ law: constitution-1973, provision: "Art. 171" }] }
+  - { from: fed-agp, to: fed-federation, type: audits }
+  - { from: fed-cci, to: fed-parliament, type: accountable_to, description: "CCI is answerable to Parliament and submits an annual report", legal_basis: [{ law: constitution-1973, provision: "Art. 153(4)" }] }
+  - { from: fed-nfc, to: fed-president-office, type: advises, legal_basis: [{ law: constitution-1973, provision: "Art. 160(2)" }] }
+  - { from: fed-cii, to: fed-parliament, type: advises, legal_basis: [{ law: constitution-1973, provision: "Art. 230" }] }
+  - { from: fed-supreme-judicial-council, to: fed-supreme-court, type: oversees, description: "Inquires into conduct of superior-court judges" }
+  - { from: fed-islamabad-high-court, to: fed-supreme-court, type: appeals_to }
+  - { from: fed-federal-shariat-court, to: fed-supreme-court, type: appeals_to, description: "Appeals lie to the Shariat Appellate Bench" }
+  - { from: fed-ecp, to: fed-national-assembly, type: oversees, description: "Conducts elections to the National Assembly" }
+  - { from: fed-armed-forces, to: fed-federation, type: reports_to, description: "Federal Government has control and command of the Armed Forces", legal_basis: [{ law: constitution-1973, provision: "Art. 243(1)" }] }
+  - { from: fed-na-sc-finance, to: fed-finance-division, type: oversees }
+  - { from: fed-senate-sc-finance, to: fed-finance-division, type: oversees }
+  - { from: fed-nab, to: fed-federation, type: oversees, description: "Investigates corruption by public office holders" }
+  - { from: fed-isi, to: fed-pm-office, type: reports_to }
