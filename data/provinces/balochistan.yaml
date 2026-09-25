@@ -603,6 +603,91 @@ organizations:
   sectors:
   - culture
   jurisdiction: pk-ba
+- id: ba-epa
+  name: Balochistan Environmental Protection Agency
+  short_name: EPA Balochistan
+  kind: regulator
+  branch: executive
+  parent: ba-environment
+  legal_basis:
+  - law: balochistan-epa-2012
+  sectors:
+  - environment
+  head_title: Director General, EPA Balochistan
+  description: Enforces environmental quality standards, approves environmental impact assessments and prosecutes polluters before the Environmental
+    Protection Tribunal.
+  jurisdiction: pk-ba
+- id: ba-ppra
+  name: Balochistan Public Procurement Regulatory Authority
+  short_name: BPPRA
+  kind: regulator
+  branch: executive
+  parent: ba-finance
+  legal_basis:
+  - law: balochistan-ppra-act-2009
+  sectors:
+  - finance
+  - accountability
+  head_title: Managing Director, BPPRA
+  description: Sets and monitors public procurement rules for provincial departments and bodies.
+  jurisdiction: pk-ba
+- id: ba-info-commission
+  name: Balochistan Information Commission
+  kind: commission
+  branch: constitutional
+  parent: ba-government
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 19A
+  - law: balochistan-rti-act-2021
+  sectors:
+  - accountability
+  - human_rights
+  head_title: Chief Information Commissioner, Balochistan
+  description: Hears complaints when public bodies refuse requests for information under the right to information (Art. 19A).
+  jurisdiction: pk-ba
+- id: ba-service-tribunal
+  name: Balochistan Service Tribunal
+  kind: tribunal
+  branch: judicial
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 212
+  - law: balochistan-service-tribunals-act-1974
+  sectors:
+  - justice
+  - civil_service
+  head_title: Chairman, Balochistan Service Tribunal
+  description: Decides service matters of provincial civil servants; appeals lie to the Supreme Court.
+  jurisdiction: pk-ba
+- id: ba-bar-council
+  name: Balochistan Bar Council
+  kind: professional_body
+  branch: judicial
+  legal_basis:
+  - law: legal-practitioners-act-1973
+  sectors:
+  - justice
+  head_title: Vice-Chairman, Balochistan Bar Council
+  head_appointment:
+    method: indirect_election
+    by: ba-bar-council
+  description: Licenses advocates to practise before the subordinate courts and the High Court, and handles professional misconduct. The Advocate-General
+    is ex officio Chairman.
+  jurisdiction: pk-ba
+- id: ba-food-authority
+  name: Balochistan Food Authority
+  kind: regulator
+  parent: ba-food
+  legal_basis:
+  - law: balochistan-food-authority-act-2014
+  sectors:
+  - health
+  - agriculture
+  confidence: medium
+  head_title: Director General, Balochistan Food Authority
+  branch: executive
+  jurisdiction: pk-ba
 positions:
 - id: ba-governor
   title: Governor of Balochistan
@@ -810,6 +895,15 @@ positions:
     legal_basis:
     - law: balochistan-healthcare-commission-act-2019
   confidence: medium
+- id: ba-bar-council-chair
+  title: Chairman, Balochistan Bar Council
+  org: ba-bar-council
+  role: presiding_officer
+  ex_officio_of: ba-advocate-general-post
+  appointment:
+    method: ex_officio
+    legal_basis:
+    - law: legal-practitioners-act-1973
 - id: ba-peoc-coordinator
   title: Coordinator, Provincial EOC Balochistan
   org: ba-peoc
@@ -936,3 +1030,34 @@ relations:
   legal_basis:
   - law: constitution-1973
     provision: Art. 203
+- from: ba-service-tribunal
+  to: fed-supreme-court
+  type: appeals_to
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 212(3)
+- from: ba-bar-council
+  to: fed-pakistan-bar-council
+  type: coordinates_with
+- from: ba-bar-council
+  to: fed-judicial-commission
+  type: nominates
+  description: Nominates an advocate member when the Commission considers High Court appointments for the province
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 175A
+  confidence: medium
+- from: ba-epa
+  to: fed-pak-epa
+  type: coordinates_with
+- from: ba-ppra
+  to: fed-ppra
+  type: coordinates_with
+- from: ba-ppra
+  to: ba-government
+  type: regulates
+  description: Public procurement by provincial bodies
+- from: ba-healthcare-commission
+  to: ba-government
+  type: regulates
+  description: Private and public healthcare establishments in the province

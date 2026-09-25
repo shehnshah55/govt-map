@@ -366,3 +366,61 @@ laws:
   - { id: punjab-food-authority-act-2011, title: "Punjab Food Authority Act, 2011", kind: act, year: 2011, jurisdiction: pk-pb }
   - { id: sindh-food-authority-act-2016, title: "Sindh Food Authority Act, 2016", kind: act, year: 2016, jurisdiction: pk-sd, confidence: medium }
   - { id: kp-food-authority-act-2014, title: "Khyber Pakhtunkhwa Food Safety and Halal Food Authority Act, 2014", kind: act, year: 2014, jurisdiction: pk-kp, confidence: medium }
+
+  # ── Regulators, professions, tribunals and ombudsmen ───────────────────────
+  - { id: amla-2010, title: "Anti-Money Laundering Act, 2010", kind: act, year: 2010, jurisdiction: pk }
+  - { id: ppib-act-2012, title: "Private Power and Infrastructure Board Act, 2012", kind: act, year: 2012, jurisdiction: pk }
+  - { id: peca-2016, title: "Prevention of Electronic Crimes Act, 2016", kind: act, year: 2016, jurisdiction: pk, summary: "Cybercrime law; amended in 2025 to create the NCCIA and a social-media regulatory authority." }
+  - { id: ipo-act-2012, title: "Intellectual Property Organization of Pakistan Act, 2012", kind: act, year: 2012, jurisdiction: pk }
+  - { id: pha-act-2016, title: "Pakistan Halal Authority Act, 2016", kind: act, year: 2016, jurisdiction: pk }
+  - { id: seed-act-1976, title: "Seed Act, 1976", kind: act, year: 1976, jurisdiction: pk }
+  - { id: press-council-ordinance-2002, title: "Press Council of Pakistan Ordinance, 2002", kind: ordinance, year: 2002, jurisdiction: pk }
+  - { id: motion-pictures-ordinance-1979, title: "Motion Pictures Ordinance, 1979", kind: ordinance, year: 1979, jurisdiction: pk }
+  - { id: ict-rera-act-2020, title: "Islamabad Capital Territory Real Estate (Regulation and Development) Act, 2020", kind: act, year: 2020, jurisdiction: pk-ict, confidence: medium }
+  - { id: merchant-shipping-ordinance-2001, title: "Merchant Shipping Ordinance, 2001", kind: ordinance, year: 2001, jurisdiction: pk }
+  - { id: legal-practitioners-act-1973, title: "Legal Practitioners and Bar Councils Act, 1973", kind: act, year: 1973, jurisdiction: pk, summary: "Establishes the Pakistan Bar Council and the provincial and Islamabad bar councils that license and discipline advocates." }
+  - { id: pec-act-1976, title: "Pakistan Engineering Council Act, 1976", kind: act, year: 1976, jurisdiction: pk }
+  - { id: pcatp-ordinance-1983, title: "Pakistan Council of Architects and Town Planners Ordinance, 1983", kind: ordinance, year: 1983, jurisdiction: pk }
+  - { id: pvmc-act-1996, title: "Pakistan Veterinary Medical Council Act, 1996", kind: act, year: 1996, jurisdiction: pk }
+  - { id: ca-ordinance-1961, title: "Chartered Accountants Ordinance, 1961", kind: ordinance, year: 1961, jurisdiction: pk }
+  - { id: cma-act-1966, title: "Cost and Management Accountants Act, 1966", kind: act, year: 1966, jurisdiction: pk }
+  - { id: service-tribunals-act-1973, title: "Service Tribunals Act, 1973", kind: act, year: 1973, jurisdiction: pk }
+  - { id: income-tax-ordinance-2001, title: "Income Tax Ordinance, 2001", kind: ordinance, year: 2001, jurisdiction: pk }
+  - { id: customs-act-1969, title: "Customs Act, 1969", kind: act, year: 1969, jurisdiction: pk }
+  - { id: ira-2012, title: "Industrial Relations Act, 2012", kind: act, year: 2012, jurisdiction: pk, summary: "Federal labour-relations law for the Islamabad Capital Territory and trans-provincial establishments; provinces enacted their own after the 18th Amendment." }
+  - { id: ata-1997, title: "Anti-Terrorism Act, 1997", kind: act, year: 1997, jurisdiction: pk }
+  - { id: fio-2001, title: "Financial Institutions (Recovery of Finances) Ordinance, 2001", kind: ordinance, year: 2001, jurisdiction: pk }
+  - { id: fto-ordinance-2000, title: "Establishment of the Office of Federal Tax Ombudsman Ordinance, 2000", kind: ordinance, year: 2000, jurisdiction: pk }
+  - { id: banking-companies-ordinance-1962, title: "Banking Companies Ordinance, 1962", kind: ordinance, year: 1962, jurisdiction: pk }
+  - { id: insurance-ordinance-2000, title: "Insurance Ordinance, 2000", kind: ordinance, year: 2000, jurisdiction: pk }
+  - { id: harassment-act-2010, title: "Protection against Harassment of Women at the Workplace Act, 2010", kind: act, year: 2010, jurisdiction: pk }
+
+  # ── Provincial regulators ──────────────────────────────────────────────────
+  - { id: punjab-epa-1997, title: "Punjab Environmental Protection Act, 1997 (as amended 2012)", kind: act, year: 1997, jurisdiction: pk-pb }
+  - { id: sindh-epa-2014, title: "Sindh Environmental Protection Act, 2014", kind: act, year: 2014, jurisdiction: pk-sd }
+  - { id: kp-epa-2014, title: "Khyber Pakhtunkhwa Environmental Protection Act, 2014", kind: act, year: 2014, jurisdiction: pk-kp }
+  - { id: balochistan-epa-2012, title: "Balochistan Environmental Protection Act, 2012", kind: act, year: 2012, jurisdiction: pk-ba }
+  - { id: punjab-ppra-act-2009, title: "Punjab Procurement Regulatory Authority Act, 2009", kind: act, year: 2009, jurisdiction: pk-pb }
+  - { id: sindh-ppra-act-2009, title: "Sindh Public Procurement Act, 2009", kind: act, year: 2009, jurisdiction: pk-sd }
+  - { id: kp-ppra-act-2012, title: "Khyber Pakhtunkhwa Public Procurement Regulatory Authority Act, 2012", kind: act, year: 2012, jurisdiction: pk-kp }
+  - { id: balochistan-ppra-act-2009, title: "Balochistan Public Procurement Regulatory Authority Act, 2009", kind: act, year: 2009, jurisdiction: pk-ba }
+  - { id: punjab-rti-act-2013, title: "Punjab Transparency and Right to Information Act, 2013", kind: act, year: 2013, jurisdiction: pk-pb }
+  - { id: sindh-rti-act-2016, title: "Sindh Transparency and Right to Information Act, 2016", kind: act, year: 2016, jurisdiction: pk-sd }
+  - { id: kp-rti-act-2013, title: "Khyber Pakhtunkhwa Right to Information Act, 2013", kind: act, year: 2013, jurisdiction: pk-kp }
+  - { id: balochistan-rti-act-2021, title: "Balochistan Right to Information Act, 2021", kind: act, year: 2021, jurisdiction: pk-ba, confidence: medium }
+  - { id: punjab-service-tribunals-act-1974, title: "Punjab Service Tribunals Act, 1974", kind: act, year: 1974, jurisdiction: pk-pb }
+  - { id: sindh-service-tribunals-act-1973, title: "Sindh Service Tribunals Act, 1973", kind: act, year: 1973, jurisdiction: pk-sd }
+  - { id: kp-service-tribunal-act-1974, title: "Khyber Pakhtunkhwa Service Tribunal Act, 1974", kind: act, year: 1974, jurisdiction: pk-kp }
+  - { id: balochistan-service-tribunals-act-1974, title: "Balochistan Service Tribunals Act, 1974", kind: act, year: 1974, jurisdiction: pk-ba }
+  - { id: punjab-hec-act-2014, title: "Punjab Higher Education Commission Act, 2014", kind: act, year: 2014, jurisdiction: pk-pb }
+  - { id: sindh-hec-act-2013, title: "Sindh Higher Education Commission Act, 2013", kind: act, year: 2013, jurisdiction: pk-sd }
+  - { id: sindh-building-control-ordinance-1979, title: "Sindh Building Control Ordinance, 1979", kind: ordinance, year: 1979, jurisdiction: pk-sd }
+  - { id: sepra-act-2021, title: "Sindh Electric Power Regulatory Authority Act, 2021", kind: act, year: 2021, jurisdiction: pk-sd, confidence: medium }
+  - { id: kp-psra-act-2017, title: "Khyber Pakhtunkhwa Private Schools Regulatory Authority Act, 2017", kind: act, year: 2017, jurisdiction: pk-kp }
+  - { id: pera-act-2024, title: "Punjab Enforcement and Regulatory Authority Act, 2024", kind: act, year: 2024, jurisdiction: pk-pb, confidence: medium }
+  - { id: balochistan-food-authority-act-2014, title: "Balochistan Food Authority Act, 2014", kind: act, year: 2014, jurisdiction: pk-ba, confidence: medium }
+  - { id: punjab-lra-act-2017, title: "Punjab Land Records Authority Act, 2017", kind: act, year: 2017, jurisdiction: pk-pb }
+  - { id: cantonments-act-1924, title: "Cantonments Act, 1924", kind: act, year: 1924, jurisdiction: pk, summary: "Governs cantonment boards, the elected local governments of military cantonments, administered through the Military Lands and Cantonments Department." }
+  - { id: mines-oilfields-act-1948, title: "Regulation of Mines and Oil-Fields and Mineral Development (Government Control) Act, 1948", kind: act, year: 1948, jurisdiction: pk, summary: "Parent law for the Pakistan Petroleum (Exploration and Production) Rules, under which petroleum concessions are granted." }
+  - { id: animal-quarantine-ordinance-1979, title: "Pakistan Animal Quarantine (Import and Export of Animals and Animal Products) Ordinance, 1979", kind: ordinance, year: 1979, jurisdiction: pk }
+  - { id: tobacco-board-ordinance-1968, title: "Pakistan Tobacco Board Ordinance, 1968", kind: ordinance, year: 1968, jurisdiction: pk, confidence: medium }

@@ -2,6 +2,7 @@ import type { Sector } from "../schema.ts";
 import { html } from "../ui/dom.ts";
 import { hierarchy, powerMap } from "../ui/graph-view.ts";
 import { SECTOR_LABEL, STATUS_LABEL } from "../ui/labels.ts";
+import { DIRECTORIES } from "./directory.ts";
 import { confidenceChip, graphPanel, hrefFor, kindLabel, link, postRow, statusChip, type Ctx, type View } from "./common.ts";
 
 const TIERS = ["pk", "pk-pb", "pk-sd", "pk-kp", "pk-ba", "pk-ict", "pk-gb", "pk-ajk"];
@@ -45,6 +46,7 @@ export function homeView(ctx: Ctx): View {
   const { ix } = ctx;
   const c = ix.g.meta.counts;
   const districts = ix.g.jurisdictions.filter((j) => j.kind === "district").length;
+  const seatCount = ix.g.positions.filter((p) => p.area || p.seat_type).reduce((n, p) => n + (p.seats ?? 1), 0);
   const featured = ix.org.get("fed-min-nhsrc")!;
   const sectorsInUse = (Object.keys(SECTOR_LABEL) as Sector[]).filter((s) => ix.bySector(s).length >= 4);
   const power = graphPanel(
@@ -69,6 +71,7 @@ export function homeView(ctx: Ctx): View {
     <div class="stats">
       <div class="stat"><b>${c.organizations}</b><span>Government bodies</span></div>
       <div class="stat"><b>${c.positions}</b><span>Posts</span></div>
+      <div class="stat"><b>${seatCount.toLocaleString()}</b><span>Elected seats</span></div>
       <div class="stat"><b>${c.people}</b><span>Officeholders</span></div>
       <div class="stat"><b>${districts}</b><span>Districts</span></div>
       <div class="stat"><b>${c.laws}</b><span>Laws cited</span></div>
@@ -103,6 +106,15 @@ export function homeView(ctx: Ctx): View {
               <div class="hint num">${n} bodies${divs ? ` · ${divs} divisions · ${dist} districts` : ""}</div>
             </div>`;
           })}
+        </div>
+      </section>
+      <section><h2>Directory <span class="count">Every body by type, with its head and legal basis</span></h2>
+        <div class="cards">${DIRECTORIES.map((d) => {
+          const n = ix.g.organizations.filter((o) => d.kinds.includes(o.kind) && !o.abolished).length;
+          return html`<a class="card" href="#/directory/${d.key}"><span class="t">${d.label}</span><span class="s num">${n} bodies</span></a>`;
+        })}
+          <a class="card" href="#/elected"><span class="t">Elected officials</span><span class="s num">${seatCount.toLocaleString()} seats in 8 legislatures</span></a>
+          <a class="card" href="#/officials"><span class="t">Appointed officials</span><span class="s">Ministers, secretaries, judges, regulators, service chiefs</span></a>
         </div>
       </section>
       <section><h2>The power map</h2>
@@ -333,6 +345,9 @@ export function aboutView(ctx: Ctx, single: boolean): View {
         <li>GOV.UK organisations register and the Institute for Government's Whitehall Monitor: typed bodies with parent departments and change over time.</li>
         <li>Canada's GC InfoBase, Australia's Directory of Government (AGOR) and Singapore's Government Directory: complete directories with a type and legal basis for each body.</li>
         <li>India's Local Government Directory: stable codes for every district and local body, which suits Pakistan's own layered local government.</li>
+        <li>Open States and mySociety's TheyWorkForYou: legislators as roles in constituencies, with a full seat roster.</li>
+        <li>FAFEN's Open Parliament Pakistan: seat codes match the ECP's, so attendance and performance data can be joined.</li>
+        <li>LittleSis: people and organisations as a power network, including party membership.</li>
       </ul>
       <p class="hint">The repository's docs/RESEARCH.md has the full comparison.</p>
     </div>

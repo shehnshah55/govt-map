@@ -24,8 +24,15 @@ Relation: any ──type──▶ any                     (authored edges with o
 | `people` | `id`, `name`, `name_ur`, `party`, `roles[{position, since, until, status, source}]`, `as_of`, `confidence` |
 | `relations` | `from`, `to`, `type`, `description`, `legal_basis[]`, `confidence` |
 | `laws` | `id`, `title`, `short`, `kind`, `year`, `jurisdiction`, `url`, `summary` |
+| `legislature_seats` | `chamber`, `code` (NA, PP, PS, PK, PB, GBA, LA), `member_title`, `ranges[{from, to, area}]`, `reserved[{type, seats, area}]`, `legal_basis` |
 
-**Branches**: executive, legislative, judicial, constitutional (independent constitutional bodies), military, local.
+Organizations may also set `head_title` (and `head_appointment`). The build then creates a `<id>-head` post unless a head post is authored.
+Positions for legislative seats carry `area` (the constituency or province represented) and `seat_type` (general, women, non_muslim, technocrat).
+`person.party` must be the ID of an organization of kind `political_party`; the build adds a `member_of` edge.
+
+**Branches**: executive, legislative, judicial, constitutional (independent constitutional bodies), military, local, political (parties).
+
+**Jurisdiction kinds**: country, federal_capital, province, special_territory, division, district, constituency.
 
 **Appointment methods**: `direct_election`, `indirect_election`, `appointment`, `appointment_on_advice`, `selection`, `nomination`, `ex_officio`, `promotion`, `posting` (civil-service posting).
 
@@ -54,6 +61,8 @@ Every edge in `graph.json` has `derived: true|false`.
 | Federal `ministry` | `<id>-minister`: Federal Minister, appointed by the President on the advice of the PM (Art. 92) |
 | Federal `division`, or a ministry with no divisions | `<id>-secretary`: Federal Secretary (BS-22), posted by the PM on the Establishment Division's nomination |
 | Provincial / territorial `department` | `<id>-minister` (Governor on the advice of the CM, Art. 132) and `<id>-secretary` (posted by the CM, nominated by S&GAD) |
+| `legislature_seats` block | For each general seat: a `constituency` jurisdiction (`con-na-122`) and a seat post (`seat-na-122`), directly elected. For each reserved group: one post with `seats: N`, filled from party lists and notified by the ECP |
+| Organization with `head_title` | `<id>-head` post with that title |
 | `field_administration` block | For each division: a `division` jurisdiction, *Office of the Commissioner* and *Commissioner*. For each district: a `district` jurisdiction, *District Administration* and *Deputy Commissioner* |
 
 IDs are stable and predictable: `pk-pb-div-lahore`, `pk-pb-lahore`, `pk-pb-lahore-deputy-commissioner`.

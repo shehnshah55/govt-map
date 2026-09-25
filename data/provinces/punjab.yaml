@@ -344,6 +344,7 @@ organizations:
   - agriculture
   legal_basis:
   - law: punjab-food-authority-act-2011
+  head_title: Director General, Punjab Food Authority
   branch: executive
   jurisdiction: pk-pb
 - id: pb-higher-education
@@ -631,6 +632,117 @@ organizations:
   sectors:
   - culture
   jurisdiction: pk-pb
+- id: pb-epa
+  name: Environment Protection Agency, Punjab
+  short_name: EPA Punjab
+  kind: regulator
+  branch: executive
+  parent: pb-environment
+  legal_basis:
+  - law: punjab-epa-1997
+  sectors:
+  - environment
+  head_title: Director General, EPA Punjab
+  description: Enforces environmental quality standards, approves environmental impact assessments and prosecutes polluters before the Environmental
+    Protection Tribunal.
+  jurisdiction: pk-pb
+- id: pb-ppra
+  name: Punjab Procurement Regulatory Authority
+  short_name: PPRA Punjab
+  kind: regulator
+  branch: executive
+  parent: pb-finance
+  legal_basis:
+  - law: punjab-ppra-act-2009
+  sectors:
+  - finance
+  - accountability
+  head_title: Managing Director, PPRA Punjab
+  description: Sets and monitors public procurement rules for provincial departments and bodies.
+  jurisdiction: pk-pb
+- id: pb-info-commission
+  name: Punjab Information Commission
+  kind: commission
+  branch: constitutional
+  parent: pb-government
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 19A
+  - law: punjab-rti-act-2013
+  sectors:
+  - accountability
+  - human_rights
+  head_title: Chief Information Commissioner, Punjab
+  description: Hears complaints when public bodies refuse requests for information under the right to information (Art. 19A).
+  jurisdiction: pk-pb
+- id: pb-service-tribunal
+  name: Punjab Service Tribunal
+  kind: tribunal
+  branch: judicial
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 212
+  - law: punjab-service-tribunals-act-1974
+  sectors:
+  - justice
+  - civil_service
+  head_title: Chairman, Punjab Service Tribunal
+  description: Decides service matters of provincial civil servants; appeals lie to the Supreme Court.
+  jurisdiction: pk-pb
+- id: pb-bar-council
+  name: Punjab Bar Council
+  kind: professional_body
+  branch: judicial
+  legal_basis:
+  - law: legal-practitioners-act-1973
+  sectors:
+  - justice
+  head_title: Vice-Chairman, Punjab Bar Council
+  head_appointment:
+    method: indirect_election
+    by: pb-bar-council
+  description: Licenses advocates to practise before the subordinate courts and the High Court, and handles professional misconduct. The Advocate-General
+    is ex officio Chairman.
+  jurisdiction: pk-pb
+- id: pb-phec
+  name: Punjab Higher Education Commission
+  short_name: PHEC
+  kind: regulator
+  parent: pb-higher-education
+  legal_basis:
+  - law: punjab-hec-act-2014
+  sectors:
+  - education
+  head_title: Chairperson, Punjab Higher Education Commission
+  branch: executive
+  jurisdiction: pk-pb
+- id: pb-pera
+  name: Punjab Enforcement and Regulatory Authority
+  short_name: PERA
+  kind: regulator
+  parent: pb-government
+  legal_basis:
+  - law: pera-act-2024
+  sectors:
+  - governance
+  - interior
+  confidence: medium
+  description: Enforces provincial regulations on encroachments, price control and hoarding through district enforcement stations.
+  head_title: Director General, PERA
+  branch: executive
+  jurisdiction: pk-pb
+- id: pb-plra
+  name: Punjab Land Records Authority
+  short_name: PLRA
+  kind: autonomous_body
+  parent: pb-board-of-revenue
+  legal_basis:
+  - law: punjab-lra-act-2017
+  sectors:
+  - revenue
+  head_title: Director General, Punjab Land Records Authority
+  branch: executive
+  jurisdiction: pk-pb
 positions:
 - id: pb-governor
   title: Governor of Punjab
@@ -838,6 +950,15 @@ positions:
     legal_basis:
     - law: punjab-healthcare-commission-act-2010
   confidence: medium
+- id: pb-bar-council-chair
+  title: Chairman, Punjab Bar Council
+  org: pb-bar-council
+  role: presiding_officer
+  ex_officio_of: pb-advocate-general-post
+  appointment:
+    method: ex_officio
+    legal_basis:
+    - law: legal-practitioners-act-1973
 - id: pb-peoc-coordinator
   title: Coordinator, Provincial EOC Punjab
   org: pb-peoc
@@ -964,6 +1085,37 @@ relations:
   legal_basis:
   - law: constitution-1973
     provision: Art. 203
+- from: pb-service-tribunal
+  to: fed-supreme-court
+  type: appeals_to
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 212(3)
+- from: pb-bar-council
+  to: fed-pakistan-bar-council
+  type: coordinates_with
+- from: pb-bar-council
+  to: fed-judicial-commission
+  type: nominates
+  description: Nominates an advocate member when the Commission considers High Court appointments for the province
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 175A
+  confidence: medium
+- from: pb-epa
+  to: fed-pak-epa
+  type: coordinates_with
+- from: pb-ppra
+  to: fed-ppra
+  type: coordinates_with
+- from: pb-ppra
+  to: pb-government
+  type: regulates
+  description: Public procurement by provincial bodies
+- from: pb-healthcare-commission
+  to: pb-government
+  type: regulates
+  description: Private and public healthcare establishments in the province
 - from: pb-specialized-healthcare
   to: pb-primary-secondary-healthcare
   type: coordinates_with

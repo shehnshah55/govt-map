@@ -352,3 +352,32 @@ organizations:
     sources:
       - { title: Ministry of NHSR&C — About, url: https://www.nhsrc.gov.pk }
       - { title: "Constitution (Eighteenth Amendment) Act, 2010", url: https://na.gov.pk }
+
+positions:
+  - id: fed-cabinet-division-secretary
+    title: Cabinet Secretary
+    org: fed-cabinet-division
+    role: administrative_head
+    grade: BS-22
+    description: Secretary of the Cabinet Division and secretary to the Federal Cabinet; by convention the senior-most federal civil servant.
+    appointment: { method: posting, by: fed-prime-minister, nominated_by: fed-establishment-division, legal_basis: [{ law: rules-of-business-1973 }] }
+  - id: fed-establishment-division-secretary
+    title: Establishment Secretary
+    org: fed-establishment-division
+    role: administrative_head
+    grade: BS-22
+    description: Head of the federal civil service's HR ministry; chairs selection boards and manages postings of senior officers, including provincial Chief Secretaries and IGPs.
+    appointment: { method: posting, by: fed-prime-minister, legal_basis: [{ law: rules-of-business-1973 }, { law: civil-servants-act-1973 }] }
+  - id: fed-foreign-secretary
+    title: Foreign Secretary
+    org: fed-min-foreign-affairs
+    role: administrative_head
+    grade: BS-22
+    description: Administrative head of the Ministry of Foreign Affairs and the Foreign Service of Pakistan.
+    appointment: { method: posting, by: fed-prime-minister, nominated_by: fed-establishment-division }
+  - id: fed-finance-secretary
+    title: Finance Secretary
+    org: fed-finance-division
+    role: administrative_head
+    grade: BS-22
+    appointment: { method: posting, by: fed-prime-minister, nominated_by: fed-establishment-division }

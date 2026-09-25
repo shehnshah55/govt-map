@@ -5,6 +5,7 @@ import { GraphIndex } from "./lib/graph-index.ts";
 import { esc, raw } from "./ui/dom.ts";
 import { hrefFor, type Ctx, type View } from "./views/common.ts";
 import { lawView, orgView, personView, placeView, postView } from "./views/entities.ts";
+import { directoryView, electedView, officialsView } from "./views/directory.ts";
 import { aboutView, accountabilityView, exploreView, homeView, lawsView, searchView, sectorView, sectorsView } from "./views/pages.ts";
 
 declare const __SINGLE__: boolean;
@@ -43,6 +44,12 @@ function route(path: string): View | undefined {
       return sectorsView(ctx);
     case "sector":
       return sectorView(ctx, seg[1] as Sector);
+    case "directory":
+      return directoryView(ctx, seg[1]);
+    case "elected":
+      return electedView(ctx);
+    case "officials":
+      return officialsView(ctx, seg[1]);
     case "accountability":
       return accountabilityView(ctx);
     case "search":

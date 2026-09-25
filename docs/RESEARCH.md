@@ -47,6 +47,17 @@ This note records what the Pakistan Government Graph borrows from existing model
 | **Wikidata / EveryPolitician / OpenSanctions PEPs** | Global | Linked-data identifiers and politically exposed persons | IDs designed to be mapped to Wikidata QIDs later |
 | **USAspending** | US | Spending by agency | Future work: link PSDP and budget lines to bodies |
 
+### Models for elected and appointed officials
+
+| Model | What it does well | What we took |
+|---|---|---|
+| **Open States / Open Civic Data** (US state legislatures) | People hold *roles* in a *jurisdiction*, and each role is tied to a *district*. At most one role is current; past roles are kept | Every legislative seat is a post with an `area` (constituency). Tenures with `since`/`until`. Past holders stay on record |
+| **TheyWorkForYou and EveryPolitician** (mySociety, UK and global) | One page per representative and per constituency; a stable roster across terms | Constituency pages (`NA-122`) that link to the seat and its member; a full seat roster per house |
+| **FAFEN Open Parliament Pakistan** (openparliament.pk) | Attendance and legislative-activity data for MNAs and MPAs, collected by observers and from Assembly records | Roster IDs use the ECP constituency codes FAFEN uses, so attendance and performance data can be joined later |
+| **LittleSis** (power mapping) | People and organisations linked by typed relationships such as board seats, donations and party membership, drawn as power maps | Person → party `member_of` edges; party pages; the "who appoints whom" power map |
+| **CivLab elected pages** | Every elected office, with confirmation lines and vacancies | Elected-officials page with coverage by chamber, and an officials register split into elected and appointed |
+| **AGOR / GOV.UK type listings** | Browse every body of a given type, with the head and the enabling law | Directory pages for departments, regulators, agencies, courts and tribunals, legislatures, independent bodies, security, local government and parties |
+
 ## 3. What is specific to Pakistan
 
 A copy of the US model would miss the features that define how Pakistan is governed. The model encodes them directly.
@@ -62,12 +73,15 @@ A copy of the US model would miss the features that define how Pakistan is gover
 9. **Special territories.** Gilgit-Baltistan (GB Order 2018) and AJK (Interim Constitution 1974) have their own frameworks and are linked to the Federation through the Ministry of Kashmir Affairs and GB and the AJK Council.
 10. **Civil–military institutions.** The armed forces, ISI, the SIFC and the 27th Amendment's Chief of Defence Forces are included with appointment chains, because any honest map of power in Pakistan needs them.
 11. **Urdu names** are stored alongside English names (`name_ur`) and rendered in Nastaliq.
+12. **Reserved seats.** 60 women's and 10 non-Muslim seats in the National Assembly, and their provincial equivalents, are filled from party lists, not constituencies. They are modelled as grouped seats (`seats: 32`, `seat_type: women`) with the ECP as notifying authority. Senate seats are grouped by province and category (general, women, technocrat/ulema, non-Muslim), because Senators are elected at large by each Assembly.
+13. **Parties.** Parties pick most office-holders and fill reserved seats. The PTI's 2024 candidates ran as independents and later joined the Sunni Ittehad Council. Party affiliation is therefore a first-class, dated link and not a free-text label.
+14. **Regulators by level.** Devolution created provincial regulators alongside the federal ones: healthcare commissions, food authorities, environmental protection agencies, procurement authorities, information commissions, and in Sindh an electricity regulator (SEPRA) next to NEPRA. The directory lists both levels side by side.
 
 ## 4. Roadmap
 
 - **Verification pass** on every `confidence: medium/low` record against the Gazette, Cabinet Division notifications and Assembly websites.
 - **Budget and staffing** from the Federal Budget "Details of Demands for Grants", provincial budget books and the PSDP.
-- **All legislators** (MNAs, Senators, MPAs) from ECP results, with constituencies as `Area`s.
+- **Fill the seat roster** (the structure for all 1,000+ seats is in place) from the ECP's notified results, and map each constituency to its district from the 2023 delimitation.
 - **Automated monitoring**, CivLab-style: agents watch Cabinet Division notifications, ECP gazettes, Establishment Division posting orders and court websites, and open pull requests with cited diffs.
 - **Local government layer**: union, village and neighbourhood councils per province using ECP delimitation data.
 - **Wikidata QIDs** on people and bodies for interlinking.

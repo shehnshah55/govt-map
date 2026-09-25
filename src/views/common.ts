@@ -29,6 +29,12 @@ export function link(ix: GraphIndex, id: string | undefined, text?: string): Raw
   return html`<a href="${hrefFor(ix, id)}">${text ?? ix.label(id)}</a>`;
 }
 
+export function partyLink(ix: GraphIndex, partyId: string | undefined): Raw {
+  if (!partyId) return raw("");
+  const p = ix.org.get(partyId);
+  return p ? html`<a href="#/org/${p.id}">${p.short_name ?? p.name}</a>` : html`${partyId}`;
+}
+
 export function branchChip(branch: string) {
   return html`<span class="chip branch-${branch}"><i></i>${BRANCH_LABEL[branch as keyof typeof BRANCH_LABEL] ?? branch}</span>`;
 }
@@ -110,7 +116,7 @@ export function postRow(ix: GraphIndex, p: Post, opts: { showOrg?: boolean } = {
               (h) => html`<div class="name">${link(ix, h.person.id)}</div>
                 <div class="hint">${h.status !== "confirmed" ? html`<span class="chip st-acting">${h.status.replace(/_/g, " ")}</span> ` : ""}${
                   h.since ? html`since <span class="num">${h.since}</span>` : ""
-                }${!direct ? " (ex officio)" : ""}${h.person.party ? html` · ${h.person.party}` : ""}</div>`,
+                }${!direct ? " (ex officio)" : ""}${h.person.party ? html` · ${partyLink(ix, h.person.party)}` : ""}</div>`,
             )
           : p.seats
             ? html`<div class="none">Multi-member body — members are not listed individually yet.</div>`
@@ -161,6 +167,7 @@ export function graphPanel(ctx: Ctx, id: string, tabs: GraphTab[], opts: { tall?
       <span><i style="background:var(--b-constitutional)"></i>Independent</span>
       <span><i style="background:var(--b-military)"></i>Armed forces</span>
       <span><i style="background:var(--b-local)"></i>Local</span>
+      <span><i style="background:var(--b-political)"></i>Party</span>
       <span><i style="background:var(--power);border-radius:50%"></i>Post</span>
       <span><i style="background:var(--ink);transform:rotate(45deg) scale(.8)"></i>Person</span>
       <span><i class="line" style="background:var(--power)"></i>Appoints / elects</span>

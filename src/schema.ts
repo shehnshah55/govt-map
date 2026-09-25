@@ -19,6 +19,7 @@ export const Branch = z.enum([
   "constitutional", // independent constitutional bodies: ECP, AGP, FPSC, CII…
   "military",
   "local", // elected local government (Art. 140A)
+  "political", // registered political parties (outside the state, but they select most office-holders)
 ]);
 
 export const OrgKind = z.enum([
@@ -54,6 +55,8 @@ export const OrgKind = z.enum([
   "field_administration", // Divisional Commissioner / Deputy Commissioner offices
   "local_government",
   "constitutional_body",
+  "political_party",
+  "professional_body", // statutory self-regulating professions (bar councils, PEC, ICAP…)
   "other",
 ]);
 
@@ -139,6 +142,10 @@ export const Organization = z.object({
   sources: z.array(Source).optional(),
   confidence: Confidence.default("high"),
   notes: z.string().optional(),
+  /** Title of the body's head. The build creates a "<id>-head" post with it unless a head post is authored. */
+  head_title: z.string().optional(),
+  /** How the head is filled, for the generated head post. */
+  head_appointment: z.lazy(() => Appointment).optional(),
 });
 
 export const AppointmentMethod = z.enum([
@@ -176,6 +183,9 @@ export const Position = z.object({
   appointment: Appointment.optional(),
   ex_officio_of: z.string().optional(), // the position that automatically holds this one
   vacant: z.boolean().optional(),
+  /** For legislative seats: the constituency or area the seat represents. */
+  area: z.string().optional(),
+  seat_type: z.enum(["general", "women", "non_muslim", "technocrat", "at_large"]).optional(),
   description: z.string().optional(),
   confidence: Confidence.default("high"),
   sources: z.array(Source).optional(),
@@ -189,7 +199,7 @@ export const Person = z.object({
   id: z.string().regex(/^[a-z0-9-]+$/),
   name: z.string(),
   name_ur: z.string().optional(),
-  party: z.string().optional(),
+  party: z.string().optional(), // organization id of a political_party
   roles: z.array(
     z.object({
       position: z.string(),
@@ -258,6 +268,7 @@ export const JurisdictionKind = z.enum([
   "special_territory", // Gilgit-Baltistan, Azad Jammu & Kashmir
   "division",
   "district",
+  "constituency",
 ]);
 
 export const Jurisdiction = z.object({
@@ -291,6 +302,19 @@ export const FieldAdministration = z.object({
   sources: z.array(Source).optional(),
 });
 
+/** Compact authoring format for the general-seat roster of a legislature. */
+export const LegislatureSeats = z.object({
+  chamber: z.string(), // organization id
+  code: z.string(), // "NA", "PP", "PS", "PK", "PB"
+  member_title: z.string(), // "Member of the National Assembly"
+  legal_basis: z.array(LegalRef),
+  term: z.string().optional(),
+  ranges: z.array(z.object({ from: z.number(), to: z.number(), area: z.string(), confidence: Confidence.default("medium") })),
+  reserved: z.array(z.object({ type: z.enum(["women", "non_muslim", "technocrat"]), seats: z.number(), area: z.string() })).optional(),
+  as_of: z.string(),
+  sources: z.array(Source).optional(),
+});
+
 /** A single YAML data file may contain any subset of these collections. */
 export const DataFile = z.object({
   /** Field values merged into every record of that collection in the same file. */
@@ -307,6 +331,7 @@ export const DataFile = z.object({
   relations: z.array(Relation).optional(),
   laws: z.array(Law).optional(),
   field_administration: z.array(FieldAdministration).optional(),
+  legislature_seats: z.array(LegislatureSeats).optional(),
 });
 
 export type Branch = z.infer<typeof Branch>;
@@ -322,6 +347,7 @@ export type RelationType = z.infer<typeof RelationType>;
 export type Law = z.infer<typeof Law>;
 export type Jurisdiction = z.infer<typeof Jurisdiction>;
 export type FieldAdministration = z.infer<typeof FieldAdministration>;
+export type LegislatureSeats = z.infer<typeof LegislatureSeats>;
 export type DataFile = z.infer<typeof DataFile>;
 
 /** Compiled graph shipped to the browser (public/data/graph.json). */

@@ -42,6 +42,7 @@ export function mountGraph(
     constitutional: color("--b-constitutional"),
     military: color("--b-military"),
     local: color("--b-local"),
+    political: color("--b-political"),
   };
   const ink = color("--ink");
   const muted = color("--muted");

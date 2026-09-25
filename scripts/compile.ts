@@ -72,6 +72,7 @@ export function compile(dataDir: string): CompileResult {
   const laws: WithFile<Law>[] = [];
   const relations: (Relation & { _file: string })[] = [];
   const fieldAdmin: { block: NonNullable<DataFile["field_administration"]>[number]; file: string }[] = [];
+  const seatBlocks: { block: NonNullable<DataFile["legislature_seats"]>[number]; file: string }[] = [];
 
   // ── 1. load & validate ────────────────────────────────────────────────────
   for (const path of walk(dataDir)) {
@@ -109,6 +110,7 @@ export function compile(dataDir: string): CompileResult {
     d.laws?.forEach((x) => laws.push({ ...x, _file: file }));
     d.relations?.forEach((x) => relations.push({ ...x, _file: file }));
     d.field_administration?.forEach((block) => fieldAdmin.push({ block, file }));
+    d.legislature_seats?.forEach((block) => seatBlocks.push({ block, file }));
   }
 
   // ── 2. field administration ───────────────────────────────────────────────
@@ -193,6 +195,63 @@ export function compile(dataDir: string): CompileResult {
     }
   }
 
+  // ── 2b. legislative seat rosters ──────────────────────────────────────────
+  const placeName = (id: string) => {
+    const j = jurisdictions.find((x) => x.id === id);
+    return j ? j.name.replace(/ (District|Division)$/, "") : id;
+  };
+  for (const { block, file } of seatBlocks) {
+    const code = block.code.toLowerCase();
+    for (const range of block.ranges) {
+      for (let n = range.from; n <= range.to; n++) {
+        const label = `${block.code}-${n}`;
+        const con = `con-${code}-${n}`;
+        jurisdictions.push({ id: con, name: label, kind: "constituency", parent: range.area, confidence: range.confidence, _file: file });
+        positions.push({
+          id: `seat-${code}-${n}`,
+          title: `${block.member_title}, ${label} (${placeName(range.area)})`,
+          org: block.chamber,
+          role: "member",
+          area: con,
+          seat_type: "general",
+          appointment: {
+            method: "direct_election",
+            by: "pk-electorate",
+            term: block.term,
+            notes: "First-past-the-post election in a single-member constituency, conducted by the Election Commission of Pakistan.",
+            legal_basis: block.legal_basis,
+          },
+          confidence: range.confidence,
+          sources: block.sources,
+          generated: true,
+          _file: file,
+        });
+      }
+    }
+    for (const r of block.reserved ?? []) {
+      const label = r.type === "women" ? "reserved seats for women" : r.type === "non_muslim" ? "reserved seats for non-Muslims" : "technocrat and ulema seats";
+      positions.push({
+        id: `seat-${code}-${r.type.replace("_", "-")}-${r.area}`,
+        title: `${block.member_title}, ${label} (${placeName(r.area)})`,
+        org: block.chamber,
+        role: "member",
+        seats: r.seats,
+        area: r.area,
+        seat_type: r.type,
+        appointment: {
+          method: "nomination",
+          by: "fed-ecp",
+          notes: "Allocated to parties in proportion to the general seats they win; filled from party lists submitted before the election and notified by the ECP.",
+          legal_basis: block.legal_basis,
+        },
+        confidence: "high",
+        sources: block.sources,
+        generated: true,
+        _file: file,
+      });
+    }
+  }
+
   // ── 3. convention posts ───────────────────────────────────────────────────
   const orgById = new Map(organizations.map((o) => [o.id, o]));
   const postsByOrg = new Map<string, WithFile<Position>[]>();
@@ -204,12 +263,14 @@ export function compile(dataDir: string): CompileResult {
     (postsByOrg.get(id) ?? []).some((p) => p.role === "administrative_head" || (p.role === "head" && p.appointment?.method === "posting"));
   const stripMinistry = (n: string) => n.replace(/^Ministry of /, "");
   const stripDept = (n: string) => n.replace(/ Department.*$/, "").replace(/, (Gilgit-Baltistan|Azad Jammu and Kashmir)$/, "");
-  const NO_MINISTER = /-(sgad|board-of-revenue|pnd)$/;
+  const NO_MINISTER = /-(sgad|board-of-revenue)$/;
 
   for (const o of [...organizations]) {
     if (o.abolished) continue;
     const add = (p: Omit<Position, "confidence"> & { confidence?: Position["confidence"] }) =>
       positions.push({ confidence: o.confidence, ...p, generated: true, _file: o._file } as WithFile<Position>);
+    if (o.head_title && !(postsByOrg.get(o.id) ?? []).some((p) => p.role === "head" || p.role === "chief_justice"))
+      add({ id: `${o.id}-head`, title: o.head_title, org: o.id, role: "head", appointment: o.head_appointment });
     if (o.id.startsWith("fed-") && o.kind === "ministry") {
       if (!hasPolitical(o.id))
         add({
@@ -318,6 +379,7 @@ export function compile(dataDir: string): CompileResult {
     const ctx = `${p._file} position ${p.id}`;
     expect(p.org, ["organization"], `${ctx}.org`);
     expect(p.ex_officio_of, ["position"], `${ctx}.ex_officio_of`);
+    expect(p.area, ["jurisdiction"], `${ctx}.area`);
     const a = p.appointment;
     if (a) {
       expect(a.by, actor, `${ctx}.appointment.by`);
@@ -332,6 +394,9 @@ export function compile(dataDir: string): CompileResult {
   for (const person of people) {
     const ctx = `${person._file} person ${person.id}`;
     person.roles.forEach((r) => expect(r.position, ["position"], `${ctx}.roles`));
+    expect(person.party, ["organization"], `${ctx}.party`);
+    if (person.party && orgById.get(person.party) && orgById.get(person.party)!.kind !== "political_party")
+      errors.push(`${ctx}.party: "${person.party}" is not a political_party`);
   }
   const allRelations: Relation[] = [...relations, ...extraRelations];
   for (const r of relations) {
@@ -384,6 +449,7 @@ export function compile(dataDir: string): CompileResult {
   }
   for (const person of people)
     for (const r of person.roles) if (!r.until) edge(person.id, r.position, "holds", { description: r.status !== "confirmed" ? r.status : undefined });
+  for (const person of people) edge(person.id, person.party, "member_of", { description: "party membership" });
 
   const dataAsOf = people.map((p) => p.as_of).sort().at(-1) ?? "";
   const graph: Graph = {

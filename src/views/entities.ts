@@ -1,4 +1,4 @@
-import type { Org } from "../lib/graph-index.ts";
+import type { Org, Post } from "../lib/graph-index.ts";
 import type { OrgKind, RelationType } from "../schema.ts";
 import { html } from "../ui/dom.ts";
 import { orgNeighbourhood, hierarchy } from "../ui/graph-view.ts";
@@ -17,6 +17,7 @@ import {
   relationRows,
   sourcesList,
   statusChip,
+  partyLink,
   type Ctx,
   type View,
 } from "./common.ts";
@@ -63,8 +64,11 @@ export function orgView(ctx: Ctx, id: string): View | undefined {
   const trail = ix.orgTrail(id);
   const kids = (ix.children.get(id) ?? []).filter((c) => !c.abolished);
   const all = ix.descendants(id);
-  const posts = ix.leadership(id);
+  const allPosts = ix.leadership(id);
+  const seats = allPosts.filter((p) => p.area || p.seat_type);
+  const posts = allPosts.filter((p) => !seats.includes(p));
   const top = posts.find((p) => p.role !== "member" && p.role !== "judge");
+  const partyMembers = o.kind === "political_party" ? ix.g.people.filter((p) => p.party === id) : [];
   const { outgoing, incoming } = ix.relationsOf(id, [...STRUCTURAL, "appoints", "elects", "nominates", "advises", "confirms", "holds"]);
   const place = ix.place.get(o.jurisdiction);
   const tier = ix.tierOf(o.jurisdiction);
@@ -100,6 +104,13 @@ export function orgView(ctx: Ctx, id: string): View | undefined {
               ${posts.length > 12 ? html`<p class="hint" style="margin-top:8px">${posts.length - 12} more posts listed on their own pages.</p>` : ""}
               ${top ? html`<div style="margin-top:12px"><div class="hint" style="margin-bottom:6px">Chain of authority for the top post — who puts this office-holder in place, traced back to its democratic or constitutional source:</div>${chain(ix, top.id)}</div>` : ""}
             </section>`
+            : ""
+        }
+        ${seats.length ? html`<section><h2>Seats and members <span class="count num">${seatTotal(seats)} seats</span></h2>${roster(ctx, seats)}</section>` : ""}
+        ${
+          partyMembers.length
+            ? html`<section><h2>Members holding office <span class="count num">${partyMembers.length}</span></h2>
+              <div class="posts">${partyMembers.flatMap((m) => m.roles.filter((r) => !r.until).slice(0, 1).map((r) => postRow(ix, ix.post.get(r.position)!, { showOrg: true })))}</div></section>`
             : ""
         }
         ${
@@ -155,7 +166,44 @@ export function orgView(ctx: Ctx, id: string): View | undefined {
         </div>
       </aside>
     </div>`;
-  return { title: o.name, body, mount: graph.mount };
+  return {
+    title: o.name,
+    body,
+    mount: (root) => {
+      wireFilters(root);
+      return graph.mount(root);
+    },
+  };
+}
+
+function seatTotal(seats: Post[]) {
+  return seats.reduce((n, p) => n + (p.seats ?? 1), 0);
+}
+
+/** Seat roster for a legislature: one row per constituency or reserved-seat group, with a live filter. */
+export function roster(ctx: Ctx, seats: Post[]) {
+  const { ix } = ctx;
+  const general = seats.filter((p) => !p.seats);
+  const filled = general.filter((p) => ix.currentHolders(p.id).length).length;
+  const total = seatTotal(seats);
+  const named = seats.reduce((n, p) => n + ix.currentHolders(p.id).length, 0);
+  return html`<p class="hint" style="margin-bottom:10px"><span class="num">${named}</span> of <span class="num">${total}</span> members recorded (${filled} of ${general.length} constituency seats). Add members from the ECP's notified results to <span class="mono">data/people.yaml</span>.</p>
+    <div class="toolbar"><input type="search" data-filter="roster" placeholder="Filter by seat, area, member or party" aria-label="Filter seats" /></div>
+    <div class="tablewrap" style="max-height:520px;overflow:auto"><table data-rows="roster">
+      <thead><tr><th>Seat</th><th>Area</th><th>Member</th><th>Party</th></tr></thead>
+      <tbody>${seats.map((p) => {
+        const holders = ix.currentHolders(p.id);
+        const area = p.area ? ix.place.get(p.area) : undefined;
+        const areaParent = area?.kind === "constituency" && area.parent ? ix.place.get(area.parent) : area;
+        const label = area?.kind === "constituency" ? area.name : p.seats ? `${p.seats} ${p.seat_type?.replace("_", "-")} seats` : p.title;
+        return html`<tr>
+          <td class="mono"><a href="#/post/${p.id}">${label}</a></td>
+          <td>${areaParent ? link(ix, areaParent.id, areaParent.name.replace(/ (District|Division)$/, "")) : ""}</td>
+          <td>${holders.length ? holders.map((h, i) => html`${i ? ", " : ""}${link(ix, h.person.id)}`) : html`<span class="hint">not recorded</span>`}</td>
+          <td>${holders.map((h, i) => html`${i ? ", " : ""}${partyLink(ix, h.person.party)}`)}</td>
+        </tr>`;
+      })}</tbody>
+    </table></div>`;
 }
 
 export function postView(ctx: Ctx, id: string): View | undefined {
@@ -189,7 +237,7 @@ export function postView(ctx: Ctx, id: string): View | undefined {
             via.length
               ? html`<div class="posts">${via.map(
                   (h) => html`<div class="post"><div class="holder"><div class="name">${link(ix, h.person.id)}</div>
-                    <div class="hint">${h.person.party ?? ""}${!current.length ? " · holds this post ex officio" : ""}</div></div>
+                    <div class="hint">${partyLink(ix, h.person.party)}${!current.length ? " · holds this post ex officio" : ""}</div></div>
                     <div class="hint">${h.status !== "confirmed" ? html`<span class="chip st-acting">${h.status.replace(/_/g, " ")}</span> ` : ""}${h.since ? html`Since <span class="num">${h.since}</span>` : ""} · record as of <span class="num">${h.person.as_of}</span> ${confidenceChip(h.person.confidence)}</div></div>`,
                 )}</div>`
               : html`<p class="hint">${p.seats ? "Multi-member body. Individual members are not yet recorded." : "No current holder recorded. Help by adding one to data/people.yaml with a source."}</p>`
@@ -286,7 +334,7 @@ export function personView(ctx: Ctx, id: string): View | undefined {
       <div class="eyebrow">Person ${confidenceChip(person.confidence)}</div>
       <h1>${person.name}</h1>
       ${person.name_ur ? html`<p class="urdu" lang="ur">${person.name_ur}</p>` : ""}
-      ${person.party ? html`<p class="lede">${person.party}</p>` : ""}
+      ${person.party ? html`<p class="lede">${partyLink(ix, person.party)}</p>` : ""}
     </header>
     <div class="layout">
       <div class="stack">
@@ -319,7 +367,10 @@ export function placeView(ctx: Ctx, id: string): View | undefined {
   const place = ix.place.get(id);
   if (!place) return;
   const trail = ix.placeTrail(id);
-  const kids = ix.placeChildren.get(id) ?? [];
+  const allKids = ix.placeChildren.get(id) ?? [];
+  const constituencies = allKids.filter((k) => k.kind === "constituency");
+  const kids = allKids.filter((k) => k.kind !== "constituency");
+  const seatFor = (conId: string) => ix.g.positions.find((p) => p.area === conId);
   const orgs = (ix.orgsByPlace.get(id) ?? []).filter((o) => !o.abolished);
   // top-level bodies in this jurisdiction: those whose parent is outside it (or none)
   const top = orgs.filter((o) => !o.parent || ix.org.get(o.parent)?.jurisdiction !== id);
@@ -328,7 +379,9 @@ export function placeView(ctx: Ctx, id: string): View | undefined {
     ? ix.g.positions.filter(
         (p) => ix.org.get(p.org)?.jurisdiction === id && !p.generated && ["head", "chief_justice", "presiding_officer", "administrative_head", "chief"].includes(p.role) && !p.seats,
       )
-    : ix.g.positions.filter((p) => ix.org.get(p.org)?.jurisdiction === id);
+    : place.kind === "constituency"
+      ? ix.g.positions.filter((p) => p.area === id)
+      : ix.g.positions.filter((p) => ix.org.get(p.org)?.jurisdiction === id);
   const tree =
     govt && (ix.children.get(govt.id)?.length ?? 0) > 0
       ? graphPanel(ctx, "g-place", [
@@ -362,6 +415,17 @@ export function placeView(ctx: Ctx, id: string): View | undefined {
                 return html`<a class="card" href="#/place/${k.id}"><span class="t">${k.name}</span>
                   <span class="s">${k.headquarters ? html`<span>HQ ${k.headquarters}</span>` : ""}${n ? html`<span class="num">${n} districts</span>` : ""}${k.confidence !== "high" ? html`<span>· verify</span>` : ""}</span>
                   ${dc ? html`<span class="who">${dc.title}</span>` : ""}</a>`;
+              })}</div></section>`
+            : ""
+        }
+        ${
+          constituencies.length
+            ? html`<section><h2>Constituencies <span class="count num">${constituencies.length}</span></h2>
+              <p class="hint" style="margin-bottom:8px">Highlighted seats have a recorded member.</p>
+              <div class="constituencies">${constituencies.map((c) => {
+                const seat = seatFor(c.id);
+                const has = seat && ix.currentHolders(seat.id).length;
+                return html`<a href="${seat ? `#/post/${seat.id}` : `#/place/${c.id}`}" class="${has ? "has" : ""}" title="${seat ? ix.currentHolders(seat.id)[0]?.person.name ?? "" : ""}">${c.name}</a>`;
               })}</div></section>`
             : ""
         }
@@ -426,4 +490,16 @@ export function lawView(ctx: Ctx, id: string): View | undefined {
       </aside>
     </div>`;
   return { title: law.title, body };
+}
+
+/** Connects every <input data-filter="x"> to the rows of <table data-rows="x">. */
+export function wireFilters(root: HTMLElement) {
+  root.querySelectorAll<HTMLInputElement>("input[data-filter]").forEach((input) => {
+    const rows = [...root.querySelectorAll<HTMLTableRowElement>(`table[data-rows="${input.dataset.filter}"] tbody tr`)];
+    const text = rows.map((r) => r.textContent!.toLowerCase());
+    input.addEventListener("input", () => {
+      const terms = input.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+      rows.forEach((r, i) => (r.hidden = !terms.every((t) => text[i].includes(t))));
+    });
+  });
 }

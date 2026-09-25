@@ -333,6 +333,7 @@ organizations:
   legal_basis:
   - law: sindh-food-authority-act-2016
   confidence: medium
+  head_title: Director General, Sindh Food Authority
   branch: executive
   jurisdiction: pk-sd
 - id: sd-universities-boards
@@ -620,6 +621,117 @@ organizations:
   sectors:
   - culture
   jurisdiction: pk-sd
+- id: sd-epa
+  name: Sindh Environmental Protection Agency
+  short_name: SEPA
+  kind: regulator
+  branch: executive
+  parent: sd-environment
+  legal_basis:
+  - law: sindh-epa-2014
+  sectors:
+  - environment
+  head_title: Director General, SEPA
+  description: Enforces environmental quality standards, approves environmental impact assessments and prosecutes polluters before the Environmental
+    Protection Tribunal.
+  jurisdiction: pk-sd
+- id: sd-ppra
+  name: Sindh Public Procurement Regulatory Authority
+  short_name: SPPRA
+  kind: regulator
+  branch: executive
+  parent: sd-finance
+  legal_basis:
+  - law: sindh-ppra-act-2009
+  sectors:
+  - finance
+  - accountability
+  head_title: Managing Director, SPPRA
+  description: Sets and monitors public procurement rules for provincial departments and bodies.
+  jurisdiction: pk-sd
+- id: sd-info-commission
+  name: Sindh Information Commission
+  kind: commission
+  branch: constitutional
+  parent: sd-government
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 19A
+  - law: sindh-rti-act-2016
+  sectors:
+  - accountability
+  - human_rights
+  head_title: Chief Information Commissioner, Sindh
+  description: Hears complaints when public bodies refuse requests for information under the right to information (Art. 19A).
+  jurisdiction: pk-sd
+- id: sd-service-tribunal
+  name: Sindh Service Tribunal
+  kind: tribunal
+  branch: judicial
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 212
+  - law: sindh-service-tribunals-act-1973
+  sectors:
+  - justice
+  - civil_service
+  head_title: Chairman, Sindh Service Tribunal
+  description: Decides service matters of provincial civil servants; appeals lie to the Supreme Court.
+  jurisdiction: pk-sd
+- id: sd-bar-council
+  name: Sindh Bar Council
+  kind: professional_body
+  branch: judicial
+  legal_basis:
+  - law: legal-practitioners-act-1973
+  sectors:
+  - justice
+  head_title: Vice-Chairman, Sindh Bar Council
+  head_appointment:
+    method: indirect_election
+    by: sd-bar-council
+  description: Licenses advocates to practise before the subordinate courts and the High Court, and handles professional misconduct. The Advocate-General
+    is ex officio Chairman.
+  jurisdiction: pk-sd
+- id: sd-shec
+  name: Sindh Higher Education Commission
+  short_name: STHEC
+  kind: regulator
+  parent: sd-universities-boards
+  legal_basis:
+  - law: sindh-hec-act-2013
+  sectors:
+  - education
+  head_title: Chairperson, Sindh Higher Education Commission
+  branch: executive
+  jurisdiction: pk-sd
+- id: sd-sbca
+  name: Sindh Building Control Authority
+  short_name: SBCA
+  kind: regulator
+  parent: sd-local-government-dept
+  legal_basis:
+  - law: sindh-building-control-ordinance-1979
+  sectors:
+  - housing
+  description: Approves building plans and regulates construction in Sindh outside cantonments.
+  head_title: Director General, SBCA
+  branch: executive
+  jurisdiction: pk-sd
+- id: sd-sepra
+  name: Sindh Electric Power Regulatory Authority
+  short_name: SEPRA
+  kind: regulator
+  parent: sd-energy
+  legal_basis:
+  - law: sepra-act-2021
+  sectors:
+  - energy
+  confidence: medium
+  description: Provincial electricity regulator for generation and distribution within Sindh, alongside NEPRA.
+  head_title: Chairman, SEPRA
+  branch: executive
+  jurisdiction: pk-sd
 positions:
 - id: sd-governor
   title: Governor of Sindh
@@ -827,6 +939,15 @@ positions:
     legal_basis:
     - law: sindh-healthcare-commission-act-2013
   confidence: medium
+- id: sd-bar-council-chair
+  title: Chairman, Sindh Bar Council
+  org: sd-bar-council
+  role: presiding_officer
+  ex_officio_of: sd-advocate-general-post
+  appointment:
+    method: ex_officio
+    legal_basis:
+    - law: legal-practitioners-act-1973
 - id: sd-peoc-coordinator
   title: Coordinator, Provincial EOC Sindh
   org: sd-peoc
@@ -953,3 +1074,34 @@ relations:
   legal_basis:
   - law: constitution-1973
     provision: Art. 203
+- from: sd-service-tribunal
+  to: fed-supreme-court
+  type: appeals_to
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 212(3)
+- from: sd-bar-council
+  to: fed-pakistan-bar-council
+  type: coordinates_with
+- from: sd-bar-council
+  to: fed-judicial-commission
+  type: nominates
+  description: Nominates an advocate member when the Commission considers High Court appointments for the province
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 175A
+  confidence: medium
+- from: sd-epa
+  to: fed-pak-epa
+  type: coordinates_with
+- from: sd-ppra
+  to: fed-ppra
+  type: coordinates_with
+- from: sd-ppra
+  to: sd-government
+  type: regulates
+  description: Public procurement by provincial bodies
+- from: sd-healthcare-commission
+  to: sd-government
+  type: regulates
+  description: Private and public healthcare establishments in the province

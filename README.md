@@ -10,15 +10,19 @@ It follows CivLab's [US Gov Graph](https://graph.civlab.org/us) (entities, posit
 
 | | |
 |---|---|
-| Government bodies | ~700 (≈490 authored + generated field administration) |
-| Posts | ~700, each with appointment method, appointing authority and legal basis |
-| Jurisdictions | Country, 4 provinces, ICT, GB, AJK, 38 divisions, 167 districts |
-| Laws cited | ~70 (Constitution articles, amendments, Rules of Business, statutes) |
-| Connections | ~3,400 typed edges |
+| Government bodies | ~780: ministries and departments, ~70 regulators and professional bodies, courts and tribunals, agencies, local governments, 16 political parties |
+| Posts | ~1,780, including every elected seat: all 336 NA, 96 Senate, 749 provincial and 86 GB/AJK seats. Each post has its appointment method, appointing authority and legal basis |
+| Jurisdictions | Country, 4 provinces, ICT, GB, AJK, 38 divisions, 167 districts, 859 constituencies |
+| Officeholders | ~120 elected and appointed officials, dated and confidence-rated (checked against 2026 reporting where possible) |
+| Laws cited | ~125 (Constitution articles, amendments, Rules of Business, statutes) |
+| Connections | ~5,900 typed edges |
 
 ## Features
 
 - **Department pages** (like CivLab's department pages): leadership with holders and how they were appointed; the **chain of authority** traced back to voters or the Constitution; sub-bodies grouped by type; an interactive structure or connections graph; typed relationships; legal basis; sources; a confidence rating for each record.
+- **Directory by type**: ministries and departments, regulators, agencies and enterprises, courts and tribunals, legislatures, independent bodies, security, local government and parties. Every government is shown side by side, with each body's head and legal basis.
+- **Elected officials**: every legislature's seats and recorded members by party, every office filled by election, and a seat roster searchable by constituency code (e.g. `NA-122`).
+- **Officials register**: appointed and elected officeholders with how they were chosen, since when, and how current the record is.
 - **Power map**: who appoints, elects, nominates or confirms each office, per government.
 - **Sectors × governments matrix**: after devolution, see which government runs what (e.g. *Health in every government*).
 - **Accountability**: acting and additional-charge officials, vacancies, key posts with no recorded holder, and records that need verification.

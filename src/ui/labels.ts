@@ -7,6 +7,7 @@ export const BRANCH_LABEL: Record<Branch, string> = {
   constitutional: "Independent constitutional",
   military: "Armed forces",
   local: "Local government",
+  political: "Political party",
 };
 
 export const KIND_LABEL: Record<OrgKind, string> = {
@@ -42,6 +43,8 @@ export const KIND_LABEL: Record<OrgKind, string> = {
   field_administration: "Field administration",
   local_government: "Local government",
   constitutional_body: "Constitutional body",
+  political_party: "Political party",
+  professional_body: "Professional body",
   other: "Body",
 };
 
@@ -49,7 +52,7 @@ export const KIND_LABEL: Record<OrgKind, string> = {
 export const KIND_GROUP: [OrgKind[], string][] = [
   [["ministry", "division"], "Ministries and divisions"],
   [["department"], "Departments"],
-  [["regulator", "statutory_council"], "Regulators and statutory councils"],
+  [["regulator", "statutory_council", "professional_body"], "Regulators, statutory councils and professional bodies"],
   [["attached_department"], "Attached departments"],
   [["autonomous_body", "corporation"], "Autonomous bodies and state enterprises"],
   [["programme"], "Programmes"],
@@ -59,6 +62,7 @@ export const KIND_GROUP: [OrgKind[], string][] = [
   [["law_enforcement", "intelligence", "armed_service", "military_hq"], "Security and armed forces"],
   [["commission", "constitutional_body", "ombudsman", "intergovernmental_forum"], "Commissions and forums"],
   [["field_administration", "local_government"], "Field administration and local government"],
+  [["political_party"], "Political parties"],
   [["state", "head_of_state_office", "cabinet", "other"], "Other bodies"],
 ];
 

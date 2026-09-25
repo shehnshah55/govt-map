@@ -106,6 +106,7 @@ organizations:
   - id: fed-pnmc
     name: Pakistan Nursing and Midwifery Council
     short_name: PNMC
+    head_title: President, Pakistan Nursing and Midwifery Council
     kind: statutory_council
     parent: fed-min-nhsrc
     legal_basis: [{ law: pnmc-act-2023 }]
@@ -114,6 +115,7 @@ organizations:
   - id: fed-pcp
     name: Pharmacy Council of Pakistan
     short_name: PCP
+    head_title: Chairman, Pharmacy Council of Pakistan
     kind: statutory_council
     parent: fed-min-nhsrc
     legal_basis: [{ law: pharmacy-act-1967 }]
@@ -121,6 +123,7 @@ organizations:
   - id: fed-nct
     name: National Council for Tibb
     short_name: NCT
+    head_title: President, National Council for Tibb
     kind: statutory_council
     parent: fed-min-nhsrc
     legal_basis: [{ law: uah-practitioners-act-1965 }]
@@ -128,6 +131,7 @@ organizations:
   - id: fed-nch
     name: National Council for Homoeopathy
     short_name: NCH
+    head_title: President, National Council for Homoeopathy
     kind: statutory_council
     parent: fed-min-nhsrc
     legal_basis: [{ law: uah-practitioners-act-1965 }]

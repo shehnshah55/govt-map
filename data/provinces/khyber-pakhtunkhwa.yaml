@@ -356,6 +356,7 @@ organizations:
   legal_basis:
   - law: kp-food-authority-act-2014
   confidence: medium
+  head_title: Director General, KP Food Safety and Halal Food Authority
   branch: executive
   jurisdiction: pk-kp
 - id: kp-higher-education
@@ -643,6 +644,90 @@ organizations:
   sectors:
   - culture
   jurisdiction: pk-kp
+- id: kp-epa
+  name: Khyber Pakhtunkhwa Environmental Protection Agency
+  short_name: EPA KP
+  kind: regulator
+  branch: executive
+  parent: kp-environment
+  legal_basis:
+  - law: kp-epa-2014
+  sectors:
+  - environment
+  head_title: Director General, EPA KP
+  description: Enforces environmental quality standards, approves environmental impact assessments and prosecutes polluters before the Environmental
+    Protection Tribunal.
+  jurisdiction: pk-kp
+- id: kp-ppra
+  name: Khyber Pakhtunkhwa Public Procurement Regulatory Authority
+  short_name: KPPRA
+  kind: regulator
+  branch: executive
+  parent: kp-finance
+  legal_basis:
+  - law: kp-ppra-act-2012
+  sectors:
+  - finance
+  - accountability
+  head_title: Managing Director, KPPRA
+  description: Sets and monitors public procurement rules for provincial departments and bodies.
+  jurisdiction: pk-kp
+- id: kp-info-commission
+  name: Khyber Pakhtunkhwa Right to Information Commission
+  kind: commission
+  branch: constitutional
+  parent: kp-government
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 19A
+  - law: kp-rti-act-2013
+  sectors:
+  - accountability
+  - human_rights
+  head_title: Chief Information Commissioner, Khyber Pakhtunkhwa
+  description: Hears complaints when public bodies refuse requests for information under the right to information (Art. 19A).
+  jurisdiction: pk-kp
+- id: kp-service-tribunal
+  name: Khyber Pakhtunkhwa Service Tribunal
+  kind: tribunal
+  branch: judicial
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 212
+  - law: kp-service-tribunal-act-1974
+  sectors:
+  - justice
+  - civil_service
+  head_title: Chairman, Khyber Pakhtunkhwa Service Tribunal
+  description: Decides service matters of provincial civil servants; appeals lie to the Supreme Court.
+  jurisdiction: pk-kp
+- id: kp-bar-council
+  name: Khyber Pakhtunkhwa Bar Council
+  kind: professional_body
+  branch: judicial
+  legal_basis:
+  - law: legal-practitioners-act-1973
+  sectors:
+  - justice
+  head_title: Vice-Chairman, Khyber Pakhtunkhwa Bar Council
+  head_appointment:
+    method: indirect_election
+    by: kp-bar-council
+  description: Licenses advocates to practise before the subordinate courts and the High Court, and handles professional misconduct. The Advocate-General
+    is ex officio Chairman.
+  jurisdiction: pk-kp
+- id: kp-psra
+  name: Khyber Pakhtunkhwa Private Schools Regulatory Authority
+  short_name: PSRA
+  kind: regulator
+  parent: kp-elementary-secondary-education
+  legal_basis:
+  - law: kp-psra-act-2017
+  sectors:
+  - education
+  head_title: Managing Director, PSRA
+  branch: executive
+  jurisdiction: pk-kp
 positions:
 - id: kp-governor
   title: Governor of Khyber Pakhtunkhwa
@@ -850,6 +935,15 @@ positions:
     legal_basis:
     - law: kp-healthcare-commission-act-2015
   confidence: medium
+- id: kp-bar-council-chair
+  title: Chairman, Khyber Pakhtunkhwa Bar Council
+  org: kp-bar-council
+  role: presiding_officer
+  ex_officio_of: kp-advocate-general-post
+  appointment:
+    method: ex_officio
+    legal_basis:
+    - law: legal-practitioners-act-1973
 - id: kp-peoc-coordinator
   title: Coordinator, Provincial EOC Khyber Pakhtunkhwa
   org: kp-peoc
@@ -976,3 +1070,34 @@ relations:
   legal_basis:
   - law: constitution-1973
     provision: Art. 203
+- from: kp-service-tribunal
+  to: fed-supreme-court
+  type: appeals_to
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 212(3)
+- from: kp-bar-council
+  to: fed-pakistan-bar-council
+  type: coordinates_with
+- from: kp-bar-council
+  to: fed-judicial-commission
+  type: nominates
+  description: Nominates an advocate member when the Commission considers High Court appointments for the province
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 175A
+  confidence: medium
+- from: kp-epa
+  to: fed-pak-epa
+  type: coordinates_with
+- from: kp-ppra
+  to: fed-ppra
+  type: coordinates_with
+- from: kp-ppra
+  to: kp-government
+  type: regulates
+  description: Public procurement by provincial bodies
+- from: kp-healthcare-commission
+  to: kp-government
+  type: regulates
+  description: Private and public healthcare establishments in the province

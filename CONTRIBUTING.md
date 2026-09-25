@@ -10,6 +10,8 @@ All data is plain YAML in `data/`. Every page on the site links to the file that
 4. **Use acting / additional charge.** If an officer holds a post on additional charge, record `status: additional_charge`.
 5. **Keep IDs stable.** Never rename an `id`. To record a renamed or merged body, add the new one and link it with `successor_of`, then set `abolished` on the old one.
 
+To record an MNA or MPA, add a role with the seat ID, e.g. `{ position: seat-na-122, since: "2024-02-29" }`. Seat IDs follow the ECP constituency codes (`seat-pp-159`, `seat-ps-77`, `seat-pk-70`, `seat-pb-10`).
+
 ## Workflow
 
 ```bash
@@ -31,6 +33,10 @@ npm run dev        # local site at http://localhost:5173
 | Health vertical (NHSR&C and its bodies) | `data/federal/health.yaml` |
 | Each province | `data/provinces/<province>.yaml` |
 | Gilgit-Baltistan, AJK | `data/territories/*.yaml` |
-| Officeholders | `data/people.yaml` |
+| Officeholders (with `party:` set to a party id) | `data/people.yaml` |
+| Seat rosters for every legislature, Senate seat groups | `data/legislatures.yaml` |
+| Political parties | `data/parties.yaml` |
+| Additional federal regulators, professional bodies, tribunals, ombudsmen | `data/federal/regulators.yaml` |
+| City and cantonment local governments | `data/local-government.yaml` |
 
 See [docs/DATA_MODEL.md](docs/DATA_MODEL.md) for the schema and conventions.

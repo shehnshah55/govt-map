@@ -40,6 +40,29 @@ describe("data integrity", () => {
     }
   });
 
+  it("has a complete constituency roster for every directly elected house", () => {
+    const count = (code: string) => graph.positions.filter((p) => p.id.startsWith(`seat-${code}-`) && p.seat_type === "general").length;
+    expect(count("na")).toBe(266);
+    expect(count("pp")).toBe(297);
+    expect(count("ps")).toBe(130);
+    expect(count("pk")).toBe(115);
+    expect(count("pb")).toBe(51);
+    const naTotal = graph.positions.filter((p) => p.org === "fed-national-assembly" && (p.area || p.seat_type)).reduce((n, p) => n + (p.seats ?? 1), 0);
+    expect(naTotal).toBe(336);
+    const senateTotal = graph.positions.filter((p) => p.org === "fed-senate" && p.seat_type).reduce((n, p) => n + (p.seats ?? 1), 0);
+    expect(senateTotal).toBe(96);
+  });
+
+  it("gives every regulator a head post", () => {
+    for (const o of graph.organizations.filter((o) => o.kind === "regulator")) {
+      expect(ix.leadership(o.id).some((p) => p.role === "head"), o.id).toBe(true);
+    }
+  });
+
+  it("links every party-affiliated person to a registered party", () => {
+    for (const p of graph.people.filter((p) => p.party)) expect(ix.org.get(p.party!)?.kind, p.id).toBe("political_party");
+  });
+
   it("dates every officeholder record", () => {
     for (const p of graph.people) expect(p.as_of, p.id).toMatch(/^\d{4}-\d{2}/);
   });

@@ -517,17 +517,6 @@ positions:
       on_advice_of: fed-prime-minister
       notes: Up to one-fourth of Federal Ministers may be Senators (Art. 92(1)).
       legal_basis: [{ law: constitution-1973, provision: "Art. 92" }]
-  - id: fed-cabinet-secretary
-    title: Cabinet Secretary
-    org: fed-cabinet
-    role: administrative_head
-    grade: BS-22
-    description: Senior-most federal civil servant; Secretary of the Cabinet Division.
-    appointment:
-      method: posting
-      by: fed-prime-minister
-      nominated_by: fed-establishment-division
-
   # Parliament
   - id: fed-mna
     title: Member of the National Assembly (MNA)
