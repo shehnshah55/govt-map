@@ -121,6 +121,23 @@ export function compile(dataDir: string): CompileResult {
     d.verification?.forEach((v) => verification.push(v));
   }
 
+  // ── 1b. ECP asset statements (data/assets/*.csv) ─────────────────────────
+  const assetsDir = join(dataDir, "assets");
+  let assetRows: { file: string; cells: string[] }[] = [];
+  try {
+    assetRows = readdirSync(assetsDir)
+      .filter((f) => f.endsWith(".csv"))
+      .flatMap((f) =>
+        readFileSync(join(assetsDir, f), "utf8")
+          .split(/\r?\n/)
+          .slice(1)
+          .filter((l) => l.trim())
+          .map((l) => ({ file: `data/assets/${f}`, cells: l.split(",").map((c) => c.trim()) })),
+      );
+  } catch {
+    /* no assets folder */
+  }
+
   // ── 2. field administration ───────────────────────────────────────────────
   const extraRelations: Relation[] = [];
   for (const { block, file } of fieldAdmin) {
@@ -356,6 +373,30 @@ export function compile(dataDir: string): CompileResult {
       if (a.origin) target.origin = a.origin;
       if (a.hq) target.hq = a.hq;
       if (a.color) target.color = a.color;
+    }
+  }
+
+  // merge asset rows into people
+  {
+    const byId = new Map(people.map((p) => [p.id, p]));
+    for (const { file, cells } of assetRows) {
+      const [pid, fy, assets, liabilities, basis, title, url] = cells;
+      const person = byId.get(pid);
+      if (!person) {
+        errors.push(`${file}: unknown person "${pid}"`);
+        continue;
+      }
+      if (!url?.startsWith("http") || !Number(assets)) {
+        errors.push(`${file}: row for ${pid} needs a numeric assets_pkr and a source_url`);
+        continue;
+      }
+      (person.declared_assets ??= []).push({
+        amount_pkr: Number(assets),
+        liabilities_pkr: liabilities ? Number(liabilities) : undefined,
+        as_of: fy,
+        basis: basis || "ECP statement",
+        source: { title: title || "Election Commission of Pakistan", url },
+      });
     }
   }
 

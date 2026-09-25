@@ -140,3 +140,10 @@ verification:
     records: [fed-fbr-chairman, rashid-langrial]
     checked: "2026-09-25"
     sources: [{ title: "FBR", url: "https://www.fbr.gov.pk" }]
+  - claim: "Declared assets of all sitting legislators (ECP annual statements, FY 2024-25)"
+    status: unverified
+    finding: Every MNA, Senator and MPA filed a statement by 31 December 2025 (Elections Act 2017, s. 137), but the published figures could not be reached from the build environment. Search results only surface older press summaries. The data/assets/ importer is ready for the ECP's published statements.
+    checked: "2026-09-25"
+    sources:
+      - { title: "APP — Legislators told to submit 2024–25 asset statements", url: "https://www.app.com.pk/national/deadline-looms-legislators-told-to-submit-2024-25-asset-statements/" }
+      - { title: "Election Commission of Pakistan", url: "https://www.ecp.gov.pk" }
