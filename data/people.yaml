@@ -14,6 +14,8 @@ people:
     name_ur: آصف علی زرداری
     party: party-ppp
     roles:
+      - { position: party-ppp-co-chairman, since: "2007-12-30" }
+      - { position: fed-president, since: "2008-09-09", until: "2013-09-08" }
       - { position: party-pppp-head }
       - { position: fed-president, since: "2024-03-10", term_number: 2, source: { title: President of Pakistan, url: "https://president.gov.pk" } }
     declared_assets:
@@ -28,6 +30,11 @@ people:
     name_ur: محمد شہباز شریف
     party: party-pmln
     roles:
+      - { position: fed-na-leader-of-opposition, since: "2018-08", until: "2022-04" }
+      - { position: party-pmln-head, since: "2018-03-13", until: "2024-05-13" }
+      - { position: pb-chief-minister, since: "2013-06-07", until: "2018-06-07", term_number: 3 }
+      - { position: pb-chief-minister, since: "2008-06-08", until: "2013-03-26" }
+      - { position: pb-chief-minister, since: "1997-02-20", until: "1999-10-12" }
       - { position: fed-prime-minister, since: "2022-04-11", until: "2023-08-14" }
       - { position: seat-na-123, since: "2024-02-29" }
       - { position: fed-prime-minister, since: "2024-03-04", term_number: 2, source: { title: Prime Minister's Office, url: "https://pmo.gov.pk" } }
@@ -42,6 +49,10 @@ people:
     name: Mohammad Ishaq Dar
     party: party-pmln
     roles:
+      - { position: fed-min-finance-minister, since: "2022-09-28", until: "2023-08-10" }
+      - { position: fed-min-finance-minister, since: "2013-06-07", until: "2017-11-22" }
+      - { position: fed-min-finance-minister, since: "2008-03-31", until: "2008-05-13" }
+      - { position: fed-min-finance-minister, since: "1998-11-07", until: "1999-10-12" }
       - { position: fed-senate-leader-of-house, since: "2024-03" }
       - { position: fed-senator, since: "2024-04" }
       - { position: fed-deputy-prime-minister, since: "2024-04-28" }
@@ -58,6 +69,7 @@ people:
   - id: mohsin-naqvi
     name: Mohsin Raza Naqvi
     roles:
+      - { position: pb-chief-minister, since: "2023-01-22", until: "2024-02-26", status: caretaker }
       - { position: fed-senator, since: "2024-04" }
       - { position: fed-min-interior-minister, since: "2024-03-11" }
       - { position: fed-pcb-chairman, since: "2024-02-06" }
@@ -68,6 +80,8 @@ people:
     name: Khawaja Muhammad Asif
     party: party-pmln
     roles:
+      - { position: fed-min-foreign-affairs-minister, since: "2017-08", until: "2018-04" }
+      - { position: fed-min-defence-minister, since: "2013-06", until: "2017-07" }
       - { position: seat-na-71, since: "2024-02-29" }
       - { position: fed-min-defence-minister, since: "2024-03-11" }
     as_of: "2025-11"
@@ -84,6 +98,7 @@ people:
     name: Ahsan Iqbal
     party: party-pmln
     roles:
+      - { position: fed-min-interior-minister, since: "2017-08", until: "2018-05" }
       - { position: seat-na-76, since: "2024-02-29" }
       - { position: fed-min-planning-minister, since: "2024-03-11" }
     as_of: "2025-11"
@@ -100,6 +115,7 @@ people:
     name: Syed Mustafa Kamal
     party: party-mqmp
     roles:
+      - { position: sd-mayor, since: "2005-10", until: "2010-02" }
       - { position: fed-min-nhsrc-minister, since: "2025-03-07", source: { title: Ministry of NHSR&C, url: "https://www.nhsrc.gov.pk" } }
     as_of: "2025-11"
     confidence: medium
@@ -201,6 +217,8 @@ people:
     name: Syed Yousuf Raza Gilani
     party: party-ppp
     roles:
+      - { position: fed-prime-minister, since: "2008-03-25", until: "2012-06-19" }
+      - { position: fed-na-speaker, since: "1993-10", until: "1997-02" }
       - { position: seat-senate-ict-general, since: "2024-04-02" }
       - { position: fed-senate-chairman, since: "2024-04-09", source: { title: Senate of Pakistan, url: "https://senate.gov.pk" } }
     as_of: "2025-11"
@@ -219,6 +237,9 @@ people:
   - id: yahya-afridi
     name: Justice Yahya Afridi
     roles:
+      - { position: kp-hc-judge, since: "2010", until: "2016-12-30" }
+      - { position: fed-sc-judge, since: "2018-06-28", until: "2024-10-25" }
+      - { position: kp-hc-chief-justice, since: "2016-12-30", until: "2018-06-28" }
       - { position: fed-chief-justice, since: "2024-10-26", source: { title: Supreme Court of Pakistan, url: "https://www.supremecourt.gov.pk" } }
     as_of: "2025-11"
     confidence: high
@@ -297,6 +318,10 @@ people:
     name: Field Marshal Syed Asim Munir
     confidence: high
     roles:
+      - { position: fed-qmg, since: "2021-10", until: "2022-11" }
+      - { position: fed-corps-commander-gujranwala, since: "2019-06-17", until: "2021-10-06" }
+      - { position: fed-dg-isi, since: "2018-10", until: "2019-06-16" }
+      - { position: fed-dg-mi, since: "2017-01", until: "2018-10" }
       - position: fed-coas
         since: "2022-11-29"
         ends: "2030-12"
@@ -363,6 +388,7 @@ people:
     name: Maryam Nawaz Sharif
     party: party-pmln
     roles:
+      - { position: party-pmln-senior-vp, since: "2023-01" }
       - { position: seat-pp-159, since: "2024-02-23" }
       - { position: pb-chief-minister, since: "2024-02-26", source: { title: Government of the Punjab, url: "https://punjab.gov.pk" } }
     declared_assets:
@@ -396,6 +422,8 @@ people:
     name: Syed Murad Ali Shah
     party: party-ppp
     roles:
+      - { position: sd-chief-minister, since: "2018-08-17", until: "2023-08-11", term_number: 2 }
+      - { position: sd-chief-minister, since: "2016-07-29", until: "2018-05-28" }
       - { position: sd-chief-minister, since: "2024-02-26", term_number: 3, source: { title: Government of Sindh, url: "https://sindh.gov.pk" } }
     as_of: "2025-11"
     confidence: high
@@ -540,6 +568,9 @@ people:
     name: Mian Muhammad Nawaz Sharif
     party: party-pmln
     roles:
+      - { position: fed-prime-minister, since: "1997-02-17", until: "1999-10-12", term_number: 2 }
+      - { position: fed-prime-minister, since: "1990-11-06", until: "1993-07-18" }
+      - { position: pb-chief-minister, since: "1985-04", until: "1990-08" }
       - { position: fed-prime-minister, since: "2013-06-05", until: "2017-07-28", term_number: 3 }
       - { position: party-pmln-head, since: "2024-05-28" }
       - { position: seat-na-130, since: "2024-02-29" }
@@ -553,6 +584,7 @@ people:
     name: Bilawal Bhutto Zardari
     party: party-ppp
     roles:
+      - { position: fed-min-foreign-affairs-minister, since: "2022-04-27", until: "2023-08-10" }
       - { position: party-ppp-head, since: "2007-12-30" }
       - { position: seat-na-194, since: "2024-02-29" }
     declared_assets:
@@ -1007,7 +1039,9 @@ people:
   - id: imran-khan
     name: Imran Khan
     party: party-pti
-    roles: [{ position: fed-prime-minister, since: "2018-08-18", until: "2022-04-10" }]
+    roles:
+      - { position: fed-prime-minister, since: "2018-08-18", until: "2022-04-10" }
+      - { position: party-pti-head, since: "1996-04-25", until: "2023-12" }
     as_of: "2026-09"
     confidence: high
     notes: Removed by a vote of no confidence in April 2022; imprisoned since August 2023.

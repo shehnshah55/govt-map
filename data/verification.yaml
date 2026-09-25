@@ -155,3 +155,21 @@ verification:
     sources:
       - { title: "Dawn — IHC acquits Nawaz Sharif in Avenfield reference", url: "https://www.dawn.com/news/1793562" }
       - { title: "Dawn — Zardari granted immunity from criminal proceedings", url: "https://www.dawn.com/news/1832858" }
+  - claim: "Career histories: previous elected, appointed, military, judicial and party offices"
+    status: verified
+    finding: "Shehbaz Sharif was Punjab CM 1997–99, 2008–13 and 2013–18, and PML-N President 2018–24. Asim Munir was DG MI 2017–18, DG ISI 2018–19, Corps Commander Gujranwala 2019–21 and QMG 2021–22. Ishaq Dar was Finance Minister four times (1998–99, 2008, 2013–17, 2022–23). Khawaja Asif was Foreign Minister 2017–18. Ahsan Iqbal was Interior Minister 2017–18. Yahya Afridi was PHC Chief Justice 2016–18 and an SC judge 2018–24. Gilani was NA Speaker 1993–97 and PM 2008–12. Other entries (Nawaz Sharif's earlier terms, Zardari's first presidency, Bilawal as Foreign Minister, Murad Ali Shah's earlier terms, Mohsin Naqvi as caretaker CM, Mustafa Kamal as Karachi's nazim) are well documented but were not re-checked in this pass."
+    records: [shehbaz-sharif, asim-munir, ishaq-dar, khawaja-asif, ahsan-iqbal, yahya-afridi, yousuf-raza-gilani]
+    checked: "2026-09-25"
+    sources:
+      - { title: "Britannica — Shehbaz Sharif", url: "https://www.britannica.com/biography/Shehbaz-Sharif" }
+      - { title: "Dawn — Profile: Gen Asim Munir", url: "https://www.dawn.com/news/1722628" }
+      - { title: "Ministry of Finance — Profile of Senator Ishaq Dar", url: "https://www.finance.gov.pk/Finance_Minister_Profile_Sep_2022.pdf" }
+      - { title: "Supreme Court — Mr Justice Yahya Afridi", url: "https://www.supremecourt.gov.pk/judges/mr-justice-yahya-afridi/" }
+      - { title: "Britannica — Yousaf Raza Gilani", url: "https://www.britannica.com/biography/Yousaf-Raza-Gilani" }
+  - claim: "Map of Pakistan"
+    status: corrected
+    finding: "The map previously used Natural Earth's de facto borders, which place Indian Illegally Occupied Jammu & Kashmir inside India. It now follows the Government of Pakistan's official political map of 4 August 2020: IIOJK is shown as disputed territory whose final status is to be decided in line with the relevant UNSC resolutions, the frontier east of Ladakh is undefined, Junagadh and Manavadar are shown as Pakistani territory, and the Sir Creek boundary is on the eastern bank."
+    checked: "2026-09-25"
+    sources:
+      - { title: "Dawn — PM unveils 'new political map' of Pakistan", url: "https://www.dawn.com/news/1572590" }
+      - { title: "Survey of Pakistan — political map news", url: "https://www.mapofpakistan.gov.pk/NewsDetail/NTE2MTY4YWItZGQ3MS00Zjc4LThhMjgtMWYzZDAxYjczYmJj" }

@@ -25,6 +25,7 @@ import {
   holdingFlags,
   roleOf,
   originTag,
+  selectionTag,
   casesTable,
   CASES_NOTE,
   type Ctx,
@@ -396,8 +397,18 @@ export function personView(ctx: Ctx, id: string): View | undefined {
           ${current.length ? html`<div class="posts">${current.map((r) => postRow(ix, ix.post.get(r.position)!, { showOrg: true }))}</div>` : html`<p class="hint">No current post recorded.</p>`}
         </section>
         ${
-          past.length
-            ? html`<section><h2>Previous posts</h2><ul class="plain">${past.map((r) => html`<li>${link(ix, r.position)} <span class="hint num">${r.since ?? "?"} – ${r.until}</span></li>`)}</ul></section>`
+          person.roles.length > 1 || past.length
+            ? html`<section><h2>Career <span class="count num">${person.roles.length} offices</span></h2>
+              <p class="hint" style="margin-bottom:10px">Every office recorded for this person, current and previous: elected, appointed, military, judicial and party posts.</p>
+              <ol class="timeline">${[...person.roles]
+                .sort((a, b) => (b.since ?? "").localeCompare(a.since ?? ""))
+                .map((r) => {
+                  const p = ix.post.get(r.position)!;
+                  return html`<li><span class="yr">${r.since?.slice(0, 7) ?? "?"} – ${r.until ? r.until.slice(0, 7) : "present"}</span><a href="#/post/${p.id}"><b>${p.title}</b></a>
+                    <div class="tags" style="margin-top:4px">${selectionTag(p)}<a class="tag tenure" href="#/org/${p.org}">${ix.shortLabel(p.org)}</a>${
+                      r.status !== "confirmed" ? html`<span class="tag flag">${r.status.replace(/_/g, " ")}</span>` : ""
+                    }${r.term_number && r.term_number > 1 ? html`<span class="tag flag-info">term ${r.term_number}</span>` : ""}</div></li>`;
+                })}</ol></section>`
             : ""
         }
         ${

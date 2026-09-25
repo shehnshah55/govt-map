@@ -107,6 +107,10 @@ organizations:
     head_title: Chairman, SIC
     head_appointment: { method: indirect_election, by: party-sic }
 
+positions:
+  - { id: party-pmln-senior-vp, title: "Senior Vice-President and Chief Organiser, PML-N", org: party-pmln, role: officer, appointment: { method: appointment, by: party-pmln-head } }
+  - { id: party-ppp-co-chairman, title: "Co-Chairman, PPP", org: party-ppp, role: deputy, appointment: { method: indirect_election, by: party-ppp } }
+
 relations:
   - { from: fed-ecp, to: party-pmln, type: regulates, description: "Registration, intra-party elections, accounts and symbols" }
   - { from: fed-ecp, to: party-ppp, type: regulates }

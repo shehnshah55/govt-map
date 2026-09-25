@@ -1,9 +1,5 @@
 /** Parliament seating, "who appoints whom", the collapsible tree, the HQ map and the verification log. */
-import { geoMercator, geoPath } from "d3-geo";
-import { feature } from "topojson-client";
-import type { Topology, GeometryCollection } from "topojson-specification";
-import type { FeatureCollection } from "geojson";
-import world from "world-atlas/countries-110m.json";
+import { pakistanBaseMap } from "../ui/pakistan-map.ts";
 import type { Org, Post } from "../lib/graph-index.ts";
 import { esc, html, raw, type Raw } from "../ui/dom.ts";
 import { hemicycle } from "../ui/hemicycle.ts";
@@ -127,10 +123,10 @@ const CITIES: Record<string, [number, number]> = {
 };
 /** Label placement for crowded northern cities: [dx, dy, text-anchor]. */
 const LABEL_OFFSET: Record<string, [number, number, string]> = {
-  Islamabad: [36, 6, "start"],
+  Islamabad: [0, 52, "middle"],
   Rawalpindi: [-10, 26, "end"],
   Peshawar: [-26, -8, "end"],
-  Muzaffarabad: [14, -10, "start"],
+  Muzaffarabad: [10, -18, "start"],
   Gilgit: [12, 4, "start"],
 };
 
@@ -145,14 +141,10 @@ export function mapView(ctx: Ctx): View {
     const c = hqOf(o);
     if (c && CITIES[c]) byCity.set(c, [...(byCity.get(c) ?? []), o]);
   }
-  const topo = world as unknown as Topology<{ countries: GeometryCollection }>;
-  const countries = feature(topo, topo.objects.countries) as unknown as FeatureCollection;
-  const pak = countries.features.find((f) => String(f.id) === "586")!;
   const W = 760;
-  const H = 640;
-  const proj = geoMercator().fitExtent([[30, 30], [W - 30, H - 30]], pak);
-  const path = geoPath(proj);
-  const neighbours = countries.features.filter((f) => ["004", "356", "364", "156"].includes(String(f.id)));
+  const H = 700;
+  const base = pakistanBaseMap(W, H);
+  const proj = base.project;
   const max = Math.max(...[...byCity.values()].map((l) => l.length));
   const dots = [...byCity.entries()].map(([city, list]) => {
     const [x, y] = proj(CITIES[city])!;
@@ -161,9 +153,8 @@ export function mapView(ctx: Ctx): View {
     return `<g><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}" fill="var(--k-navy)" fill-opacity="0.75" stroke="var(--surface)" stroke-width="2"><title>${esc(city)}: ${list.length} bodies</title></circle>
       <text x="${(x + (typeof dx === "number" ? dx : r + 4)).toFixed(1)}" y="${(y + dy).toFixed(1)}" text-anchor="${anchor}" font-size="13" fill="var(--ink)" font-family="IBM Plex Sans, sans-serif" paint-order="stroke" stroke="var(--surface)" stroke-width="3">${esc(city)} · ${list.length}</text></g>`;
   });
-  const svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Headquarters of government bodies by city">
-    ${neighbours.map((f) => `<path d="${path(f)}" fill="var(--surface-2)" stroke="var(--line)"/>`).join("")}
-    <path d="${path(pak)}" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+  const svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Map of Pakistan with the headquarters of government bodies by city">
+    ${base.svgDefs}${base.layers}
     ${dots.join("")}
   </svg>`;
   const cities = [...byCity.entries()].sort((a, b) => b[1].length - a[1].length);
@@ -171,7 +162,7 @@ export function mapView(ctx: Ctx): View {
     <header class="pagehead"><div class="eyebrow">Geography</div><h1>Where the state sits</h1>
       <p class="lede">Headquarters of federal, provincial and territorial bodies by city. District field offices are left out. Bodies without a recorded headquarters are placed in their government's capital.</p></header>
     <div class="layout">
-      <div class="panel mapbox">${raw(svg)}<p class="hint" style="margin-top:8px">Boundaries from Natural Earth (1:110m) are schematic and do not imply any position on disputed territory.</p></div>
+      <div class="panel mapbox">${raw(svg)}<ul class="plain hint" style="margin-top:10px">${base.notes.map((n) => html`<li>${n}</li>`)}</ul></div>
       <aside class="rail">${cities.map(
         ([city, list]) => html`<div class="panel"><h3>${city} · ${list.length}</h3><ul class="plain">${list
           .filter((o) => !o.parent || ix.org.get(o.parent)?.kind === "state" || ["regulator", "court", "constitutional_body", "armed_service", "military_hq", "legislature", "chamber"].includes(o.kind))
