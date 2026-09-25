@@ -3,7 +3,8 @@ import type { Org, Post } from "../lib/graph-index.ts";
 import type { OrgKind } from "../schema.ts";
 import { html, type Raw } from "../ui/dom.ts";
 import { METHOD_LABEL } from "../ui/labels.ts";
-import { confidenceChip, hrefFor, kindLabel, link, partyLink, statusChip, type Ctx, type View } from "./common.ts";
+import { confidenceChip, hrefFor, kindLabel, link, originTag, partyLink, selectionTag, statusChip, type Ctx, type View } from "./common.ts";
+import { ORIGIN_LABEL, SELECTION_LABEL } from "../ui/labels.ts";
 import { roster, wireFilters } from "./entities.ts";
 
 export const DIRECTORIES: { key: string; label: string; kinds: OrgKind[]; blurb: string }[] = [
@@ -27,8 +28,14 @@ function headOf(ctx: Ctx, o: Org): Post | undefined {
 function holderCell(ctx: Ctx, p: Post | undefined): Raw {
   if (!p) return html`<span class="hint">—</span>`;
   const hs = ctx.ix.effectiveHolders(p.id);
-  if (!hs.length) return html`<a href="${hrefFor(ctx.ix, p.id)}" class="hint">${p.title}</a> ${statusChip(ctx.ix, p.id)}`;
-  return html`${hs.map((h, i) => html`${i ? ", " : ""}${link(ctx.ix, h.person.id)}${h.status !== "confirmed" ? html` <span class="chip st-acting">${h.status.replace(/_/g, " ")}</span>` : ""}`)}<div class="hint">${p.title}</div>`;
+  if (!hs.length) return html`<a href="${hrefFor(ctx.ix, p.id)}" class="hint">${p.title}</a> ${statusChip(ctx.ix, p.id)}<div>${selectionTag(p)}</div>`;
+  return html`${hs.map((h, i) => html`${i ? ", " : ""}${link(ctx.ix, h.person.id)}${h.status !== "confirmed" ? html` <span class="chip st-acting">${h.status.replace(/_/g, " ")}</span>` : ""}`)}<div class="hint">${p.title}</div><div>${selectionTag(p)}</div>`;
+}
+
+const TIER_NAME: Record<string, string> = { pk: "Federal", "pk-ict": "Islamabad", "pk-pb": "Punjab", "pk-sd": "Sindh", "pk-kp": "Khyber Pakhtunkhwa", "pk-ba": "Balochistan", "pk-gb": "Gilgit-Baltistan", "pk-ajk": "AJK" };
+
+function tierSelect(group: string) {
+  return html`<label>Government <select data-filter="${group}" data-facet="tier" id="${group}-tier"><option value="">All</option>${TIER_ORDER.map((t) => html`<option value="${t}">${TIER_NAME[t]}</option>`)}</select></label>`;
 }
 
 export function directoryView(ctx: Ctx, key: string | undefined): View {
@@ -49,16 +56,18 @@ export function directoryView(ctx: Ctx, key: string | undefined): View {
   const body = html`
     <header class="pagehead"><div class="eyebrow">Directory</div><h1>${dir.label}</h1><p class="lede">${dir.blurb}</p></header>
     <nav class="tabs" aria-label="Directories">${DIRECTORIES.map((d) => html`<a href="#/directory/${d.key}" ${d.key === dir.key ? html`aria-current="page"` : ""}>${d.label}</a>`)}</nav>
-    <div class="toolbar">
+    <div class="toolbar filters">
       <input type="search" data-filter="dir" placeholder="Filter by name, government, head or law" aria-label="Filter the directory" />
-      <span class="hint num">${orgs.length} bodies · head recorded for ${withHolder}</span>
+      ${tierSelect("dir")}
+      <label>Created by <select data-filter="dir" data-facet="origin" id="dir-origin"><option value="">Any</option>${Object.entries(ORIGIN_LABEL).map(([k, v]) => html`<option value="${k}">${v}</option>`)}</select></label>
+      <span class="hint num" data-count="dir">${orgs.length} bodies · head recorded for ${withHolder}</span>
     </div>
     <div class="tablewrap"><table data-rows="dir">
       <thead><tr><th>Body</th><th>Government</th><th>Part of</th><th>Head</th><th>Legal basis</th></tr></thead>
       <tbody>${orgs.map((o) => {
         const tier = ix.tierOf(o.jurisdiction);
-        return html`<tr>
-          <td><a href="#/org/${o.id}">${o.name}</a>${o.short_name && o.short_name !== o.name ? html` <span class="hint">${o.short_name}</span>` : ""} ${confidenceChip(o.confidence)}<div class="hint">${kindLabel(o.kind)}</div></td>
+        return html`<tr data-tier="${tier?.id ?? "pk"}" data-origin="${o._origin}">
+          <td><a href="#/org/${o.id}">${o.name}</a>${o.short_name && o.short_name !== o.name ? html` <span class="hint">${o.short_name}</span>` : ""} ${confidenceChip(o.confidence)}<div class="hint">${kindLabel(o.kind)}</div><div>${originTag(o._origin)}</div></td>
           <td>${tier?.id === "pk" ? "Federal" : tier?.name ?? ""}</td>
           <td>${o.parent ? link(ix, o.parent, ix.shortLabel(o.parent)) : ""}</td>
           <td>${holderCell(ctx, headOf(ctx, o))}</td>
@@ -135,26 +144,29 @@ export function electedView(ctx: Ctx): View {
 
 export function officialsView(ctx: Ctx, kind: string | undefined): View {
   const { ix } = ctx;
-  const mode = kind === "elected" ? "elected" : "appointed";
+  const mode = kind === "elected" ? "elected" : kind === "appointed" ? "unelected" : "";
   const rows = ix.g.people
     .flatMap((person) => person.roles.filter((r) => !r.until).map((r) => ({ person, role: r, post: ix.post.get(r.position)! })))
-    .filter(({ post }) => (mode === "elected" ? ELECTED.has(post.appointment?.method ?? "") : !ELECTED.has(post.appointment?.method ?? "")))
+    .filter(({ post }) => !post.org.startsWith("party-"))
     .sort((a, b) => TIER_ORDER.indexOf(ix.tierOf(ix.org.get(a.post.org)!.jurisdiction)?.id ?? "pk") - TIER_ORDER.indexOf(ix.tierOf(ix.org.get(b.post.org)!.jurisdiction)?.id ?? "pk"));
   const body = html`
-    <header class="pagehead"><div class="eyebrow">Officials</div><h1>${mode === "elected" ? "Elected officeholders" : "Appointed officeholders"}</h1>
-      <p class="lede">${
-        mode === "elected"
-          ? "People holding offices filled by a vote of the electorate or of an elected house."
-          : "Ministers, civil servants, judges, regulators and service chiefs: people appointed, nominated or posted rather than elected. Ministers are appointed on the head of government's advice, even though most are also elected legislators."
-      }</p></header>
-    <nav class="tabs"><a href="#/officials/appointed" ${mode === "appointed" ? html`aria-current="page"` : ""}>Appointed</a><a href="#/officials/elected" ${mode === "elected" ? html`aria-current="page"` : ""}>Elected</a></nav>
-    <div class="toolbar"><input type="search" data-filter="off" placeholder="Filter by name, office, body, party" aria-label="Filter officials" /><span class="hint num">${rows.length} holdings</span></div>
+    <header class="pagehead"><div class="eyebrow">Officials</div><h1>Officeholders, elected and unelected</h1>
+      <p class="lede">Every recorded officeholder, tagged by how the office is filled: elected, political appointee, constitutional appointee, judiciary, military, civil service, regulatory or statutory appointee. Ministers are appointed on the head of government's advice even when they are also elected legislators, so a person can appear on both sides.</p></header>
+    <div class="toolbar filters">
+      <input type="search" data-filter="off" placeholder="Filter by name, office, body, party" aria-label="Filter officials" />
+      <label>Show <select data-filter="off" data-facet="sel" id="off-sel"><option value="">Everyone</option>
+        <option value="elected" ${mode === "elected" ? "selected" : ""}>Elected</option>
+        <option value="unelected" ${mode === "unelected" ? "selected" : ""}>Unelected</option>
+        ${Object.entries(SELECTION_LABEL).map(([k, v]) => html`<option value="${k}">— ${v}</option>`)}</select></label>
+      ${tierSelect("off")}
+      <span class="hint num" data-count="off">${rows.length} holdings</span>
+    </div>
     <div class="tablewrap"><table data-rows="off">
       <thead><tr><th>Person</th><th>Office</th><th>Body</th><th>How chosen</th><th>Since</th><th>Record</th></tr></thead>
       <tbody>${rows.map(
-        ({ person, role, post }) => html`<tr>
+        ({ person, role, post }) => html`<tr data-sel="${post._selection} ${post._selection === "elected" ? "elected" : "unelected"}" data-tier="${ix.tierOf(ix.org.get(post.org)!.jurisdiction)?.id ?? "pk"}">
           <td>${link(ix, person.id)}${person.party ? html`<div class="hint">${partyLink(ix, person.party)}</div>` : ""}</td>
-          <td><a href="#/post/${post.id}">${post.title}</a>${role.status !== "confirmed" ? html` <span class="chip st-acting">${role.status.replace(/_/g, " ")}</span>` : ""}</td>
+          <td><a href="#/post/${post.id}">${post.title}</a>${role.status !== "confirmed" ? html` <span class="chip st-acting">${role.status.replace(/_/g, " ")}</span>` : ""}<div>${selectionTag(post)}</div></td>
           <td>${link(ix, post.org, ix.shortLabel(post.org))}</td>
           <td>${post.appointment ? METHOD_LABEL[post.appointment.method] : ""}${post.appointment?.by ? html`<div class="hint">${ix.shortLabel(post.appointment.on_advice_of ?? post.appointment.by)}</div>` : ""}</td>
           <td class="num">${role.since ?? ""}</td>
@@ -162,5 +174,12 @@ export function officialsView(ctx: Ctx, kind: string | undefined): View {
         </tr>`,
       )}</tbody>
     </table></div>`;
-  return { title: "Officials", body, mount: (root) => wireFilters(root) };
+  return {
+    title: "Officials",
+    body,
+    mount: (root) => {
+      wireFilters(root);
+      root.querySelector<HTMLSelectElement>("#off-sel")?.dispatchEvent(new Event("change"));
+    },
+  };
 }

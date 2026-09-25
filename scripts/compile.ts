@@ -22,7 +22,11 @@ import {
   Position,
   Relation,
   type Graph,
+  type LegalRef,
+  type Origin,
   type RelationType,
+  type Selection,
+  type Tenure,
 } from "../src/schema.ts";
 
 type WithFile<T> = T & { _file: string };
@@ -73,6 +77,8 @@ export function compile(dataDir: string): CompileResult {
   const relations: (Relation & { _file: string })[] = [];
   const fieldAdmin: { block: NonNullable<DataFile["field_administration"]>[number]; file: string }[] = [];
   const seatBlocks: { block: NonNullable<DataFile["legislature_seats"]>[number]; file: string }[] = [];
+  const annotations: { a: NonNullable<DataFile["annotations"]>[number]; file: string }[] = [];
+  const verification: NonNullable<DataFile["verification"]> = [];
 
   // ── 1. load & validate ────────────────────────────────────────────────────
   for (const path of walk(dataDir)) {
@@ -111,6 +117,8 @@ export function compile(dataDir: string): CompileResult {
     d.relations?.forEach((x) => relations.push({ ...x, _file: file }));
     d.field_administration?.forEach((block) => fieldAdmin.push({ block, file }));
     d.legislature_seats?.forEach((block) => seatBlocks.push({ block, file }));
+    d.annotations?.forEach((a) => annotations.push({ a, file }));
+    d.verification?.forEach((v) => verification.push(v));
   }
 
   // ── 2. field administration ───────────────────────────────────────────────
@@ -333,6 +341,24 @@ export function compile(dataDir: string): CompileResult {
     }
   }
 
+  // ── 3b. annotations (merged by id onto posts and bodies) ──────────────────
+  {
+    const posById = new Map(positions.map((p) => [p.id, p]));
+    const oById = new Map(organizations.map((o) => [o.id, o]));
+    for (const { a, file } of annotations) {
+      const target: { history?: unknown[]; tenure?: unknown; origin?: unknown; hq?: unknown; color?: unknown } | undefined = posById.get(a.id) ?? oById.get(a.id);
+      if (!target) {
+        errors.push(`${file}: annotation for unknown post or body "${a.id}"`);
+        continue;
+      }
+      if (a.history) target.history = [...(target.history ?? []), ...a.history];
+      if (a.tenure) target.tenure = a.tenure;
+      if (a.origin) target.origin = a.origin;
+      if (a.hq) target.hq = a.hq;
+      if (a.color) target.color = a.color;
+    }
+  }
+
   // ── 4. integrity ──────────────────────────────────────────────────────────
   const kindOf = new Map<string, string>();
   const register = (id: string, kind: string, file: string) => {
@@ -451,6 +477,98 @@ export function compile(dataDir: string): CompileResult {
     for (const r of person.roles) if (!r.until) edge(person.id, r.position, "holds", { description: r.status !== "confirmed" ? r.status : undefined });
   for (const person of people) edge(person.id, person.party, "member_of", { description: "party membership" });
 
+  // ── 6. classification: origin (what creates it), selection (how it is filled), tenure ──
+  const lawById = new Map(laws.map((l) => [l.id, l]));
+  const originOf = (refs: LegalRef[] | undefined): Origin | undefined => {
+    if (!refs?.length) return undefined;
+    if (refs.some((r) => ["constitution", "amendment"].includes(lawById.get(r.law)?.kind ?? "") && !lawById.get(r.law)?.creates)) return "constitutional";
+    const first = lawById.get(refs[0].law);
+    if (first?.creates) return first.creates;
+    const k = first?.kind;
+    if (k === "act" || k === "ordinance" || k === "order" || k === "regulation") return "statutory";
+    if (k === "rules" || k === "notification") return "executive";
+    return undefined;
+  };
+  const orgOrigin = new Map<string, Origin>();
+  const resolveOrgOrigin = (id: string, depth = 0): Origin => {
+    const cached = orgOrigin.get(id);
+    if (cached) return cached;
+    const o = orgById.get(id);
+    if (!o) return "conventional";
+    const v =
+      o.origin ??
+      originOf(o.legal_basis) ??
+      (["department", "division", "ministry"].includes(o.kind)
+        ? "executive"
+        : o.parent && depth < 8
+          ? resolveOrgOrigin(o.parent, depth + 1)
+          : "unrecorded");
+    orgOrigin.set(id, v);
+    return v;
+  };
+  const ELECT = new Set(["direct_election", "indirect_election"]);
+  const selectionOf = (p: Position): Selection => {
+    const o = orgById.get(p.org);
+    const m = p.appointment?.method;
+    if (m && ELECT.has(m)) return "elected";
+    if (m === "ex_officio") return "ex_officio";
+    if ((p.role === "judge" || p.role === "chief_justice") && o?.branch === "judicial") return "judicial";
+    if (o?.branch === "military" || /General|Admiral|Air Chief|Marshal/.test(p.grade ?? "")) return "military";
+    if (m === "posting" || m === "promotion") return "civil_service";
+    if (o && ["regulator", "statutory_council", "professional_body"].includes(o.kind)) return "regulatory";
+    if (o && (o.branch === "constitutional" || ["constitutional_body", "ombudsman"].includes(o.kind))) return "constitutional";
+    if (m === "appointment_on_advice" && (p.appointment?.on_advice_of === "fed-prime-minister" || /chief-minister|prime-minister/.test(p.appointment?.on_advice_of ?? "")) && !p.appointment?.term)
+      return "political";
+    if (m === "appointment" && /prime-minister|chief-minister/.test(p.appointment?.by ?? "") && !p.appointment?.term) return "political";
+    return "statutory";
+  };
+  const years = (term?: string) => {
+    const m = term?.match(/(\d+)\s*year/);
+    return m ? Number(m[1]) : undefined;
+  };
+  const tenureOf = (p: Position, sel: Selection): Tenure | undefined => {
+    if (p.tenure) return p.tenure;
+    const term = p.appointment?.term;
+    if (sel === "elected") return { kind: "elected_term", years: years(term), notes: term };
+    if (sel === "ex_officio") return { kind: "coterminous", notes: "Held for as long as the holder occupies the parent office." };
+    if (sel === "judicial") {
+      const sc = ["fed-supreme-court", "fed-constitutional-court", "fed-federal-shariat-court"].includes(p.org);
+      return { kind: "age_limit", age: sc ? 65 : 62, notes: sc ? "Retires at 65 (Art. 179)." : "Retires at 62 (Art. 195).", legal_basis: [{ law: "constitution-1973", provision: sc ? "Art. 179" : "Art. 195" }] };
+    }
+    if (years(term)) return { kind: "fixed", years: years(term), notes: term };
+    if (sel === "civil_service") return { kind: "service", notes: "Posted and transferred at the government's discretion; civil servants retire at 60." };
+    if (sel === "military") return { kind: "service", notes: "Military posting; service chiefs have fixed terms set by the service Acts." };
+    if (sel === "political") return { kind: "pleasure", notes: "Holds office during the pleasure of the appointing authority; ends with the government that appointed them." };
+    return undefined;
+  };
+  // references inside the new fields
+  for (const o of organizations) {
+    o.history?.forEach((h) => expect(h.law, ["law"], `${o._file} organization ${o.id}.history`));
+    o.composition?.parties.forEach((cp) => cp.party !== "independent" && cp.party !== "other" && expect(cp.party, ["organization"], `${o._file} organization ${o.id}.composition`));
+    if (o.composition) {
+      const sum = o.composition.parties.reduce((n, cp) => n + cp.seats, 0);
+      if (sum !== o.composition.total) warnings.push(`${o._file} organization ${o.id}: composition seats sum to ${sum}, total is ${o.composition.total}`);
+    }
+  }
+  for (const p of positions) {
+    p.history?.forEach((h) => expect(h.law, ["law"], `${p._file} position ${p.id}.history`));
+    expect(p.tenure?.extension_by, actor, `${p._file} position ${p.id}.tenure.extension_by`);
+  }
+  for (const person of people)
+    for (const r of person.roles)
+      for (const x of r.extensions ?? []) {
+        expect(x.by, actor, `${person._file} person ${person.id}.extensions.by`);
+        expect(x.law, ["law"], `${person._file} person ${person.id}.extensions.law`);
+      }
+  const orgsOut = organizations.map((o) => ({ ...o, _origin: resolveOrgOrigin(o.id) }));
+  const positionsOut = positions.map((p) => {
+    const sel = selectionOf(p);
+    return { ...p, _origin: p.origin ?? originOf(p.appointment?.legal_basis) ?? resolveOrgOrigin(p.org), _selection: sel, _tenure: tenureOf(p, sel) };
+  });
+  // edges for legal history (drillable from a law to every office it changed)
+  for (const o of organizations) o.history?.forEach((h) => edge(o.id, h.law, "established_by", { description: `${h.year}: ${h.change}` }));
+  for (const p of positions) p.history?.forEach((h) => edge(p.id, h.law, "established_by", { description: `${h.year}: ${h.change}` }));
+
   const dataAsOf = people.map((p) => p.as_of).sort().at(-1) ?? "";
   const graph: Graph = {
     meta: {
@@ -467,11 +585,13 @@ export function compile(dataDir: string): CompileResult {
       },
     },
     jurisdictions,
-    organizations,
-    positions,
+    organizations: orgsOut,
+    positions: positionsOut,
     people,
     laws,
+    verification,
     edges,
   };
+  for (const v of verification) v.records?.forEach((r) => expect(r, ["organization", "position", "person", "law", "jurisdiction"], `verification "${v.claim}"`));
   return { graph, errors, warnings };
 }

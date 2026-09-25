@@ -3,7 +3,8 @@ import { html } from "../ui/dom.ts";
 import { hierarchy, powerMap } from "../ui/graph-view.ts";
 import { SECTOR_LABEL, STATUS_LABEL } from "../ui/labels.ts";
 import { DIRECTORIES } from "./directory.ts";
-import { confidenceChip, graphPanel, hrefFor, kindLabel, link, postRow, statusChip, type Ctx, type View } from "./common.ts";
+import { confidenceChip, graphPanel, holdingFlags, hrefFor, kindLabel, link, partyLink, postRow, selectionTag, statusChip, type Ctx, type View } from "./common.ts";
+import { formatPkr } from "./entities.ts";
 
 const TIERS = ["pk", "pk-pb", "pk-sd", "pk-kp", "pk-ba", "pk-ict", "pk-gb", "pk-ajk"];
 const TIER_LABEL: Record<string, string> = {
@@ -106,6 +107,25 @@ export function homeView(ctx: Ctx): View {
               <div class="hint num">${n} bodies${divs ? ` · ${divs} divisions · ${dist} districts` : ""}</div>
             </div>`;
           })}
+        </div>
+      </section>
+      <section><h2>Explore by question</h2>
+        <div class="cards">
+          <a class="card" href="#/parliament"><span class="t">Parliament in session</span><span class="s">Seating charts of the National Assembly and Senate: treasury vs opposition, parties and office-holders</span></a>
+          <a class="card" href="#/appointments"><span class="t">Who appoints whom?</span><span class="s">Army chief, judges, regulators, the CEC and more: appointer, advice, confirmation, tenure, extensions</span></a>
+          <a class="card" href="#/accountability"><span class="t">Holdovers and extensions</span><span class="s">Officials past their term, extended terms, retired generals and bureaucrats in civilian posts, declared assets</span></a>
+          <a class="card" href="#/tree"><span class="t">The state as a tree</span><span class="s">Drill from each government to every body, post and holder</span></a>
+          <a class="card" href="#/map"><span class="t">Where the state sits</span><span class="s">Headquarters by city</span></a>
+          <a class="card" href="#/verification"><span class="t">Verification log</span><span class="s">What was checked, corrected or disputed, with sources</span></a>
+        </div>
+      </section>
+      <section><h2>Colour key</h2>
+        <p class="hint" style="margin-bottom:10px">Every post is tagged by what created it, how it is filled and its tenure. Every body is tagged by what created it.</p>
+        <div class="tags">
+          <span class="tag org-constitutional">Constitutional</span><span class="tag org-statutory">Statutory</span><span class="tag org-executive">Executive order</span><span class="tag org-conventional">Convention</span>
+          <span class="tag sel-elected">Elected</span><span class="tag sel-political">Political appointee</span><span class="tag sel-constitutional">Constitutional appointee</span><span class="tag sel-judicial">Judiciary</span><span class="tag sel-military">Military</span><span class="tag sel-civil_service">Civil service</span><span class="tag sel-regulatory">Regulatory appointee</span><span class="tag sel-statutory">Statutory appointee</span>
+          <span class="tag tenure">5-year term</span><span class="tag tenure">At pleasure (discretionary)</span><span class="tag law">26th Amendment · 2024</span>
+          <span class="tag flag-bad">Holding over</span><span class="tag flag">Extended ×2</span><span class="tag flag-info">Retired Lieutenant-General</span>
         </div>
       </section>
       <section><h2>Directory <span class="count">Every body by type, with its head and legal basis</span></h2>
@@ -264,8 +284,8 @@ export function accountabilityView(ctx: Ctx): View {
   const body = html`
     <header class="pagehead">
       <div class="eyebrow">Accountability</div>
-      <h1>Vacancies, acting officials and data gaps</h1>
-      <p class="lede">In Pakistan, senior posts are often held on "additional charge" or by acting officials. This page lists every recorded acting or vacant post, and every key post whose holder is not yet in the dataset.</p>
+      <h1>Holdovers, extensions, retired officers and data gaps</h1>
+      <p class="lede">This page lists officials continuing after their term ended, terms extended by decision or by changing the law, repeat terms, and retired or serving military officers, judges and bureaucrats in other posts. It also shows people holding several offices, declared assets, acting and vacant posts, and records still to verify.</p>
     </header>
     <div class="stats">
       <div class="stat"><b>${filled}/${authored.length}</b><span>Key posts with a recorded holder</span></div>
@@ -274,6 +294,14 @@ export function accountabilityView(ctx: Ctx): View {
       <div class="stat"><b>${lowPeople.length}</b><span>Officeholder records to verify</span></div>
     </div>
     <div class="stack">
+      ${holdingSection(ctx, "Holding over after their term ended", "Constitutional or statutory term has expired; the holder continues until a successor is appointed.", (r) => r.status === "holding_over")}
+      ${holdingSection(ctx, "Extensions, renewals and reappointments", "Terms extended by government decision or by changing the law.", (r) => !!r.extensions?.length)}
+      ${holdingSection(ctx, "Second and later terms in the same office", "Re-elected or re-appointed to an office they held before.", (r) => (r.term_number ?? 1) > 1)}
+      ${backgroundSection(ctx, "Retired military officers in civilian posts", (b) => b.service === "military" && !!b.retired)}
+      ${backgroundSection(ctx, "Serving military officers in civilian posts", (b) => b.service === "military" && !b.retired)}
+      ${backgroundSection(ctx, "Retired judges and civil servants in other posts", (b) => (b.service === "judiciary" || b.service === "civil_service") && !!b.retired)}
+      ${dualRoles(ctx)}
+      ${assetsSection(ctx)}
       ${acting.length ? html`<section><h2>Acting and additional charge</h2><div class="posts">${acting.map((p) => postRow(ix, p, { showOrg: true }))}</div></section>` : ""}
       ${vacant.length ? html`<section><h2>Vacant</h2><div class="posts">${vacant.map((p) => postRow(ix, p, { showOrg: true }))}</div></section>` : ""}
       <section><h2>Officeholder records to verify <span class="count num">${lowPeople.length}</span></h2>
@@ -297,15 +325,80 @@ export function accountabilityView(ctx: Ctx): View {
   return { title: "Accountability", body };
 }
 
+type Role = Ctx["ix"]["g"]["people"][number]["roles"][number];
+type Bg = NonNullable<Ctx["ix"]["g"]["people"][number]["background"]>[number];
+
+function holdingRow(ctx: Ctx, person: Ctx["ix"]["g"]["people"][number], r: Role) {
+  const { ix } = ctx;
+  const post = ix.post.get(r.position)!;
+  return html`<tr><td>${link(ix, person.id)}${person.party ? html`<div class="hint">${partyLink(ix, person.party)}</div>` : ""}</td>
+    <td><a href="${hrefFor(ix, post.id)}">${post.title}</a><div>${selectionTag(post)}</div></td>
+    <td>${holdingFlags(ix, { person, ...r }, post.id)}</td>
+    <td class="num">${r.since ?? ""}</td><td class="num">${person.as_of} ${confidenceChip(person.confidence)}</td></tr>`;
+}
+
+function table(rows: ReturnType<typeof holdingRow>[]) {
+  return html`<div class="tablewrap"><table><thead><tr><th>Person</th><th>Office</th><th>Flags</th><th>Since</th><th>Record</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
+function holdingSection(ctx: Ctx, title: string, blurb: string, pred: (r: Role) => boolean) {
+  const rows = ctx.ix.g.people.flatMap((p) => p.roles.filter((r) => !r.until && pred(r)).map((r) => holdingRow(ctx, p, r)));
+  if (!rows.length) return html``;
+  return html`<section><h2>${title} <span class="count num">${rows.length}</span></h2><p class="hint" style="margin-bottom:10px">${blurb}</p>${table(rows)}</section>`;
+}
+
+function backgroundSection(ctx: Ctx, title: string, pred: (b: Bg) => boolean) {
+  const { ix } = ctx;
+  const rows = ix.g.people.flatMap((p) =>
+    (p.background ?? []).some(pred)
+      ? p.roles
+          .filter((r) => !r.until)
+          .filter((r) => {
+            const sel = ix.post.get(r.position)?._selection;
+            const b = (p.background ?? []).find(pred)!;
+            return !(b.service === "military" && sel === "military") && !(b.service === "judiciary" && sel === "judicial") && !(b.service === "civil_service" && sel === "civil_service");
+          })
+          .map((r) => holdingRow(ctx, p, r))
+      : [],
+  );
+  if (!rows.length) return html``;
+  return html`<section><h2>${title} <span class="count num">${rows.length}</span></h2>${table(rows)}</section>`;
+}
+
+function dualRoles(ctx: Ctx) {
+  const { ix } = ctx;
+  const people = ix.g.people
+    .map((p) => ({ p, posts: p.roles.filter((r) => !r.until).map((r) => ix.post.get(r.position)!).filter((x) => !x.org.startsWith("party-")) }))
+    .filter(({ posts }) => new Set(posts.map((x) => x.org)).size > 1);
+  if (!people.length) return html``;
+  return html`<section><h2>People holding several offices at once <span class="count num">${people.length}</span></h2>
+    <p class="hint" style="margin-bottom:10px">Ministers who are also legislators, officials with additional charge, and other concurrent holdings.</p>
+    <div class="tablewrap"><table><thead><tr><th>Person</th><th>Offices held concurrently</th></tr></thead><tbody>${people.map(
+      ({ p, posts }) => html`<tr><td>${link(ix, p.id)}${p.party ? html`<div class="hint">${partyLink(ix, p.party)}</div>` : ""}</td><td>${posts.map((x, i) => html`${i ? html`<br />` : ""}${selectionTag(x)} <a href="${hrefFor(ix, x.id)}">${x.title}</a>`)}</td></tr>`,
+    )}</tbody></table></div></section>`;
+}
+
+function assetsSection(ctx: Ctx) {
+  const { ix } = ctx;
+  const rows = ix.g.people.flatMap((p) => (p.declared_assets ?? []).map((a) => ({ p, a }))).sort((x, y) => y.a.amount_pkr - x.a.amount_pkr);
+  if (!rows.length) return html``;
+  return html`<section><h2>Declared assets <span class="count num">${rows.length}</span></h2>
+    <p class="hint" style="margin-bottom:10px">Assets declared to the Election Commission in nomination papers or annual statements. These are self-declared, often at historical cost, and are not audited net worth. Only figures with a verifiable published source are shown.</p>
+    <div class="tablewrap"><table><thead><tr><th>Person</th><th class="n">Declared assets</th><th>Declared</th><th>Basis</th><th>Source</th></tr></thead><tbody>${rows.map(
+      ({ p, a }) => html`<tr><td>${link(ix, p.id)}${p.party ? html`<div class="hint">${partyLink(ix, p.party)}</div>` : ""}</td><td class="n">Rs ${formatPkr(a.amount_pkr)}</td><td class="num">${a.as_of}</td><td>${a.basis}${a.notes ? html`<div class="hint">${a.notes}</div>` : ""}</td><td><a href="${a.source.url}" target="_blank" rel="noopener">${a.source.title}</a></td></tr>`,
+    )}</tbody></table></div></section>`;
+}
+
 export function lawsView(ctx: Ctx): View {
   const { ix } = ctx;
-  const laws = [...ix.g.laws].sort((a, b) => (a.kind === "constitution" ? -1 : 0) - (b.kind === "constitution" ? -1 : 0) || (a.year ?? 0) - (b.year ?? 0));
+  const rank = (k: string) => (k === "constitution" ? 0 : k === "amendment" ? 1 : 2);
+  const laws = [...ix.g.laws].sort((a, b) => rank(a.kind) - rank(b.kind) || (a.year ?? 0) - (b.year ?? 0));
   const body = html`
     <header class="pagehead"><div class="eyebrow">Legal sources</div><h1>Laws behind the graph</h1>
       <p class="lede">Every body and appointment in the graph points to the constitutional article, Rules of Business schedule, statute or order that creates it.</p></header>
     <div class="tablewrap"><table>
-      <thead><tr><th>Instrument</th><th>Type</th><th class="n">Year</th><th>Jurisdiction</th><th class="n">Bodies</th></tr></thead>
-      <tbody>${laws.map((l) => html`<tr><td>${link(ix, l.id)} ${confidenceChip(l.confidence)}</td><td>${l.kind}</td><td class="n">${l.year ?? ""}</td><td>${ix.place.get(l.jurisdiction)?.name}</td><td class="n">${ix.enactedBodies(l.id).length}</td></tr>`)}</tbody>
+      <thead><tr><th>Instrument</th><th>Type</th><th class="n">Year</th><th>Jurisdiction</th><th class="n">Bodies</th><th class="n">Offices changed</th></tr></thead>
+      <tbody>${laws.map((l) => html`<tr><td>${link(ix, l.id)} ${confidenceChip(l.confidence)}</td><td>${l.kind}</td><td class="n">${l.year ?? ""}</td><td>${ix.place.get(l.jurisdiction)?.name}</td><td class="n">${ix.enactedBodies(l.id).length}</td><td class="n">${ix.g.positions.filter((p) => p.history?.some((h) => h.law === l.id)).length + ix.g.organizations.filter((o) => o.history?.some((h) => h.law === l.id)).length || ""}</td></tr>`)}</tbody>
     </table></div>`;
   return { title: "Laws", body };
 }

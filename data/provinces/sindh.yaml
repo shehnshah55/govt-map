@@ -139,6 +139,8 @@ organizations:
   branch: constitutional
   sectors:
   - accountability
+  legal_basis:
+  - law: sindh-ombudsman-act-1991
   jurisdiction: pk-sd
 - id: sd-pfc
   name: Provincial Finance Commission, Sindh

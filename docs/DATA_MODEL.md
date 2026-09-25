@@ -86,3 +86,28 @@ A YAML file may declare `defaults.organizations` / `defaults.positions`, which a
 - `public/data/graph.json`: everything the web app needs
 - `public/data/export/*.csv`: organizations, positions, tenures, jurisdictions, laws, edges
 - `public/data/export/popolo.json`: Popolo organizations, posts, persons, memberships, areas
+
+## Classification (derived for every post and body)
+
+| Field | Values | How it is set |
+|---|---|---|
+| `_origin` (what creates the office or body) | constitutional, statutory, executive, conventional, unrecorded | From the first instrument in `legal_basis` (Constitution or amendment → constitutional; Act, Ordinance or Order → statutory; Rules of Business or notification → executive; a law's `creates` overrides). Departments without a basis are executive; other bodies inherit their parent's origin. Can be overridden with `origin`. Posts use their appointment's legal basis, falling back to their body's origin. |
+| `_selection` (how a post is filled, the brief's elected/unelected taxonomy) | elected, political, constitutional, judicial, military, civil_service, regulatory, statutory, ex_officio | From the appointment method, the body's branch and kind, and the appointing authority. For example, appointment at the PM's advice with no fixed term is `political`. |
+| `_tenure` | fixed, age_limit, pleasure, coterminous, service, elected_term (+ years, age, renewable, extension_by, holdover) | Authored `tenure`, or derived: judges retire at 65 (SC, Art. 179) or 62 (HC, Art. 195); political appointees serve at pleasure; civil servants and military hold service postings; "N years" terms are fixed. |
+
+## Legal lineage and tenure (`data/annotations/*.yaml`)
+
+`annotations` merge fields onto existing posts or bodies by `id`: `history[{year, law, provision, change}]`, `tenure`, `origin`, `hq`, `color`. History entries create `established_by` edges, so each law page lists every office it created or changed.
+
+## People: holdovers, extensions, backgrounds, assets
+
+Role fields: `status` (confirmed, acting, additional_charge, caretaker, interim, holding_over), `term_ended`, `term_number`, `ends`, `extensions[{granted, to, by, law, notes}]`.
+Person fields: `background[{service, rank, retired, notes}]`, used to flag retired or serving officers, judges and bureaucrats in other posts. `declared_assets[{amount_pkr, as_of, basis, source}]` records assets declared to the ECP, not audited net worth; a published source is required.
+
+## Chamber composition
+
+`organization.composition{as_of, total, parties[{party, seats, side: treasury|opposition|other}], sources}` drives the seating charts. `party` is a party id, or `independent` / `other`. The build warns if seats do not sum to `total`.
+
+## Verification log (`data/verification.yaml`)
+
+Each entry records `{claim, records[], status: verified|corrected|conflict|unverified, finding, origin, checked, sources[]}`. It is shown in the app's Verification page. Claims from outside datasets, such as the uploaded spreadsheet, carry `origin`.

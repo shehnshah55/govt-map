@@ -180,6 +180,7 @@ laws:
   - id: gb-governance-order-2018
     title: Government of Gilgit-Baltistan Order, 2018
     kind: order
+    creates: executive
     year: 2018
     jurisdiction: pk-gb
     summary: Framework for the Gilgit-Baltistan Assembly, Governor, Chief Minister and Chief Court (succeeding the Gilgit-Baltistan (Empowerment and Self-Governance) Order, 2009).
@@ -424,3 +425,29 @@ laws:
   - { id: mines-oilfields-act-1948, title: "Regulation of Mines and Oil-Fields and Mineral Development (Government Control) Act, 1948", kind: act, year: 1948, jurisdiction: pk, summary: "Parent law for the Pakistan Petroleum (Exploration and Production) Rules, under which petroleum concessions are granted." }
   - { id: animal-quarantine-ordinance-1979, title: "Pakistan Animal Quarantine (Import and Export of Animals and Animal Products) Ordinance, 1979", kind: ordinance, year: 1979, jurisdiction: pk }
   - { id: tobacco-board-ordinance-1968, title: "Pakistan Tobacco Board Ordinance, 1968", kind: ordinance, year: 1968, jurisdiction: pk, confidence: medium }
+
+  # ── Constitutional amendments that created or changed offices ─────────────
+  - { id: constitution-amendment-order-1980, title: "Constitution (Amendment) Order, 1980 (P.O. 1 of 1980)", short: "P.O. 1 of 1980", kind: amendment, year: 1980, jurisdiction: pk, summary: "Inserted Chapter 3A, creating the Federal Shariat Court." }
+  - { id: amendment-13, title: "Constitution (Thirteenth Amendment) Act, 1997", short: 13th Amendment, kind: amendment, year: 1997, jurisdiction: pk, summary: "Repealed Art. 58(2)(b), removing the President's power to dissolve the National Assembly, and returned appointment of service chiefs and Governors to the Prime Minister's advice." }
+  - { id: amendment-17, title: "Constitution (Seventeenth Amendment) Act, 2003", short: 17th Amendment, kind: amendment, year: 2003, jurisdiction: pk, summary: "Restored Art. 58(2)(b) and validated the Legal Framework Order 2002, which had enlarged the National Assembly to 342 seats with 60 reserved for women." }
+  - { id: amendment-19, title: "Constitution (Nineteenth Amendment) Act, 2011", short: 19th Amendment, kind: amendment, year: 2011, jurisdiction: pk, summary: "Revised the Judicial Commission and Parliamentary Committee procedure for judicial appointments after the Supreme Court's 2010 order." }
+  - { id: amendment-20, title: "Constitution (Twentieth Amendment) Act, 2012", short: 20th Amendment, kind: amendment, year: 2012, jurisdiction: pk, summary: "Required caretaker governments to be appointed by consensus or through a parliamentary committee and the Election Commission." }
+  - { id: amendment-21, title: "Constitution (Twenty-first Amendment) Act, 2015", short: 21st Amendment, kind: amendment, year: 2015, jurisdiction: pk, summary: "Allowed military courts to try terrorism cases for two years (extended once by the 23rd Amendment)." }
+  - { id: amendment-22, title: "Constitution (Twenty-second Amendment) Act, 2016", short: 22nd Amendment, kind: amendment, year: 2016, jurisdiction: pk, summary: "Widened eligibility for Chief Election Commissioner and ECP members to senior civil servants and technocrats, not only judges." }
+  - { id: army-act-1952, title: "Pakistan Army Act, 1952", kind: act, year: 1952, jurisdiction: pk, summary: "Governs the Army; amended in 2020 and 2024 to fix the Army Chief's tenure and allow reappointment or extension." }
+  - { id: army-amendment-2020, title: "Pakistan Army (Amendment) Act, 2020", kind: act, year: 2020, jurisdiction: pk, summary: "Gave the Chief of Army Staff a three-year term and allowed the Prime Minister to extend or reappoint, with the retirement age for a service chief set at 64." }
+  - { id: army-amendment-2024, title: "Pakistan Army (Amendment) Act, 2024", kind: act, year: 2024, jurisdiction: pk, summary: "Raised the term of the service chiefs from three to five years (with parallel amendments to the Navy and Air Force laws)." }
+  - { id: navy-ordinance-1961, title: "Pakistan Navy Ordinance, 1961", kind: ordinance, year: 1961, jurisdiction: pk }
+  - { id: air-force-act-1953, title: "Pakistan Air Force Act, 1953", kind: act, year: 1953, jurisdiction: pk }
+  - { id: nab-amendment-2022, title: "National Accountability (Amendment) Act, 2022", kind: act, year: 2022, jurisdiction: pk, summary: "Narrowed NAB's jurisdiction and set a three-year, non-extendable term for the Chairman." }
+  - { id: nab-amendment-2026, title: "National Accountability Bureau (Amendment) Act, 2026", kind: act, year: 2026, jurisdiction: pk, summary: "Made the NAB Chairman's term extendable by another three years; passed and assented to the day before the incumbent's term was due to end." }
+  - { id: sbp-amendment-2022, title: "State Bank of Pakistan (Amendment) Act, 2022", kind: act, year: 2022, jurisdiction: pk, summary: "Strengthened central-bank autonomy; Governor appointed for five years, renewable once." }
+  - { id: pcaa-act-2023, title: "Pakistan Civil Aviation Act, 2023", kind: act, year: 2023, jurisdiction: pk, url: "https://pakistancode.gov.pk/english/UY2FqaJw1-apaUY2Fqa-apaUY2Npa5poZg==-sg-jjjjjjjjjjjjj", summary: "Reconstituted the Pakistan Civil Aviation Authority as the aviation regulator. Effective 9 August 2024 the old CAA was split into the PCAA, the Pakistan Airports Authority and the Bureau of Air Safety Investigation." }
+  - { id: paa-act-2023, title: "Pakistan Airports Authority Act, 2023", kind: act, year: 2023, jurisdiction: pk }
+  - { id: basi-act-2023, title: "Pakistan Air Safety Investigation Act, 2023", kind: act, year: 2023, jurisdiction: pk }
+  - { id: hec-amendment-2021, title: "Higher Education Commission (Amendment) Act, 2021", kind: act, year: 2021, jurisdiction: pk, confidence: medium }
+  - { id: ljcp-ordinance-1979, title: "Law and Justice Commission of Pakistan Ordinance, 1979", kind: ordinance, year: 1979, jurisdiction: pk }
+  - { id: punjab-ombudsman-act-1997, title: "Punjab Office of the Ombudsman Act, 1997", kind: act, year: 1997, jurisdiction: pk-pb }
+  - { id: sindh-ombudsman-act-1991, title: "Establishment of the Office of Ombudsman for the Province of Sindh Act, 1991", kind: act, year: 1991, jurisdiction: pk-sd, confidence: medium }
+  - { id: kp-ombudsman-act-2010, title: "Khyber Pakhtunkhwa Provincial Ombudsman Act, 2010", kind: act, year: 2010, jurisdiction: pk-kp, confidence: medium }
+  - { id: balochistan-ombudsman-act-2001, title: "Balochistan Provincial Ombudsman Act, 2001", kind: act, year: 2001, jurisdiction: pk-ba, confidence: low }

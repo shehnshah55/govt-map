@@ -25,6 +25,16 @@
   --unknown: #7d8a82;
   --focus: #1f6feb;
   --shadow: 0 1px 2px rgba(21, 32, 26, 0.06), 0 4px 16px rgba(21, 32, 26, 0.05);
+  /* Classification palette (platform brief): navy, Pakistan green, slate, burgundy, gold */
+  --k-navy: #1b365d;
+  --k-green: #006633;
+  --k-slate: #4a6572;
+  --k-burgundy: #800020;
+  --k-gold: #8a6d0b;
+  --k-gold-fill: #d4af37;
+  --k-olive: #55602a;
+  --k-purple: #6f3f8c;
+  --k-teal: #1b6f70;
 
   --f-display: "Source Serif 4", "Source Serif Pro", Georgia, "Times New Roman", serif;
   --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -71,6 +81,15 @@
     --unknown: #7f8d85;
     --focus: #6ea8fe;
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --k-navy: #8fb0e0;
+    --k-green: #5cc28e;
+    --k-slate: #a9bec8;
+    --k-burgundy: #e38a9b;
+    --k-gold: #e6c65a;
+    --k-gold-fill: #d4af37;
+    --k-olive: #c3c36a;
+    --k-purple: #c99be0;
+    --k-teal: #5cc9ca;
   }
 }
 :root[data-theme="dark"] {
@@ -101,6 +120,15 @@
   --unknown: #7f8d85;
   --focus: #6ea8fe;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --k-navy: #8fb0e0;
+  --k-green: #5cc28e;
+  --k-slate: #a9bec8;
+  --k-burgundy: #e38a9b;
+  --k-gold: #e6c65a;
+  --k-gold-fill: #d4af37;
+  --k-olive: #c3c36a;
+  --k-purple: #c99be0;
+  --k-teal: #5cc9ca;
 }
 
 * {
@@ -1158,4 +1186,230 @@ select {
   border-color: var(--accent);
   color: var(--accent);
   font-weight: 500;
+}
+
+/* ── Classification tags ────────────────────────────────── */
+.tags {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+  align-items: center;
+}
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 1px 7px;
+  border-radius: 3px;
+  border: 1px solid currentColor;
+  white-space: nowrap;
+  text-decoration: none;
+  line-height: 1.5;
+}
+a.tag:hover {
+  background: var(--surface-2);
+}
+.tag.sel-elected { color: var(--k-green); }
+.tag.sel-political { color: var(--k-purple); }
+.tag.sel-constitutional { color: var(--k-navy); }
+.tag.sel-judicial { color: var(--k-burgundy); }
+.tag.sel-military { color: var(--k-olive); }
+.tag.sel-civil_service { color: var(--k-slate); }
+.tag.sel-regulatory { color: var(--k-gold); }
+.tag.sel-statutory { color: var(--k-teal); }
+.tag.sel-ex_officio { color: var(--muted); }
+.tag.org-constitutional { color: var(--accent-ink); background: var(--k-navy); border-color: var(--k-navy); }
+.tag.org-statutory { color: var(--k-navy); }
+.tag.org-executive { color: var(--k-slate); border-style: dashed; }
+.tag.org-conventional { color: var(--muted); border-style: dotted; }
+.tag.org-unrecorded { color: var(--muted); border-style: dotted; font-weight: 500; }
+[hidden] {
+  display: none !important;
+}
+.tag.tenure { color: var(--ink-2); border-color: var(--line-strong); font-weight: 500; }
+.tag.flag { color: var(--warn); background: var(--power-soft); border-color: transparent; }
+.tag.flag-bad { color: var(--bad); border-color: transparent; background: color-mix(in srgb, var(--bad) 12%, transparent); }
+.tag.flag-info { color: var(--k-slate); border-color: transparent; background: var(--surface-2); }
+.tag.law { color: var(--ink-2); border-color: var(--line); font-family: var(--f-mono); font-weight: 500; }
+
+/* legal history timeline */
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 18px;
+  border-left: 2px solid var(--line-strong);
+  display: grid;
+  gap: 12px;
+}
+.timeline li {
+  position: relative;
+  font-size: var(--s-sm);
+}
+.timeline li::before {
+  content: "";
+  position: absolute;
+  left: -24px;
+  top: 5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--k-navy);
+  border: 2px solid var(--surface);
+}
+.timeline .yr {
+  font-family: var(--f-mono);
+  font-weight: 600;
+  color: var(--k-navy);
+  margin-right: 8px;
+}
+
+/* hemicycle */
+.hemi-wrap {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+.hemi-wrap svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.hemi-legend {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 14px;
+  margin-top: 10px;
+}
+.hemi-legend h4 {
+  margin: 0 0 6px;
+  font-size: var(--s-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.hemi-legend ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  font-size: var(--s-sm);
+}
+.hemi-legend i {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: -1px;
+}
+.hemi-seat {
+  cursor: default;
+}
+a .hemi-seat {
+  cursor: pointer;
+}
+
+/* drawer */
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(420px, 100%);
+  background: var(--surface);
+  border-left: 1px solid var(--line);
+  box-shadow: -8px 0 30px rgba(0, 0, 0, 0.12);
+  z-index: 40;
+  padding: calc(18px + env(safe-area-inset-top, 0px)) 20px 24px;
+  overflow: auto;
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+.drawer .close {
+  justify-self: end;
+  font: inherit;
+  font-size: var(--s-sm);
+  background: none;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 4px 12px;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+/* tree */
+.tree details {
+  margin-left: 14px;
+  border-left: 1px solid var(--line);
+  padding-left: 10px;
+}
+.tree > details {
+  margin-left: 0;
+}
+.tree summary {
+  cursor: pointer;
+  padding: 3px 0;
+  font-size: var(--s-sm);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.tree summary::marker {
+  color: var(--muted);
+}
+.tree .leaf {
+  margin-left: 24px;
+  font-size: var(--s-sm);
+  padding: 2px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.nav details {
+  position: relative;
+}
+.nav summary {
+  list-style: none;
+  cursor: pointer;
+  color: var(--ink-2);
+  font-size: var(--s-sm);
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+.nav summary::-webkit-details-marker {
+  display: none;
+}
+.nav details[open] summary,
+.nav summary:hover {
+  background: var(--surface-2);
+}
+.nav .menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 6px;
+  display: grid;
+  min-width: 200px;
+  z-index: 30;
+}
+.nav .menu a {
+  border-radius: 4px;
+}
+.mapbox svg {
+  width: 100%;
+  height: auto;
+  display: block;
 }

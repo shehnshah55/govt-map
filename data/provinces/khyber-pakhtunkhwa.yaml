@@ -139,6 +139,8 @@ organizations:
   branch: constitutional
   sectors:
   - accountability
+  legal_basis:
+  - law: kp-ombudsman-act-2010
   jurisdiction: pk-kp
 - id: kp-pfc
   name: Provincial Finance Commission, Khyber Pakhtunkhwa

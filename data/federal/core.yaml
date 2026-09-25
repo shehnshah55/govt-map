@@ -94,6 +94,27 @@ organizations:
     sectors: [governance]
 
   - id: fed-national-assembly
+    composition:
+      as_of: "2025-07"
+      total: 336
+      confidence: medium
+      notes: "Party positions after the ECP redistributed the disputed reserved seats following the Supreme Court's 2025 review judgment. 'Other' covers smaller coalition partners and vacancies not itemised in the source."
+      sources:
+        - { title: "Dawn — Govt takes commanding lead after being handed reserved seats", url: "https://www.dawn.com/news/1921759" }
+        - { title: "Express Tribune — PTI members join Sunni Ittehad Council", url: "https://tribune.com.pk/story/2497473/ptis-parliamentary-presence-ends-after-update-in-national-assembly-party-positions" }
+      parties:
+        - { party: party-pmln, seats: 123, side: treasury }
+        - { party: party-ppp, seats: 74, side: treasury }
+        - { party: party-mqmp, seats: 22, side: treasury }
+        - { party: party-pmlq, seats: 5, side: treasury }
+        - { party: party-ipp, seats: 4, side: treasury }
+        - { party: other, seats: 10, side: other }
+        - { party: party-sic, seats: 80, side: opposition }
+        - { party: party-juif, seats: 10, side: opposition }
+        - { party: independent, seats: 5, side: opposition }
+        - { party: party-bnpm, seats: 1, side: opposition }
+        - { party: party-mwm, seats: 1, side: opposition }
+        - { party: party-pkmap, seats: 1, side: opposition }
     name: National Assembly of Pakistan
     short_name: National Assembly
     name_ur: قومی اسمبلی
@@ -106,6 +127,29 @@ organizations:
     website: https://na.gov.pk
 
   - id: fed-senate
+    composition:
+      as_of: "2025-07"
+      total: 96
+      confidence: medium
+      notes: "Party positions after the July 2025 Senate election in Khyber Pakhtunkhwa, as reported. Seven PTI-backed independents sit with the opposition and seven independents with the government. Two seats are shown as other or vacant because the reported figures total 94. Verify against senate.gov.pk."
+      sources:
+        - { title: "Senate of Pakistan (party position)", url: "https://www.senate.gov.pk" }
+        - { title: "Dawn — PTI wins 6 and opposition bags 5 seats in KP", url: "https://www.dawn.com/news/1925665" }
+      parties:
+        - { party: party-ppp, seats: 26, side: treasury }
+        - { party: party-pmln, seats: 20, side: treasury }
+        - { party: party-bap, seats: 4, side: treasury }
+        - { party: party-mqmp, seats: 3, side: treasury }
+        - { party: party-anp, seats: 3, side: treasury }
+        - { party: party-np, seats: 1, side: treasury }
+        - { party: party-pmlq, seats: 1, side: treasury }
+        - { party: independent, seats: 7, side: treasury }
+        - { party: other, seats: 2, side: other }
+        - { party: party-pti, seats: 13, side: opposition }
+        - { party: party-juif, seats: 7, side: opposition }
+        - { party: party-mwm, seats: 1, side: opposition }
+        - { party: party-sic, seats: 1, side: opposition }
+        - { party: independent, seats: 7, side: opposition }
     name: Senate of Pakistan
     short_name: Senate
     name_ur: ایوانِ بالا (سینیٹ)
@@ -253,6 +297,7 @@ organizations:
     branch: judicial
     jurisdiction: pk
     description: Chaired by the Chief Justice; recommends law reform and judicial policy (National Judicial Policy Making Committee secretariat).
+    legal_basis: [{ law: ljcp-ordinance-1979 }]
     website: https://ljcp.gov.pk
     sectors: [justice]
 

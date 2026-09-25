@@ -1,0 +1,55 @@
+# Executive offices outside the core cabinet list: junior ministers, advisers,
+# special assistants and the PM's staff. These are the most discretionary
+# appointments in the federal government.
+defaults:
+  organizations:
+    branch: executive
+    jurisdiction: pk
+
+organizations:
+  - { id: fed-pcb, name: Pakistan Cricket Board, short_name: PCB, kind: autonomous_body, parent: fed-min-ipc, sectors: [culture], description: "Governing body for cricket; the Prime Minister is Patron-in-Chief and nominates the Chairman.", confidence: medium }
+  - { id: fed-nsc-command, name: National Strategic Command, kind: military_hq, branch: military, parent: fed-jshq, legal_basis: [{ law: amendment-27 }], sectors: [defence], confidence: medium, description: "Command of the strategic (nuclear-capable) forces created by the 27th Amendment alongside the Chief of Defence Forces." }
+
+positions:
+  - id: fed-minister-of-state
+    title: Minister of State
+    org: fed-cabinet
+    role: member
+    description: Junior minister, usually attached to a Federal Minister's portfolio; counts toward the Art. 92 cabinet cap.
+    appointment: { method: appointment_on_advice, by: fed-president, on_advice_of: fed-prime-minister, legal_basis: [{ law: constitution-1973, provision: "Art. 92" }] }
+    tenure: { kind: pleasure, notes: "Serves at the PM's pleasure; ends with the government." }
+  - id: fed-adviser-to-pm
+    title: Adviser to the Prime Minister
+    org: fed-pm-office
+    role: officer
+    seats: 5
+    description: Up to five Advisers may be appointed. They may speak in Parliament but cannot vote.
+    appointment: { method: appointment_on_advice, by: fed-president, on_advice_of: fed-prime-minister, legal_basis: [{ law: constitution-1973, provision: "Art. 93" }] }
+    tenure: { kind: pleasure, notes: "Discretionary; serves at the PM's pleasure." }
+  - id: fed-sapm
+    title: Special Assistant to the Prime Minister (SAPM)
+    org: fed-pm-office
+    role: officer
+    description: Discretionary political appointment made by the PM under the Rules of Business; there is no constitutional cap on their number. SAPMs often hold minister-of-state status.
+    appointment: { method: appointment, by: fed-prime-minister, legal_basis: [{ law: rules-of-business-1973 }] }
+    tenure: { kind: pleasure, notes: "Discretionary; serves at the PM's pleasure." }
+    origin: executive
+  - id: fed-pspm
+    title: Principal Secretary to the Prime Minister
+    org: fed-pm-office
+    role: administrative_head
+    grade: BS-22
+    appointment: { method: posting, by: fed-prime-minister, legal_basis: [{ law: rules-of-business-1973 }] }
+  - id: fed-pcb-chairman
+    title: Chairman, Pakistan Cricket Board
+    org: fed-pcb
+    role: head
+    appointment: { method: nomination, by: fed-pcb, nominated_by: fed-prime-minister, notes: "Nominated by the Patron-in-Chief (the Prime Minister) to the Board of Governors, which elects the Chairman." }
+    confidence: medium
+  - id: fed-cnsc
+    title: Commander, National Strategic Command
+    org: fed-nsc-command
+    role: chief
+    grade: General
+    appointment: { method: appointment_on_advice, by: fed-president, on_advice_of: fed-prime-minister, legal_basis: [{ law: amendment-27 }] }
+    confidence: medium

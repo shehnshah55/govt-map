@@ -28,10 +28,12 @@ function cssVar(el: Element, name: string) {
   return getComputedStyle(el).getPropertyValue(name).trim() || "#888";
 }
 
+export type Lens = "branch" | "class";
+
 export function mountGraph(
   container: HTMLElement,
   data: { nodes: VNode[]; edges: VEdge[] },
-  opts: { layout: LayoutName; onOpen: (id: string) => void },
+  opts: { layout: LayoutName; onOpen: (id: string) => void; lens?: Lens; classify?: (id: string) => { sel?: string; origin?: string } },
 ) {
   const root = document.documentElement;
   const color = (n: string) => cssVar(root, n);
@@ -51,10 +53,32 @@ export function mountGraph(
   const accent = color("--accent");
   const warm = color("--power");
 
+  const classColor: Record<string, string> = {
+    elected: color("--k-green"),
+    political: color("--k-purple"),
+    constitutional: color("--k-navy"),
+    judicial: color("--k-burgundy"),
+    military: color("--k-olive"),
+    civil_service: color("--k-slate"),
+    regulatory: color("--k-gold-fill"),
+    statutory: color("--k-teal"),
+    ex_officio: muted,
+    executive: color("--k-slate"),
+    conventional: muted,
+    unrecorded: muted,
+  };
+  const fillFor = (n: VNode) => {
+    if (opts.lens === "class" && opts.classify) {
+      const c = opts.classify(n.id);
+      const key = c.sel ?? c.origin;
+      if (key) return classColor[key] ?? muted;
+    }
+    return n.branch ? branchColor[n.branch] ?? muted : muted;
+  };
   const ids = new Set(data.nodes.map((n) => n.id));
   const elements: cytoscape.ElementDefinition[] = [
     ...data.nodes.map((n) => ({
-      data: { id: n.id, label: wrap(n.label), type: n.type, fill: n.branch ? branchColor[n.branch] ?? muted : muted },
+      data: { id: n.id, label: wrap(n.label), type: n.type, fill: fillFor(n) },
       classes: [n.type, n.focus ? "focus" : ""].join(" "),
     })),
     ...data.edges
@@ -105,7 +129,7 @@ export function mountGraph(
         },
       },
       { selector: "node.organization", style: { shape: "round-rectangle", width: 18, height: 14 } },
-      { selector: "node.position", style: { shape: "ellipse", width: 11, height: 11, "background-color": warm } },
+      { selector: "node.position", style: { shape: "ellipse", width: 11, height: 11, "background-color": opts.lens === "class" ? "data(fill)" : warm } },
       { selector: "node.person", style: { shape: "diamond", width: 13, height: 13, "background-color": ink } },
       { selector: "node.law", style: { shape: "tag", "background-color": muted } },
       { selector: "node.jurisdiction", style: { shape: "hexagon", "background-color": muted } },

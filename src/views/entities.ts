@@ -1,6 +1,8 @@
 import type { Org, Post } from "../lib/graph-index.ts";
 import type { OrgKind, RelationType } from "../schema.ts";
-import { html } from "../ui/dom.ts";
+import { html, type Raw } from "../ui/dom.ts";
+import { hemicycle } from "../ui/hemicycle.ts";
+import { SELECTION_HELP, SELECTION_LABEL, tenureLabel } from "../ui/labels.ts";
 import { orgNeighbourhood, hierarchy } from "../ui/graph-view.ts";
 import { KIND_GROUP, METHOD_LABEL, SECTOR_LABEL, CONFIDENCE_NOTE } from "../ui/labels.ts";
 import {
@@ -18,6 +20,11 @@ import {
   sourcesList,
   statusChip,
   partyLink,
+  orgTags,
+  postTags,
+  holdingFlags,
+  roleOf,
+  originTag,
   type Ctx,
   type View,
 } from "./common.ts";
@@ -36,6 +43,7 @@ function orgCard(ctx: Ctx, o: Org) {
   const n = ix.children.get(o.id)?.length ?? 0;
   return html`<a class="card" href="#/org/${o.id}">
     <span class="t">${o.name}</span>
+    <span>${originTag(o._origin)}</span>
     <span class="s">${o.short_name && o.short_name !== o.name ? html`<span>${o.short_name}</span>` : ""}<span>${kindLabel(o.kind)}</span>${
       n ? html`<span class="num">${n} sub-bodies</span>` : ""
     }${o.abolished ? html`<span class="chip hist">abolished ${o.abolished.slice(0, 4)}</span>` : ""}${o.confidence !== "high" ? html`<span>· verify</span>` : ""}</span>
@@ -93,10 +101,12 @@ export function orgView(ctx: Ctx, id: string): View | undefined {
       }</div>
       <h1>${o.name}</h1>
       ${o.name_ur ? html`<p class="urdu" lang="ur">${o.name_ur}</p>` : ""}
+      <div>${orgTags(ix, o)}</div>
       ${o.description ? html`<p class="lede">${o.description}</p>` : ""}
     </header>
     <div class="layout">
       <div class="stack">
+        ${o.composition ? html`<section><h2>Seating and party strength</h2>${hemicycle(ix, id)}</section>` : ""}
         ${
           posts.length
             ? html`<section><h2>Leadership <span class="count num">${posts.length} posts</span></h2>
@@ -113,6 +123,7 @@ export function orgView(ctx: Ctx, id: string): View | undefined {
               <div class="posts">${partyMembers.flatMap((m) => m.roles.filter((r) => !r.until).slice(0, 1).map((r) => postRow(ix, ix.post.get(r.position)!, { showOrg: true })))}</div></section>`
             : ""
         }
+        ${o.history?.length ? html`<section><h2>Legal history</h2>${historyTimeline(ctx, o.history)}</section>` : ""}
         ${
           o.functions?.length
             ? html`<section><h2>Functions</h2><ul class="prose" style="padding-left:1.2em;margin:0">${o.functions.map((f) => html`<li>${f}</li>`)}</ul></section>`
@@ -176,6 +187,17 @@ export function orgView(ctx: Ctx, id: string): View | undefined {
   };
 }
 
+/** Dated legal history of an office or body, each step linked to the law that made it. */
+export function historyTimeline(ctx: Ctx, history: { year: number; law: string; provision?: string; change: string }[] | undefined): Raw {
+  if (!history?.length) return html``;
+  const { ix } = ctx;
+  return html`<ol class="timeline">${[...history]
+    .sort((a, b) => a.year - b.year)
+    .map(
+      (h) => html`<li><span class="yr">${h.year}</span>${h.change} <span class="hint">— ${link(ix, h.law, ix.law.get(h.law)?.short ?? ix.law.get(h.law)?.title)}${h.provision ? html` <span class="cite">${h.provision}</span>` : ""}</span></li>`,
+    )}</ol>`;
+}
+
 function seatTotal(seats: Post[]) {
   return seats.reduce((n, p) => n + (p.seats ?? 1), 0);
 }
@@ -228,6 +250,7 @@ export function postView(ctx: Ctx, id: string): View | undefined {
         p.generated ? html`<span class="chip gen" title="Created from the standard structure of this type of body">Standard post</span>` : ""
       }</div>
       <h1>${p.title}</h1>
+      <div>${postTags(ix, p)}</div>
       ${p.description ? html`<p class="lede">${p.description}</p>` : ""}
     </header>
     <div class="layout">
@@ -237,6 +260,8 @@ export function postView(ctx: Ctx, id: string): View | undefined {
             via.length
               ? html`<div class="posts">${via.map(
                   (h) => html`<div class="post"><div class="holder"><div class="name">${link(ix, h.person.id)}</div>
+                    ${current.length ? holdingFlags(ix, { ...h, ...roleOf(h.person, id) }, id) : ""}
+                    ${extensionList(ctx, h.person, id)}
                     <div class="hint">${partyLink(ix, h.person.party)}${!current.length ? " · holds this post ex officio" : ""}</div></div>
                     <div class="hint">${h.status !== "confirmed" ? html`<span class="chip st-acting">${h.status.replace(/_/g, " ")}</span> ` : ""}${h.since ? html`Since <span class="num">${h.since}</span>` : ""} · record as of <span class="num">${h.person.as_of}</span> ${confidenceChip(h.person.confidence)}</div></div>`,
                 )}</div>`
@@ -244,6 +269,18 @@ export function postView(ctx: Ctx, id: string): View | undefined {
           }
           ${past.length ? html`<h3 style="margin:16px 0 8px">Previous holders</h3><ul class="plain">${past.map((h) => html`<li>${link(ix, h.person.id)} <span class="hint num">${h.since ?? "?"} – ${h.until}</span></li>`)}</ul>` : ""}
         </section>
+        <section><h2>Classification and tenure</h2>
+          <div class="panel">
+            <dl class="facts">
+              <dt>Created by</dt><dd>${originTag(p._origin)} ${p.appointment?.legal_basis?.length ? p.appointment.legal_basis.map((lb, i) => html`${i ? "; " : ""}${legalRef(ix, lb)}`) : html`<span class="hint">see the body's legal basis</span>`}</dd>
+              <dt>Filled by</dt><dd><span class="tag sel-${p._selection}">${SELECTION_LABEL[p._selection]}</span> <span class="hint">${SELECTION_HELP[p._selection]}</span></dd>
+              ${p._tenure ? html`<dt>Tenure</dt><dd><b>${tenureLabel(p._tenure)}</b>${p._tenure.notes ? html` — ${p._tenure.notes}` : ""}${p._tenure.legal_basis?.length ? html` <span class="hint">(${p._tenure.legal_basis.map((lb, i) => html`${i ? "; " : ""}${legalRef(ix, lb)}`)})</span>` : ""}</dd>` : ""}
+              ${p._tenure?.extension_by ? html`<dt>Extension by</dt><dd>${link(ix, p._tenure.extension_by)}</dd>` : ""}
+              ${p._tenure?.holdover ? html`<dt>Holdover</dt><dd>Continues after the term ends until a successor takes office</dd>` : ""}
+            </dl>
+          </div>
+        </section>
+        ${p.history?.length ? html`<section><h2>Legal history</h2><p class="hint" style="margin-bottom:10px">How the Constitution and statutes have changed this office over time.</p>${historyTimeline(ctx, p.history)}</section>` : ""}
         <section><h2>How the post is filled</h2>
           <div class="panel">
             <dl class="facts">
@@ -291,6 +328,15 @@ export function postView(ctx: Ctx, id: string): View | undefined {
       </aside>
     </div>`;
   return { title: p.title, body, mount: graph.mount };
+}
+
+function extensionList(ctx: Ctx, person: { roles: { position: string; until?: string; extensions?: { granted?: string; to?: string; by?: string; law?: string; notes?: string }[] }[] }, postId: string): Raw {
+  const role = person.roles.find((r) => r.position === postId && !r.until);
+  if (!role?.extensions?.length) return html``;
+  const { ix } = ctx;
+  return html`<ol class="timeline" style="margin:8px 0">${role.extensions.map(
+    (x) => html`<li><span class="yr">${x.granted ?? ""}</span>Extended${x.to ? ` to ${x.to}` : ""}${x.by ? html` by ${link(ix, x.by, ix.shortLabel(x.by))}` : ""}${x.law ? html` under ${link(ix, x.law, ix.law.get(x.law)?.short ?? ix.law.get(x.law)?.title)}` : ""}${x.notes ? html` <span class="hint">— ${x.notes}</span>` : ""}</li>`,
+  )}</ol>`;
 }
 
 function postGraph(ctx: Ctx, id: string) {
@@ -346,6 +392,23 @@ export function personView(ctx: Ctx, id: string): View | undefined {
             ? html`<section><h2>Previous posts</h2><ul class="plain">${past.map((r) => html`<li>${link(ix, r.position)} <span class="hint num">${r.since ?? "?"} – ${r.until}</span></li>`)}</ul></section>`
             : ""
         }
+        ${
+          person.background?.length
+            ? html`<section><h2>Background</h2><ul class="plain">${person.background.map(
+                (b) => html`<li><span class="tag ${b.service === "military" ? "sel-military" : b.service === "judiciary" ? "sel-judicial" : b.service === "civil_service" ? "sel-civil_service" : "flag-info"}">${b.service.replace(/_/g, " ")}</span> ${b.rank ?? ""}${b.retired ? html` · <b>retired</b>${b.retired !== "yes" ? ` ${b.retired}` : ""}` : b.service === "military" ? html` · <b>serving</b>` : ""}${b.notes ? html` <span class="hint">— ${b.notes}</span>` : ""}</li>`,
+              )}</ul></section>`
+            : ""
+        }
+        ${
+          person.declared_assets?.length
+            ? html`<section><h2>Declared assets</h2>
+              <div class="tablewrap"><table><thead><tr><th>Declared</th><th class="n">Assets (PKR)</th><th>Basis</th><th>Source</th></tr></thead>
+              <tbody>${person.declared_assets.map(
+                (a) => html`<tr><td class="num">${a.as_of}</td><td class="n">Rs ${formatPkr(a.amount_pkr)}</td><td>${a.basis}${a.notes ? html`<div class="hint">${a.notes}</div>` : ""}</td><td><a href="${a.source.url}" target="_blank" rel="noopener">${a.source.title}</a></td></tr>`,
+              )}</tbody></table></div>
+              <p class="hint" style="margin-top:8px">Assets as declared to the Election Commission in nomination papers or annual statements. These are self-declared values, often at historical cost, not audited net worth.</p></section>`
+            : ""
+        }
         ${person.notes ? html`<section><h2>Notes</h2><p class="prose">${person.notes}</p></section>` : ""}
       </div>
       <aside class="rail">
@@ -360,6 +423,12 @@ export function personView(ctx: Ctx, id: string): View | undefined {
       </aside>
     </div>`;
   return { title: person.name, body };
+}
+
+export function formatPkr(n: number) {
+  if (n >= 1e9) return `${(n / 1e9).toFixed(2)} billion`;
+  if (n >= 1e6) return `${(n / 1e6).toFixed(0)} million`;
+  return n.toLocaleString();
 }
 
 export function placeView(ctx: Ctx, id: string): View | undefined {
@@ -459,6 +528,10 @@ export function lawView(ctx: Ctx, id: string): View | undefined {
   const bodies = ix.enactedBodies(id);
   const posts = ix.lawCitations(id);
   const rels = ix.g.edges.filter((e) => !e.derived && e.legal_basis?.some((lb) => lb.law === id));
+  const changed = [
+    ...ix.g.positions.filter((p) => p.history?.some((h) => h.law === id)).map((p) => ({ id: p.id, h: p.history!.filter((h) => h.law === id) })),
+    ...ix.g.organizations.filter((o) => o.history?.some((h) => h.law === id)).map((o) => ({ id: o.id, h: o.history!.filter((h) => h.law === id) })),
+  ];
   const body = html`
     <nav class="trail"><a href="#/">Pakistan</a><span aria-hidden="true">›</span><a href="#/laws">Laws</a></nav>
     <header class="pagehead">
@@ -468,6 +541,12 @@ export function lawView(ctx: Ctx, id: string): View | undefined {
     </header>
     <div class="layout">
       <div class="stack">
+        ${
+          changed.length
+            ? html`<section><h2>Offices and bodies this law created or changed <span class="count num">${changed.length}</span></h2>
+              <div class="rels">${changed.map((c) => html`<div class="rel"><div>${link(ix, c.id)}</div><div>${c.h.map((h, i) => html`${i ? html`<br />` : ""}<span class="cite">${h.year}</span> ${h.change}`)}</div></div>`)}</div></section>`
+            : ""
+        }
         ${bodies.length ? html`<section><h2>Bodies established or empowered <span class="count num">${bodies.length}</span></h2>${orgGroups(ctx, bodies)}</section>` : ""}
         ${
           posts.length
@@ -492,14 +571,32 @@ export function lawView(ctx: Ctx, id: string): View | undefined {
   return { title: law.title, body };
 }
 
-/** Connects every <input data-filter="x"> to the rows of <table data-rows="x">. */
+/**
+ * Connects every <input data-filter="x"> (free text) and <select data-filter="x" data-facet="f">
+ * (exact facet match against the row's data-f attribute, space-separated values) to the rows of
+ * <table data-rows="x">.
+ */
 export function wireFilters(root: HTMLElement) {
-  root.querySelectorAll<HTMLInputElement>("input[data-filter]").forEach((input) => {
-    const rows = [...root.querySelectorAll<HTMLTableRowElement>(`table[data-rows="${input.dataset.filter}"] tbody tr`)];
+  const groups = new Set([...root.querySelectorAll<HTMLElement>("[data-filter]")].map((el) => el.dataset.filter!));
+  for (const g of groups) {
+    const rows = [...root.querySelectorAll<HTMLTableRowElement>(`table[data-rows="${g}"] tbody tr`)];
     const text = rows.map((r) => r.textContent!.toLowerCase());
-    input.addEventListener("input", () => {
-      const terms = input.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
-      rows.forEach((r, i) => (r.hidden = !terms.every((t) => text[i].includes(t))));
-    });
-  });
+    const input = root.querySelector<HTMLInputElement>(`input[data-filter="${g}"]`);
+    const selects = [...root.querySelectorAll<HTMLSelectElement>(`select[data-filter="${g}"]`)];
+    const count = root.querySelector<HTMLElement>(`[data-count="${g}"]`);
+    const apply = () => {
+      const terms = (input?.value ?? "").toLowerCase().trim().split(/\s+/).filter(Boolean);
+      let shown = 0;
+      rows.forEach((r, i) => {
+        const ok =
+          terms.every((t) => text[i].includes(t)) &&
+          selects.every((sel) => !sel.value || (r.dataset[sel.dataset.facet!] ?? "").split(" ").includes(sel.value));
+        r.hidden = !ok;
+        if (ok) shown++;
+      });
+      if (count) count.textContent = `${shown} shown`;
+    };
+    input?.addEventListener("input", apply);
+    selects.forEach((sel) => sel.addEventListener("change", apply));
+  }
 }

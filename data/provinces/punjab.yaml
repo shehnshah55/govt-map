@@ -139,6 +139,8 @@ organizations:
   branch: constitutional
   sectors:
   - accountability
+  legal_basis:
+  - law: punjab-ombudsman-act-1997
   jurisdiction: pk-pb
 - id: pb-pfc
   name: Provincial Finance Commission, Punjab

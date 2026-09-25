@@ -155,3 +155,64 @@ export const CONFIDENCE_NOTE = {
   medium: "From reliable public reporting; details (dates, names, exact structure) should be verified.",
   low: "Provisional. Needs verification before use.",
 } as const;
+
+/** How a post is filled — the platform brief's elected / unelected taxonomy. */
+export const SELECTION_LABEL = {
+  elected: "Elected",
+  political: "Political appointee",
+  constitutional: "Constitutional appointee",
+  judicial: "Judiciary",
+  military: "Military",
+  civil_service: "Civil service",
+  regulatory: "Regulatory appointee",
+  statutory: "Statutory appointee",
+  ex_officio: "Ex officio",
+} as const;
+
+export const SELECTION_HELP = {
+  elected: "Chosen by voters or by an elected house.",
+  political: "Chosen at the discretion of the head of government; serves at pleasure and leaves with the government.",
+  constitutional: "Appointed through a procedure fixed in the Constitution, usually with a protected term.",
+  judicial: "Superior-court judge appointed through the Judicial Commission.",
+  military: "Serving or senior military officer.",
+  civil_service: "Career civil servant posted by the government.",
+  regulatory: "Head or member of a statutory regulator.",
+  statutory: "Appointed under an Act or Ordinance.",
+  ex_officio: "Held automatically by the holder of another office.",
+} as const;
+
+/** What creates the office or body. */
+export const ORIGIN_LABEL = {
+  constitutional: "Constitutional",
+  statutory: "Statutory",
+  executive: "Executive order",
+  conventional: "Convention",
+  unrecorded: "Basis not recorded",
+} as const;
+
+export const ORIGIN_HELP = {
+  constitutional: "Created or required by the Constitution; only a constitutional amendment (two-thirds of each House) can abolish it.",
+  statutory: "Created by an Act of Parliament, an Assembly or an Ordinance; can be changed by ordinary legislation.",
+  executive: "Created by the Rules of Business or a government notification; the executive can change it without legislation.",
+  conventional: "Not codified in law; exists by practice.",
+  unrecorded: "The instrument that created this body has not yet been added to the data.",
+} as const;
+
+export function tenureLabel(t: { kind: string; years?: number; age?: number; renewable?: string; holdover?: boolean } | undefined): string {
+  if (!t) return "";
+  switch (t.kind) {
+    case "fixed":
+      return `${t.years}-year term${t.renewable === "once" ? ", renewable once" : t.renewable === "extendable" ? ", extendable" : t.renewable === "yes" ? ", renewable" : ""}${t.holdover ? ", holds over" : ""}`;
+    case "age_limit":
+      return `Until age ${t.age}`;
+    case "pleasure":
+      return "At pleasure (discretionary)";
+    case "coterminous":
+      return "Coterminous";
+    case "service":
+      return "Service posting";
+    case "elected_term":
+      return t.years ? `${t.years}-year elected term${t.renewable === "once" ? ", max. two" : ""}` : "Elected term";
+  }
+  return t.kind;
+}

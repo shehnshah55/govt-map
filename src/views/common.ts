@@ -1,8 +1,21 @@
 import type { GraphIndex, Post, Edge } from "../lib/graph-index.ts";
 import type { LegalRef, Source } from "../schema.ts";
 import { html, raw, type Raw } from "../ui/dom.ts";
-import { BRANCH_LABEL, CONFIDENCE_NOTE, KIND_LABEL, METHOD_LABEL, REL_PHRASE, STATUS_LABEL } from "../ui/labels.ts";
-import { mountGraph, type LayoutName, type VEdge, type VNode } from "../ui/graph-view.ts";
+import {
+  BRANCH_LABEL,
+  CONFIDENCE_NOTE,
+  KIND_LABEL,
+  METHOD_LABEL,
+  ORIGIN_HELP,
+  ORIGIN_LABEL,
+  REL_PHRASE,
+  SELECTION_HELP,
+  SELECTION_LABEL,
+  STATUS_LABEL,
+  tenureLabel,
+} from "../ui/labels.ts";
+import type { Holding, Human, Org } from "../lib/graph-index.ts";
+import { mountGraph, type LayoutName, type Lens, type VEdge, type VNode } from "../ui/graph-view.ts";
 
 export interface View {
   title: string;
@@ -27,6 +40,67 @@ export function link(ix: GraphIndex, id: string | undefined, text?: string): Raw
   if (!id) return raw("");
   if (!ix.kindOf(id)) return html`<span class="mono">${id}</span>`;
   return html`<a href="${hrefFor(ix, id)}">${text ?? ix.label(id)}</a>`;
+}
+
+/** Newest constitutional/statutory change recorded for a post or body, for the "established by" tag. */
+function latestChange(ix: GraphIndex, history: { year: number; law: string }[] | undefined) {
+  if (!history?.length) return undefined;
+  const h = [...history].sort((a, b) => b.year - a.year)[0];
+  const law = ix.law.get(h.law);
+  return { ...h, label: `${law?.short ?? law?.title ?? h.law}` };
+}
+
+export function selectionTag(p: Post): Raw {
+  return html`<span class="tag sel-${p._selection}" title="${SELECTION_HELP[p._selection]}">${SELECTION_LABEL[p._selection]}</span>`;
+}
+
+export function originTag(origin: Post["_origin"]): Raw {
+  return html`<span class="tag org-${origin}" title="${ORIGIN_HELP[origin]}">${ORIGIN_LABEL[origin]}</span>`;
+}
+
+/** Colour-coded tags for a post: what creates it, how it is filled, its tenure, and the latest law that changed it. */
+export function postTags(ix: GraphIndex, p: Post): Raw {
+  const t = p._tenure;
+  const lc = latestChange(ix, p.history);
+  return html`<span class="tags">${originTag(p._origin)}${selectionTag(p)}${t ? html`<span class="tag tenure" title="${t.notes ?? ""}">${tenureLabel(t)}</span>` : ""}${
+    lc ? html`<a class="tag law" href="#/law/${lc.law}" title="Latest change: ${lc.year}">${lc.label} · ${lc.year}</a>` : ""
+  }</span>`;
+}
+
+export function orgTags(ix: GraphIndex, o: Org): Raw {
+  const lc = latestChange(ix, o.history);
+  const first = o.legal_basis?.[0];
+  const law = first ? ix.law.get(first.law) : undefined;
+  return html`<span class="tags">${originTag(o._origin)}${
+    law ? html`<a class="tag law" href="#/law/${law.id}">${law.short ?? law.title}${first?.provision ? " " + first.provision : ""}${law.year && law.kind !== "constitution" ? " · " + law.year : ""}</a>` : ""
+  }${lc && lc.law !== first?.law ? html`<a class="tag law" href="#/law/${lc.law}">${lc.label} · ${lc.year}</a>` : ""}</span>`;
+}
+
+/** Flags on a holding: holding over, acting, extensions, repeat terms, retired or serving officers in civilian posts. */
+export function holdingFlags(ix: GraphIndex, h: Holding & { term_ended?: string; term_number?: number; extensions?: unknown[]; ends?: string }, postId?: string): Raw {
+  const flags: Raw[] = [];
+  if (h.status === "holding_over") flags.push(html`<span class="tag flag-bad" title="Term expired; continuing until a successor is appointed">Holding over${h.term_ended ? ` since ${h.term_ended}` : ""}</span>`);
+  else if (h.status !== "confirmed") flags.push(html`<span class="tag flag">${h.status.replace(/_/g, " ")}</span>`);
+  if (h.extensions?.length) flags.push(html`<span class="tag flag" title="Term extended or renewed">Extended ×${h.extensions.length}</span>`);
+  if (h.term_number && h.term_number > 1) flags.push(html`<span class="tag flag-info">${ordinal(h.term_number)} term</span>`);
+  if (h.ends) flags.push(html`<span class="tag flag-info">Term to ${h.ends}</span>`);
+  const post = postId ? ix.post.get(postId) : undefined;
+  for (const b of h.person.background ?? []) {
+    if (b.service === "military" && post && post._selection !== "military")
+      flags.push(html`<span class="tag ${b.retired ? "flag-info" : "flag"}" title="${b.notes ?? ""}">${b.retired ? "Retired" : "Serving"} ${b.rank ?? "officer"}</span>`);
+    else if (b.service === "judiciary" && b.retired && post && post._selection !== "judicial") flags.push(html`<span class="tag flag-info">Retired judge</span>`);
+    else if (b.service === "civil_service" && b.retired && post && post._selection !== "civil_service") flags.push(html`<span class="tag flag-info">Retired civil servant</span>`);
+  }
+  return html`<span class="tags">${flags}</span>`;
+}
+
+function ordinal(n: number) {
+  return n === 2 ? "2nd" : n === 3 ? "3rd" : `${n}th`;
+}
+
+/** The role object on the person's record for a given post (carries extensions, holdover etc.). */
+export function roleOf(person: Human, postId: string) {
+  return person.roles.find((r) => r.position === postId && !r.until);
 }
 
 export function partyLink(ix: GraphIndex, partyId: string | undefined): Raw {
@@ -107,6 +181,7 @@ export function postRow(ix: GraphIndex, p: Post, opts: { showOrg?: boolean } = {
         ${opts.showOrg ? link(ix, p.org) : ""}
         ${confidenceChip(p.confidence)}
       </div>
+      <div style="margin-top:6px">${postTags(ix, p)}</div>
       <div class="appoint" style="margin-top:6px">${appointmentSentence(ix, p)}</div>
     </div>
     <div class="holder">
@@ -114,6 +189,7 @@ export function postRow(ix: GraphIndex, p: Post, opts: { showOrg?: boolean } = {
         holders.length
           ? holders.map(
               (h) => html`<div class="name">${link(ix, h.person.id)}</div>
+                ${direct ? holdingFlags(ix, { ...h, ...roleOf(h.person, p.id) }, p.id) : ""}
                 <div class="hint">${h.status !== "confirmed" ? html`<span class="chip st-acting">${h.status.replace(/_/g, " ")}</span> ` : ""}${
                   h.since ? html`since <span class="num">${h.since}</span>` : ""
                 }${!direct ? " (ex officio)" : ""}${h.person.party ? html` · ${partyLink(ix, h.person.party)}` : ""}</div>`,
@@ -150,6 +226,47 @@ export interface GraphTab {
   layout: LayoutName;
 }
 
+/** Slide-over detail drawer (platform brief §4.1): summary of any node without leaving the graph. */
+export function openDrawer(ctx: Ctx, id: string) {
+  const { ix } = ctx;
+  document.querySelector(".drawer")?.remove();
+  const kind = ix.kindOf(id);
+  if (!kind) return;
+  let inner: Raw;
+  if (kind === "organization") {
+    const o = ix.org.get(id)!;
+    const heads = ix.leadership(id).filter((p) => !p.area && !p.seat_type).slice(0, 4);
+    inner = html`<div class="eyebrow">${kindLabel(o.kind)} ${branchChip(o.branch)}</div><h2>${o.name}</h2>${orgTags(ix, o)}
+      ${o.description ? html`<p class="hint">${o.description.slice(0, 320)}${o.description.length > 320 ? "…" : ""}</p>` : ""}
+      ${heads.length ? html`<div class="posts">${heads.map((p) => postRow(ix, p))}</div>` : ""}
+      ${o.parent ? html`<p class="hint">Part of ${link(ix, o.parent)}</p>` : ""}`;
+  } else if (kind === "position") {
+    const p = ix.post.get(id)!;
+    inner = html`<div class="eyebrow">Post</div><h2>${p.title}</h2><div class="posts">${postRow(ix, p, { showOrg: true })}</div>`;
+  } else if (kind === "person") {
+    const person = ix.person.get(id)!;
+    inner = html`<div class="eyebrow">Person</div><h2>${person.name}</h2>${person.party ? html`<p>${partyLink(ix, person.party)}</p>` : ""}
+      <div class="posts">${person.roles.filter((r) => !r.until).map((r) => postRow(ix, ix.post.get(r.position)!, { showOrg: true }))}</div>`;
+  } else {
+    inner = html`<div class="eyebrow">${kind}</div><h2>${ix.label(id)}</h2>`;
+  }
+  const el = document.createElement("aside");
+  el.className = "drawer";
+  el.setAttribute("role", "dialog");
+  el.setAttribute("aria-label", ix.label(id));
+  el.innerHTML = html`<button class="close" type="button">Close ✕</button>${inner}<a class="btn" href="${hrefFor(ix, id)}">Open full page →</a>`.html;
+  const close = () => {
+    el.remove();
+    document.removeEventListener("keydown", onKey);
+  };
+  const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
+  el.querySelector(".close")!.addEventListener("click", close);
+  el.addEventListener("click", (e) => (e.target as Element).closest("a") && close());
+  document.addEventListener("keydown", onKey);
+  document.body.appendChild(el);
+  (el.querySelector(".close") as HTMLElement).focus();
+}
+
 /** A graph panel with tab buttons; returns markup plus a mount function. */
 export function graphPanel(ctx: Ctx, id: string, tabs: GraphTab[], opts: { tall?: boolean; note?: string } = {}) {
   const body = html`<div class="graphpanel" id="${id}">
@@ -157,10 +274,11 @@ export function graphPanel(ctx: Ctx, id: string, tabs: GraphTab[], opts: { tall?
       <div class="seg" role="group" aria-label="Graph view">
         ${tabs.map((t, i) => html`<button type="button" data-tab="${t.key}" aria-pressed="${i === 0 ? "true" : "false"}">${t.label}</button>`)}
       </div>
-      <span class="hint">${opts.note ?? "Hover to highlight · click a node to open it · scroll to zoom"}</span>
+      <label class="hint">Colour by <select data-lens id="${id}-lens"><option value="branch">Branch</option><option value="class">How filled / what created it</option></select></label>
+      <span class="hint">${opts.note ?? "Hover to highlight · click a node for details · scroll to zoom"}</span>
     </div>
     <div class="canvas${opts.tall ? " tall" : ""}" role="img" aria-label="Relationship graph"></div>
-    <div class="legend">
+    <div class="legend" data-legend="branch">
       <span><i style="background:var(--b-executive)"></i>Executive</span>
       <span><i style="background:var(--b-legislative)"></i>Legislative</span>
       <span><i style="background:var(--b-judicial)"></i>Judicial</span>
@@ -174,21 +292,46 @@ export function graphPanel(ctx: Ctx, id: string, tabs: GraphTab[], opts: { tall?
       <span><i class="dash"></i>Other relation</span>
       <span><i class="line" style="background:var(--line-strong)"></i>Part of</span>
     </div>
+    <div class="legend" data-legend="class" hidden>
+      <span><i style="background:var(--k-green);border-radius:50%"></i>Elected</span>
+      <span><i style="background:var(--k-purple);border-radius:50%"></i>Political appointee</span>
+      <span><i style="background:var(--k-navy);border-radius:50%"></i>Constitutional appointee / constitutional body</span>
+      <span><i style="background:var(--k-burgundy);border-radius:50%"></i>Judiciary</span>
+      <span><i style="background:var(--k-olive);border-radius:50%"></i>Military</span>
+      <span><i style="background:var(--k-slate);border-radius:50%"></i>Civil service / executive-order body</span>
+      <span><i style="background:var(--k-gold-fill);border-radius:50%"></i>Regulatory</span>
+      <span><i style="background:var(--k-teal);border-radius:50%"></i>Statutory</span>
+    </div>
   </div>`;
+  const classify = (nid: string) => {
+    const p = ctx.ix.post.get(nid);
+    if (p) return { sel: p._selection };
+    const o = ctx.ix.org.get(nid);
+    return o ? { origin: o._origin } : {};
+  };
   const mount = (root: HTMLElement) => {
     const panel = root.querySelector<HTMLElement>(`#${id}`);
     if (!panel) return;
     const canvas = panel.querySelector<HTMLElement>(".canvas")!;
+    const lensSel = panel.querySelector<HTMLSelectElement>("[data-lens]")!;
     let cy: ReturnType<typeof mountGraph> | undefined;
+    let current = tabs[0].key;
     const show = (key: string) => {
+      current = key;
       const tab = tabs.find((t) => t.key === key) ?? tabs[0];
+      const lens = lensSel.value as Lens;
       panel.querySelectorAll<HTMLButtonElement>("[data-tab]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.tab === tab.key)));
+      panel.querySelectorAll<HTMLElement>("[data-legend]").forEach((l) => (l.hidden = l.dataset.legend !== lens));
       cy?.destroy();
-      cy = mountGraph(canvas, tab.data(), { layout: tab.layout, onOpen: (nid) => ctx.go(hrefFor(ctx.ix, nid).slice(1)) });
+      cy = mountGraph(canvas, tab.data(), { layout: tab.layout, lens, classify, onOpen: (nid) => openDrawer(ctx, nid) });
     };
     panel.querySelectorAll<HTMLButtonElement>("[data-tab]").forEach((b) => b.addEventListener("click", () => show(b.dataset.tab!)));
+    lensSel.addEventListener("change", () => show(current));
     show(tabs[0].key);
-    return () => cy?.destroy();
+    return () => {
+      cy?.destroy();
+      document.querySelector(".drawer")?.remove();
+    };
   };
   return { body, mount };
 }

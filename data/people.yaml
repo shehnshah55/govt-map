@@ -15,7 +15,9 @@ people:
     party: party-ppp
     roles:
       - { position: party-pppp-head }
-      - { position: fed-president, since: "2024-03-10", source: { title: President of Pakistan, url: "https://president.gov.pk" } }
+      - { position: fed-president, since: "2024-03-10", term_number: 2, source: { title: President of Pakistan, url: "https://president.gov.pk" } }
+    declared_assets:
+      - { amount_pkr: 758000000, as_of: "2018-06", basis: "Nomination papers, 2018 general election", notes: "Older declaration; no 2024 figure found in verifiable reporting", source: { title: "The National — Pakistani politicians' asset declarations", url: "https://www.thenationalnews.com/world/asia/pakistani-politicians-asset-declarations-reveal-deep-pockets-1.742837" } }
     as_of: "2025-11"
     confidence: high
     notes: Previously President 2008–2013.
@@ -25,7 +27,9 @@ people:
     party: party-pmln
     roles:
       - { position: seat-na-123, since: "2024-02-29" }
-      - { position: fed-prime-minister, since: "2024-03-04", source: { title: Prime Minister's Office, url: "https://pmo.gov.pk" } }
+      - { position: fed-prime-minister, since: "2024-03-04", term_number: 2, source: { title: Prime Minister's Office, url: "https://pmo.gov.pk" } }
+    declared_assets:
+      - { amount_pkr: 73000000, as_of: "2024-01", basis: "Nomination papers, 2024 general election", notes: "Down from Rs310 million declared in 2018–19", source: { title: "The News — Top politicians declare assets", url: "https://www.thenews.com.pk/print/1286584-top-politicians-declare-assets" } }
     as_of: "2025-11"
     confidence: high
     notes: Previously Prime Minister April 2022 – August 2023 and Chief Minister of Punjab.
@@ -51,6 +55,8 @@ people:
     roles:
       - { position: fed-senator, since: "2024-04" }
       - { position: fed-min-interior-minister, since: "2024-03-11" }
+      - { position: fed-pcb-chairman, since: "2024-02-06" }
+    background: [{ service: media, notes: "Founder of City News Network; caretaker Chief Minister of Punjab 2023–24" }]
     as_of: "2025-11"
     confidence: high
   - id: khawaja-asif
@@ -237,7 +243,8 @@ people:
   - id: sikandar-sultan-raja
     name: Sikandar Sultan Raja
     roles:
-      - { position: fed-cec, since: "2020-01-27", status: interim, source: { title: Election Commission of Pakistan, url: "https://www.ecp.gov.pk" } }
+      - { position: fed-cec, since: "2020-01-27", status: holding_over, term_ended: "2025-01-26", source: { title: Election Commission of Pakistan, url: "https://www.ecp.gov.pk" } }
+    background: [{ service: civil_service, rank: "Federal Secretary (BS-22)", retired: "yes", notes: "First civil servant appointed CEC; all predecessors were retired judges" }]
     as_of: "2026-09"
     confidence: medium
     notes: Five-year term ended in January 2025; holding over until a successor is appointed under the amended Art. 215. In September 2026 the Prime Minister and the Leader of the Opposition were consulting on a new CEC and two ECP members.
@@ -255,10 +262,16 @@ people:
     confidence: medium
   - id: nazir-ahmed-butt
     name: Lt Gen (R) Nazir Ahmed Butt
+    confidence: high
     roles:
-      - { position: fed-nab-chairman, since: "2023-03" }
-    as_of: "2025-11"
-    confidence: medium
+      - position: fed-nab-chairman
+        since: "2023-03-04"
+        ends: "2029-03"
+        term_number: 2
+        extensions: [{ granted: "2026-03-05", to: "2029-03", law: nab-amendment-2026, notes: "Three-year extension enabled by an amendment passed and signed the day before his term expired" }]
+        source: { title: "Dawn — President assents to bill extending NAB chairman's term", url: "https://www.dawn.com/news/1978688" }
+    background: [{ service: military, rank: Lieutenant-General, retired: "yes", notes: "Former Corps Commander Peshawar" }]
+    as_of: "2026-09"
   - id: rashid-langrial
     name: Rashid Mahmood Langrial
     roles:
@@ -277,23 +290,39 @@ people:
   # ── Armed forces ──────────────────────────────────────────────────────────
   - id: asim-munir
     name: Field Marshal Syed Asim Munir
+    confidence: high
     roles:
-      - { position: fed-coas, since: "2022-11-29", source: { title: ISPR, url: "https://www.ispr.gov.pk" } }
-      - { position: fed-cdf, since: "2025-12" }
-    as_of: "2025-12"
-    confidence: medium
-    notes: Promoted to Field Marshal in May 2025. Became Chief of Defence Forces under the 27th Amendment; verify date and terms against the notification.
+      - position: fed-coas
+        since: "2022-11-29"
+        ends: "2030-12"
+        extensions:
+          - { granted: "2024-11", to: "2027-11", law: army-amendment-2024, notes: "Service chiefs' terms raised from three to five years" }
+          - { granted: "2025-12-05", to: "2030-12", law: amendment-27, notes: "Fresh five-year term, running concurrently with the new CDF office" }
+        source: { title: "Arab News — Army chief gets fresh five-year term", url: "https://www.arabnews.com/node/2622517/pakistan" }
+      - { position: fed-cdf, since: "2025-12-05", ends: "2030-12", source: { title: "Arab News — President appoints first Chief of Defence Forces", url: "https://www.arabnews.com/node/2625012/pakistan" } }
+    as_of: "2026-09"
+    notes: Promoted to Field Marshal in May 2025. Appointed the first Chief of Defence Forces by notification of 5 December 2025, concurrently with a fresh five-year term as COAS.
+    background: [{ service: military, rank: Field Marshal }]
   - id: naveed-ashraf
     name: Admiral Naveed Ashraf
     roles:
-      - { position: fed-cns, since: "2023-10-07" }
-    as_of: "2025-11"
+      - { position: fed-cns, since: "2023-10-07", ends: "2028-10-07", extensions: [{ granted: "2024-11", to: "2028-10-07", law: army-amendment-2024, notes: "Term raised from three to five years" }], source: { title: "Pakistan Navy — Chief of the Naval Staff", url: "https://www.paknavy.gov.pk/cns.html" } }
+    background: [{ service: military, rank: Admiral }]
+    as_of: "2026-07"
     confidence: medium
   - id: zaheer-babar-sidhu
     name: Air Chief Marshal Zaheer Ahmad Babar Sidhu
     roles:
-      - { position: fed-cas, since: "2021-03-19" }
-    as_of: "2025-11"
+      - position: fed-cas
+        since: "2021-03-19"
+        ends: "2028-03-19"
+        extensions:
+          - { granted: "2024-03-17", to: "2025-03-19", notes: "One-year extension (second in PAF history)" }
+          - { granted: "2024-11", to: "2026-03-19", law: army-amendment-2024, notes: "Tenure of service chiefs raised to five years" }
+          - { granted: "2025-12", to: "2028-03-19", by: fed-prime-minister, notes: "Two-year extension approved by the PM and President, effective from 19 March 2026" }
+        source: { title: "Pakistan Observer — Sidhu to lead PAF until 2028 after second extension", url: "https://pakobserver.net/zaheer-babar-sidhu-to-lead-pakistan-air-force-until-2028-after-second-extension/" }
+    background: [{ service: military, rank: Air Chief Marshal }]
+    as_of: "2026-09"
     confidence: medium
   - id: asim-malik
     name: Lt Gen Muhammad Asim Malik
@@ -331,6 +360,8 @@ people:
     roles:
       - { position: seat-pp-159, since: "2024-02-23" }
       - { position: pb-chief-minister, since: "2024-02-26", source: { title: Government of the Punjab, url: "https://punjab.gov.pk" } }
+    declared_assets:
+      - { amount_pkr: 800000000, as_of: "2024-01", basis: "Nomination papers, 2024 general election", notes: "Reported as over Rs800 million of assets in Pakistan", source: { title: "The News — Top politicians declare assets", url: "https://www.thenews.com.pk/print/1286584-top-politicians-declare-assets" } }
     as_of: "2025-11"
     confidence: high
     notes: First woman Chief Minister of any Pakistani province.
@@ -358,7 +389,7 @@ people:
     name: Syed Murad Ali Shah
     party: party-ppp
     roles:
-      - { position: sd-chief-minister, since: "2024-02-26", source: { title: Government of Sindh, url: "https://sindh.gov.pk" } }
+      - { position: sd-chief-minister, since: "2024-02-26", term_number: 3, source: { title: Government of Sindh, url: "https://sindh.gov.pk" } }
     as_of: "2025-11"
     confidence: high
     notes: Third term; previously Chief Minister 2016–2023.
@@ -511,6 +542,8 @@ people:
     roles:
       - { position: party-ppp-head, since: "2007-12-30" }
       - { position: seat-na-194, since: "2024-02-29" }
+    declared_assets:
+      - { amount_pkr: 1900000000, as_of: "2024-01", basis: "Nomination papers, 2024 general election", notes: "Over Rs1.9 billion, of which about Rs1.7 billion abroad", source: { title: "The News — Top politicians declare assets", url: "https://www.thenews.com.pk/print/1286584-top-politicians-declare-assets" } }
     as_of: "2026-06"
     confidence: medium
   - id: gohar-ali-khan
@@ -602,7 +635,8 @@ people:
   - id: maqbool-ahmad-gondal
     name: Maqbool Ahmad Gondal
     roles:
-      - { position: fed-auditor-general, since: "2025-09-15", source: { title: Radio Pakistan, url: "https://www.radio.gov.pk/15-09-2025/maqbool-ahmad-gondal-sworn-in-as-new-auditor-general-of-pakistan" } }
+      - { position: fed-auditor-general, since: "2025-09-15", ends: "2029-09", source: { title: Radio Pakistan, url: "https://www.radio.gov.pk/15-09-2025/maqbool-ahmad-gondal-sworn-in-as-new-auditor-general-of-pakistan" } }
+    background: [{ service: civil_service, rank: "BS-22, Pakistan Audit and Accounts Service" }]
     as_of: "2026-09"
     confidence: high
     notes: 22nd Auditor-General; previously Controller General of Accounts.
@@ -648,6 +682,7 @@ people:
     name: Maj Gen (R) Hafeez ur Rehman
     roles:
       - { position: fed-pta-chairman, source: { title: "Express Tribune — IHC reinstates PTA chairman", url: "https://tribune.com.pk/story/2567624/ihc-reinstates-hafeezur-rehman-as-pta-chairman" } }
+    background: [{ service: military, rank: Major-General, retired: "yes" }]
     as_of: "2026-09"
     confidence: medium
     notes: Reinstated by the Islamabad High Court in September 2025.
@@ -903,3 +938,43 @@ people:
     as_of: "2026-06"
     confidence: medium
     notes: Directly elected Mayor of Peshawar in the 2021 KP local elections.
+
+  # ── Retired and serving officers in civilian posts (verified 2026) ────────
+  - id: akhtar-nawaz-satti
+    name: Lt Gen (R) Akhtar Nawaz Satti
+    roles:
+      - { position: fed-fpsc-chairman, source: { title: "APP — Lt Gen Akhtar Nawaz (Retd) sworn in as FPSC chairman", url: "https://www.app.com.pk/national/lt-general-akhtar-nawaz-retd-sworn-in-as-fpsc-chairman/" } }
+    background: [{ service: military, rank: Lieutenant-General, retired: "yes" }]
+    as_of: "2026-06"
+    confidence: medium
+  - id: muhammad-saeed-wapda
+    name: Lt Gen (R) Muhammad Saeed
+    roles:
+      - { position: fed-wapda-chairman, since: "2025-08", source: { title: "Radio Pakistan — PM felicitates Lt Gen (R) Muhammad Saeed", url: "https://www.radio.gov.pk/04-08-2025/pm-felicitates-muhammad-saeed-on-his-appointment-as-chairman-wapda" } }
+    background: [{ service: military, rank: Lieutenant-General, retired: "yes" }]
+    as_of: "2026-06"
+    confidence: high
+    notes: Succeeded Lt Gen (R) Sajjad Ghani, who resigned in June 2025.
+  - id: munir-afsar
+    name: Lt Gen Muhammad Munir Afsar
+    roles:
+      - { position: fed-nadra-chairman, since: "2023-10", source: { title: "Express Tribune — LHC reinstates Lt Gen Munir Afsar as Nadra chairman", url: "https://tribune.com.pk/story/2495008/lhc-reinstates-lt-gen-munir-afsar-as-nadra-chairman" } }
+    background: [{ service: military, rank: Lieutenant-General, notes: "Appointed while a serving officer" }]
+    as_of: "2026-04"
+    confidence: medium
+    notes: His appointment was challenged in court; the Lahore High Court reinstated him in December 2024.
+  - id: inam-haider-malik
+    name: Lt Gen Inam Haider Malik
+    roles:
+      - { position: fed-ndma-chairman }
+    background: [{ service: military, rank: Lieutenant-General, notes: "Serving officer" }]
+    as_of: "2025-11"
+    confidence: medium
+  - id: naveed-kamran-baloch
+    name: Naveed Kamran Baloch
+    roles:
+      - { position: fed-wafaqi-mohtasib-head, since: "2026-03-04", ends: "2030-03", source: { title: "Ministry of Foreign Affairs — Wafaqi Mohtasib", url: "https://mofa.gov.pk/wafaqi-mohtasib" } }
+    background: [{ service: civil_service, retired: "yes", notes: "Former federal civil servant" }]
+    as_of: "2026-06"
+    confidence: medium
+    notes: Ninth regular Wafaqi Mohtasib; four-year term.

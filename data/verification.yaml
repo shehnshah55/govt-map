@@ -1,0 +1,142 @@
+# Verification log. Every entry records a claim, the records it touches, what
+# the check found, and the sources used. Claims from the uploaded spreadsheet
+# ("Pakistan_Government_Structure_and_Officials.xlsx") are marked with origin.
+# Status: verified | corrected (our data or the source was wrong and is fixed)
+#         | conflict (sources disagree; both shown) | unverified (no reliable source found yet)
+verification:
+  - claim: "Chairman Joint Chiefs of Staff Committee is General Sahir Shamshad Mirza (Nov 2022 – present)"
+    origin: spreadsheet INC-011, DEF-JCSC-01, POS-019
+    status: corrected
+    finding: The CJCSC office was abolished by the 27th Amendment on General Mirza's retirement on 27 November 2025. The tri-service head is now the Chief of Defence Forces, Field Marshal Asim Munir (from 5 December 2025).
+    records: [fed-cdf, asim-munir]
+    checked: "2026-09-25"
+    sources:
+      - { title: "Pakistan Today — Post of CJCSC stands abolished", url: "https://www.pakistantoday.com.pk/2025/11/28/post-of-cjcsc-stands-abolished-as-chief-of-defence-forces-era-begins-under-27th-amend/" }
+      - { title: "Arab News — President appoints first Chief of Defence Forces", url: "https://www.arabnews.com/node/2625012/pakistan" }
+  - claim: "Chief Minister of Khyber Pakhtunkhwa is Ali Amin Gandapur (2024 – present)"
+    origin: spreadsheet INC-017
+    status: corrected
+    finding: Gandapur served March 2024 – October 2025. Muhammad Sohail Afridi was elected Chief Minister on 13 October 2025.
+    records: [kp-chief-minister, sohail-afridi, ali-amin-gandapur]
+    checked: "2026-09-25"
+    sources: [{ title: "Dawn — KP CM Sohail Afridi's cabinet takes oath", url: "https://www.dawn.com/news/1952295" }]
+  - claim: "Chief of Army Staff is General Asim Munir (Nov 2022 – present)"
+    origin: spreadsheet INC-010
+    status: corrected
+    finding: Still COAS, but now Field Marshal (May 2025) and concurrently the first Chief of Defence Forces, with a fresh five-year term to 2030.
+    records: [fed-coas, fed-cdf, asim-munir]
+    checked: "2026-09-25"
+    sources: [{ title: "Arab News — Army chief gets fresh five-year term", url: "https://www.arabnews.com/node/2622517/pakistan" }]
+  - claim: "Chairman NAB is appointed by the Federal Government"
+    origin: spreadsheet POS-018
+    status: corrected
+    finding: Under s. 6 of the NAB Ordinance as amended in 2022, the President appoints the Chairman after consultation between the Prime Minister and the Leader of the Opposition. The 2026 amendment made the three-year term extendable, and the incumbent was extended to March 2029.
+    records: [fed-nab-chairman, nazir-ahmed-butt]
+    checked: "2026-09-25"
+    sources: [{ title: "Dawn — President assents to bill extending NAB chairman's term", url: "https://www.dawn.com/news/1978688" }]
+  - claim: "PCAA is established by the Civil Aviation Authority Act 2023, headquartered in Karachi"
+    origin: spreadsheet REG-AVN-01
+    status: corrected
+    finding: The law is the Pakistan Civil Aviation Act, 2023. From 9 August 2024 the old CAA was split into the PCAA (regulator), Pakistan Airports Authority and Bureau of Air Safety Investigation. The old CAA was headquartered at Karachi airport; the restructured PCAA's headquarters could not be confirmed, so no HQ is recorded.
+    records: [fed-caa, fed-paa, fed-basi, pcaa-act-2023]
+    checked: "2026-09-25"
+    sources:
+      - { title: "Pakistan Code — Pakistan Civil Aviation Act, 2023", url: "https://pakistancode.gov.pk/english/UY2FqaJw1-apaUY2Fqa-apaUY2Npa5poZg==-sg-jjjjjjjjjjjjj" }
+      - { title: "Geo — Govt splits PCAA into three bodies", url: "https://www.geo.tv/latest/558953-govt-splits-pcaa-into-three-bodies" }
+  - claim: "Chief Election Commissioner is Sikandar Sultan Raja (2020 – present)"
+    origin: spreadsheet INC-013
+    status: verified
+    finding: Correct, but his five-year term ended on 26 January 2025. He is holding over until a successor is appointed; in September 2026 the PM and the Opposition Leader were still consulting on a replacement.
+    records: [fed-cec, sikandar-sultan-raja]
+    checked: "2026-09-25"
+    sources: [{ title: "Aaj — PM Shehbaz, Achakzai discuss appointment of new election commissioner", url: "https://english.aaj.tv/news/330471731/pm-shehbaz-achakzai-discuss-appointment-of-new-election-commissioner" }]
+  - claim: "Leader of the Opposition in the National Assembly"
+    status: corrected
+    finding: Omar Ayub Khan (PTI) was disqualified in 2025. Mahmood Khan Achakzai (PkMAP) took office on 16 January 2026.
+    records: [fed-na-leader-of-opposition, mahmood-khan-achakzai, omar-ayub-khan]
+    checked: "2026-09-25"
+    sources: [{ title: "National Assembly — Leaders of the Opposition", url: "https://na.gov.pk/en/print_list.php?type=oppleaders" }]
+  - claim: "Leader of the Opposition in the Senate"
+    status: verified
+    finding: Allama Raja Nasir Abbas (MWM) since 19 January 2026, with the support of 22 of 32 opposition senators.
+    records: [fed-senate-leader-of-opposition, raja-nasir-abbas]
+    checked: "2026-09-25"
+    sources: [{ title: "Business Recorder — Raja declared leader of opposition in Senate", url: "https://www.brecorder.com/news/40403247/raja-declared-as-leader-of-opposition-in-senate" }]
+  - claim: "Chief of the Air Staff tenure"
+    status: verified
+    finding: Air Chief Marshal Zaheer Ahmad Babar Sidhu, in office since 19 March 2021. He received a one-year extension in March 2024, the five-year statutory term in November 2024, and a two-year extension (announced December 2025) to 19 March 2028.
+    records: [fed-cas, zaheer-babar-sidhu]
+    checked: "2026-09-25"
+    sources: [{ title: "Pakistan Observer — Sidhu to lead PAF until 2028", url: "https://pakobserver.net/zaheer-babar-sidhu-to-lead-pakistan-air-force-until-2028-after-second-extension/" }]
+  - claim: "Auditor-General of Pakistan"
+    status: corrected
+    finding: Maqbool Ahmad Gondal (22nd AGP) took oath on 15 September 2025 for a four-year term, replacing Muhammad Ajmal Gondal.
+    records: [fed-auditor-general, maqbool-ahmad-gondal]
+    checked: "2026-09-25"
+    sources: [{ title: "Radio Pakistan — Maqbool Ahmad Gondal sworn in", url: "https://www.radio.gov.pk/15-09-2025/maqbool-ahmad-gondal-sworn-in-as-new-auditor-general-of-pakistan" }]
+  - claim: "OGRA Chairman"
+    status: verified
+    finding: Vacant since 22 February 2026; the Establishment Secretary holds additional charge.
+    records: [fed-ogra-chairman, nabeel-awan]
+    checked: "2026-09-25"
+    sources: [{ title: "ProPakistani — OGRA without a chairman since February", url: "https://propakistani.pk/2026/07/23/ogra-without-a-chairman-since-february/" }]
+  - claim: "Party positions in the National Assembly"
+    status: verified
+    finding: "Treasury: PML-N 123, PPP 74, MQM-P 22, PML-Q 5, IPP 4. Opposition: SIC 80, JUI-F 10, PTI-backed independents 5, BNP, MWM and PkMAP 1 each. The remaining 10 seats (smaller partners or vacancies) are not itemised in the source."
+    records: [fed-national-assembly]
+    checked: "2026-09-25"
+    sources: [{ title: "Dawn — Govt takes commanding lead after being handed reserved seats", url: "https://www.dawn.com/news/1921759" }]
+  - claim: "Party positions in the Senate"
+    status: conflict
+    finding: The reported July 2025 breakdown totals 94 of 96 seats. The January 2026 report of the Opposition Leader's election refers to 32 opposition senators, against 29 in the breakdown. Shown with two seats marked other or vacant.
+    records: [fed-senate]
+    checked: "2026-09-25"
+    sources:
+      - { title: "Dawn — KP Senate election result", url: "https://www.dawn.com/news/1925665" }
+      - { title: "Business Recorder — Raja declared leader of opposition in Senate", url: "https://www.brecorder.com/news/40403247/raja-declared-as-leader-of-opposition-in-senate" }
+  - claim: "Declared assets of Shehbaz Sharif, Maryam Nawaz and Bilawal Bhutto Zardari (2024 nomination papers)"
+    status: verified
+    finding: Rs73 million; over Rs800 million; over Rs1.9 billion (about Rs1.7 billion abroad). These are declared assets, not audited net worth.
+    records: [shehbaz-sharif, maryam-nawaz, bilawal-bhutto-zardari]
+    checked: "2026-09-25"
+    sources: [{ title: "The News — Top politicians declare assets", url: "https://www.thenews.com.pk/print/1286584-top-politicians-declare-assets" }]
+  - claim: "Declared assets of Asif Ali Zardari"
+    status: unverified
+    finding: The only figure found (Rs758 million) comes from the 2018 nomination papers. As President he did not file 2024 papers as a candidate for the Assembly. Shown with its 2018 date.
+    records: [asif-ali-zardari]
+    checked: "2026-09-25"
+    sources: [{ title: "The National — Pakistani politicians' asset declarations", url: "https://www.thenationalnews.com/world/asia/pakistani-politicians-asset-declarations-reveal-deep-pockets-1.742837" }]
+  - claim: "Retired generals in civilian posts: FPSC, WAPDA, NAB, PTA"
+    status: verified
+    finding: FPSC Chairman Lt Gen (R) Akhtar Nawaz Satti; WAPDA Chairman Lt Gen (R) Muhammad Saeed (from August 2025); NAB Chairman Lt Gen (R) Nazir Ahmed Butt; PTA Chairman Maj Gen (R) Hafeez ur Rehman. NADRA Chairman Lt Gen Munir Afsar and NDMA Chairman Lt Gen Inam Haider Malik were appointed as serving officers.
+    records: [akhtar-nawaz-satti, muhammad-saeed-wapda, nazir-ahmed-butt, hafeez-ur-rehman, munir-afsar, inam-haider-malik]
+    checked: "2026-09-25"
+    sources:
+      - { title: "APP — Lt Gen Akhtar Nawaz (Retd) sworn in as FPSC chairman", url: "https://www.app.com.pk/national/lt-general-akhtar-nawaz-retd-sworn-in-as-fpsc-chairman/" }
+      - { title: "Radio Pakistan — Lt Gen (R) Muhammad Saeed appointed WAPDA chairman", url: "https://www.radio.gov.pk/04-08-2025/pm-felicitates-muhammad-saeed-on-his-appointment-as-chairman-wapda" }
+      - { title: "Express Tribune — LHC reinstates Lt Gen Munir Afsar", url: "https://tribune.com.pk/story/2495008/lhc-reinstates-lt-gen-munir-afsar-as-nadra-chairman" }
+  - claim: "Wafaqi Mohtasib"
+    status: verified
+    finding: Naveed Kamran Baloch took oath on 4 March 2026 for a four-year term.
+    records: [fed-wafaqi-mohtasib-head, naveed-kamran-baloch]
+    checked: "2026-09-25"
+    sources: [{ title: "Ministry of Foreign Affairs — Wafaqi Mohtasib", url: "https://mofa.gov.pk/wafaqi-mohtasib" }]
+  - claim: "Remaining spreadsheet incumbents (President, PM, Finance, Defence, Foreign/Deputy PM, Interior, Senate Chairman, NA Speaker, CJP, SBP Governor, CMs of Punjab, Sindh and Balochistan)"
+    origin: spreadsheet INC-001–009, 012, 015, 016, 018
+    status: verified
+    finding: Consistent with our records and with 2026 reporting found in this pass.
+    records: [asif-ali-zardari, shehbaz-sharif, muhammad-aurangzeb, khawaja-asif, ishaq-dar, mohsin-naqvi, yousuf-raza-gilani, ayaz-sadiq, yahya-afridi, jameel-ahmad, maryam-nawaz, murad-ali-shah, sarfraz-bugti]
+    checked: "2026-09-25"
+    sources: [{ title: "SBP — Governor", url: "https://www.sbp.org.pk/about/governors/index.htm" }]
+  - claim: "Federal Health Secretary"
+    status: conflict
+    finding: Search results named three different officers (Nadeem Mahbub, Dr M. Fakhr-e-Alam, Aamir Ashraf Khawaja). No holder is recorded until nhsrc.gov.pk can be checked.
+    records: [fed-min-nhsrc-secretary]
+    checked: "2026-09-25"
+    sources: [{ title: "Ministry of NHSR&C", url: "https://www.nhsrc.gov.pk/" }]
+  - claim: "FBR Chairman"
+    status: conflict
+    finding: Our record (Rashid Mahmood Langrial, from August 2024) conflicts with a search result naming Asim Ahmad, which appears to be older. Kept at medium confidence pending the FBR site.
+    records: [fed-fbr-chairman, rashid-langrial]
+    checked: "2026-09-25"
+    sources: [{ title: "FBR", url: "https://www.fbr.gov.pk" }]

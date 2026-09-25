@@ -23,6 +23,13 @@ It follows CivLab's [US Gov Graph](https://graph.civlab.org/us) (entities, posit
 - **Directory by type**: ministries and departments, regulators, agencies and enterprises, courts and tribunals, legislatures, independent bodies, security, local government and parties. Every government is shown side by side, with each body's head and legal basis.
 - **Elected officials**: every legislature's seats and recorded members by party, every office filled by election, and a seat roster searchable by constituency code (e.g. `NA-122`).
 - **Officials register**: appointed and elected officeholders with how they were chosen, since when, and how current the record is.
+- **Classification tags on every post and body**: what created it (constitutional, statutory, executive order), how it is filled (elected, political appointee, constitutional appointee, judiciary, military, civil service, regulatory, statutory, ex officio), and its tenure (fixed term, until age, at pleasure, coterminous). Each also links to the latest amendment or statute that changed it.
+- **Legal history**: a dated timeline for key offices (e.g. CJP: 18th → 19th → 26th Amendment; COAS: 8th → 13th → Army Act 2020/2024 → 27th), drillable to each law. Law pages list every office the law created or changed.
+- **Parliament in session**: seating charts of the National Assembly and Senate, with treasury benches vs opposition by party and named members ringed with their constituency and offices.
+- **Who appoints whom**: the Army chief, judges, regulators, the CEC, governors, secretaries and others, with appointer, binding advice, nomination, confirmation, tenure and extension rules.
+- **Holdovers, extensions and backgrounds**: officials holding over after their term, extended or repeat terms, retired or serving generals, judges and bureaucrats in civilian posts, concurrent offices, and declared assets with sources.
+- **Tree, map, drawer**: a collapsible tree of the state, headquarters by city, and a detail drawer when clicking graph nodes, as the platform brief specifies (see docs/BRIEF_ALIGNMENT.md).
+- **Verification log**: every fact check, correction and open conflict, with sources.
 - **Power map**: who appoints, elects, nominates or confirms each office, per government.
 - **Sectors × governments matrix**: after devolution, see which government runs what (e.g. *Health in every government*).
 - **Accountability**: acting and additional-charge officials, vacancies, key posts with no recorded holder, and records that need verification.

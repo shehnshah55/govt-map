@@ -6,6 +6,7 @@ import { esc, raw } from "./ui/dom.ts";
 import { hrefFor, type Ctx, type View } from "./views/common.ts";
 import { lawView, orgView, personView, placeView, postView } from "./views/entities.ts";
 import { directoryView, electedView, officialsView } from "./views/directory.ts";
+import { appointmentsView, mapView, parliamentView, treeView, verificationView } from "./views/insight.ts";
 import { aboutView, accountabilityView, exploreView, homeView, lawsView, searchView, sectorView, sectorsView } from "./views/pages.ts";
 
 declare const __SINGLE__: boolean;
@@ -50,6 +51,16 @@ function route(path: string): View | undefined {
       return electedView(ctx);
     case "officials":
       return officialsView(ctx, seg[1]);
+    case "parliament":
+      return parliamentView(ctx);
+    case "appointments":
+      return appointmentsView(ctx);
+    case "tree":
+      return treeView(ctx);
+    case "map":
+      return mapView(ctx);
+    case "verification":
+      return verificationView(ctx);
     case "accountability":
       return accountabilityView(ctx);
     case "search":
@@ -75,6 +86,7 @@ function render(path: string) {
     a.toggleAttribute("aria-current", target !== "/" && path.startsWith(target));
     if (a.hasAttribute("aria-current")) a.setAttribute("aria-current", "page");
   });
+  document.querySelectorAll<HTMLDetailsElement>(".nav details").forEach((d) => (d.open = false));
   window.scrollTo(0, 0);
   cleanup = view.mount?.(app) ?? undefined;
 }

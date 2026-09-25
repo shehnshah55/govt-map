@@ -109,3 +109,49 @@ describe("exports", () => {
     expect(csv["organizations.csv"].trim().split("\n")).toHaveLength(graph.organizations.length + 1);
   });
 });
+
+describe("classification and lineage", () => {
+  it("classifies every post by origin and selection", () => {
+    for (const p of graph.positions) {
+      expect(["constitutional", "statutory", "executive", "conventional", "unrecorded"], p.id).toContain(p._origin);
+      expect(p._selection, p.id).toBeTruthy();
+    }
+  });
+
+  it("tags key offices correctly", () => {
+    const sel = (id: string) => ix.post.get(id)!._selection;
+    expect(sel("fed-prime-minister")).toBe("elected");
+    expect(sel("fed-coas")).toBe("military");
+    expect(sel("fed-chief-justice")).toBe("judicial");
+    expect(sel("fed-min-finance-minister")).toBe("political");
+    expect(sel("fed-cabinet-division-secretary")).toBe("civil_service");
+    expect(sel("fed-nepra-chairman")).toBe("regulatory");
+    expect(sel("fed-cec")).toBe("constitutional");
+    expect(ix.post.get("fed-cec")!._origin).toBe("constitutional");
+    expect(ix.post.get("fed-sapm")!._origin).toBe("executive");
+    expect(ix.post.get("pb-governor")!._tenure?.kind).toBe("pleasure");
+    expect(ix.post.get("fed-chief-justice")!._tenure?.years).toBe(3);
+  });
+
+  it("records the 26th and 27th Amendments in the lineage of the offices they changed", () => {
+    expect(ix.post.get("fed-chief-justice")!.history!.some((h) => h.law === "amendment-26")).toBe(true);
+    expect(ix.post.get("fed-cdf")!.history!.some((h) => h.law === "amendment-27")).toBe(true);
+  });
+
+  it("gives both Houses a full party composition", () => {
+    for (const id of ["fed-national-assembly", "fed-senate"]) {
+      const c = ix.org.get(id)!.composition!;
+      expect(c.parties.reduce((n, p) => n + p.seats, 0), id).toBe(c.total);
+    }
+  });
+
+  it("flags holdovers and extensions", () => {
+    expect(ix.person.get("sikandar-sultan-raja")!.roles.find((r) => r.position === "fed-cec")!.status).toBe("holding_over");
+    expect(ix.person.get("nazir-ahmed-butt")!.roles.find((r) => r.position === "fed-nab-chairman")!.extensions!.length).toBeGreaterThan(0);
+  });
+
+  it("cites a source for every declared-asset figure and verification entry", () => {
+    for (const p of graph.people) for (const a of p.declared_assets ?? []) expect(a.source.url, p.id).toMatch(/^https:/);
+    for (const v of graph.verification) expect(v.sources.length, v.claim).toBeGreaterThan(0);
+  });
+});
