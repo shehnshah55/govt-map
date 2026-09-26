@@ -1413,3 +1413,141 @@ a .hemi-seat {
   height: auto;
   display: block;
 }
+
+/* ── Home starter map ─────────────────────────────────────────────────── */
+.starter {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 820px) {
+  .starter {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.starter-map {
+  display: grid;
+  gap: 10px;
+}
+.starter .chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.chip-btn {
+  font: inherit;
+  font-size: var(--s-sm);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+.chip-btn:hover {
+  border-color: var(--accent);
+}
+.chip-btn[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+.starter .unit {
+  fill: var(--surface);
+  stroke: var(--accent);
+  stroke-width: 1.2;
+  cursor: pointer;
+  transition: fill 0.15s;
+}
+.starter .unit:hover {
+  fill: var(--accent-soft);
+}
+.starter .unit:focus {
+  outline: none;
+}
+.starter .unit:focus-visible {
+  outline: none;
+  stroke: var(--ink);
+  stroke-width: 2.5;
+}
+.starter .unit.on {
+  fill: var(--accent);
+  fill-opacity: 0.45;
+}
+.starter.fed .unit {
+  fill: var(--accent-soft);
+}
+.starter .unit-label,
+.starter .unit-marker text {
+  font: 600 12px "IBM Plex Sans", sans-serif;
+  fill: var(--ink);
+  paint-order: stroke;
+  stroke: var(--surface);
+  stroke-width: 3;
+  pointer-events: none;
+}
+.starter .unit-marker {
+  cursor: pointer;
+}
+.starter .unit-marker circle {
+  fill: var(--k-navy);
+  stroke: var(--surface);
+  stroke-width: 2;
+}
+.starter .unit-marker.on circle {
+  fill: var(--accent);
+}
+.starter-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+}
+.unit-panel {
+  display: grid;
+  gap: 10px;
+}
+.unit-panel h3 {
+  font-size: 1.35rem;
+}
+.unit-panel h3 a {
+  color: var(--ink);
+  text-decoration: none;
+}
+.unit-panel h3 a:hover {
+  color: var(--accent);
+}
+.unit-panel .urdu {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+.unit-panel p {
+  color: var(--ink-2);
+}
+.unit-panel dl {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 4px 12px;
+  margin: 0;
+  font-size: var(--s-sm);
+}
+.unit-panel dd {
+  margin: 0;
+}
+.unit-panel .lawlist {
+  display: inline;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.unit-panel .lawlist li {
+  display: inline;
+}
+.starter .small {
+  font-size: var(--s-sm);
+}
+.starter .base-labels {
+  pointer-events: none;
+}

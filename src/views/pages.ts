@@ -5,38 +5,9 @@ import { SECTOR_LABEL, STATUS_LABEL } from "../ui/labels.ts";
 import { DIRECTORIES } from "./directory.ts";
 import { casesTable, CASES_NOTE, confidenceChip, graphPanel, holdingFlags, hrefFor, kindLabel, link, partyLink, postRow, selectionTag, statusChip, type Ctx, type View } from "./common.ts";
 import { formatPkr } from "./entities.ts";
+import { starterMap } from "./starter-map.ts";
+import { TIERS, TIER_GOVT, TIER_HEADS, TIER_LABEL } from "./tiers.ts";
 
-const TIERS = ["pk", "pk-pb", "pk-sd", "pk-kp", "pk-ba", "pk-ict", "pk-gb", "pk-ajk"];
-const TIER_LABEL: Record<string, string> = {
-  pk: "Federal",
-  "pk-pb": "Punjab",
-  "pk-sd": "Sindh",
-  "pk-kp": "Khyber Pakhtunkhwa",
-  "pk-ba": "Balochistan",
-  "pk-ict": "Islamabad",
-  "pk-gb": "Gilgit-Baltistan",
-  "pk-ajk": "AJK",
-};
-const TIER_GOVT: Record<string, string> = {
-  pk: "fed-federation",
-  "pk-pb": "pb-government",
-  "pk-sd": "sd-government",
-  "pk-kp": "kp-government",
-  "pk-ba": "ba-government",
-  "pk-ict": "fed-ict-administration",
-  "pk-gb": "gb-government",
-  "pk-ajk": "ajk-government",
-};
-const TIER_HEADS: Record<string, [string, string][]> = {
-  pk: [["President", "fed-president"], ["Prime Minister", "fed-prime-minister"], ["Chief Justice", "fed-chief-justice"], ["Speaker NA", "fed-na-speaker"]],
-  "pk-pb": [["Governor", "pb-governor"], ["Chief Minister", "pb-chief-minister"], ["Chief Justice LHC", "pb-hc-chief-justice"]],
-  "pk-sd": [["Governor", "sd-governor"], ["Chief Minister", "sd-chief-minister"], ["Mayor of Karachi", "sd-mayor"]],
-  "pk-kp": [["Governor", "kp-governor"], ["Chief Minister", "kp-chief-minister"], ["Speaker", "kp-speaker"]],
-  "pk-ba": [["Governor", "ba-governor"], ["Chief Minister", "ba-chief-minister"], ["Speaker", "ba-speaker"]],
-  "pk-ict": [["Chief Commissioner", "fed-ict-chief-commissioner"], ["Chief Justice IHC", "fed-ihc-chief-justice"]],
-  "pk-gb": [["Governor", "gb-governor"], ["Chief Minister", "gb-chief-minister"]],
-  "pk-ajk": [["President", "ajk-president"], ["Prime Minister", "ajk-prime-minister"]],
-};
 
 function holderName(ctx: Ctx, postId: string) {
   const h = ctx.ix.effectiveHolders(postId)[0];
@@ -48,7 +19,10 @@ export function homeView(ctx: Ctx): View {
   const c = ix.g.meta.counts;
   const districts = ix.g.jurisdictions.filter((j) => j.kind === "district").length;
   const seatCount = ix.g.positions.filter((p) => p.area || p.seat_type).reduce((n, p) => n + (p.seats ?? 1), 0);
-  const featured = ix.org.get("fed-min-nhsrc")!;
+  const featured = ix.org.get("fed-pm-office")!;
+  const pm = ix.effectiveHolders("fed-prime-minister")[0];
+  const pmoBodies = (ix.children.get("fed-pm-office") ?? []).filter((o) => !o.abolished);
+  const starter = starterMap(ctx);
   const sectorsInUse = (Object.keys(SECTOR_LABEL) as Sector[]).filter((s) => ix.bySector(s).length >= 4);
   const power = graphPanel(
     ctx,
@@ -65,9 +39,13 @@ export function homeView(ctx: Ctx): View {
       <h1>Who governs Pakistan, and who put them there.</h1>
       <p class="lede">A connected map of Pakistan's federal, provincial, territorial, divisional and district government. It covers every body, the posts that lead it, the people in those posts, and the constitutional article or statute behind each link.</p>
       <div class="btnrow">
-        <a class="btn" href="#/org/fed-min-nhsrc">Start with the Ministry of Health</a>
+        <a class="btn" href="#/org/fed-pm-office">Start with the Prime Minister's Office</a>
         <a class="btn ghost" href="#/explore">Explore the whole graph</a>
       </div>
+    </section>
+    <section class="stack" style="margin-bottom:22px">
+      <h2>Start here <span class="count">The Federation and its units. Select one to see what it is, who leads it and where to go next.</span></h2>
+      ${starter.body}
     </section>
     <div class="stats">
       <div class="stat"><b>${c.organizations}</b><span>Government bodies</span></div>
@@ -81,16 +59,18 @@ export function homeView(ctx: Ctx): View {
     <div class="stack">
       <section class="feature">
         <div style="display:grid;gap:10px">
-          <div class="eyebrow">Pakistan's counterpart to the US Department of Health and Human Services</div>
-          <h2><a href="#/org/fed-min-nhsrc" style="color:inherit;text-decoration:none">${featured.name}</a></h2>
-          <p>Health became a provincial subject in 2011. The federal ministry that remains regulates medicines and the health professions, runs the polio, immunisation, TB, malaria and HIV programmes, and coordinates the four provincial health departments.</p>
-          <div class="btnrow"><a class="btn" href="#/org/fed-min-nhsrc">Open the ministry</a><a class="btn ghost" href="#/sector/health">Health in every government</a></div>
+          <div class="eyebrow">The top of the federal executive</div>
+          <h2><a href="#/org/fed-pm-office" style="color:inherit;text-decoration:none">${featured.name}</a></h2>
+          ${featured.description ? html`<p>${featured.description}</p>` : ""}
+          <p><span class="hint">Prime Minister:</span> ${pm ? link(ix, pm.person.id) : html`<span class="hint">not recorded</span>`}</p>
+          <div class="btnrow"><a class="btn" href="#/org/fed-pm-office">Open the PM's Office</a><a class="btn ghost" href="#/post/fed-prime-minister">How the PM is chosen</a><a class="btn ghost" href="#/org/fed-min-nhsrc">Ministry of Health in depth</a></div>
         </div>
-        <ul class="plain">
-          ${["fed-drap", "fed-pmdc", "fed-nih", "fed-neoc", "fed-sehat-sahulat", "pb-primary-secondary-healthcare", "sd-health", "kp-health", "ba-health"].map(
-            (id) => html`<li>${link(ix, id, ix.shortLabel(id))} <span class="hint">· ${kindLabel(ix.org.get(id)!.kind)}${ix.org.get(id)!.jurisdiction !== "pk" ? " · " + TIER_LABEL[ix.tierOf(ix.org.get(id)!.jurisdiction)!.id] : ""}</span></li>`,
-          )}
-        </ul>
+        <div>
+          <div class="hint" style="margin-bottom:6px">Bodies that report to the PM's Office</div>
+          <ul class="plain">
+            ${pmoBodies.map((o) => html`<li>${link(ix, o.id, ix.shortLabel(o.id))} <span class="hint">· ${kindLabel(o.kind)}</span></li>`)}
+          </ul>
+        </div>
       </section>
       <section>
         <h2>Governments <span class="count">Federation, four provinces, the capital and two territories</span></h2>
@@ -146,7 +126,14 @@ export function homeView(ctx: Ctx): View {
       </section>
       <p class="notice">Officeholder records are dated (latest ${ix.g.meta.data_as_of}) and flagged <b>Verify</b> where they come from secondary reporting. Structural records cite the Constitution, Rules of Business or statute. See <a href="#/about">method and sources</a>.</p>
     </div>`;
-  return { title: "Pakistan Government Graph", body, mount: power.mount };
+  return {
+    title: "Pakistan Government Graph",
+    body,
+    mount: (root) => {
+      starter.mount(root);
+      return power.mount(root);
+    },
+  };
 }
 
 export function exploreView(ctx: Ctx, params: URLSearchParams): View {
