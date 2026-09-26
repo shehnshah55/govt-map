@@ -1,0 +1,436 @@
+# Flagship vertical: the Ministry of National Health Services, Regulations and
+# Coordination (NHSR&C) — Pakistan's counterpart of the US Department of Health
+# and Human Services — with its regulators, statutory councils, institutes,
+# national programmes, Islamabad hospitals and parliamentary oversight.
+# Provincial health departments (where most health delivery sits after the
+# 18th Amendment) are in data/provinces/*.yaml and linked below.
+defaults:
+  organizations:
+    branch: executive
+    jurisdiction: pk
+    sectors: [health]
+
+organizations:
+  - id: fed-min-health-former
+    name: Ministry of Health (1947–2011)
+    kind: ministry
+    description: The pre-devolution federal Ministry of Health, abolished on 30 June 2011 under the 18th Amendment. Its functions went to the provinces; residual federal functions were later regrouped under the Ministry of National Regulations and Services (2011) and then NHSR&C (2013).
+    abolished: "2011-06-30"
+    legal_basis: [{ law: amendment-18 }]
+    tags: [historical]
+
+  # ── Ministry wings ─────────────────────────────────────────────────────────
+  - id: fed-nhsrc-health-wing
+    name: Health Wing (Directorate General Health)
+    kind: other
+    parent: fed-min-nhsrc
+    description: Technical wing headed by the Director General (Health); leads health policy, planning, disease-control programmes and coordination with provinces and development partners.
+  - id: fed-nhsrc-population-wing
+    name: Population Programme Wing
+    kind: other
+    parent: fed-min-nhsrc
+    sectors: [health, population]
+    description: Federal coordination of population welfare after devolution (the Ministry of Population Welfare was devolved in 2011); reporting on FP2030 and CCI decisions on population (2018 Council of Common Interests recommendations).
+    confidence: medium
+  - id: fed-nhsrc-hpsiu
+    name: Health Planning, System Strengthening and Information Analysis Unit
+    short_name: HPSIU
+    kind: other
+    parent: fed-min-nhsrc
+    description: Planning and health-information unit supporting national health strategy, UHC benefit-package design and the District Health Information System.
+    confidence: low
+  - id: fed-imhpf
+    name: Inter-Ministerial Health and Population Forum
+    short_name: IMHPF
+    kind: intergovernmental_forum
+    parent: fed-min-nhsrc
+    description: Forum chaired by the Federal Health Minister with the provincial and area health and population ministers, used to agree national health policy, the National Health Vision and joint positions after devolution.
+    confidence: medium
+
+  # ── Regulators and statutory councils ──────────────────────────────────────
+  - id: fed-drap
+    name: Drug Regulatory Authority of Pakistan
+    short_name: DRAP
+    name_ur: ڈرگ ریگولیٹری اتھارٹی آف پاکستان
+    kind: regulator
+    parent: fed-min-nhsrc
+    established: "2012"
+    legal_basis: [{ law: drap-act-2012 }, { law: drugs-act-1976 }]
+    website: https://www.dra.gov.pk
+    description: Regulates the manufacture, import, export, registration, pricing, storage, distribution and sale of drugs, biologicals, medical devices and alternative medicines. Established after devolution to keep a single national drug regulator.
+    functions:
+      - Registration of drugs and medical devices (Registration Board)
+      - Licensing of manufacturers (Central Licensing Board)
+      - Drug pricing (Drug Pricing Committee under the Drug Pricing Policy)
+      - Pharmacovigilance and quality control (Central Drugs Laboratory, Karachi; federal drug testing labs)
+    sources: [{ title: DRAP Act 2012, url: https://www.dra.gov.pk }]
+  - id: fed-drap-policy-board
+    name: DRAP Policy Board
+    kind: committee
+    parent: fed-drap
+    legal_basis: [{ law: drap-act-2012 }]
+    description: Governing board of DRAP; takes policy decisions and oversees the Authority's divisions.
+  - id: fed-drap-registration-board
+    name: DRAP Registration Board
+    kind: committee
+    parent: fed-drap
+    legal_basis: [{ law: drugs-act-1976 }]
+  - id: fed-drap-central-licensing-board
+    name: DRAP Central Licensing Board
+    kind: committee
+    parent: fed-drap
+    legal_basis: [{ law: drugs-act-1976 }]
+  - id: fed-drap-pricing-committee
+    name: Drug Pricing Committee
+    kind: committee
+    parent: fed-drap
+    description: Recommends maximum retail prices of drugs to the Federal Government under the Drug Pricing Policy.
+  - id: fed-central-drugs-lab
+    name: Central Drugs Laboratory, Karachi
+    kind: research_institute
+    parent: fed-drap
+    jurisdiction: pk-sd
+    description: National quality-control laboratory for testing of drugs.
+    confidence: medium
+
+  - id: fed-pmdc
+    name: Pakistan Medical and Dental Council
+    short_name: PMDC
+    name_ur: پاکستان میڈیکل اینڈ ڈینٹل کونسل
+    kind: statutory_council
+    parent: fed-min-nhsrc
+    legal_basis: [{ law: pmdc-act-2022 }]
+    website: https://pmdc.pk
+    description: Registers and licenses doctors and dentists, sets standards for undergraduate and postgraduate medical and dental education, recognises colleges and conducts the national licensing examination. Restored in 2022–23 after the Pakistan Medical Commission (2020–2022) was dissolved.
+    confidence: medium
+  - id: fed-pnmc
+    name: Pakistan Nursing and Midwifery Council
+    short_name: PNMC
+    head_title: President, Pakistan Nursing and Midwifery Council
+    kind: statutory_council
+    parent: fed-min-nhsrc
+    legal_basis: [{ law: pnmc-act-2023 }]
+    description: Registers nurses, midwives and lady health visitors and regulates nursing education.
+    confidence: medium
+  - id: fed-pcp
+    name: Pharmacy Council of Pakistan
+    short_name: PCP
+    head_title: Chairman, Pharmacy Council of Pakistan
+    kind: statutory_council
+    parent: fed-min-nhsrc
+    legal_basis: [{ law: pharmacy-act-1967 }]
+    description: Regulates pharmacy education and registration of pharmacists; provincial pharmacy councils register practitioners.
+  - id: fed-nct
+    name: National Council for Tibb
+    short_name: NCT
+    head_title: President, National Council for Tibb
+    kind: statutory_council
+    parent: fed-min-nhsrc
+    legal_basis: [{ law: uah-practitioners-act-1965 }]
+    description: Registers practitioners and regulates education in Unani (Tibb) and Ayurvedic medicine.
+  - id: fed-nch
+    name: National Council for Homoeopathy
+    short_name: NCH
+    head_title: President, National Council for Homoeopathy
+    kind: statutory_council
+    parent: fed-min-nhsrc
+    legal_basis: [{ law: uah-practitioners-act-1965 }]
+  - id: fed-ihra
+    name: Islamabad Healthcare Regulatory Authority
+    short_name: IHRA
+    kind: regulator
+    parent: fed-min-nhsrc
+    jurisdiction: pk-ict
+    legal_basis: [{ law: ihra-act-2018 }]
+    description: Licenses and regulates public and private healthcare establishments in the Islamabad Capital Territory; the ICT counterpart of the provincial healthcare commissions.
+    confidence: medium
+
+  # ── Institutes and academies ───────────────────────────────────────────────
+  - id: fed-nih
+    name: National Institute of Health, Islamabad
+    short_name: NIH
+    name_ur: قومی ادارہ صحت
+    kind: research_institute
+    parent: fed-min-nhsrc
+    established: "1967"
+    legal_basis: [{ law: nih-ordinance-1980 }]
+    website: https://www.nih.org.pk
+    description: National public-health institute — disease surveillance and outbreak response, reference laboratories, the Field Epidemiology and Laboratory Training Programme, and production of vaccines, sera and diagnostic reagents. Functions as Pakistan's national centre for disease control and IHR focal point.
+  - id: fed-nih-cdc
+    name: Centre for Disease Control, NIH
+    kind: programme
+    parent: fed-nih
+    description: Integrated disease surveillance and response, public health laboratories and the national IHR (2005) focal point.
+    confidence: medium
+  - id: fed-hsa
+    name: Health Services Academy
+    short_name: HSA
+    kind: university
+    parent: fed-min-nhsrc
+    legal_basis: [{ law: hsa-ordinance-2002 }]
+    website: https://www.hsa.edu.pk
+    sectors: [health, education]
+    description: Public-health degree-awarding institute in Islamabad; trains health managers and public-health professionals.
+  - id: fed-phrc
+    name: Pakistan Health Research Council
+    short_name: PHRC
+    kind: research_institute
+    parent: fed-min-nhsrc
+    website: https://www.phrc.org.pk
+    sectors: [health, science]
+    description: Promotes, organises and coordinates health research; hosts the National Bioethics Committee secretariat.
+  - id: fed-national-bioethics-committee
+    name: National Bioethics Committee
+    short_name: NBC
+    kind: committee
+    parent: fed-phrc
+    description: Reviews national-level research involving human subjects.
+    confidence: medium
+  - id: fed-nips
+    name: National Institute of Population Studies
+    short_name: NIPS
+    kind: research_institute
+    parent: fed-min-nhsrc
+    sectors: [health, population]
+    description: Conducts the Pakistan Demographic and Health Survey (PDHS) and population research.
+    confidence: medium
+
+  # ── National programmes ────────────────────────────────────────────────────
+  - id: fed-epi
+    name: Federal Directorate of Immunization (Expanded Programme on Immunization)
+    short_name: EPI
+    kind: programme
+    parent: fed-min-nhsrc
+    description: Procures vaccines (with GAVI co-financing) and sets national immunization policy; provincial EPI cells deliver routine immunization.
+  - id: fed-neoc
+    name: National Emergency Operations Centre for Polio Eradication
+    short_name: NEOC
+    kind: programme
+    parent: fed-min-nhsrc
+    description: Coordinates the Pakistan Polio Eradication Programme with the provincial Emergency Operations Centres, WHO, UNICEF and partners. Pakistan and Afghanistan are the last countries with endemic wild poliovirus.
+    website: https://www.endpolio.com.pk
+  - id: fed-cmu
+    name: Common Management Unit for AIDS, TB and Malaria
+    short_name: CMU
+    kind: programme
+    parent: fed-min-nhsrc
+    description: Principal recipient/manager of Global Fund grants; hosts the national TB, HIV/AIDS and malaria control programmes.
+  - id: fed-nacp
+    name: National AIDS Control Programme
+    kind: programme
+    parent: fed-cmu
+  - id: fed-ntp
+    name: National TB Control Programme
+    kind: programme
+    parent: fed-cmu
+  - id: fed-malaria-directorate
+    name: Directorate of Malaria Control
+    kind: programme
+    parent: fed-cmu
+  - id: fed-nutrition-wing
+    name: Nutrition Wing
+    kind: programme
+    parent: fed-min-nhsrc
+    description: National nutrition coordination (Scaling Up Nutrition focal point).
+    confidence: medium
+  - id: fed-sehat-sahulat
+    name: Sehat Sahulat Programme (Prime Minister's National Health Programme)
+    short_name: SSP
+    kind: programme
+    parent: fed-min-nhsrc
+    website: https://sehatsahulat.gov.pk
+    sectors: [health, social_protection]
+    description: Federal social health-insurance programme providing families (identified via NADRA/BISP data) with a card for free in-patient treatment at empanelled hospitals; implemented through State Life Insurance Corporation. Coverage in the provinces is largely run through provincial schemes (e.g. KP Sehat Card Plus, Punjab's health card).
+  - id: fed-border-health
+    name: Border Health Services Pakistan
+    short_name: BHS-P
+    kind: attached_department
+    parent: fed-min-nhsrc
+    description: Port, airport and land-border health (formerly the Directorate of Central Health Establishments); implements International Health Regulations points of entry.
+    confidence: medium
+  - id: fed-nheprn
+    name: National Health Emergency Preparedness and Response Network
+    short_name: NHEPRN
+    kind: programme
+    parent: fed-min-nhsrc
+    sectors: [health, disaster]
+    confidence: medium
+
+  # ── Islamabad hospitals ────────────────────────────────────────────────────
+  - id: fed-szabmu
+    name: Shaheed Zulfiqar Ali Bhutto Medical University
+    short_name: SZABMU
+    kind: university
+    parent: fed-min-nhsrc
+    jurisdiction: pk-ict
+    legal_basis: [{ law: szabmu-act-2013 }]
+    sectors: [health, education]
+    confidence: medium
+  - id: fed-pims
+    name: Pakistan Institute of Medical Sciences
+    short_name: PIMS
+    kind: hospital
+    parent: fed-min-nhsrc
+    jurisdiction: pk-ict
+    website: https://pims.gov.pk
+    description: Largest federal tertiary-care teaching hospital in Islamabad.
+  - id: fed-polyclinic
+    name: Federal Government Polyclinic (Federal Government Services Hospital)
+    kind: hospital
+    parent: fed-min-nhsrc
+    jurisdiction: pk-ict
+  - id: fed-nirm
+    name: National Institute of Rehabilitation Medicine
+    short_name: NIRM
+    kind: hospital
+    parent: fed-min-nhsrc
+    jurisdiction: pk-ict
+  - id: fed-fgh
+    name: Federal General Hospital, Chak Shahzad
+    kind: hospital
+    parent: fed-min-nhsrc
+    jurisdiction: pk-ict
+    confidence: medium
+
+  # ── Parliamentary oversight ────────────────────────────────────────────────
+  - id: fed-na-sc-health
+    name: National Assembly Standing Committee on National Health Services, Regulations and Coordination
+    kind: committee
+    branch: legislative
+    parent: fed-national-assembly
+  - id: fed-senate-sc-health
+    name: Senate Standing Committee on National Health Services, Regulations and Coordination
+    kind: committee
+    branch: legislative
+    parent: fed-senate
+
+positions:
+  - id: fed-min-nhsrc-minister
+    title: Federal Minister for National Health Services, Regulations and Coordination
+    org: fed-min-nhsrc
+    role: head
+    appointment:
+      method: appointment_on_advice
+      by: fed-president
+      on_advice_of: fed-prime-minister
+      legal_basis: [{ law: constitution-1973, provision: "Art. 92" }]
+  - id: fed-min-nhsrc-secretary
+    title: Secretary, Ministry of National Health Services, Regulations and Coordination
+    org: fed-min-nhsrc
+    role: administrative_head
+    grade: BS-22
+    appointment:
+      method: posting
+      by: fed-prime-minister
+      nominated_by: fed-establishment-division
+      legal_basis: [{ law: rules-of-business-1973 }, { law: civil-servants-act-1973 }]
+  - id: fed-nhsrc-dg-health
+    title: Director General (Health)
+    org: fed-nhsrc-health-wing
+    role: head
+    grade: BS-21/22
+    appointment: { method: posting, by: fed-min-nhsrc-secretary }
+    confidence: medium
+  - id: fed-imhpf-chair
+    title: Chair, Inter-Ministerial Health and Population Forum
+    org: fed-imhpf
+    role: head
+    ex_officio_of: fed-min-nhsrc-minister
+    appointment: { method: ex_officio }
+    confidence: medium
+  - id: fed-drap-ceo
+    title: Chief Executive Officer, DRAP
+    org: fed-drap
+    role: head
+    appointment:
+      method: appointment
+      by: fed-federation
+      term: 3 years
+      legal_basis: [{ law: drap-act-2012, provision: "s. 5" }]
+    confidence: medium
+  - id: fed-drap-policy-board-chair
+    title: Chairman, DRAP Policy Board
+    org: fed-drap-policy-board
+    role: head
+    ex_officio_of: fed-min-nhsrc-secretary
+    appointment: { method: ex_officio, legal_basis: [{ law: drap-act-2012 }] }
+    confidence: medium
+  - id: fed-pmdc-president
+    title: President, Pakistan Medical and Dental Council
+    org: fed-pmdc
+    role: head
+    appointment: { method: indirect_election, by: fed-pmdc, legal_basis: [{ law: pmdc-act-2022 }] }
+    confidence: medium
+  - id: fed-pmdc-registrar
+    title: Registrar, PMDC
+    org: fed-pmdc
+    role: administrative_head
+    appointment: { method: appointment, by: fed-pmdc }
+  - id: fed-nih-ed
+    title: Executive Director, National Institute of Health
+    org: fed-nih
+    role: head
+    appointment: { method: appointment, by: fed-federation, legal_basis: [{ law: nih-ordinance-1980 }] }
+  - id: fed-hsa-vc
+    title: Vice-Chancellor, Health Services Academy
+    org: fed-hsa
+    role: head
+    appointment: { method: appointment, by: fed-prime-minister }
+    confidence: medium
+  - id: fed-ihra-ceo
+    title: Chief Executive Officer, IHRA
+    org: fed-ihra
+    role: head
+    appointment: { method: appointment, by: fed-federation, legal_basis: [{ law: ihra-act-2018 }] }
+    confidence: medium
+  - id: fed-neoc-coordinator
+    title: National Coordinator, National Emergency Operations Centre (Polio)
+    org: fed-neoc
+    role: head
+    appointment: { method: appointment, by: fed-min-nhsrc }
+  - id: fed-pm-focal-polio
+    title: Prime Minister's Focal Person for Polio Eradication
+    org: fed-neoc
+    role: officer
+    appointment: { method: appointment, by: fed-prime-minister }
+    confidence: medium
+  - id: fed-pims-ed
+    title: Executive Director, PIMS
+    org: fed-pims
+    role: head
+    appointment: { method: appointment, by: fed-min-nhsrc }
+  - id: fed-sehat-sahulat-ceo
+    title: Chief Executive Officer, Sehat Sahulat Programme
+    org: fed-sehat-sahulat
+    role: head
+    appointment: { method: appointment, by: fed-min-nhsrc }
+    confidence: medium
+  - id: fed-na-sc-health-chair
+    title: Chairperson, NA Standing Committee on NHSR&C
+    org: fed-na-sc-health
+    role: head
+    appointment: { method: indirect_election, by: fed-na-sc-health }
+  - id: fed-senate-sc-health-chair
+    title: Chairperson, Senate Standing Committee on NHSR&C
+    org: fed-senate-sc-health
+    role: head
+    appointment: { method: indirect_election, by: fed-senate-sc-health }
+
+relations:
+  - { from: fed-na-sc-health, to: fed-min-nhsrc, type: oversees, description: "Examines the Ministry's expenditure, administration, delegated legislation and policies (NA Rules of Procedure)" }
+  - { from: fed-senate-sc-health, to: fed-min-nhsrc, type: oversees }
+  - { from: fed-agp, to: fed-min-nhsrc, type: audits }
+  - { from: fed-min-nhsrc, to: fed-national-assembly, type: accountable_to }
+  - { from: fed-drap, to: fed-min-nhsrc, type: reports_to }
+  - { from: fed-drap, to: fed-federation, type: regulates, description: "Nationwide regulation of therapeutic goods" }
+  - { from: fed-pmdc, to: fed-min-nhsrc, type: reports_to }
+  - { from: fed-ihra, to: fed-pims, type: regulates }
+  - { from: fed-ihra, to: fed-polyclinic, type: regulates }
+  - { from: fed-pims, to: fed-szabmu, type: coordinates_with, description: "Teaching hospital affiliation" }
+  - { from: fed-nadra, to: fed-sehat-sahulat, type: coordinates_with, description: "Eligibility determined via NADRA and the National Socio-Economic Registry" }
+  - { from: fed-bisp, to: fed-sehat-sahulat, type: coordinates_with }
+  - { from: fed-nih, to: fed-neoc, type: coordinates_with, description: "Polio laboratory (WHO Regional Reference Lab) and surveillance" }
+  - { from: fed-epi, to: fed-neoc, type: coordinates_with }
+  - { from: fed-min-nhsrc, to: fed-cci, type: reports_to, description: "Population policy and health matters of inter-provincial importance go to the CCI" }
+  - { from: fed-min-nhsrc, to: fed-min-health-former, type: successor_of }
+  - { from: fed-nhsrc-population-wing, to: fed-nips, type: coordinates_with }

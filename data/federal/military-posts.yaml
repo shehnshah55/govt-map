@@ -1,0 +1,6 @@
+# Senior military appointments below the service chiefs, recorded so that
+# career histories (e.g. of the Army Chief) can be traced post by post.
+positions:
+  - { id: fed-dg-mi, title: "Director-General, Military Intelligence", org: fed-army, role: officer, grade: Major-General, appointment: { method: posting, by: fed-coas } }
+  - { id: fed-corps-commander-gujranwala, title: "Commander, XXX Corps (Gujranwala)", org: fed-army, role: officer, grade: Lieutenant-General, appointment: { method: posting, by: fed-coas } }
+  - { id: fed-qmg, title: "Quartermaster General, GHQ", org: fed-army, role: officer, grade: Lieutenant-General, appointment: { method: posting, by: fed-coas } }

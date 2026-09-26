@@ -1,0 +1,151 @@
+# Gilgit-Baltistan — governed under the Government of Gilgit-Baltistan Order, 2018
+# (not a province under Art. 1 of the Constitution). Federal coordination through
+# the Ministry of Kashmir Affairs and Gilgit-Baltistan.
+defaults:
+  organizations:
+    jurisdiction: pk-gb
+    branch: executive
+
+organizations:
+  - id: gb-government
+    name: Government of Gilgit-Baltistan
+    kind: state
+    description: Territorial government with a Governor, a Chief Minister and cabinet responsible to an elected Assembly, established by the Gilgit-Baltistan (Empowerment and Self-Governance) Order 2009 and continued by the Government of Gilgit-Baltistan Order 2018.
+    legal_basis: [{ law: gb-governance-order-2018 }]
+    website: https://gilgitbaltistan.gov.pk
+    sectors: [governance]
+  - id: gb-governor-house
+    name: Governor of Gilgit-Baltistan
+    kind: head_of_state_office
+    parent: gb-government
+    legal_basis: [{ law: gb-governance-order-2018 }]
+  - id: gb-cm-office
+    name: Chief Minister's Office, Gilgit-Baltistan
+    kind: head_of_state_office
+    parent: gb-government
+  - id: gb-cabinet
+    name: Cabinet of Gilgit-Baltistan
+    kind: cabinet
+    parent: gb-government
+  - id: gb-assembly
+    name: Gilgit-Baltistan Assembly
+    kind: legislature
+    branch: legislative
+    description: 33-member Assembly (24 general seats, 6 women, 3 technocrats) elected for five years.
+    legal_basis: [{ law: gb-governance-order-2018 }]
+    confidence: medium
+    sectors: [governance]
+  - id: gb-supreme-appellate-court
+    name: Supreme Appellate Court Gilgit-Baltistan
+    kind: court
+    branch: judicial
+    legal_basis: [{ law: gb-governance-order-2018 }]
+    sectors: [justice]
+  - id: gb-chief-court
+    name: Gilgit-Baltistan Chief Court
+    kind: court
+    branch: judicial
+    legal_basis: [{ law: gb-governance-order-2018 }]
+    sectors: [justice]
+  - id: gb-health
+    name: Health Department, Gilgit-Baltistan
+    kind: department
+    parent: gb-government
+    sectors: [health]
+  - id: gb-education
+    name: Education Department, Gilgit-Baltistan
+    kind: department
+    parent: gb-government
+    sectors: [education]
+  - id: gb-finance
+    name: Finance Department, Gilgit-Baltistan
+    kind: department
+    parent: gb-government
+    sectors: [finance]
+  - id: gb-home
+    name: Home and Prisons Department, Gilgit-Baltistan
+    kind: department
+    parent: gb-government
+    sectors: [interior]
+  - id: gb-pnd
+    name: Planning and Development Department, Gilgit-Baltistan
+    kind: department
+    parent: gb-government
+    sectors: [planning]
+  - id: gb-local-government-dept
+    name: Local Government and Rural Development Department, Gilgit-Baltistan
+    kind: department
+    parent: gb-government
+    sectors: [local_government]
+  - id: gb-police
+    name: Gilgit-Baltistan Police
+    kind: law_enforcement
+    parent: gb-home
+    sectors: [interior]
+  - id: gb-gbdma
+    name: Gilgit-Baltistan Disaster Management Authority
+    kind: autonomous_body
+    parent: gb-government
+    sectors: [disaster]
+
+positions:
+  - id: gb-governor
+    title: Governor of Gilgit-Baltistan
+    org: gb-governor-house
+    role: head
+    appointment: { method: appointment_on_advice, by: fed-president, on_advice_of: fed-prime-minister, legal_basis: [{ law: gb-governance-order-2018 }] }
+  - id: gb-chief-minister
+    title: Chief Minister of Gilgit-Baltistan
+    org: gb-cm-office
+    role: head
+    appointment: { method: indirect_election, by: gb-assembly, legal_basis: [{ law: gb-governance-order-2018 }] }
+  - id: gb-minister
+    title: Minister (Gilgit-Baltistan)
+    org: gb-cabinet
+    role: member
+    appointment: { method: appointment_on_advice, by: gb-governor, on_advice_of: gb-chief-minister }
+  - id: gb-member
+    title: Member, Gilgit-Baltistan Assembly
+    org: gb-assembly
+    role: member
+    seats: 33
+    appointment: { method: direct_election, by: pk-electorate }
+    confidence: medium
+  - id: gb-speaker
+    title: Speaker, Gilgit-Baltistan Assembly
+    org: gb-assembly
+    role: presiding_officer
+    appointment: { method: indirect_election, by: gb-assembly }
+  - id: gb-chief-secretary
+    title: Chief Secretary, Gilgit-Baltistan
+    org: gb-government
+    role: administrative_head
+    grade: BS-21/22
+    appointment: { method: posting, by: fed-prime-minister, nominated_by: fed-establishment-division }
+  - id: gb-igp
+    title: Inspector General of Police, Gilgit-Baltistan
+    org: gb-police
+    role: head
+    appointment: { method: posting, by: fed-prime-minister, nominated_by: fed-establishment-division }
+  - id: gb-sac-chief-judge
+    title: Chief Judge, Supreme Appellate Court Gilgit-Baltistan
+    org: gb-supreme-appellate-court
+    role: chief_justice
+    appointment: { method: appointment, by: fed-prime-minister, notes: "Appointed on the recommendation of the Gilgit-Baltistan Council / Prime Minister under the 2018 Order.", legal_basis: [{ law: gb-governance-order-2018 }] }
+    confidence: low
+  - id: gb-chief-court-chief-judge
+    title: Chief Judge, Gilgit-Baltistan Chief Court
+    org: gb-chief-court
+    role: chief_justice
+    appointment: { method: appointment, by: fed-prime-minister, legal_basis: [{ law: gb-governance-order-2018 }] }
+    confidence: low
+
+relations:
+  - { from: gb-cabinet, to: gb-assembly, type: accountable_to }
+  - { from: fed-min-kashmir-gb, to: gb-government, type: coordinates_with }
+  - { from: gb-chief-court, to: gb-supreme-appellate-court, type: appeals_to }
+  - { from: gb-health, to: fed-min-nhsrc, type: coordinates_with }
+  - { from: gb-health, to: fed-imhpf, type: member_of, confidence: medium }
+  - { from: gb-gbdma, to: fed-ndma, type: coordinates_with }
+  - { from: fed-agp, to: gb-government, type: audits }
+  - { from: fed-ecp, to: gb-assembly, type: coordinates_with, description: "GB elections are conducted by the Gilgit-Baltistan Election Commission, with ECP support", confidence: medium }

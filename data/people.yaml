@@ -1,0 +1,1060 @@
+# Current officeholders.
+#
+# IMPORTANT: officeholders change often. Every record carries `as_of` (the date
+# the holding was last confirmed) and `confidence`. Entries were compiled from
+# public reporting up to late 2025 and MUST be re-verified against the official
+# source (Cabinet Division notifications, Gazette of Pakistan, Assembly and court
+# websites) before being relied on. `status` distinguishes confirmed holders from
+# acting / additional-charge / caretaker arrangements, which are common in
+# Pakistan and tracked on the Accountability page.
+people:
+  # ── Federal executive ─────────────────────────────────────────────────────
+  - id: asif-ali-zardari
+    name: Asif Ali Zardari
+    name_ur: آصف علی زرداری
+    party: party-ppp
+    roles:
+      - { position: party-ppp-co-chairman, since: "2007-12-30" }
+      - { position: fed-president, since: "2008-09-09", until: "2013-09-08" }
+      - { position: party-pppp-head }
+      - { position: fed-president, since: "2024-03-10", term_number: 2, source: { title: President of Pakistan, url: "https://president.gov.pk" } }
+    declared_assets:
+      - { amount_pkr: 758000000, as_of: "2018-06", basis: "Nomination papers, 2018 general election", notes: "Older declaration; no 2024 figure found in verifiable reporting", source: { title: "The National — Pakistani politicians' asset declarations", url: "https://www.thenationalnews.com/world/asia/pakistani-politicians-asset-declarations-reveal-deep-pockets-1.742837" } }
+    legal_cases:
+      - { title: "Fake bank accounts and related NAB references", filed: "2018-07", filed_by: fed-nab, court: "Accountability and banking courts", charges: "Money laundering and corruption through benami accounts", status: stayed, verdict_date: "2024-05", custody: "Arrested June 2019; released on bail in December 2019", outcome: "Proceedings stayed while he is President under Art. 248(2) immunity; they can resume when he leaves office", sources: [{ title: "Dawn — Zardari granted immunity from criminal proceedings", url: "https://www.dawn.com/news/1832858" }] }
+    as_of: "2025-11"
+    confidence: high
+    notes: Previously President 2008–2013.
+  - id: shehbaz-sharif
+    name: Muhammad Shehbaz Sharif
+    name_ur: محمد شہباز شریف
+    party: party-pmln
+    roles:
+      - { position: fed-na-leader-of-opposition, since: "2018-08", until: "2022-04" }
+      - { position: party-pmln-head, since: "2018-03-13", until: "2024-05-13" }
+      - { position: pb-chief-minister, since: "2013-06-07", until: "2018-06-07", term_number: 3 }
+      - { position: pb-chief-minister, since: "2008-06-08", until: "2013-03-26" }
+      - { position: pb-chief-minister, since: "1997-02-20", until: "1999-10-12" }
+      - { position: fed-prime-minister, since: "2022-04-11", until: "2023-08-14" }
+      - { position: seat-na-123, since: "2024-02-29" }
+      - { position: fed-prime-minister, since: "2024-03-04", term_number: 2, source: { title: Prime Minister's Office, url: "https://pmo.gov.pk" } }
+    declared_assets:
+      - { amount_pkr: 73000000, as_of: "2024-01", basis: "Nomination papers, 2024 general election", notes: "Down from Rs310 million declared in 2018–19", source: { title: "The News — Top politicians declare assets", url: "https://www.thenews.com.pk/print/1286584-top-politicians-declare-assets" } }
+    legal_cases:
+      - { title: "Rs16 billion money-laundering case", filed: "2020-11", filed_by: fed-fia, court: "Special Court (Central), Lahore", charges: "Money laundering", status: acquitted, verdict_date: "2022-10-12", outcome: "Acquitted; the court found no concrete evidence in the FIA's challan", sources: [{ title: "Al Jazeera — Pakistani court acquits PM, son in money laundering case", url: "https://www.aljazeera.com/news/2022/10/12/pakistani-court-acquits-pm-son-in-money-laundering-case" }] }
+    as_of: "2025-11"
+    confidence: high
+    notes: Previously Prime Minister April 2022 – August 2023 and Chief Minister of Punjab.
+  - id: ishaq-dar
+    name: Mohammad Ishaq Dar
+    party: party-pmln
+    roles:
+      - { position: fed-min-finance-minister, since: "2022-09-28", until: "2023-08-10" }
+      - { position: fed-min-finance-minister, since: "2013-06-07", until: "2017-11-22" }
+      - { position: fed-min-finance-minister, since: "2008-03-31", until: "2008-05-13" }
+      - { position: fed-min-finance-minister, since: "1998-11-07", until: "1999-10-12" }
+      - { position: fed-senate-leader-of-house, since: "2024-03" }
+      - { position: fed-senator, since: "2024-04" }
+      - { position: fed-deputy-prime-minister, since: "2024-04-28" }
+      - { position: fed-min-foreign-affairs-minister, since: "2024-03-11" }
+    as_of: "2025-11"
+    confidence: high
+  - id: muhammad-aurangzeb
+    name: Muhammad Aurangzeb
+    roles:
+      - { position: fed-senator, since: "2024-04" }
+      - { position: fed-min-finance-minister, since: "2024-03-11", source: { title: Finance Division, url: "https://www.finance.gov.pk" } }
+    as_of: "2025-11"
+    confidence: high
+  - id: mohsin-naqvi
+    name: Mohsin Raza Naqvi
+    roles:
+      - { position: pb-chief-minister, since: "2023-01-22", until: "2024-02-26", status: caretaker }
+      - { position: fed-senator, since: "2024-04" }
+      - { position: fed-min-interior-minister, since: "2024-03-11" }
+      - { position: fed-pcb-chairman, since: "2024-02-06" }
+    background: [{ service: media, notes: "Founder of City News Network; caretaker Chief Minister of Punjab 2023–24" }]
+    as_of: "2025-11"
+    confidence: high
+  - id: khawaja-asif
+    name: Khawaja Muhammad Asif
+    party: party-pmln
+    roles:
+      - { position: fed-min-foreign-affairs-minister, since: "2017-08", until: "2018-04" }
+      - { position: fed-min-defence-minister, since: "2013-06", until: "2017-07" }
+      - { position: seat-na-71, since: "2024-02-29" }
+      - { position: fed-min-defence-minister, since: "2024-03-11" }
+    as_of: "2025-11"
+    confidence: high
+  - id: azam-nazeer-tarar
+    name: Azam Nazeer Tarar
+    party: party-pmln
+    roles:
+      - { position: fed-senator, since: "2024-04" }
+      - { position: fed-min-law-minister, since: "2024-03-11" }
+    as_of: "2025-11"
+    confidence: high
+  - id: ahsan-iqbal
+    name: Ahsan Iqbal
+    party: party-pmln
+    roles:
+      - { position: fed-min-interior-minister, since: "2017-08", until: "2018-05" }
+      - { position: seat-na-76, since: "2024-02-29" }
+      - { position: fed-min-planning-minister, since: "2024-03-11" }
+    as_of: "2025-11"
+    confidence: high
+  - id: attaullah-tarar
+    name: Attaullah Tarar
+    party: party-pmln
+    roles:
+      - { position: seat-na-127, since: "2024-02-29" }
+      - { position: fed-min-information-minister, since: "2024-03-11" }
+    as_of: "2025-11"
+    confidence: high
+  - id: mustafa-kamal
+    name: Syed Mustafa Kamal
+    party: party-mqmp
+    roles:
+      - { position: sd-mayor, since: "2005-10", until: "2010-02" }
+      - { position: fed-min-nhsrc-minister, since: "2025-03-07", source: { title: Ministry of NHSR&C, url: "https://www.nhsrc.gov.pk" } }
+    as_of: "2025-11"
+    confidence: medium
+    notes: Former Mayor of Karachi (2005–2010).
+  - id: jam-kamal-khan
+    name: Jam Kamal Khan
+    roles:
+      - { position: fed-min-commerce-minister, since: "2024-03-11" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: awais-leghari
+    name: Sardar Awais Ahmad Khan Leghari
+    party: party-pmln
+    roles:
+      - { position: fed-min-energy-minister, since: "2024-03-11" }
+    as_of: "2025-11"
+    confidence: medium
+    notes: Holds the Power Division portfolio.
+  - id: hanif-abbasi
+    name: Muhammad Hanif Abbasi
+    party: party-pmln
+    roles:
+      - { position: seat-na-56, since: "2024-02-29" }
+      - { position: fed-min-railways-minister, since: "2025-03-07" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: abdul-aleem-khan
+    name: Abdul Aleem Khan
+    party: party-ipp
+    roles:
+      - { position: party-ipp-head }
+      - { position: seat-na-117, since: "2024-02-29" }
+      - { position: fed-min-communications-minister, since: "2024-03-11" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: khalid-maqbool-siddiqui
+    name: Khalid Maqbool Siddiqui
+    party: party-mqmp
+    roles:
+      - { position: party-mqmp-head }
+      - { position: fed-min-education-minister, since: "2024-03-11" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: musadik-malik
+    name: Musadik Masood Malik
+    party: party-pmln
+    roles:
+      - { position: fed-min-climate-change-minister, since: "2025-03-07" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: rana-tanveer-hussain
+    name: Rana Tanveer Hussain
+    party: party-pmln
+    roles:
+      - { position: fed-min-food-security-minister, since: "2024-03-11" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: amir-muqam
+    name: Amir Muqam
+    party: party-pmln
+    roles:
+      - { position: seat-na-11, since: "2024-02-29" }
+      - { position: fed-min-kashmir-gb-minister, since: "2024-03-11" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: chaudhry-salik-hussain
+    name: Chaudhry Salik Hussain
+    party: party-pmlq
+    roles:
+      - { position: seat-na-64, since: "2024-02-29" }
+      - { position: fed-min-overseas-pakistanis-minister, since: "2024-03-11" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: junaid-anwar-chaudhry
+    name: Muhammad Junaid Anwar Chaudhry
+    party: party-pmln
+    roles:
+      - { position: fed-min-maritime-affairs-minister, since: "2025-03-07" }
+    as_of: "2025-11"
+    confidence: medium
+
+  # ── Parliament ────────────────────────────────────────────────────────────
+  - id: ayaz-sadiq
+    name: Sardar Ayaz Sadiq
+    party: party-pmln
+    roles:
+      - { position: seat-na-120, since: "2024-02-29" }
+      - { position: fed-na-speaker, since: "2024-03-01", source: { title: National Assembly of Pakistan, url: "https://na.gov.pk" } }
+    as_of: "2025-11"
+    confidence: high
+  - id: ghulam-mustafa-shah
+    name: Syed Ghulam Mustafa Shah
+    party: party-ppp
+    roles:
+      - { position: fed-na-deputy-speaker, since: "2024-03-01" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: yousuf-raza-gilani
+    name: Syed Yousuf Raza Gilani
+    party: party-ppp
+    roles:
+      - { position: fed-prime-minister, since: "2008-03-25", until: "2012-06-19" }
+      - { position: fed-na-speaker, since: "1993-10", until: "1997-02" }
+      - { position: seat-senate-ict-general, since: "2024-04-02" }
+      - { position: fed-senate-chairman, since: "2024-04-09", source: { title: Senate of Pakistan, url: "https://senate.gov.pk" } }
+    as_of: "2025-11"
+    confidence: high
+    notes: Former Prime Minister (2008–2012).
+  - id: syedaal-khan-nasar
+    name: Syedaal Khan Nasar
+    party: party-pmln
+    roles:
+      - { position: fed-senator, since: "2024-04" }
+      - { position: fed-senate-deputy-chairman, since: "2024-04-09" }
+    as_of: "2025-11"
+    confidence: medium
+
+  # ── Judiciary ─────────────────────────────────────────────────────────────
+  - id: yahya-afridi
+    name: Justice Yahya Afridi
+    roles:
+      - { position: kp-hc-judge, since: "2010", until: "2016-12-30" }
+      - { position: fed-sc-judge, since: "2018-06-28", until: "2024-10-25" }
+      - { position: kp-hc-chief-justice, since: "2016-12-30", until: "2018-06-28" }
+      - { position: fed-chief-justice, since: "2024-10-26", source: { title: Supreme Court of Pakistan, url: "https://www.supremecourt.gov.pk" } }
+    as_of: "2025-11"
+    confidence: high
+    notes: First Chief Justice nominated by the Special Parliamentary Committee under the 26th Amendment.
+  - id: aminuddin-khan
+    name: Justice Aminuddin Khan
+    roles:
+      - { position: fed-fcc-chief-justice, since: "2025-11" }
+    as_of: "2025-11"
+    confidence: medium
+    notes: Previously headed the Supreme Court's constitutional benches formed under the 26th Amendment.
+  - id: sarfraz-dogar
+    name: Justice Sardar Muhammad Sarfraz Dogar
+    roles:
+      - { position: fed-ihc-chief-justice, since: "2025" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: aalia-neelum
+    name: Justice Aalia Neelum
+    roles:
+      - { position: pb-hc-chief-justice, since: "2024-07-11", source: { title: Lahore High Court, url: "https://www.lhc.gov.pk" } }
+    as_of: "2025-11"
+    confidence: high
+    notes: First woman to serve as Chief Justice of the Lahore High Court.
+
+  # ── Independent bodies ────────────────────────────────────────────────────
+  - id: sikandar-sultan-raja
+    name: Sikandar Sultan Raja
+    roles:
+      - { position: fed-cec, since: "2020-01-27", status: holding_over, term_ended: "2025-01-26", source: { title: Election Commission of Pakistan, url: "https://www.ecp.gov.pk" } }
+    background: [{ service: civil_service, rank: "Federal Secretary (BS-22)", retired: "yes", notes: "First civil servant appointed CEC; all predecessors were retired judges" }]
+    as_of: "2026-09"
+    confidence: medium
+    notes: Five-year term ended in January 2025; holding over until a successor is appointed under the amended Art. 215. In September 2026 the Prime Minister and the Leader of the Opposition were consulting on a new CEC and two ECP members.
+  - id: jameel-ahmad
+    name: Jameel Ahmad
+    roles:
+      - { position: fed-sbp-governor, since: "2022-08-25", source: { title: State Bank of Pakistan, url: "https://www.sbp.org.pk" } }
+    as_of: "2025-11"
+    confidence: medium
+  - id: mansoor-usman-awan
+    name: Mansoor Usman Awan
+    roles:
+      - { position: fed-attorney-general, since: "2023" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: nazir-ahmed-butt
+    name: Lt Gen (R) Nazir Ahmed Butt
+    confidence: high
+    roles:
+      - position: fed-nab-chairman
+        since: "2023-03-04"
+        ends: "2029-03"
+        term_number: 2
+        extensions: [{ granted: "2026-03-05", to: "2029-03", law: nab-amendment-2026, notes: "Three-year extension enabled by an amendment passed and signed the day before his term expired" }]
+        source: { title: "Dawn — President assents to bill extending NAB chairman's term", url: "https://www.dawn.com/news/1978688" }
+    background: [{ service: military, rank: Lieutenant-General, retired: "yes", notes: "Former Corps Commander Peshawar" }]
+    as_of: "2026-09"
+  - id: rashid-langrial
+    name: Rashid Mahmood Langrial
+    roles:
+      - { position: fed-fbr-chairman, since: "2024-08", source: { title: "Express Tribune — Rashid Mahmood Langrial appointed FBR chairman", url: "https://tribune.com.pk/story/2486293/rashid-mahmood-langrial-appointed-fbr-chairman" } }
+    as_of: "2026-01"
+    confidence: high
+  - id: hamed-yaqoob-sheikh
+    name: Hamed Yaqoob Sheikh
+    roles:
+      - { position: fed-petroleum-division-secretary, since: "2026-03", source: { title: "The News — Health secretary transferred to Petroleum Division", url: "https://www.thenews.com.pk/print/1402999" } }
+      - { position: fed-min-nhsrc-secretary, since: "2025-04", until: "2026-03", source: { title: "The News — New health secretary appointed", url: "https://www.thenews.com.pk/print/1333780" } }
+    as_of: "2026-03"
+    confidence: medium
+    notes: "Federal secretary (BS-22). Moved from Health to the Petroleum Division in March 2026."
+  - id: rubina-khalid
+    name: Rubina Khalid
+    party: party-ppp
+    roles:
+      - { position: fed-senator, since: "2024-04" }
+      - { position: fed-bisp-chairperson, since: "2024-03" }
+    as_of: "2025-11"
+    confidence: medium
+
+  # ── Armed forces ──────────────────────────────────────────────────────────
+  - id: asim-munir
+    name: Field Marshal Syed Asim Munir
+    confidence: high
+    roles:
+      - { position: fed-qmg, since: "2021-10", until: "2022-11" }
+      - { position: fed-corps-commander-gujranwala, since: "2019-06-17", until: "2021-10-06" }
+      - { position: fed-dg-isi, since: "2018-10", until: "2019-06-16" }
+      - { position: fed-dg-mi, since: "2017-01", until: "2018-10" }
+      - position: fed-coas
+        since: "2022-11-29"
+        ends: "2030-12"
+        extensions:
+          - { granted: "2024-11", to: "2027-11", law: army-amendment-2024, notes: "Service chiefs' terms raised from three to five years" }
+          - { granted: "2025-12-05", to: "2030-12", law: amendment-27, notes: "Fresh five-year term, running concurrently with the new CDF office" }
+        source: { title: "Arab News — Army chief gets fresh five-year term", url: "https://www.arabnews.com/node/2622517/pakistan" }
+      - { position: fed-cdf, since: "2025-12-05", ends: "2030-12", source: { title: "Arab News — President appoints first Chief of Defence Forces", url: "https://www.arabnews.com/node/2625012/pakistan" } }
+    as_of: "2026-09"
+    notes: Promoted to Field Marshal in May 2025. Appointed the first Chief of Defence Forces by notification of 5 December 2025, concurrently with a fresh five-year term as COAS.
+    background: [{ service: military, rank: Field Marshal }]
+  - id: naveed-ashraf
+    name: Admiral Naveed Ashraf
+    roles:
+      - { position: fed-cns, since: "2023-10-07", ends: "2028-10-07", extensions: [{ granted: "2024-11", to: "2028-10-07", law: army-amendment-2024, notes: "Term raised from three to five years" }], source: { title: "Pakistan Navy — Chief of the Naval Staff", url: "https://www.paknavy.gov.pk/cns.html" } }
+    background: [{ service: military, rank: Admiral }]
+    as_of: "2026-07"
+    confidence: medium
+  - id: zaheer-babar-sidhu
+    name: Air Chief Marshal Zaheer Ahmad Babar Sidhu
+    roles:
+      - position: fed-cas
+        since: "2021-03-19"
+        ends: "2028-03-19"
+        extensions:
+          - { granted: "2024-03-17", to: "2025-03-19", notes: "One-year extension (second in PAF history)" }
+          - { granted: "2024-11", to: "2026-03-19", law: army-amendment-2024, notes: "Tenure of service chiefs raised to five years" }
+          - { granted: "2025-12", to: "2028-03-19", by: fed-prime-minister, notes: "Two-year extension approved by the PM and President, effective from 19 March 2026" }
+        source: { title: "Pakistan Observer — Sidhu to lead PAF until 2028 after second extension", url: "https://pakobserver.net/zaheer-babar-sidhu-to-lead-pakistan-air-force-until-2028-after-second-extension/" }
+    background: [{ service: military, rank: Air Chief Marshal }]
+    as_of: "2026-09"
+    confidence: medium
+  - id: asim-malik
+    name: Lt Gen Muhammad Asim Malik
+    roles:
+      - { position: fed-dg-isi, since: "2024-09-30" }
+      - { position: fed-nsa, since: "2025" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: ahmed-sharif-chaudhry
+    name: Lt Gen Ahmed Sharif Chaudhry
+    roles:
+      - { position: fed-dg-ispr, since: "2022-12" }
+    as_of: "2025-11"
+    confidence: medium
+
+  # ── Health ────────────────────────────────────────────────────────────────
+  - id: rizwan-taj
+    name: Prof. Dr. Rizwan Taj
+    roles:
+      - { position: fed-pmdc-president, since: "2024" }
+    as_of: "2025-06"
+    confidence: low
+  - id: ayesha-raza-farooq
+    name: Ayesha Raza Farooq
+    party: party-pmln
+    roles:
+      - { position: fed-pm-focal-polio, since: "2024" }
+    as_of: "2025-06"
+    confidence: medium
+
+  # ── Provinces ─────────────────────────────────────────────────────────────
+  - id: maryam-nawaz
+    name: Maryam Nawaz Sharif
+    party: party-pmln
+    roles:
+      - { position: party-pmln-senior-vp, since: "2023-01" }
+      - { position: seat-pp-159, since: "2024-02-23" }
+      - { position: pb-chief-minister, since: "2024-02-26", source: { title: Government of the Punjab, url: "https://punjab.gov.pk" } }
+    declared_assets:
+      - { amount_pkr: 800000000, as_of: "2024-01", basis: "Nomination papers, 2024 general election", notes: "Reported as over Rs800 million of assets in Pakistan", source: { title: "The News — Top politicians declare assets", url: "https://www.thenews.com.pk/print/1286584-top-politicians-declare-assets" } }
+    legal_cases:
+      - { title: "Avenfield reference (London flats)", filed: "2017-09-08", filed_by: fed-nab, court: "Accountability Court, Islamabad", charges: "Abetting corruption (NAO)", status: acquitted, verdict_date: "2022-09-29", sentence: "7 years and a £2 million fine (July 2018), set aside", custody: "About two months in 2018 before the sentence was suspended", outcome: "Acquitted by the Islamabad High Court on appeal", sources: [{ title: "Express Tribune — Maryam, Safdar acquitted in Avenfield case", url: "https://tribune.com.pk/story/2379239/court-orders-acquittal-of-maryam-safdar-in-avenfield-case" }] }
+    as_of: "2025-11"
+    confidence: high
+    notes: First woman Chief Minister of any Pakistani province.
+  - id: saleem-haider-khan
+    name: Sardar Saleem Haider Khan
+    party: party-ppp
+    roles:
+      - { position: pb-governor, since: "2024-05" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: malik-ahmad-khan
+    name: Malik Muhammad Ahmad Khan
+    party: party-pmln
+    roles:
+      - { position: pb-speaker, since: "2024-02-23" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: usman-anwar
+    name: Dr. Usman Anwar
+    roles:
+      - { position: pb-igp, since: "2023-01", until: "2026-02" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: murad-ali-shah
+    name: Syed Murad Ali Shah
+    party: party-ppp
+    roles:
+      - { position: sd-chief-minister, since: "2018-08-17", until: "2023-08-11", term_number: 2 }
+      - { position: sd-chief-minister, since: "2016-07-29", until: "2018-05-28" }
+      - { position: sd-chief-minister, since: "2024-02-26", term_number: 3, source: { title: Government of Sindh, url: "https://sindh.gov.pk" } }
+    as_of: "2025-11"
+    confidence: high
+    notes: Third term; previously Chief Minister 2016–2023.
+  - id: kamran-tessori
+    name: Kamran Khan Tessori
+    party: party-mqmp
+    roles:
+      - { position: sd-governor, since: "2022-10-09" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: awais-qadir-shah
+    name: Syed Awais Qadir Shah
+    party: party-ppp
+    roles:
+      - { position: sd-speaker, since: "2024-02-24" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: murtaza-wahab
+    name: Barrister Murtaza Wahab
+    party: party-ppp
+    roles:
+      - { position: sd-mayor, since: "2023-06-15" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: sohail-afridi
+    name: Muhammad Sohail Afridi
+    party: party-pti
+    roles:
+      - { position: seat-pk-70, since: "2024-02-28" }
+      - { position: kp-chief-minister, since: "2025-10-13" }
+    as_of: "2025-11"
+    confidence: medium
+    notes: Succeeded Ali Amin Gandapur (CM March 2024 – October 2025).
+  - id: ali-amin-gandapur
+    name: Ali Amin Khan Gandapur
+    party: party-pti
+    roles:
+      - { position: kp-chief-minister, since: "2024-03-02", until: "2025-10" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: faisal-karim-kundi
+    name: Faisal Karim Kundi
+    party: party-ppp
+    roles:
+      - { position: kp-governor, since: "2024-05" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: babar-saleem-swati
+    name: Babar Saleem Swati
+    party: party-pti
+    roles:
+      - { position: kp-speaker, since: "2024-02-28" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: sarfraz-bugti
+    name: Mir Sarfraz Bugti
+    party: party-ppp
+    roles:
+      - { position: ba-chief-minister, since: "2024-03-02", source: { title: Government of Balochistan, url: "https://balochistan.gov.pk" } }
+    as_of: "2025-11"
+    confidence: high
+  - id: jaffar-khan-mandokhail
+    name: Sheikh Jaffar Khan Mandokhail
+    party: party-pmln
+    roles:
+      - { position: ba-governor, since: "2024-05" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: abdul-khaliq-achakzai
+    name: Abdul Khaliq Achakzai
+    party: party-pmln
+    roles:
+      - { position: ba-speaker, since: "2024-03" }
+    as_of: "2025-11"
+    confidence: medium
+
+  # ── Territories ───────────────────────────────────────────────────────────
+  - id: mehdi-shah
+    name: Syed Mehdi Shah
+    party: party-ppp
+    roles:
+      - { position: gb-governor, since: "2024" }
+    as_of: "2025-06"
+    confidence: medium
+  - id: sultan-mahmood-chaudhry
+    name: Barrister Sultan Mahmood Chaudhry
+    party: party-pti
+    roles:
+      - { position: ajk-president, since: "2021-08-25" }
+    as_of: "2025-11"
+    confidence: medium
+  - id: faisal-mumtaz-rathore
+    name: Faisal Mumtaz Rathore
+    party: party-ppp
+    roles:
+      - { position: ajk-prime-minister, since: "2025-11" }
+    as_of: "2025-11"
+    confidence: low
+    notes: Reported elected after a no-confidence vote against Chaudhry Anwarul Haq in November 2025. Verify.
+  - id: anwarul-haq
+    name: Chaudhry Anwarul Haq
+    roles:
+      - { position: ajk-prime-minister, since: "2023-04-20", until: "2025-11" }
+    as_of: "2025-11"
+    confidence: medium
+
+  # ── Added September 2026: parliamentary leadership ────────────────────────
+  - id: mahmood-khan-achakzai
+    name: Mahmood Khan Achakzai
+    party: party-pkmap
+    roles:
+      - { position: fed-na-leader-of-opposition, since: "2026-01-16", source: { title: National Assembly — Leaders of the Opposition, url: "https://na.gov.pk/en/print_list.php?type=oppleaders" } }
+      - { position: seat-na-266, since: "2024-02-29" }
+      - { position: party-pkmap-head }
+    as_of: "2026-09"
+    confidence: high
+    notes: Nominated by the PTI-led opposition after Omar Ayub Khan's disqualification.
+  - id: omar-ayub-khan
+    name: Omar Ayub Khan
+    party: party-pti
+    roles:
+      - { position: fed-na-leader-of-opposition, since: "2024-04", until: "2025-08" }
+      - { position: seat-na-18, since: "2024-02-29", until: "2025-08" }
+    legal_cases:
+      - { title: "9 May 2023 riots cases (Faisalabad)", filed: "2023-05", filed_by: "Punjab Police", court: "Anti-Terrorism Court, Faisalabad", charges: "Abetting violence, conspiracy to incite riots and arson", status: convicted, verdict_date: "2025-07-31", sentence: "10 years", outcome: "Convicted with 107 others; led to disqualification from the National Assembly", sources: [{ title: "Express Tribune — ATC convicts 167 in May 9 riots", url: "https://tribune.com.pk/story/2558857/may-9-cases-atc-hands-shibli-faraz-omar-ayub-top-pti-leaders-10-years-in-prison" }] }
+    as_of: "2026-09"
+    confidence: medium
+    notes: Disqualified in 2025 following a conviction in the 9 May cases.
+  - id: raja-nasir-abbas
+    name: Allama Raja Nasir Abbas Jafri
+    party: party-mwm
+    roles:
+      - { position: fed-senate-leader-of-opposition, since: "2026-01-19", source: { title: Business Recorder, url: "https://www.brecorder.com/news/40403247/raja-declared-as-leader-of-opposition-in-senate" } }
+      - { position: fed-senator }
+      - { position: party-mwm-head }
+    as_of: "2026-09"
+    confidence: high
+
+  # ── Party leaders and prominent members ───────────────────────────────────
+  - id: nawaz-sharif
+    name: Mian Muhammad Nawaz Sharif
+    party: party-pmln
+    roles:
+      - { position: fed-prime-minister, since: "1997-02-17", until: "1999-10-12", term_number: 2 }
+      - { position: fed-prime-minister, since: "1990-11-06", until: "1993-07-18" }
+      - { position: pb-chief-minister, since: "1985-04", until: "1990-08" }
+      - { position: fed-prime-minister, since: "2013-06-05", until: "2017-07-28", term_number: 3 }
+      - { position: party-pmln-head, since: "2024-05-28" }
+      - { position: seat-na-130, since: "2024-02-29" }
+    legal_cases:
+      - { title: "Avenfield reference (London flats)", filed: "2017-09-08", filed_by: fed-nab, court: "Accountability Court, Islamabad", charges: "Corruption: owning assets beyond known means (NAO s. 9(a)(v))", status: acquitted, verdict_date: "2023-11-29", sentence: "10 years (July 2018), set aside", custody: "About two months in 2018 before the sentence was suspended", outcome: "Acquitted by the Islamabad High Court on appeal", sources: [{ title: "Dawn — IHC acquits Nawaz Sharif in Avenfield reference", url: "https://www.dawn.com/news/1793562" }] }
+      - { title: "Al-Azizia Steel Mills reference", filed: "2017-09-08", filed_by: fed-nab, court: "Accountability Court, Islamabad", charges: "Corruption: assets beyond known means", status: acquitted, verdict_date: "2023-12-12", sentence: "7 years and a heavy fine (December 2018), set aside", custody: "December 2018 to October 2019, then medical bail and treatment abroad until October 2023", outcome: "Acquitted by the Islamabad High Court on appeal", sources: [{ title: "Dawn — Nawaz secures acquittal in Al-Azizia case", url: "https://www.dawn.com/news/1797271" }] }
+    as_of: "2026-06"
+    confidence: medium
+    notes: Three-time Prime Minister (1990–93, 1997–99, 2013–17).
+  - id: bilawal-bhutto-zardari
+    name: Bilawal Bhutto Zardari
+    party: party-ppp
+    roles:
+      - { position: fed-min-foreign-affairs-minister, since: "2022-04-27", until: "2023-08-10" }
+      - { position: party-ppp-head, since: "2007-12-30" }
+      - { position: seat-na-194, since: "2024-02-29" }
+    declared_assets:
+      - { amount_pkr: 1900000000, as_of: "2024-01", basis: "Nomination papers, 2024 general election", notes: "Over Rs1.9 billion, of which about Rs1.7 billion abroad", source: { title: "The News — Top politicians declare assets", url: "https://www.thenews.com.pk/print/1286584-top-politicians-declare-assets" } }
+    as_of: "2026-06"
+    confidence: medium
+  - id: gohar-ali-khan
+    name: Barrister Gohar Ali Khan
+    party: party-pti
+    roles:
+      - { position: party-pti-head, since: "2023-12" }
+      - { position: seat-na-10, since: "2024-02-29" }
+    as_of: "2026-06"
+    confidence: medium
+    notes: PTI founder Imran Khan, imprisoned since August 2023, remains the party's patron and nominated its parliamentary leaders.
+  - id: asad-qaiser
+    name: Asad Qaiser
+    party: party-pti
+    roles:
+      - { position: seat-na-19, since: "2024-02-29" }
+    as_of: "2026-06"
+    confidence: medium
+    notes: Former Speaker of the National Assembly (2018–2022).
+  - id: fazl-ur-rehman
+    name: Maulana Fazl-ur-Rehman
+    party: party-juif
+    roles:
+      - { position: party-juif-head }
+      - { position: fed-mna }
+    as_of: "2026-06"
+    confidence: medium
+  - id: shujaat-hussain
+    name: Chaudhry Shujaat Hussain
+    party: party-pmlq
+    roles:
+      - { position: party-pmlq-head }
+    as_of: "2026-06"
+    confidence: medium
+    notes: Former Prime Minister (2004).
+  - id: hafiz-naeem-ur-rehman
+    name: Hafiz Naeem ur Rehman
+    party: party-ji
+    roles:
+      - { position: party-ji-head, since: "2024-04" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: aimal-wali-khan
+    name: Aimal Wali Khan
+    party: party-anp
+    roles:
+      - { position: party-anp-head }
+      - { position: fed-senator }
+    as_of: "2026-06"
+    confidence: medium
+  - id: akhtar-mengal
+    name: Sardar Akhtar Mengal
+    party: party-bnpm
+    roles:
+      - { position: party-bnpm-head }
+    as_of: "2026-06"
+    confidence: medium
+  - id: abdul-malik-baloch
+    name: Dr. Abdul Malik Baloch
+    party: party-np
+    roles:
+      - { position: party-np-head }
+    as_of: "2026-06"
+    confidence: medium
+    notes: Former Chief Minister of Balochistan (2013–2015).
+  - id: hamid-raza
+    name: Sahibzada Hamid Raza
+    party: party-sic
+    roles:
+      - { position: party-sic-head }
+    as_of: "2026-06"
+    confidence: medium
+
+  # ── Senior civil servants ─────────────────────────────────────────────────
+  - id: kamran-ali-afzal
+    name: Kamran Ali Afzal
+    roles:
+      - { position: fed-cabinet-division-secretary }
+    as_of: "2026-06"
+    confidence: medium
+  - id: nabeel-awan
+    name: Nabeel Ahmed Awan
+    roles:
+      - { position: fed-establishment-division-secretary }
+      - { position: fed-ogra-chairman, since: "2026-02", status: additional_charge, source: { title: "ProPakistani — OGRA without a chairman since February", url: "https://propakistani.pk/2026/07/23/ogra-without-a-chairman-since-february/" } }
+    as_of: "2026-07"
+    confidence: medium
+    notes: Holds additional charge of OGRA Chairman after the post fell vacant on 22 February 2026.
+  - id: maqbool-ahmad-gondal
+    name: Maqbool Ahmad Gondal
+    roles:
+      - { position: fed-auditor-general, since: "2025-09-15", ends: "2029-09", source: { title: Radio Pakistan, url: "https://www.radio.gov.pk/15-09-2025/maqbool-ahmad-gondal-sworn-in-as-new-auditor-general-of-pakistan" } }
+    background: [{ service: civil_service, rank: "BS-22, Pakistan Audit and Accounts Service" }]
+    as_of: "2026-09"
+    confidence: high
+    notes: 22nd Auditor-General; previously Controller General of Accounts.
+  - id: zahid-akhtar-zaman
+    name: Zahid Akhtar Zaman
+    roles:
+      - { position: pb-chief-secretary, since: "2022-12" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: asif-hyder-shah
+    name: Syed Asif Hyder Shah
+    roles:
+      - { position: sd-chief-secretary, since: "2024-03-12" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: shakeel-qadir-khan
+    name: Shakeel Qadir Khan
+    roles:
+      - { position: ba-chief-secretary, since: "2023-08-18" }
+    as_of: "2026-06"
+    confidence: low
+  - id: rao-abdul-kareem
+    name: Rao Abdul Kareem
+    roles:
+      - { position: pb-igp, since: "2026-02-03" }
+    as_of: "2026-09"
+    confidence: medium
+  - id: zulfiqar-hameed
+    name: Zulfiqar Hameed
+    roles:
+      - { position: kp-igp, since: "2025-01" }
+    as_of: "2026-06"
+    confidence: medium
+
+  # ── Regulators and commissions ────────────────────────────────────────────
+  - id: waseem-mukhtar
+    name: Waseem Mukhtar
+    roles:
+      - { position: fed-nepra-chairman }
+    as_of: "2026-06"
+    confidence: medium
+  - id: hafeez-ur-rehman
+    name: Maj Gen (R) Hafeez ur Rehman
+    roles:
+      - { position: fed-pta-chairman, source: { title: "Express Tribune — IHC reinstates PTA chairman", url: "https://tribune.com.pk/story/2567624/ihc-reinstates-hafeezur-rehman-as-pta-chairman" } }
+    background: [{ service: military, rank: Major-General, retired: "yes" }]
+    as_of: "2026-09"
+    confidence: medium
+    notes: Reinstated by the Islamabad High Court in September 2025.
+  - id: ambreen-jan
+    name: Ambreen Jan
+    roles:
+      - { position: fed-pemra-chairman, since: "2026-01", source: { title: The News, url: "https://www.thenews.pk/print/1398682-president-assents-to-appointment-of-ambreen-jan-as-pemra-chairperson" } }
+    as_of: "2026-06"
+    confidence: medium
+    notes: First woman to head PEMRA; former federal information secretary.
+  - id: farid-ahmad-tarar
+    name: Farid Ahmad Tarar
+    roles:
+      - { position: fed-ccp-chairman, since: "2026-03" }
+    as_of: "2026-09"
+    confidence: medium
+  - id: niaz-ahmad-akhtar
+    name: Prof. Dr. Niaz Ahmad Akhtar
+    roles:
+      - { position: fed-hec-chairman, since: "2026-02-06", source: { title: ProPakistani, url: "https://propakistani.pk/2026/02/06/pm-shehbaz-sharif-appoints-new-hec-chairman/" } }
+    as_of: "2026-09"
+    confidence: high
+    notes: Two-year term; formerly Vice-Chancellor of Quaid-i-Azam University.
+  - id: obaidullah
+    name: Dr. Obaidullah
+    roles:
+      - { position: fed-drap-ceo, source: { title: DRAP — Executive Management, url: "https://www.dra.gov.pk/about-us/drap-at-glance/executive-management/" } }
+    as_of: "2026-02"
+    confidence: medium
+
+  # ── High Court Chief Justices ─────────────────────────────────────────────
+  - id: zafar-ahmed-rajput
+    name: Justice Zafar Ahmed Rajput
+    roles:
+      - { position: sd-hc-chief-justice, since: "2025-12-06" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: sm-attique-shah
+    name: Justice S.M. Attique Shah
+    roles:
+      - { position: kp-hc-chief-justice, since: "2025-07" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: rozi-khan-barrech
+    name: Justice Rozi Khan Barrech
+    roles:
+      - { position: ba-hc-chief-justice, since: "2025" }
+    as_of: "2026-06"
+    confidence: low
+
+  # ── Provincial ministers ──────────────────────────────────────────────────
+  - id: marriyum-aurangzeb
+    name: Marriyum Aurangzeb
+    party: party-pmln
+    roles:
+      - { position: pb-pnd-minister, since: "2024-03-06" }
+      - { position: pb-environment-minister, since: "2024-03-06" }
+      - { position: pb-forest-minister, since: "2024-03-06" }
+    as_of: "2026-06"
+    confidence: medium
+    notes: Senior Minister of Punjab.
+  - id: khawaja-salman-rafique
+    name: Khawaja Salman Rafique
+    party: party-pmln
+    roles:
+      - { position: pb-specialized-healthcare-minister, since: "2024-03-06" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: khawaja-imran-nazir
+    name: Khawaja Imran Nazir
+    party: party-pmln
+    roles:
+      - { position: pb-primary-secondary-healthcare-minister, since: "2024-03-06" }
+    as_of: "2026-06"
+    confidence: low
+  - id: rana-sikandar-hayat
+    name: Rana Sikandar Hayat
+    party: party-pmln
+    roles:
+      - { position: pb-school-education-minister, since: "2024-03-06" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: shafay-hussain
+    name: Chaudhry Shafay Hussain
+    party: party-pmlq
+    roles:
+      - { position: pb-industries-minister, since: "2024-03-06" }
+      - { position: pb-auqaf-minister, since: "2025-01-14" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: sharjeel-inam-memon
+    name: Sharjeel Inam Memon
+    party: party-ppp
+    roles:
+      - { position: sd-transport-minister, since: "2024-03" }
+      - { position: sd-information-minister, since: "2024-03" }
+    as_of: "2026-06"
+    confidence: medium
+    notes: Senior Minister of Sindh.
+  - id: azra-pechuho
+    name: Dr. Azra Fazal Pechuho
+    party: party-ppp
+    roles:
+      - { position: sd-health-minister, since: "2024-03" }
+      - { position: sd-population-welfare-minister, since: "2024-03" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: nasir-hussain-shah
+    name: Syed Nasir Hussain Shah
+    party: party-ppp
+    roles:
+      - { position: sd-energy-minister, since: "2024-03" }
+      - { position: sd-pnd-minister, since: "2024-03" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: sardar-ali-shah
+    name: Syed Sardar Ali Shah
+    party: party-ppp
+    roles:
+      - { position: sd-school-education-minister, since: "2024-03" }
+      - { position: sd-mines-minerals-minister, since: "2024-03" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: saeed-ghani
+    name: Saeed Ghani
+    party: party-ppp
+    roles:
+      - { position: sd-local-government-dept-minister, since: "2024-03" }
+      - { position: sd-housing-minister, since: "2024-03" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: jam-khan-shoro
+    name: Jam Khan Shoro
+    party: party-ppp
+    roles:
+      - { position: sd-irrigation-minister, since: "2024-03" }
+      - { position: sd-food-minister, since: "2024-03" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: zia-lanjar
+    name: Ziaul Hassan Lanjar
+    party: party-ppp
+    roles:
+      - { position: sd-home-minister, since: "2024-03" }
+      - { position: sd-law-minister, since: "2024-03" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: muhammad-bakhsh-mehr
+    name: Muhammad Bakhsh Khan Mehr
+    party: party-ppp
+    roles:
+      - { position: sd-agriculture-minister, since: "2024-03" }
+      - { position: sd-sports-minister, since: "2024-03" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: mukesh-kumar-chawla
+    name: Mukesh Kumar Chawla
+    party: party-ppp
+    roles:
+      - { position: sd-excise-taxation-minister, source: { title: "Dawn — Chawla returns as excise minister", url: "https://www.dawn.com/news/1872661" } }
+    as_of: "2026-06"
+    confidence: medium
+  - id: meena-khan-afridi
+    name: Meena Khan Afridi
+    party: party-pti
+    roles:
+      - { position: kp-local-government-dept-minister, since: "2025-11" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: aftab-alam-afridi
+    name: Aftab Alam Afridi
+    party: party-pti
+    roles:
+      - { position: kp-law-minister, since: "2025-11" }
+      - { position: kp-human-rights-minister, since: "2025-11" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: fakhr-e-jehan
+    name: Syed Fakhr-e-Jehan
+    party: party-pti
+    roles:
+      - { position: kp-excise-taxation-minister, since: "2025-11" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: riaz-khan-kp
+    name: Riaz Khan
+    party: party-pti
+    roles:
+      - { position: kp-irrigation-minister, since: "2025-11" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: khaleeq-ur-rehman
+    name: Khaleeq ur Rehman
+    party: party-pti
+    roles:
+      - { position: kp-health-minister, since: "2025-11", source: { title: "Dawn — KP cabinet members get portfolios", url: "https://www.dawn.com/news/1952589" } }
+    as_of: "2026-06"
+    confidence: medium
+  - id: arshad-ayub-khan
+    name: Arshad Ayub Khan
+    party: party-pti
+    roles:
+      - { position: kp-elementary-secondary-education-minister, since: "2025-11" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: shoaib-nosherwani
+    name: Mir Shoaib Nosherwani
+    roles:
+      - { position: ba-finance-minister, since: "2024-03" }
+      - { position: ba-mines-minerals-minister, since: "2024-03" }
+    as_of: "2025-06"
+    confidence: low
+  - id: zahoor-buledi
+    name: Mir Zahoor Ahmed Buledi
+    roles:
+      - { position: ba-pnd-minister, since: "2024-03" }
+    as_of: "2025-06"
+    confidence: low
+  - id: ziaullah-langove
+    name: Mir Ziaullah Langove
+    roles:
+      - { position: ba-home-minister, since: "2024-03" }
+    as_of: "2025-06"
+    confidence: low
+  - id: sadiq-umrani
+    name: Mir Muhammad Sadiq Umrani
+    party: party-ppp
+    roles:
+      - { position: ba-irrigation-minister, since: "2024-03" }
+    as_of: "2025-06"
+    confidence: low
+
+  # ── Mayors ────────────────────────────────────────────────────────────────
+  - id: kashif-shoro
+    name: Kashif Ali Shoro
+    party: party-ppp
+    roles:
+      - { position: sd-hmc-head, since: "2023-06" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: arslan-islam-shaikh
+    name: Arslan Islam Shaikh
+    party: party-ppp
+    roles:
+      - { position: sd-smc-head, since: "2023-06" }
+    as_of: "2026-06"
+    confidence: medium
+  - id: zubair-ali
+    name: Haji Zubair Ali
+    party: party-juif
+    roles:
+      - { position: kp-mayor, since: "2022-02" }
+    as_of: "2026-06"
+    confidence: medium
+    notes: Directly elected Mayor of Peshawar in the 2021 KP local elections.
+
+  # ── Retired and serving officers in civilian posts (verified 2026) ────────
+  - id: akhtar-nawaz-satti
+    name: Lt Gen (R) Akhtar Nawaz Satti
+    roles:
+      - { position: fed-fpsc-chairman, source: { title: "APP — Lt Gen Akhtar Nawaz (Retd) sworn in as FPSC chairman", url: "https://www.app.com.pk/national/lt-general-akhtar-nawaz-retd-sworn-in-as-fpsc-chairman/" } }
+    background: [{ service: military, rank: Lieutenant-General, retired: "yes" }]
+    as_of: "2026-06"
+    confidence: medium
+  - id: muhammad-saeed-wapda
+    name: Lt Gen (R) Muhammad Saeed
+    roles:
+      - { position: fed-wapda-chairman, since: "2025-08", source: { title: "Radio Pakistan — PM felicitates Lt Gen (R) Muhammad Saeed", url: "https://www.radio.gov.pk/04-08-2025/pm-felicitates-muhammad-saeed-on-his-appointment-as-chairman-wapda" } }
+    background: [{ service: military, rank: Lieutenant-General, retired: "yes" }]
+    as_of: "2026-06"
+    confidence: high
+    notes: Succeeded Lt Gen (R) Sajjad Ghani, who resigned in June 2025.
+  - id: munir-afsar
+    name: Lt Gen Muhammad Munir Afsar
+    roles:
+      - { position: fed-nadra-chairman, since: "2023-10", source: { title: "Express Tribune — LHC reinstates Lt Gen Munir Afsar as Nadra chairman", url: "https://tribune.com.pk/story/2495008/lhc-reinstates-lt-gen-munir-afsar-as-nadra-chairman" } }
+    background: [{ service: military, rank: Lieutenant-General, notes: "Appointed while a serving officer" }]
+    as_of: "2026-04"
+    confidence: medium
+    notes: His appointment was challenged in court; the Lahore High Court reinstated him in December 2024.
+  - id: inam-haider-malik
+    name: Lt Gen Inam Haider Malik
+    roles:
+      - { position: fed-ndma-chairman }
+    background: [{ service: military, rank: Lieutenant-General, notes: "Serving officer" }]
+    as_of: "2025-11"
+    confidence: medium
+  - id: naveed-kamran-baloch
+    name: Naveed Kamran Baloch
+    roles:
+      - { position: fed-wafaqi-mohtasib-head, since: "2026-03-04", ends: "2030-03", source: { title: "Ministry of Foreign Affairs — Wafaqi Mohtasib", url: "https://mofa.gov.pk/wafaqi-mohtasib" } }
+    background: [{ service: civil_service, retired: "yes", notes: "Former federal civil servant" }]
+    as_of: "2026-06"
+    confidence: medium
+    notes: Ninth regular Wafaqi Mohtasib; four-year term.
+
+  # ── Former heads of government (used to date cases to a government) ─────
+  - id: shahid-khaqan-abbasi
+    name: Shahid Khaqan Abbasi
+    roles: [{ position: fed-prime-minister, since: "2017-08-01", until: "2018-05-31" }]
+    as_of: "2026-09"
+    confidence: high
+  - id: nasir-ul-mulk
+    name: Justice (R) Nasirul Mulk
+    roles: [{ position: fed-prime-minister, since: "2018-06-01", until: "2018-08-18", status: caretaker }]
+    background: [{ service: judiciary, rank: Chief Justice of Pakistan, retired: "2015-08" }]
+    as_of: "2026-09"
+    confidence: high
+  - id: imran-khan
+    name: Imran Khan
+    party: party-pti
+    roles:
+      - { position: fed-prime-minister, since: "2018-08-18", until: "2022-04-10" }
+      - { position: party-pti-head, since: "1996-04-25", until: "2023-12" }
+    as_of: "2026-09"
+    confidence: high
+    notes: Removed by a vote of no confidence in April 2022; imprisoned since August 2023.
+  - id: anwaar-ul-haq-kakar
+    name: Anwaar-ul-Haq Kakar
+    roles: [{ position: fed-prime-minister, since: "2023-08-14", until: "2024-03-04", status: caretaker }]
+    as_of: "2026-09"
+    confidence: high

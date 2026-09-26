@@ -1,0 +1,156 @@
+# Legal lineage and tenure rules for key offices and bodies.
+# Each `history` entry records a dated change and the instrument that made it,
+# so every office can be drilled from its current rule back through the
+# amendments that shaped it. `tenure` records the term, renewal and holdover
+# rules. Merged onto posts/bodies by id (see docs/DATA_MODEL.md, "annotations").
+annotations:
+  # ── Head of state and government ───────────────────────────────────────────
+  - id: fed-president
+    tenure: { kind: elected_term, years: 5, renewable: once, notes: "No one may hold office for more than two consecutive terms (Art. 44(2)). Removable only by impeachment (Art. 47).", legal_basis: [{ law: constitution-1973, provision: "Arts. 44, 47" }] }
+    history:
+      - { year: 1973, law: constitution-1973, provision: "Art. 41", change: "Office created as ceremonial head of state, elected by Parliament" }
+      - { year: 1985, law: amendment-8, provision: "Art. 58(2)(b)", change: "President given discretionary power to dissolve the National Assembly and to appoint service chiefs and Governors" }
+      - { year: 1997, law: amendment-13, change: "Power to dissolve the National Assembly repealed; appointments returned to the Prime Minister's advice" }
+      - { year: 2003, law: amendment-17, change: "Art. 58(2)(b) restored" }
+      - { year: 2010, law: amendment-18, change: "Art. 58(2)(b) repealed again; President bound to act on the advice of the Cabinet or PM (Art. 48)" }
+  - id: fed-prime-minister
+    tenure: { kind: coterminous, notes: "Holds office while commanding the confidence of the National Assembly; no term limit. Ends on dissolution of the Assembly or a successful no-confidence vote (Art. 95).", legal_basis: [{ law: constitution-1973, provision: "Arts. 91, 95" }] }
+    history:
+      - { year: 1973, law: constitution-1973, provision: "Art. 91", change: "Chief executive, elected by the National Assembly" }
+      - { year: 2010, law: amendment-18, change: "Restored as the centre of executive power after the repeal of Art. 58(2)(b); PM chairs the CCI" }
+  - id: fed-federal-minister
+    tenure: { kind: pleasure, notes: "Appointed and removed by the President on the PM's advice; cabinet capped at 11% of Parliament's total membership (Art. 92(1)). A non-member may be a minister for six months only.", legal_basis: [{ law: constitution-1973, provision: "Art. 92" }] }
+    history:
+      - { year: 2010, law: amendment-18, provision: "Art. 92(1)", change: "Cabinet size capped at 11% of Parliament's total membership" }
+  - id: fed-deputy-prime-minister
+    origin: conventional
+    tenure: { kind: pleasure, notes: "Not a constitutional office; a title conferred by notification on a Federal Minister." }
+
+  # ── Provinces ──────────────────────────────────────────────────────────────
+  - { id: pb-governor, tenure: { kind: pleasure, notes: "Holds office during the pleasure of the President (Art. 101(3)).", legal_basis: [{ law: constitution-1973, provision: "Art. 101(3)" }] }, history: [{ year: 1973, law: constitution-1973, provision: "Art. 101", change: "Appointed by the President" }, { year: 2010, law: amendment-18, provision: "Art. 101(1)–(2)", change: "Appointed on the advice of the PM; must be a registered voter and resident of the province" }] }
+  - { id: sd-governor, tenure: { kind: pleasure, notes: "Holds office during the pleasure of the President (Art. 101(3)).", legal_basis: [{ law: constitution-1973, provision: "Art. 101(3)" }] }, history: [{ year: 2010, law: amendment-18, provision: "Art. 101(1)–(2)", change: "Appointed on the advice of the PM; must be a registered voter and resident of the province" }] }
+  - { id: kp-governor, tenure: { kind: pleasure, notes: "Holds office during the pleasure of the President (Art. 101(3)).", legal_basis: [{ law: constitution-1973, provision: "Art. 101(3)" }] }, history: [{ year: 2010, law: amendment-18, provision: "Art. 101(1)–(2)", change: "Appointed on the advice of the PM; must be a registered voter and resident of the province" }] }
+  - { id: ba-governor, tenure: { kind: pleasure, notes: "Holds office during the pleasure of the President (Art. 101(3)).", legal_basis: [{ law: constitution-1973, provision: "Art. 101(3)" }] }, history: [{ year: 2010, law: amendment-18, provision: "Art. 101(1)–(2)", change: "Appointed on the advice of the PM; must be a registered voter and resident of the province" }] }
+  - { id: pb-chief-minister, tenure: { kind: coterminous, notes: "Holds office while commanding the confidence of the Provincial Assembly; no term limit." }, history: [{ year: 2010, law: amendment-18, provision: "Art. 130(6)", change: "Provincial cabinet capped at 15 members or 11% of the Assembly" }] }
+  - { id: sd-chief-minister, tenure: { kind: coterminous, notes: "Holds office while commanding the confidence of the Provincial Assembly; no term limit." } }
+  - { id: kp-chief-minister, tenure: { kind: coterminous, notes: "Holds office while commanding the confidence of the Provincial Assembly; no term limit." } }
+  - { id: ba-chief-minister, tenure: { kind: coterminous, notes: "Holds office while commanding the confidence of the Provincial Assembly; no term limit." } }
+  - { id: pb-advocate-general-post, tenure: { kind: pleasure, notes: "Holds office during the pleasure of the Governor (Art. 140(3)).", legal_basis: [{ law: constitution-1973, provision: "Art. 140(3)" }] } }
+  - { id: pb-chief-secretary, tenure: { kind: service, notes: "Federal PAS officer (BS-22) posted to the province; can be recalled or transferred by the Federal Government at any time." } }
+  - { id: pb-igp, tenure: { kind: service, notes: "Federal PSP officer posted to the province; removal and posting practice has been litigated repeatedly." } }
+
+  # ── Judiciary ──────────────────────────────────────────────────────────────
+  - id: fed-chief-justice
+    tenure: { kind: fixed, years: 3, age: 65, notes: "Three-year term, or until the age of 65 if earlier (26th Amendment).", legal_basis: [{ law: amendment-26 }] }
+    history:
+      - { year: 1973, law: constitution-1973, provision: "Art. 177", change: "Appointed by the President" }
+      - { year: 2010, law: amendment-18, provision: "Art. 175A", change: "Judicial Commission and Parliamentary Committee created for superior-court appointments" }
+      - { year: 2011, law: amendment-19, change: "Judicial Commission and Parliamentary Committee procedure revised" }
+      - { year: 2024, law: amendment-26, provision: "Art. 175A(3)", change: "CJP nominated by a 12-member Special Parliamentary Committee from the three senior-most judges, for a fixed three-year term; seniority no longer automatic" }
+  - id: fed-sc-judge
+    tenure: { kind: age_limit, age: 65, notes: "Serves until 65; removable only on the Supreme Judicial Council's recommendation (Art. 209).", legal_basis: [{ law: constitution-1973, provision: "Arts. 179, 209" }] }
+    history:
+      - { year: 2010, law: amendment-18, provision: "Art. 175A", change: "Nominated by the Judicial Commission, confirmed by a Parliamentary Committee" }
+      - { year: 2011, law: amendment-19, change: "Parliamentary Committee must record reasons to reject a nominee" }
+      - { year: 2024, law: amendment-26, change: "Parliamentary Committee abolished; four parliamentarians added to an enlarged Judicial Commission" }
+  - { id: fed-fcc-chief-justice, history: [{ year: 2025, law: amendment-27, change: "Office created with the Federal Constitutional Court" }] }
+  - { id: fed-constitutional-court, history: [{ year: 2024, law: amendment-26, change: "Constitutional benches created within the Supreme Court and High Courts" }, { year: 2025, law: amendment-27, change: "Separate Federal Constitutional Court established to hear constitutional matters" }] }
+  - { id: fed-federal-shariat-court, history: [{ year: 1980, law: constitution-amendment-order-1980, provision: "Chapter 3A", change: "Court created by presidential order under martial law, later protected by the 8th Amendment" }] }
+  - { id: fed-islamabad-high-court, history: [{ year: 2010, law: amendment-18, provision: "Art. 175(1)", change: "High Court for the Islamabad Capital Territory created" }] }
+  - { id: fed-judicial-commission, history: [{ year: 2010, law: amendment-18, change: "Created" }, { year: 2011, law: amendment-19, change: "Composition revised" }, { year: 2024, law: amendment-26, change: "Enlarged to include two MNAs, two Senators, the Law Minister, the Attorney-General and others; took over the Parliamentary Committee's role" }] }
+  - { id: fed-special-parliamentary-committee-cjp, history: [{ year: 2024, law: amendment-26, change: "Created to nominate the Chief Justice" }] }
+  - { id: pb-hc-chief-justice, tenure: { kind: age_limit, age: 62, notes: "High Court judges retire at 62 (Art. 195).", legal_basis: [{ law: constitution-1973, provision: "Art. 195" }] }, history: [{ year: 2010, law: amendment-18, change: "Appointed on Judicial Commission nomination" }, { year: 2024, law: amendment-26, change: "Nominated by the enlarged Judicial Commission, which also evaluates High Court judges' performance" }] }
+
+  # ── Independent constitutional bodies ──────────────────────────────────────
+  - id: fed-cec
+    tenure: { kind: fixed, years: 5, holdover: true, renewable: "no", notes: "Five-year term; continues after expiry until a successor enters office.", legal_basis: [{ law: constitution-1973, provision: "Art. 215" }] }
+    history:
+      - { year: 1973, law: constitution-1973, provision: "Art. 213", change: "Appointed by the President at his discretion" }
+      - { year: 2010, law: amendment-18, provision: "Art. 213(2A)–(2B)", change: "PM must consult the Leader of the Opposition; a bipartisan parliamentary committee confirms" }
+      - { year: 2016, law: amendment-22, change: "Senior civil servants and technocrats became eligible, not only judges" }
+      - { year: 2024, law: amendment-26, provision: "Art. 215", change: "CEC and members may continue until successors are appointed" }
+  - { id: fed-ecp, history: [{ year: 2010, law: amendment-18, provision: "Art. 218(2)", change: "Four members, one from each province" }, { year: 2016, law: amendment-22, change: "Member eligibility widened" }] }
+  - id: fed-auditor-general
+    tenure: { kind: fixed, years: 4, renewable: "no", notes: "Four-year term; removable only like a Supreme Court judge (Art. 168(5)).", legal_basis: [{ law: constitution-1973, provision: "Art. 168" }, { law: auditor-general-ordinance-2001 }] }
+    history:
+      - { year: 1973, law: constitution-1973, provision: "Art. 168", change: "Office created; appointed by the President" }
+      - { year: 2001, law: auditor-general-ordinance-2001, change: "Accounts separated from audit; four-year term set" }
+  - { id: fed-attorney-general, tenure: { kind: pleasure, notes: "Holds office during the pleasure of the President (Art. 100(3)); by convention resigns when the government changes.", legal_basis: [{ law: constitution-1973, provision: "Art. 100(3)" }] } }
+  - id: fed-nab-chairman
+    tenure: { kind: fixed, years: 3, renewable: extendable, extension_by: fed-federation, notes: "Three-year term, extendable by three years since the 2026 amendment.", legal_basis: [{ law: nab-amendment-2026 }] }
+    history:
+      - { year: 1999, law: nab-ordinance-1999, change: "Office created under military rule; four-year term" }
+      - { year: 2022, law: nab-amendment-2022, change: "Three-year non-extendable term; appointed after PM–Opposition Leader consultation" }
+      - { year: 2026, law: nab-amendment-2026, change: "Term made extendable by another three years" }
+  - { id: fed-wafaqi-mohtasib-head, tenure: { kind: fixed, years: 4, renewable: "no", notes: "Four-year term, not eligible for reappointment.", legal_basis: [{ law: wafaqi-mohtasib-order-1983 }] } }
+  - { id: fed-cci, history: [{ year: 1973, law: constitution-1973, provision: "Art. 153", change: "Council created" }, { year: 2010, law: amendment-18, provision: "Arts. 153–154", change: "PM made chairman; permanent secretariat; must meet at least every 90 days; answerable to Parliament" }] }
+  - { id: fed-national-assembly, history: [{ year: 1973, law: constitution-1973, provision: "Art. 51", change: "Created" }, { year: 2003, law: amendment-17, change: "Legal Framework Order 2002 validated: 342 seats including 60 for women and 10 for non-Muslims" }, { year: 2018, law: amendment-25, change: "Reduced to 336 seats after the FATA merger" }] }
+  - { id: fed-senate, history: [{ year: 1973, law: constitution-1973, provision: "Art. 59", change: "Created with equal provincial representation" }, { year: 2010, law: amendment-18, change: "One non-Muslim seat added per province" }, { year: 2018, law: amendment-25, change: "FATA seats phased out; Senate settles at 96 seats from 2024" }] }
+  - { id: pb-local-government, history: [{ year: 2010, law: amendment-18, provision: "Art. 140A", change: "Provinces obliged to devolve power to elected local governments; ECP to hold local elections" }] }
+
+  # ── Armed forces ───────────────────────────────────────────────────────────
+  - id: fed-cdf
+    tenure: { kind: fixed, years: 5, renewable: extendable, extension_by: fed-prime-minister, notes: "Five-year term; held concurrently by the Chief of Army Staff.", legal_basis: [{ law: amendment-27 }] }
+    history:
+      - { year: 2025, law: amendment-27, change: "Chairman Joint Chiefs of Staff Committee (an executive creation of 1976) abolished on the retirement of the last incumbent (27 November 2025); Chief of Defence Forces created, held by the Army Chief; Commander of the National Strategic Command created" }
+  - id: fed-coas
+    tenure: { kind: fixed, years: 5, renewable: extendable, extension_by: fed-prime-minister, notes: "Five-year term; the PM may reappoint or extend.", legal_basis: [{ law: army-amendment-2024 }] }
+    history:
+      - { year: 1973, law: constitution-1973, provision: "Art. 243", change: "Appointed by the President" }
+      - { year: 1985, law: amendment-8, change: "President appoints service chiefs at his discretion" }
+      - { year: 1997, law: amendment-13, change: "Appointment returned to the PM's advice" }
+      - { year: 2020, law: army-amendment-2020, change: "Three-year term; PM may reappoint or extend (after the Supreme Court's 2019 ruling on the COAS extension)" }
+      - { year: 2024, law: army-amendment-2024, change: "Term raised to five years" }
+      - { year: 2025, law: amendment-27, change: "COAS concurrently holds the new office of Chief of Defence Forces" }
+  - { id: fed-cns, tenure: { kind: fixed, years: 5, renewable: extendable, extension_by: fed-prime-minister, legal_basis: [{ law: navy-ordinance-1961 }] }, history: [{ year: 2024, law: army-amendment-2024, change: "Service chiefs' term raised from three to five years (parallel Navy amendment)" }] }
+  - { id: fed-cas, tenure: { kind: fixed, years: 5, renewable: extendable, extension_by: fed-prime-minister, legal_basis: [{ law: air-force-act-1953 }] }, history: [{ year: 2024, law: army-amendment-2024, change: "Service chiefs' term raised from three to five years (parallel Air Force amendment)" }] }
+
+  # ── Regulators ─────────────────────────────────────────────────────────────
+  - { id: fed-sbp-governor, tenure: { kind: fixed, years: 5, renewable: once, notes: "Five-year term, eligible for one reappointment.", legal_basis: [{ law: sbp-amendment-2022 }] }, history: [{ year: 1956, law: sbp-act-1956, change: "Office created" }, { year: 2022, law: sbp-amendment-2022, change: "Autonomy strengthened; appointment and removal protections" }] }
+  - { id: fed-hec-chairman, tenure: { kind: fixed, years: 2, notes: "Two-year term under s. 6(5) of the HEC Ordinance as amended in 2021 (per the February 2026 appointment notification).", legal_basis: [{ law: hec-amendment-2021 }] } }
+  - { id: fed-pta-chairman, tenure: { kind: fixed, years: 4, legal_basis: [{ law: telecom-act-1996 }] } }
+  - { id: fed-drap-ceo, tenure: { kind: fixed, years: 3, legal_basis: [{ law: drap-act-2012 }] } }
+
+  # ── Headquarters (for the map) ─────────────────────────────────────────────
+  - { id: fed-army, hq: Rawalpindi }
+  - { id: fed-jshq, hq: Rawalpindi }
+  - { id: fed-sbp, hq: Karachi }
+  - { id: fed-kpt, hq: Karachi }
+  - { id: fed-pqa, hq: Karachi }
+  - { id: fed-psm, hq: Karachi }
+  - { id: fed-pnsc, hq: Karachi }
+  - { id: fed-ssgc, hq: Karachi }
+  - { id: fed-ppl, hq: Karachi }
+  - { id: fed-tdap, hq: Karachi }
+  - { id: fed-eobi, hq: Karachi }
+  - { id: fed-central-drugs-lab, hq: Karachi }
+  - { id: fed-wapda, hq: Lahore }
+  - { id: fed-pakistan-railways, hq: Lahore }
+  - { id: fed-sngpl, hq: Lahore }
+  - { id: fed-smeda, hq: Lahore }
+  - { id: fed-gpa, hq: Gwadar }
+
+  # ── Party colours ──────────────────────────────────────────────────────────
+  - { id: party-pmln, color: "#2e7d32" }
+  - { id: party-ppp, color: "#c62828" }
+  - { id: party-pppp, color: "#c62828" }
+  - { id: party-pti, color: "#ef6c00" }
+  - { id: party-sic, color: "#f4a259" }
+  - { id: party-mqmp, color: "#1565c0" }
+  - { id: party-juif, color: "#6d4c41" }
+  - { id: party-pmlq, color: "#9e9d24" }
+  - { id: party-ipp, color: "#6a1b9a" }
+  - { id: party-bap, color: "#00838f" }
+  - { id: party-anp, color: "#ad1457" }
+  - { id: party-np, color: "#5d4037" }
+  - { id: party-mwm, color: "#37474f" }
+  - { id: party-pkmap, color: "#8d6e63" }
+  - { id: party-bnpm, color: "#4e342e" }
+  - { id: party-ji, color: "#00695c" }
+
+  # ── Bodies created by executive decision rather than law ───────────────────
+  - { id: fed-nsc, origin: executive }
+  - { id: fed-sifc, origin: executive }
+  - { id: fed-isi, origin: executive }
+  - { id: fed-ib, origin: executive }
+  - { id: fed-jshq, origin: executive }

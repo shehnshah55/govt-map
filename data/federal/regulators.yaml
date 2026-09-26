@@ -1,0 +1,112 @@
+# Additional federal regulators, statutory professional bodies, tribunals,
+# special courts and ombudsmen. The core regulators (SBP, SECP, CCP, NEPRA,
+# OGRA, PTA, PEMRA, PPRA, DRAP, PMDC…) are in attached-bodies.yaml and
+# health.yaml. `head_title` generates a head post when none is authored.
+defaults:
+  organizations:
+    branch: executive
+    jurisdiction: pk
+
+organizations:
+  # ── Economic and sector regulators ─────────────────────────────────────────
+  - { id: fed-fmu, name: Financial Monitoring Unit, short_name: FMU, kind: regulator, parent: fed-finance-division, legal_basis: [{ law: amla-2010 }], sectors: [finance, accountability], head_title: "Director General, Financial Monitoring Unit", description: "Pakistan's financial intelligence unit: receives suspicious transaction reports and supports FATF compliance." }
+  - { id: fed-aob, name: Audit Oversight Board, short_name: AOB, kind: regulator, parent: fed-secp, legal_basis: [{ law: secp-act-1997 }], sectors: [finance], head_title: "Chairperson, Audit Oversight Board", confidence: medium, description: "Oversees audit firms that audit listed and public-interest companies." }
+  - { id: fed-ppib, name: Private Power and Infrastructure Board, short_name: PPIB, kind: autonomous_body, parent: fed-power-division, legal_basis: [{ law: ppib-act-2012 }], sectors: [energy], head_title: "Managing Director, PPIB", description: "One-window facilitator for private (IPP) power projects; absorbed the Alternative Energy Development Board's functions." }
+  - { id: fed-dgpc, name: Directorate General of Petroleum Concessions, short_name: DGPC, kind: regulator, parent: fed-petroleum-division, legal_basis: [{ law: mines-oilfields-act-1948 }], sectors: [energy], head_title: "Director General, Petroleum Concessions", confidence: medium, description: "Grants and regulates oil and gas exploration licences and petroleum concessions." }
+  - { id: fed-fab, name: Frequency Allocation Board, short_name: FAB, kind: regulator, parent: fed-min-it, legal_basis: [{ law: telecom-act-1996 }], sectors: [it_telecom], head_title: "Chairman, Frequency Allocation Board", description: "Allocates radio spectrum to government and commercial users; PTA assigns commercial spectrum." }
+  - { id: fed-nccia, name: National Cyber Crime Investigation Agency, short_name: NCCIA, kind: law_enforcement, parent: fed-interior-division, legal_basis: [{ law: peca-2016 }], sectors: [interior, it_telecom], head_title: "Director General, NCCIA", confidence: medium, description: "Investigates offences under the Prevention of Electronic Crimes Act; took over the FIA's cybercrime wing." }
+  - { id: fed-ipo, name: Intellectual Property Organization of Pakistan, short_name: IPO-Pakistan, kind: regulator, parent: fed-min-commerce, legal_basis: [{ law: ipo-act-2012 }], sectors: [commerce], head_title: "Director General, IPO-Pakistan", description: "Registers trademarks, patents and copyrights." }
+  - { id: fed-pha, name: Pakistan Halal Authority, kind: regulator, parent: fed-min-science-technology, legal_basis: [{ law: pha-act-2016 }], sectors: [commerce, religious_affairs], head_title: "Director General, Pakistan Halal Authority" }
+  - { id: fed-fscrd, name: Federal Seed Certification and Registration Department, kind: regulator, parent: fed-min-food-security, legal_basis: [{ law: seed-act-1976 }], sectors: [agriculture], head_title: "Director General, FSC&RD" }
+  - { id: fed-aqd, name: Animal Quarantine Department, kind: regulator, parent: fed-min-food-security, legal_basis: [{ law: animal-quarantine-ordinance-1979 }], sectors: [agriculture], head_title: "Director General, Animal Quarantine" }
+  - { id: fed-tobacco-board, name: Pakistan Tobacco Board, kind: regulator, parent: fed-min-food-security, legal_basis: [{ law: tobacco-board-ordinance-1968 }], sectors: [agriculture], head_title: "Chairman, Pakistan Tobacco Board", confidence: medium }
+  - { id: fed-press-council, name: Press Council of Pakistan, kind: regulator, parent: fed-information-division, legal_basis: [{ law: press-council-ordinance-2002 }], sectors: [information], head_title: "Chairman, Press Council of Pakistan", description: "Self-regulatory body for print media under an ethical code." }
+  - { id: fed-cbfc, name: Central Board of Film Censors, kind: regulator, parent: fed-information-division, legal_basis: [{ law: motion-pictures-ordinance-1979 }], jurisdiction: pk-ict, sectors: [information, culture], head_title: "Chairman, Central Board of Film Censors", description: "Certifies films for exhibition in the Islamabad Capital Territory and cantonments; provinces have their own censor boards." }
+  - { id: fed-ict-rera, name: Real Estate Regulatory Authority, Islamabad, kind: regulator, parent: fed-min-housing, jurisdiction: pk-ict, legal_basis: [{ law: ict-rera-act-2020 }], sectors: [housing], head_title: "Chairman, ICT Real Estate Regulatory Authority", confidence: medium }
+  - { id: fed-nac, name: Pakistan National Accreditation Council, short_name: PNAC, kind: attached_department, parent: fed-min-science-technology, sectors: [science, commerce], head_title: "Director General, Pakistan National Accreditation Council", confidence: medium, description: "Accredits laboratories and certification bodies." }
+  - { id: fed-mercantile-marine, name: Directorate General Ports and Shipping, kind: regulator, parent: fed-min-maritime-affairs, legal_basis: [{ law: merchant-shipping-ordinance-2001 }], sectors: [transport], head_title: "Director General, Ports and Shipping" }
+
+  # ── Statutory professional bodies ──────────────────────────────────────────
+  - { id: fed-pakistan-bar-council, name: Pakistan Bar Council, kind: professional_body, branch: judicial, legal_basis: [{ law: legal-practitioners-act-1973 }], sectors: [justice], head_title: "Vice-Chairman, Pakistan Bar Council", head_appointment: { method: indirect_election, by: fed-pakistan-bar-council }, description: "Apex regulator of the legal profession: licensing for the Supreme Court, discipline and legal education standards. The Attorney-General is its ex officio Chairman; a Vice-Chairman is elected by its members. It nominates a member of the Judicial Commission." }
+  - { id: fed-pec, name: Pakistan Engineering Council, short_name: PEC, kind: professional_body, parent: fed-min-science-technology, legal_basis: [{ law: pec-act-1976 }], sectors: [science, education], head_title: "Chairman, Pakistan Engineering Council", head_appointment: { method: indirect_election, by: fed-pec }, description: "Registers engineers and firms, accredits engineering degrees (Washington Accord signatory)." }
+  - { id: fed-pcatp, name: Pakistan Council of Architects and Town Planners, short_name: PCATP, kind: professional_body, parent: fed-min-housing, legal_basis: [{ law: pcatp-ordinance-1983 }], sectors: [housing], head_title: "Chairman, PCATP" }
+  - { id: fed-pvmc, name: Pakistan Veterinary Medical Council, short_name: PVMC, kind: professional_body, parent: fed-min-food-security, legal_basis: [{ law: pvmc-act-1996 }], sectors: [agriculture], head_title: "President, PVMC" }
+  - { id: fed-icap, name: Institute of Chartered Accountants of Pakistan, short_name: ICAP, kind: professional_body, legal_basis: [{ law: ca-ordinance-1961 }], sectors: [finance], head_title: "President, ICAP", head_appointment: { method: indirect_election, by: fed-icap } }
+  - { id: fed-icmap, name: Institute of Cost and Management Accountants of Pakistan, short_name: ICMAP, kind: professional_body, legal_basis: [{ law: cma-act-1966 }], sectors: [finance], head_title: "President, ICMA Pakistan", head_appointment: { method: indirect_election, by: fed-icmap } }
+
+  # ── Tribunals and special courts ───────────────────────────────────────────
+  - { id: fed-service-tribunal, name: Federal Service Tribunal, short_name: FST, kind: tribunal, branch: judicial, legal_basis: [{ law: constitution-1973, provision: "Art. 212" }, { law: service-tribunals-act-1973 }], sectors: [justice, civil_service], head_title: "Chairman, Federal Service Tribunal", description: "Exclusive jurisdiction over terms and conditions of service of federal civil servants; appeals lie to the Supreme Court." }
+  - { id: fed-atir, name: Appellate Tribunal Inland Revenue, short_name: ATIR, kind: tribunal, branch: judicial, parent: fed-revenue-division, legal_basis: [{ law: income-tax-ordinance-2001 }], sectors: [revenue, justice], head_title: "Chairperson, Appellate Tribunal Inland Revenue" }
+  - { id: fed-customs-tribunal, name: Customs Appellate Tribunal, kind: tribunal, branch: judicial, parent: fed-revenue-division, legal_basis: [{ law: customs-act-1969 }], sectors: [revenue, justice], head_title: "Chairman, Customs Appellate Tribunal" }
+  - { id: fed-competition-tribunal, name: Competition Appellate Tribunal, kind: tribunal, branch: judicial, legal_basis: [{ law: competition-act-2010 }], sectors: [commerce, justice], head_title: "Chairman, Competition Appellate Tribunal" }
+  - { id: fed-nirc, name: National Industrial Relations Commission, short_name: NIRC, kind: tribunal, branch: judicial, parent: fed-min-overseas-pakistanis, legal_basis: [{ law: ira-2012 }], sectors: [labour, justice], head_title: "Chairman, NIRC", description: "Registers trans-provincial trade unions and adjudicates industrial disputes in establishments spanning more than one province." }
+  - { id: fed-accountability-courts, name: Accountability Courts, kind: court, branch: judicial, legal_basis: [{ law: nab-ordinance-1999, provision: "s. 5(h)" }], sectors: [justice, accountability], description: "Special courts that try NAB references; judges are appointed by the Federal Government in consultation with the Chief Justice of the relevant High Court." }
+  - { id: fed-anti-terrorism-courts, name: Anti-Terrorism Courts, kind: court, branch: judicial, legal_basis: [{ law: ata-1997 }], sectors: [justice, interior], description: "Special courts for scheduled terrorism offences, set up by the Federal and Provincial Governments; appeals go to the High Court." }
+  - { id: fed-banking-courts, name: Banking Courts, kind: court, branch: judicial, legal_basis: [{ law: fio-2001 }], sectors: [justice, finance], description: "Recovery of bank loans and financial-institution disputes." }
+  - { id: fed-election-tribunals, name: Election Tribunals, kind: tribunal, branch: judicial, legal_basis: [{ law: elections-act-2017, provision: "s. 140" }], sectors: [elections, justice], description: "Appointed by the Election Commission to decide election petitions; since the 2024 amendment ECP may appoint retired judges as well as serving High Court judges." }
+  - { id: fed-environmental-tribunal, name: Environmental Protection Tribunal (Islamabad), kind: tribunal, branch: judicial, jurisdiction: pk-ict, legal_basis: [{ law: pepa-1997 }], sectors: [environment, justice], confidence: medium }
+  - { id: fed-ip-tribunal, name: Intellectual Property Tribunals, kind: tribunal, branch: judicial, legal_basis: [{ law: ipo-act-2012 }], sectors: [commerce, justice] }
+
+  # ── Other federal ombudsmen ────────────────────────────────────────────────
+  - { id: fed-tax-ombudsman, name: Federal Tax Ombudsman, short_name: FTO, kind: ombudsman, branch: constitutional, legal_basis: [{ law: fto-ordinance-2000 }], sectors: [revenue, accountability], head_title: "Federal Tax Ombudsman", head_appointment: { method: appointment_on_advice, by: fed-president, on_advice_of: fed-prime-minister, term: 4 years }, description: "Investigates maladministration by the FBR and its officers." }
+  - { id: fed-banking-mohtasib, name: Banking Mohtasib Pakistan, kind: ombudsman, branch: constitutional, legal_basis: [{ law: banking-companies-ordinance-1962, provision: "s. 82A" }], sectors: [finance, accountability], head_title: "Banking Mohtasib", head_appointment: { method: appointment_on_advice, by: fed-president, on_advice_of: fed-prime-minister } }
+  - { id: fed-insurance-ombudsman, name: Federal Insurance Ombudsman, kind: ombudsman, branch: constitutional, legal_basis: [{ law: insurance-ordinance-2000 }], sectors: [finance, accountability], head_title: "Federal Insurance Ombudsman", head_appointment: { method: appointment_on_advice, by: fed-president, on_advice_of: fed-prime-minister } }
+  - { id: fed-fospah, name: Federal Ombudsperson for Protection against Harassment, short_name: FOSPAH, kind: ombudsman, branch: constitutional, legal_basis: [{ law: harassment-act-2010 }], sectors: [human_rights, accountability], head_title: "Federal Ombudsperson for Protection against Harassment", head_appointment: { method: appointment_on_advice, by: fed-president, on_advice_of: fed-prime-minister } }
+
+relations:
+  - { from: fed-service-tribunal, to: fed-supreme-court, type: appeals_to, legal_basis: [{ law: constitution-1973, provision: "Art. 212(3)" }] }
+  - { from: fed-atir, to: fed-islamabad-high-court, type: appeals_to, description: "Tax references lie to the High Courts" }
+  - { from: fed-customs-tribunal, to: fed-islamabad-high-court, type: appeals_to, description: "References lie to the High Courts" }
+  - { from: fed-competition-tribunal, to: fed-supreme-court, type: appeals_to }
+  - { from: fed-competition-tribunal, to: fed-ccp, type: oversees, description: "Hears appeals against CCP orders" }
+  - { from: fed-accountability-courts, to: fed-nab, type: coordinates_with, description: "Try references filed by NAB" }
+  - { from: fed-accountability-courts, to: fed-islamabad-high-court, type: appeals_to, description: "Appeals lie to the High Court of the province concerned" }
+  - { from: fed-anti-terrorism-courts, to: fed-islamabad-high-court, type: appeals_to, description: "Appeals lie to the High Court of the province concerned" }
+  - { from: fed-ecp, to: fed-election-tribunals, type: appoints, legal_basis: [{ law: elections-act-2017, provision: "s. 140" }] }
+  - { from: fed-election-tribunals, to: fed-supreme-court, type: appeals_to }
+  - { from: fed-tax-ombudsman, to: fed-fbr, type: oversees }
+  - { from: fed-banking-mohtasib, to: fed-sbp, type: coordinates_with }
+  - { from: fed-pakistan-bar-council, to: fed-judicial-commission, type: nominates, description: "Nominates an advocate member of the Judicial Commission", legal_basis: [{ law: constitution-1973, provision: "Art. 175A(2)" }] }
+  - { from: fed-fmu, to: fed-sbp, type: coordinates_with }
+  - { from: fed-secp, to: fed-aob, type: oversees }
+  - { from: fed-nccia, to: fed-pta, type: coordinates_with }
+  - { from: fed-pta, to: fed-federation, type: regulates, description: "Telecom licensing, spectrum assignment and content blocking under PECA s. 37" }
+  - { from: fed-nepra, to: fed-discos, type: regulates, description: "Distribution licences and tariffs" }
+  - { from: fed-nepra, to: fed-ngc, type: regulates }
+  - { from: fed-ogra, to: fed-sngpl, type: regulates, description: "Gas tariffs and licences" }
+  - { from: fed-ogra, to: fed-ssgc, type: regulates }
+  - { from: fed-pemra, to: fed-ptv, type: regulates }
+
+positions:
+  - id: fed-pakistan-bar-council-chair
+    title: Chairman, Pakistan Bar Council
+    org: fed-pakistan-bar-council
+    role: presiding_officer
+    ex_officio_of: fed-attorney-general
+    appointment: { method: ex_officio, legal_basis: [{ law: legal-practitioners-act-1973 }] }
+  - id: fed-ogra-chairman
+    title: Chairman, Oil and Gas Regulatory Authority
+    org: fed-ogra
+    role: head
+    appointment: { method: appointment, by: fed-federation, legal_basis: [{ law: ogra-ordinance-2002 }] }
+  - id: fed-pta-chairman
+    title: Chairman, Pakistan Telecommunication Authority
+    org: fed-pta
+    role: head
+    appointment: { method: appointment, by: fed-federation, term: 4 years, legal_basis: [{ law: telecom-act-1996 }] }
+  - id: fed-pemra-chairman
+    title: Chairperson, PEMRA
+    org: fed-pemra
+    role: head
+    appointment: { method: appointment, by: fed-president, nominated_by: fed-federation, notes: "Shortlisted by a parliamentary committee after the 2023 amendment; appointed by the President.", legal_basis: [{ law: pemra-ordinance-2002 }] }
+    confidence: medium
+  - id: fed-ccp-chairman
+    title: Chairman, Competition Commission of Pakistan
+    org: fed-ccp
+    role: head
+    appointment: { method: appointment, by: fed-federation, legal_basis: [{ law: competition-act-2010 }] }
+  - id: fed-ppra-md
+    title: Managing Director, PPRA
+    org: fed-ppra
+    role: head
+    appointment: { method: appointment, by: fed-federation, legal_basis: [{ law: ppra-ordinance-2002 }] }

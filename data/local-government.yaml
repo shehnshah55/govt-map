@@ -1,0 +1,25 @@
+# Elected local governments beyond the provincial capitals (which are in the
+# province files). Status of local government differs sharply by province:
+# Sindh and Balochistan held local elections in 2022–23 and KP in 2021–22;
+# Punjab and Islamabad local governments have been run by administrators while
+# new laws and elections were pending. Mayors are listed where known.
+defaults:
+  organizations:
+    kind: local_government
+    branch: local
+    sectors: [local_government]
+
+organizations:
+  - { id: sd-hmc, name: Hyderabad Municipal Corporation, jurisdiction: pk-sd-hyderabad, parent: sd-local-government, legal_basis: [{ law: sindh-lg-act-2013 }], head_title: Mayor of Hyderabad, head_appointment: { method: indirect_election, by: sd-hmc, notes: "Elected by the corporation's union-committee chairmen and reserved-seat members." } }
+  - { id: sd-smc, name: Sukkur Municipal Corporation, jurisdiction: pk-sd-sukkur, parent: sd-local-government, legal_basis: [{ law: sindh-lg-act-2013 }], head_title: Mayor of Sukkur, head_appointment: { method: indirect_election, by: sd-smc } }
+  - { id: sd-lmc, name: Larkana Municipal Corporation, jurisdiction: pk-sd-larkana, parent: sd-local-government, legal_basis: [{ law: sindh-lg-act-2013 }], head_title: Mayor of Larkana, head_appointment: { method: indirect_election, by: sd-lmc }, confidence: medium }
+  - { id: sd-kmc-towns, name: Town Municipal Corporations of Karachi, jurisdiction: pk-sd-div-karachi, parent: sd-kmc, legal_basis: [{ law: sindh-lg-act-2013 }], description: "Karachi's 25 town municipal corporations, each with an elected chairman, below the Karachi Metropolitan Corporation; union committees form the lowest tier.", confidence: medium }
+  - { id: kp-tehsil-governments, name: Tehsil Local Governments of Khyber Pakhtunkhwa, jurisdiction: pk-kp, parent: kp-local-government, legal_basis: [{ law: kp-lg-act-2013 }], description: "Directly elected tehsil chairmen and city mayors (elected 2021–22), with village and neighbourhood councils below them. The 2019 amendment abolished district councils." }
+  - { id: ba-district-councils, name: District Councils and Municipal Committees of Balochistan, jurisdiction: pk-ba, parent: ba-local-government, legal_basis: [{ law: balochistan-lg-act-2010 }], description: "Elected in 2022; indirectly elected chairmen head district councils, with union councils below.", confidence: medium }
+  - { id: pb-local-councils, name: Local Councils of Punjab, jurisdiction: pk-pb, parent: pb-local-government, legal_basis: [{ law: punjab-lg-act-2022 }], description: "Metropolitan corporation (Lahore), municipal corporations, municipal committees, town committees and union councils. Elected councils were dissolved in 2019 and restored in 2021, and administrators have run them while new Punjab local-government legislation and elections were pending.", confidence: medium }
+  - { id: fed-cantonment-boards, name: Cantonment Boards, jurisdiction: pk, parent: fed-mlc, legal_basis: [{ law: cantonments-act-1924 }], description: "Local governments for the 40-plus military cantonments (e.g. Rawalpindi, Lahore, Karachi's cantonments). A Station Commander presides; civilian members are elected (last held in 2021).", head_title: President of a Cantonment Board (Station Commander), head_appointment: { method: posting, by: fed-coas, notes: "The Station Commander, an Army officer, is ex officio President." }, confidence: medium }
+
+relations:
+  - { from: fed-ecp, to: fed-cantonment-boards, type: oversees, description: "Conducts cantonment board elections" }
+  - { from: sd-local-government-dept, to: sd-hmc, type: oversees }
+  - { from: sd-local-government-dept, to: sd-smc, type: oversees }

@@ -1,0 +1,1065 @@
+# Province of Balochistan: constitutional offices, Provincial Assembly, High Court,
+# departments (Provincial Rules of Business), health vertical and links to the
+# Federation. Generated once from a shared provincial template, then hand-edited —
+# this file is the source of truth. Departments get generated Minister and
+# Secretary posts by convention (see docs/DATA_MODEL.md).
+organizations:
+- id: ba-government
+  name: Government of Balochistan
+  kind: state
+  branch: executive
+  description: Provincial government of Balochistan. Executive authority vests in the Governor and is exercised by the Provincial Government —
+    the Chief Minister and Provincial Ministers (Arts. 129–130). After the 18th Amendment, provinces are responsible for health, school education,
+    agriculture, local government, police and most social services.
+  legal_basis:
+  - law: constitution-1973
+    provision: Arts. 129–140A
+  website: https://balochistan.gov.pk
+  sectors:
+  - governance
+  jurisdiction: pk-ba
+- id: ba-governor-house
+  name: Governor of Balochistan
+  short_name: Governor's House
+  kind: head_of_state_office
+  branch: executive
+  parent: ba-government
+  description: Constitutional head of the province, appointed by the President on the advice of the Prime Minister (Art. 101). Acts on the advice
+    of the Cabinet or Chief Minister (Art. 105); Chancellor of public-sector universities under provincial university laws.
+  legal_basis:
+  - law: constitution-1973
+    provision: Arts. 101–105
+  jurisdiction: pk-ba
+- id: ba-cm-office
+  name: Chief Minister's Office, Balochistan
+  kind: head_of_state_office
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 130
+  jurisdiction: pk-ba
+- id: ba-cabinet
+  name: Provincial Cabinet of Balochistan
+  kind: cabinet
+  branch: executive
+  parent: ba-government
+  description: The Chief Minister and Provincial Ministers, collectively responsible to the Provincial Assembly (Art. 130(6)). Size capped at
+    15 members or 11% of the Assembly, whichever is higher (Art. 130(6)).
+  legal_basis:
+  - law: constitution-1973
+    provision: Arts. 130, 132
+  - law: balochistan-rules-of-business-2012
+  jurisdiction: pk-ba
+- id: ba-assembly
+  name: Provincial Assembly of Balochistan
+  kind: legislature
+  branch: legislative
+  description: Unicameral provincial legislature with 65 seats (51 general, 11 women, 3 non-Muslim). Five-year term. Elects the Chief Minister
+    and the province's 23 Senators, and votes in the presidential election.
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 106
+  website: https://www.pabalochistan.gov.pk
+  sectors:
+  - governance
+  jurisdiction: pk-ba
+- id: ba-assembly-pac
+  name: Public Accounts Committee, Provincial Assembly of Balochistan
+  kind: committee
+  branch: legislative
+  parent: ba-assembly
+  description: Examines the Auditor-General's reports on the province's accounts (Art. 171).
+  sectors:
+  - accountability
+  - finance
+  jurisdiction: pk-ba
+- id: ba-assembly-sc-health
+  name: Standing Committee on Health, Provincial Assembly of Balochistan
+  kind: committee
+  branch: legislative
+  parent: ba-assembly
+  sectors:
+  - health
+  jurisdiction: pk-ba
+- id: ba-high-court
+  name: Balochistan High Court
+  short_name: BHC
+  kind: court
+  branch: judicial
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 192
+  website: https://www.bhc.gov.pk
+  sectors:
+  - justice
+  description: Superior court of the province with writ jurisdiction (Art. 199) and supervision of the district judiciary.
+  jurisdiction: pk-ba
+- id: ba-district-judiciary
+  name: District Judiciary of Balochistan
+  kind: court
+  branch: judicial
+  parent: ba-high-court
+  description: District and Sessions Judges, Additional Sessions Judges, Senior and Civil Judges and Judicial Magistrates in every district, under
+    the administrative control of the High Court.
+  sectors:
+  - justice
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 203
+  - law: civil-courts-ordinance-1962
+  jurisdiction: pk-ba
+- id: ba-advocate-general
+  name: Office of the Advocate-General, Balochistan
+  kind: constitutional_body
+  branch: constitutional
+  parent: ba-government
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 140
+  sectors:
+  - law
+  jurisdiction: pk-ba
+- id: ba-psc
+  name: Balochistan Public Service Commission
+  short_name: BPSC
+  kind: constitutional_body
+  branch: constitutional
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 242
+  website: https://www.bpsc.gob.pk
+  sectors:
+  - civil_service
+  description: Recruits provincial civil servants (Provincial Management Service and departmental posts BS-16 and above).
+  jurisdiction: pk-ba
+- id: ba-ombudsman
+  name: Provincial Ombudsman Balochistan
+  kind: ombudsman
+  branch: constitutional
+  sectors:
+  - accountability
+  legal_basis:
+  - law: balochistan-ombudsman-act-2001
+  jurisdiction: pk-ba
+- id: ba-pfc
+  name: Provincial Finance Commission, Balochistan
+  kind: intergovernmental_forum
+  branch: executive
+  parent: ba-government
+  description: Recommends distribution of provincial resources to local governments (the provincial counterpart of the NFC).
+  sectors:
+  - finance
+  - local_government
+  jurisdiction: pk-ba
+- id: ba-sgad
+  name: Services and General Administration Department, Balochistan
+  short_name: S&GAD
+  kind: department
+  branch: executive
+  parent: ba-government
+  description: 'Provincial HR and cabinet secretariat: postings and transfers of provincial officers, the Provincial Management Service, and support
+    to the Chief Secretary.'
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - civil_service
+  - governance
+  jurisdiction: pk-ba
+- id: ba-pnd
+  name: Planning and Development Department, Balochistan
+  short_name: P&D
+  kind: department
+  branch: executive
+  parent: ba-government
+  description: Prepares the Annual Development Programme and appraises development schemes (Provincial Development Working Party).
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - planning
+  jurisdiction: pk-ba
+- id: ba-board-of-revenue
+  name: Board of Revenue, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  description: Apex revenue authority for land records, land revenue and stamp duty; the revenue hierarchy of Divisional Commissioners, Deputy
+    Commissioners (Collectors), Assistant Commissioners and Tehsildars runs under it.
+  legal_basis:
+  - law: land-revenue-act-1967
+  sectors:
+  - revenue
+  - governance
+  jurisdiction: pk-ba
+- id: ba-revenue-authority
+  name: Balochistan Revenue Authority
+  short_name: BRA
+  kind: attached_department
+  branch: executive
+  parent: ba-finance
+  description: Collects provincial sales tax on services (a provincial tax base after the 18th Amendment).
+  sectors:
+  - revenue
+  jurisdiction: pk-ba
+- id: ba-police
+  name: Balochistan Police
+  kind: law_enforcement
+  branch: executive
+  parent: ba-home
+  legal_basis:
+  - law: police-order-2002
+  sectors:
+  - interior
+  description: Provincial police headed by the Inspector General of Police; District Police Officers command in each district.
+  jurisdiction: pk-ba
+- id: ba-cr-ace
+  name: Anti-Corruption Establishment, Balochistan
+  short_name: ACE
+  kind: law_enforcement
+  branch: executive
+  parent: ba-sgad
+  sectors:
+  - accountability
+  confidence: medium
+  jurisdiction: pk-ba
+- id: ba-pdma
+  name: Provincial Disaster Management Authority, Balochistan
+  short_name: PDMA
+  kind: autonomous_body
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: ndm-act-2010
+  sectors:
+  - disaster
+  jurisdiction: pk-ba
+- id: ba-local-government
+  name: Local Government System of Balochistan
+  kind: local_government
+  branch: local
+  parent: ba-local-government-dept
+  description: Elected local councils required by Art. 140A (political, administrative and financial devolution), organised under the provincial
+    local-government law. Tiers and names (metropolitan/municipal corporations, municipal committees, district, tehsil, union and village/neighbourhood
+    councils) differ by province and change with each new Act; elections are held by the Election Commission of Pakistan.
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 140A
+  - law: balochistan-lg-act-2010
+  sectors:
+  - local_government
+  jurisdiction: pk-ba
+- id: ba-qmc
+  name: Quetta Metropolitan Corporation
+  kind: local_government
+  branch: local
+  parent: ba-local-government
+  legal_basis:
+  - law: balochistan-lg-act-2010
+  sectors:
+  - local_government
+  jurisdiction: pk-ba
+- id: ba-peoc
+  name: Provincial Emergency Operations Centre for Polio, Balochistan
+  short_name: PEOC
+  kind: programme
+  branch: executive
+  parent: ba-government
+  sectors:
+  - health
+  description: Provincial arm of the Polio Eradication Initiative, coordinated by the National EOC.
+  jurisdiction: pk-ba
+- id: ba-healthcare-commission
+  name: Balochistan Healthcare Commission
+  short_name: BHCC
+  kind: regulator
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-healthcare-commission-act-2019
+  sectors:
+  - health
+  description: Registers and licenses public and private healthcare establishments, sets minimum service-delivery standards and acts against quackery.
+  jurisdiction: pk-ba
+- id: ba-health
+  name: Health Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  - law: amendment-18
+  sectors:
+  - health
+  description: Runs public hospitals and district health services; primary healthcare facilities in many districts are managed by PPHI Balochistan.
+  jurisdiction: pk-ba
+- id: ba-dg-health-services
+  name: Directorate General of Health Services, Balochistan
+  kind: attached_department
+  branch: executive
+  parent: ba-health
+  sectors:
+  - health
+  description: Field wing of the health department; District Health Officers / CEOs of District Health Authorities report through it.
+  jurisdiction: pk-ba
+- id: ba-pphi
+  name: People's Primary Healthcare Initiative Balochistan
+  short_name: PPHI Balochistan
+  kind: autonomous_body
+  parent: ba-health
+  confidence: medium
+  branch: executive
+  sectors:
+  - health
+  jurisdiction: pk-ba
+- id: ba-civil-hospital-quetta
+  name: Sandeman Provincial (Civil) Hospital, Quetta
+  kind: hospital
+  parent: ba-health
+  confidence: medium
+  branch: executive
+  sectors:
+  - health
+  jurisdiction: pk-ba
+- id: ba-higher-education
+  name: Higher and Technical Education Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - education
+  jurisdiction: pk-ba
+- id: ba-school-education
+  name: Secondary Education Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - education
+  jurisdiction: pk-ba
+- id: ba-finance
+  name: Finance Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - finance
+  description: Prepares the provincial budget and Annual Development Programme financing; manages the Provincial Consolidated Fund.
+  jurisdiction: pk-ba
+- id: ba-home
+  name: Home Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - interior
+  description: Law and order, police, prisons, counter-terrorism and civil defence.
+  jurisdiction: pk-ba
+- id: ba-local-government-dept
+  name: Local Government and Community Development Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - local_government
+  description: Supervises local councils, municipal services and local-government elections support; frames local-government rules under Art.
+    140A.
+  jurisdiction: pk-ba
+- id: ba-agriculture
+  name: Agriculture Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - agriculture
+  jurisdiction: pk-ba
+- id: ba-livestock
+  name: Livestock and Dairy Development Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - agriculture
+  jurisdiction: pk-ba
+- id: ba-food
+  name: Food Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - agriculture
+  description: Wheat procurement and food security.
+  jurisdiction: pk-ba
+- id: ba-irrigation
+  name: Irrigation Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - water
+  description: Canal network, barrages and water distribution within the province.
+  jurisdiction: pk-ba
+- id: ba-energy
+  name: Energy Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - energy
+  jurisdiction: pk-ba
+- id: ba-industries
+  name: Industries, Commerce and Investment Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - industry
+  - commerce
+  jurisdiction: pk-ba
+- id: ba-excise-taxation
+  name: Excise, Taxation and Narcotics Control Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - revenue
+  description: Collects provincial taxes such as motor-vehicle tax, property tax and excise.
+  jurisdiction: pk-ba
+- id: ba-environment
+  name: Environment Protection Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - environment
+  jurisdiction: pk-ba
+- id: ba-social-welfare
+  name: Social Welfare Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - social_protection
+  jurisdiction: pk-ba
+- id: ba-population-welfare
+  name: Population Welfare Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - population
+  - health
+  description: Provincial family-planning services, devolved in 2011.
+  jurisdiction: pk-ba
+- id: ba-law
+  name: Law and Parliamentary Affairs Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - law
+  jurisdiction: pk-ba
+- id: ba-information
+  name: Information and Culture Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - information
+  - culture
+  jurisdiction: pk-ba
+- id: ba-communication-works
+  name: Communication and Works Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - transport
+  - housing
+  jurisdiction: pk-ba
+- id: ba-transport
+  name: Transport Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - transport
+  jurisdiction: pk-ba
+- id: ba-mines-minerals
+  name: Mines and Minerals Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - industry
+  description: Mineral titles and royalties; provinces own natural resources within their territory (Art. 172(3)).
+  jurisdiction: pk-ba
+- id: ba-labour
+  name: Labour and Human Resource Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - labour
+  jurisdiction: pk-ba
+- id: ba-forest
+  name: Forest, Wildlife and Fisheries Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - environment
+  jurisdiction: pk-ba
+- id: ba-women-development
+  name: Women Development Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - human_rights
+  jurisdiction: pk-ba
+- id: ba-auqaf
+  name: Auqaf and Religious Affairs Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - religious_affairs
+  jurisdiction: pk-ba
+- id: ba-housing
+  name: Housing, Urban Development and Public Health Engineering Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - housing
+  - water
+  description: Urban development, water supply and sanitation schemes.
+  jurisdiction: pk-ba
+- id: ba-human-rights
+  name: Human Rights and Minorities Affairs Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - human_rights
+  jurisdiction: pk-ba
+- id: ba-sports
+  name: Sports and Youth Affairs Department, Balochistan
+  kind: department
+  branch: executive
+  parent: ba-government
+  legal_basis:
+  - law: balochistan-rules-of-business-2012
+  sectors:
+  - culture
+  jurisdiction: pk-ba
+- id: ba-epa
+  name: Balochistan Environmental Protection Agency
+  short_name: EPA Balochistan
+  kind: regulator
+  branch: executive
+  parent: ba-environment
+  legal_basis:
+  - law: balochistan-epa-2012
+  sectors:
+  - environment
+  head_title: Director General, EPA Balochistan
+  description: Enforces environmental quality standards, approves environmental impact assessments and prosecutes polluters before the Environmental
+    Protection Tribunal.
+  jurisdiction: pk-ba
+- id: ba-ppra
+  name: Balochistan Public Procurement Regulatory Authority
+  short_name: BPPRA
+  kind: regulator
+  branch: executive
+  parent: ba-finance
+  legal_basis:
+  - law: balochistan-ppra-act-2009
+  sectors:
+  - finance
+  - accountability
+  head_title: Managing Director, BPPRA
+  description: Sets and monitors public procurement rules for provincial departments and bodies.
+  jurisdiction: pk-ba
+- id: ba-info-commission
+  name: Balochistan Information Commission
+  kind: commission
+  branch: constitutional
+  parent: ba-government
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 19A
+  - law: balochistan-rti-act-2021
+  sectors:
+  - accountability
+  - human_rights
+  head_title: Chief Information Commissioner, Balochistan
+  description: Hears complaints when public bodies refuse requests for information under the right to information (Art. 19A).
+  jurisdiction: pk-ba
+- id: ba-service-tribunal
+  name: Balochistan Service Tribunal
+  kind: tribunal
+  branch: judicial
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 212
+  - law: balochistan-service-tribunals-act-1974
+  sectors:
+  - justice
+  - civil_service
+  head_title: Chairman, Balochistan Service Tribunal
+  description: Decides service matters of provincial civil servants; appeals lie to the Supreme Court.
+  jurisdiction: pk-ba
+- id: ba-bar-council
+  name: Balochistan Bar Council
+  kind: professional_body
+  branch: judicial
+  legal_basis:
+  - law: legal-practitioners-act-1973
+  sectors:
+  - justice
+  head_title: Vice-Chairman, Balochistan Bar Council
+  head_appointment:
+    method: indirect_election
+    by: ba-bar-council
+  description: Licenses advocates to practise before the subordinate courts and the High Court, and handles professional misconduct. The Advocate-General
+    is ex officio Chairman.
+  jurisdiction: pk-ba
+- id: ba-food-authority
+  name: Balochistan Food Authority
+  kind: regulator
+  parent: ba-food
+  legal_basis:
+  - law: balochistan-food-authority-act-2014
+  sectors:
+  - health
+  - agriculture
+  confidence: medium
+  head_title: Director General, Balochistan Food Authority
+  branch: executive
+  jurisdiction: pk-ba
+positions:
+- id: ba-governor
+  title: Governor of Balochistan
+  org: ba-governor-house
+  role: head
+  appointment:
+    method: appointment_on_advice
+    by: fed-president
+    on_advice_of: fed-prime-minister
+    notes: Holds office during the pleasure of the President.
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 101
+- id: ba-chief-minister
+  title: Chief Minister of Balochistan
+  org: ba-cm-office
+  role: head
+  appointment:
+    method: indirect_election
+    by: ba-assembly
+    notes: Elected by a majority of the total membership of the Provincial Assembly.
+    removal: Vote of no confidence by a majority of the total membership of the Assembly (Art. 136)
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 130(4)
+- id: ba-provincial-minister
+  title: Provincial Minister (Balochistan)
+  org: ba-cabinet
+  role: member
+  appointment:
+    method: appointment_on_advice
+    by: ba-governor
+    on_advice_of: ba-chief-minister
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 132
+- id: ba-chief-secretary
+  title: Chief Secretary, Balochistan
+  org: ba-government
+  role: administrative_head
+  grade: BS-22
+  description: Head of the provincial civil service and secretary to the provincial cabinet. A federal PAS officer posted by the Federal Government
+    in consultation with the province.
+  appointment:
+    method: posting
+    by: fed-prime-minister
+    nominated_by: fed-establishment-division
+    consultation:
+    - ba-chief-minister
+- id: ba-igp
+  title: Inspector General of Police, Balochistan
+  org: ba-police
+  role: head
+  grade: BS-21/22
+  appointment:
+    method: posting
+    by: fed-prime-minister
+    nominated_by: fed-establishment-division
+    consultation:
+    - ba-chief-minister
+    legal_basis:
+    - law: police-order-2002
+- id: ba-mpa
+  title: Member of the Provincial Assembly (Balochistan)
+  org: ba-assembly
+  role: member
+  seats: 65
+  appointment:
+    method: direct_election
+    by: pk-electorate
+    term: 5 years
+    notes: General seats by first-past-the-post; reserved seats for women and non-Muslims by party-list proportional representation.
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 106
+    - law: elections-act-2017
+- id: ba-speaker
+  title: Speaker, Provincial Assembly of Balochistan
+  org: ba-assembly
+  role: presiding_officer
+  appointment:
+    method: indirect_election
+    by: ba-assembly
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 108
+- id: ba-deputy-speaker
+  title: Deputy Speaker, Provincial Assembly of Balochistan
+  org: ba-assembly
+  role: deputy
+  appointment:
+    method: indirect_election
+    by: ba-assembly
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 108
+- id: ba-leader-of-opposition
+  title: Leader of the Opposition, Provincial Assembly of Balochistan
+  org: ba-assembly
+  role: officer
+  appointment:
+    method: indirect_election
+    by: ba-assembly
+- id: ba-hc-chief-justice
+  title: Chief Justice, Balochistan High Court
+  org: ba-high-court
+  role: chief_justice
+  appointment:
+    method: appointment
+    by: fed-president
+    nominated_by: fed-judicial-commission
+    legal_basis:
+    - law: constitution-1973
+      provision: Arts. 175A, 193
+- id: ba-hc-judge
+  title: Judge, Balochistan High Court
+  org: ba-high-court
+  role: judge
+  appointment:
+    method: appointment
+    by: fed-president
+    nominated_by: fed-judicial-commission
+    legal_basis:
+    - law: constitution-1973
+      provision: Arts. 175A, 193
+- id: ba-advocate-general-post
+  title: Advocate-General, Balochistan
+  org: ba-advocate-general
+  role: head
+  appointment:
+    method: appointment_on_advice
+    by: ba-governor
+    on_advice_of: ba-chief-minister
+    legal_basis:
+    - law: constitution-1973
+      provision: Art. 140
+- id: ba-psc-chairman
+  title: Chairman, Balochistan Public Service Commission
+  org: ba-psc
+  role: head
+  appointment:
+    method: appointment_on_advice
+    by: ba-governor
+    on_advice_of: ba-chief-minister
+- id: ba-ombudsman-head
+  title: Provincial Ombudsman Balochistan
+  org: ba-ombudsman
+  role: head
+  appointment:
+    method: appointment_on_advice
+    by: ba-governor
+    on_advice_of: ba-chief-minister
+- id: ba-smbr
+  title: Senior Member, Board of Revenue, Balochistan
+  org: ba-board-of-revenue
+  role: head
+  grade: BS-21/22
+  appointment:
+    method: posting
+    by: ba-chief-minister
+    nominated_by: ba-sgad
+- id: ba-pnd-head
+  title: Additional Chief Secretary (Development), Balochistan
+  org: ba-pnd
+  role: head
+  grade: BS-21/22
+  appointment:
+    method: posting
+    by: ba-chief-minister
+    nominated_by: ba-sgad
+- id: ba-dg-health
+  title: Director General Health Services, Balochistan
+  org: ba-dg-health-services
+  role: head
+  grade: BS-20/21
+  appointment:
+    method: posting
+    by: ba-chief-minister
+    nominated_by: ba-sgad
+- id: ba-mayor
+  title: Mayor of Quetta
+  org: ba-qmc
+  role: head
+  appointment:
+    method: indirect_election
+    by: ba-qmc
+    notes: Mayoral election method is set by the provincial local-government law and has changed between Acts.
+    legal_basis:
+    - law: balochistan-lg-act-2010
+  confidence: medium
+- id: ba-pdma-dg
+  title: Director General, PDMA Balochistan
+  org: ba-pdma
+  role: head
+  appointment:
+    method: posting
+    by: ba-chief-minister
+- id: ba-healthcare-commission-ceo
+  title: Chief Executive Officer, Balochistan Healthcare Commission
+  org: ba-healthcare-commission
+  role: head
+  appointment:
+    method: appointment
+    by: ba-government
+    legal_basis:
+    - law: balochistan-healthcare-commission-act-2019
+  confidence: medium
+- id: ba-bar-council-chair
+  title: Chairman, Balochistan Bar Council
+  org: ba-bar-council
+  role: presiding_officer
+  ex_officio_of: ba-advocate-general-post
+  appointment:
+    method: ex_officio
+    legal_basis:
+    - law: legal-practitioners-act-1973
+- id: ba-peoc-coordinator
+  title: Coordinator, Provincial EOC Balochistan
+  org: ba-peoc
+  role: head
+  appointment:
+    method: appointment
+    by: ba-chief-minister
+relations:
+- from: ba-cabinet
+  to: ba-assembly
+  type: accountable_to
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 130(6)
+- from: ba-assembly
+  to: fed-senate-electoral-college
+  type: member_of
+  description: Elects the province's 23 Senators
+- from: ba-assembly
+  to: fed-electoral-college
+  type: member_of
+  description: Votes in the presidential election
+- from: ba-chief-minister
+  to: fed-cci
+  type: member_of
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 153(2)
+- from: ba-chief-minister
+  to: fed-nec
+  type: member_of
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 156(1)
+- from: ba-finance
+  to: fed-nfc
+  type: member_of
+  description: Provincial Finance Minister sits on the National Finance Commission
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 160(1)
+- from: ba-high-court
+  to: fed-supreme-court
+  type: appeals_to
+- from: fed-agp
+  to: ba-government
+  type: audits
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 171
+- from: fed-agp
+  to: ba-assembly-pac
+  type: reports_to
+  description: Provincial audit reports are submitted to the Governor for laying before the Assembly
+- from: ba-assembly-pac
+  to: ba-government
+  type: oversees
+- from: ba-assembly-sc-health
+  to: ba-health
+  type: oversees
+- from: ba-local-government-dept
+  to: ba-local-government
+  type: oversees
+- from: ba-local-government
+  to: fed-ecp
+  type: coordinates_with
+  description: Local-government elections are conducted by the ECP (Art. 140A(2))
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 140A(2)
+- from: fed-ecp
+  to: ba-assembly
+  type: oversees
+  description: Conducts elections to the Provincial Assembly
+- from: ba-pfc
+  to: ba-local-government
+  type: funds
+- from: fed-nfc
+  to: ba-government
+  type: funds
+  description: Provincial share of the federal divisible pool (7th NFC Award)
+- from: ba-pdma
+  to: fed-ndma
+  type: coordinates_with
+- from: ba-peoc
+  to: fed-neoc
+  type: reports_to
+- from: ba-health
+  to: fed-min-nhsrc
+  type: coordinates_with
+  description: Federal–provincial health coordination after devolution
+- from: ba-health
+  to: fed-imhpf
+  type: member_of
+  confidence: medium
+- from: fed-min-health-former
+  to: ba-health
+  type: devolved_to
+  description: Health devolved to the provinces on 30 June 2011
+  legal_basis:
+  - law: amendment-18
+- from: ba-healthcare-commission
+  to: ba-health
+  type: regulates
+  description: Licenses and inspects healthcare establishments
+- from: fed-drap
+  to: ba-health
+  type: coordinates_with
+  description: Provincial drug inspectors and Provincial Quality Control Boards enforce drug-sale rules under the Drugs Act 1976
+- from: ba-revenue-authority
+  to: fed-fbr
+  type: coordinates_with
+  description: Harmonisation of sales tax on goods (federal) and services (provincial)
+- from: ba-police
+  to: fed-interior-division
+  type: coordinates_with
+- from: ba-sgad
+  to: fed-establishment-division
+  type: coordinates_with
+  description: Federal cadre (PAS/PSP) officers serving in the province
+- from: ba-high-court
+  to: ba-district-judiciary
+  type: oversees
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 203
+- from: ba-service-tribunal
+  to: fed-supreme-court
+  type: appeals_to
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 212(3)
+- from: ba-bar-council
+  to: fed-pakistan-bar-council
+  type: coordinates_with
+- from: ba-bar-council
+  to: fed-judicial-commission
+  type: nominates
+  description: Nominates an advocate member when the Commission considers High Court appointments for the province
+  legal_basis:
+  - law: constitution-1973
+    provision: Art. 175A
+  confidence: medium
+- from: ba-epa
+  to: fed-pak-epa
+  type: coordinates_with
+- from: ba-ppra
+  to: fed-ppra
+  type: coordinates_with
+- from: ba-ppra
+  to: ba-government
+  type: regulates
+  description: Public procurement by provincial bodies
+- from: ba-healthcare-commission
+  to: ba-government
+  type: regulates
+  description: Private and public healthcare establishments in the province

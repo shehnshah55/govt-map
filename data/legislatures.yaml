@@ -1,0 +1,134 @@
+# Elected seats in every legislature.
+#
+# General seats are generated from `legislature_seats` ranges: each becomes a
+# constituency (con-na-122) and a seat post (seat-na-122). Constituency numbers
+# follow the ECP's 2023 delimitation used in the February 2024 general election.
+# Ranges map constituencies to a province, or to a district where the block is
+# known; finer mapping (constituency → district) is future work from ECP
+# delimitation notifications. Members are linked from data/people.yaml.
+legislature_seats:
+  - chamber: fed-national-assembly
+    code: NA
+    member_title: Member of the National Assembly
+    term: 5 years
+    legal_basis: [{ law: constitution-1973, provision: "Art. 51" }, { law: elections-act-2017 }]
+    as_of: "2024-02"
+    sources: [{ title: Election Commission of Pakistan — Delimitation 2023, url: "https://www.ecp.gov.pk" }]
+    ranges:
+      - { from: 1, to: 45, area: pk-kp }
+      - { from: 46, to: 48, area: pk-ict, confidence: high }
+      - { from: 49, to: 116, area: pk-pb }
+      - { from: 117, to: 130, area: pk-pb-lahore }
+      - { from: 131, to: 189, area: pk-pb }
+      - { from: 190, to: 228, area: pk-sd }
+      - { from: 229, to: 250, area: pk-sd-div-karachi }
+      - { from: 251, to: 266, area: pk-ba }
+    reserved:
+      - { type: women, seats: 32, area: pk-pb }
+      - { type: women, seats: 14, area: pk-sd }
+      - { type: women, seats: 10, area: pk-kp }
+      - { type: women, seats: 4, area: pk-ba }
+      - { type: non_muslim, seats: 10, area: pk }
+
+  - chamber: pb-assembly
+    code: PP
+    member_title: Member of the Provincial Assembly of the Punjab
+    term: 5 years
+    legal_basis: [{ law: constitution-1973, provision: "Art. 106" }, { law: elections-act-2017 }]
+    as_of: "2024-02"
+    ranges: [{ from: 1, to: 297, area: pk-pb }]
+    reserved:
+      - { type: women, seats: 66, area: pk-pb }
+      - { type: non_muslim, seats: 8, area: pk-pb }
+
+  - chamber: sd-assembly
+    code: PS
+    member_title: Member of the Provincial Assembly of Sindh
+    term: 5 years
+    legal_basis: [{ law: constitution-1973, provision: "Art. 106" }, { law: elections-act-2017 }]
+    as_of: "2024-02"
+    ranges: [{ from: 1, to: 130, area: pk-sd }]
+    reserved:
+      - { type: women, seats: 29, area: pk-sd }
+      - { type: non_muslim, seats: 9, area: pk-sd }
+
+  - chamber: kp-assembly
+    code: PK
+    member_title: Member of the Provincial Assembly of Khyber Pakhtunkhwa
+    term: 5 years
+    legal_basis: [{ law: constitution-1973, provision: "Art. 106" }, { law: elections-act-2017 }]
+    as_of: "2024-02"
+    ranges: [{ from: 1, to: 115, area: pk-kp }]
+    reserved:
+      - { type: women, seats: 26, area: pk-kp }
+      - { type: non_muslim, seats: 4, area: pk-kp }
+
+  - chamber: ba-assembly
+    code: PB
+    member_title: Member of the Provincial Assembly of Balochistan
+    term: 5 years
+    legal_basis: [{ law: constitution-1973, provision: "Art. 106" }, { law: elections-act-2017 }]
+    as_of: "2024-02"
+    ranges: [{ from: 1, to: 51, area: pk-ba }]
+    reserved:
+      - { type: women, seats: 11, area: pk-ba }
+      - { type: non_muslim, seats: 3, area: pk-ba }
+
+  - chamber: gb-assembly
+    code: GBA
+    member_title: Member of the Gilgit-Baltistan Assembly
+    term: 5 years
+    legal_basis: [{ law: gb-governance-order-2018 }]
+    as_of: "2020-11"
+    ranges: [{ from: 1, to: 24, area: pk-gb }]
+    reserved:
+      - { type: women, seats: 6, area: pk-gb }
+      - { type: technocrat, seats: 3, area: pk-gb }
+
+  - chamber: ajk-assembly
+    code: LA
+    member_title: Member of the AJK Legislative Assembly
+    term: 5 years
+    legal_basis: [{ law: ajk-interim-constitution-1974 }]
+    as_of: "2021-07"
+    ranges:
+      - { from: 1, to: 33, area: pk-ajk }
+      - { from: 34, to: 45, area: pk, confidence: medium }
+    reserved:
+      - { type: women, seats: 5, area: pk-ajk }
+      - { type: technocrat, seats: 3, area: pk-ajk }
+
+positions:
+  # Senate seats are elected at large by each Provincial Assembly, so they are
+  # grouped by province and category rather than numbered.
+  - { id: seat-senate-pb-general, title: "Senators from Punjab, general seats", org: fed-senate, role: member, seats: 14, area: pk-pb, seat_type: general, appointment: { method: indirect_election, by: pb-assembly, term: 6 years, legal_basis: [{ law: constitution-1973, provision: "Art. 59(1)(a)" }] } }
+  - { id: seat-senate-pb-women, title: "Senators from Punjab, seats for women", org: fed-senate, role: member, seats: 4, area: pk-pb, seat_type: women, appointment: { method: indirect_election, by: pb-assembly, term: 6 years, legal_basis: [{ law: constitution-1973, provision: "Art. 59(1)(c)" }] } }
+  - { id: seat-senate-pb-technocrat, title: "Senators from Punjab, technocrat and ulema seats", org: fed-senate, role: member, seats: 4, area: pk-pb, seat_type: technocrat, appointment: { method: indirect_election, by: pb-assembly, term: 6 years, legal_basis: [{ law: constitution-1973, provision: "Art. 59(1)(d)" }] } }
+  - { id: seat-senate-pb-non-muslim, title: "Senator from Punjab, seat for non-Muslims", org: fed-senate, role: member, seats: 1, area: pk-pb, seat_type: non_muslim, appointment: { method: indirect_election, by: pb-assembly, term: 6 years, legal_basis: [{ law: constitution-1973, provision: "Art. 59(1)(f)" }] } }
+  - { id: seat-senate-sd-general, title: "Senators from Sindh, general seats", org: fed-senate, role: member, seats: 14, area: pk-sd, seat_type: general, appointment: { method: indirect_election, by: sd-assembly, term: 6 years, legal_basis: [{ law: constitution-1973, provision: "Art. 59(1)(a)" }] } }
+  - { id: seat-senate-sd-women, title: "Senators from Sindh, seats for women", org: fed-senate, role: member, seats: 4, area: pk-sd, seat_type: women, appointment: { method: indirect_election, by: sd-assembly, term: 6 years, legal_basis: [{ law: constitution-1973, provision: "Art. 59(1)(c)" }] } }
+  - { id: seat-senate-sd-technocrat, title: "Senators from Sindh, technocrat and ulema seats", org: fed-senate, role: member, seats: 4, area: pk-sd, seat_type: technocrat, appointment: { method: indirect_election, by: sd-assembly, term: 6 years, legal_basis: [{ law: constitution-1973, provision: "Art. 59(1)(d)" }] } }
+  - { id: seat-senate-sd-non-muslim, title: "Senator from Sindh, seat for non-Muslims", org: fed-senate, role: member, seats: 1, area: pk-sd, seat_type: non_muslim, appointment: { method: indirect_election, by: sd-assembly, term: 6 years, legal_basis: [{ law: constitution-1973, provision: "Art. 59(1)(f)" }] } }
+  - { id: seat-senate-kp-general, title: "Senators from Khyber Pakhtunkhwa, general seats", org: fed-senate, role: member, seats: 14, area: pk-kp, seat_type: general, appointment: { method: indirect_election, by: kp-assembly, term: 6 years, legal_basis: [{ law: constitution-1973, provision: "Art. 59(1)(a)" }] } }
+  - { id: seat-senate-kp-women, title: "Senators from Khyber Pakhtunkhwa, seats for women", org: fed-senate, role: member, seats: 4, area: pk-kp, seat_type: women, appointment: { method: indirect_election, by: kp-assembly, term: 6 years, legal_basis: [{ law: constitution-1973, provision: "Art. 59(1)(c)" }] } }
+  - { id: seat-senate-kp-technocrat, title: "Senators from Khyber Pakhtunkhwa, technocrat and ulema seats", org: fed-senate, role: member, seats: 4, area: pk-kp, seat_type: technocrat, appointment: { method: indirect_election, by: kp-assembly, term: 6 years, legal_basis: [{ law: constitution-1973, provision: "Art. 59(1)(d)" }] } }
+  - { id: seat-senate-kp-non-muslim, title: "Senator from Khyber Pakhtunkhwa, seat for non-Muslims", org: fed-senate, role: member, seats: 1, area: pk-kp, seat_type: non_muslim, appointment: { method: indirect_election, by: kp-assembly, term: 6 years, legal_basis: [{ law: constitution-1973, provision: "Art. 59(1)(f)" }] } }
+  - { id: seat-senate-ba-general, title: "Senators from Balochistan, general seats", org: fed-senate, role: member, seats: 14, area: pk-ba, seat_type: general, appointment: { method: indirect_election, by: ba-assembly, term: 6 years, legal_basis: [{ law: constitution-1973, provision: "Art. 59(1)(a)" }] } }
+  - { id: seat-senate-ba-women, title: "Senators from Balochistan, seats for women", org: fed-senate, role: member, seats: 4, area: pk-ba, seat_type: women, appointment: { method: indirect_election, by: ba-assembly, term: 6 years, legal_basis: [{ law: constitution-1973, provision: "Art. 59(1)(c)" }] } }
+  - { id: seat-senate-ba-technocrat, title: "Senators from Balochistan, technocrat and ulema seats", org: fed-senate, role: member, seats: 4, area: pk-ba, seat_type: technocrat, appointment: { method: indirect_election, by: ba-assembly, term: 6 years, legal_basis: [{ law: constitution-1973, provision: "Art. 59(1)(d)" }] } }
+  - { id: seat-senate-ba-non-muslim, title: "Senator from Balochistan, seat for non-Muslims", org: fed-senate, role: member, seats: 1, area: pk-ba, seat_type: non_muslim, appointment: { method: indirect_election, by: ba-assembly, term: 6 years, legal_basis: [{ law: constitution-1973, provision: "Art. 59(1)(f)" }] } }
+  - { id: seat-senate-ict-general, title: "Senators from Islamabad, general seats", org: fed-senate, role: member, seats: 2, area: pk-ict, seat_type: general, appointment: { method: indirect_election, by: fed-national-assembly, term: 6 years, legal_basis: [{ law: constitution-1973, provision: "Art. 59(1)(b)" }] } }
+  - { id: seat-senate-ict-women, title: "Senator from Islamabad, seat for women", org: fed-senate, role: member, seats: 1, area: pk-ict, seat_type: women, appointment: { method: indirect_election, by: fed-national-assembly, term: 6 years, legal_basis: [{ law: constitution-1973, provision: "Art. 59(1)(b)" }] } }
+  - { id: seat-senate-ict-technocrat, title: "Senator from Islamabad, technocrat seat", org: fed-senate, role: member, seats: 1, area: pk-ict, seat_type: technocrat, appointment: { method: indirect_election, by: fed-national-assembly, term: 6 years, legal_basis: [{ law: constitution-1973, provision: "Art. 59(1)(b)" }] } }
+
+  # Parliamentary leadership beyond the presiding officers
+  - id: fed-senate-leader-of-house
+    title: Leader of the House in the Senate
+    org: fed-senate
+    role: officer
+    appointment: { method: appointment, by: fed-prime-minister, notes: "Designated by the Prime Minister from among Senators." }
+  - id: fed-senate-leader-of-opposition
+    title: Leader of the Opposition in the Senate
+    org: fed-senate
+    role: officer
+    appointment: { method: indirect_election, by: fed-senate, notes: "Declared by the Chairman on the basis of support among opposition Senators." }

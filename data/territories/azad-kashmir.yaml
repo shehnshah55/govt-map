@@ -1,0 +1,164 @@
+# Azad Jammu and Kashmir — self-governing under the AJK Interim Constitution, 1974.
+# Included because of its constitutional and administrative links with the
+# Federal Government; its international status is governed by the Kashmir dispute.
+defaults:
+  organizations:
+    jurisdiction: pk-ajk
+    branch: executive
+
+organizations:
+  - id: ajk-government
+    name: Government of Azad Jammu and Kashmir
+    kind: state
+    description: Parliamentary government with a President (head of state), Prime Minister and cabinet responsible to the Legislative Assembly, established by the AJK Interim Constitution 1974. The 13th Amendment (2018) transferred most legislative powers from the AJK Council to the Assembly.
+    legal_basis: [{ law: ajk-interim-constitution-1974 }]
+    website: https://ajk.gov.pk
+    sectors: [governance]
+  - id: ajk-president-office
+    name: President of Azad Jammu and Kashmir
+    kind: head_of_state_office
+    parent: ajk-government
+    legal_basis: [{ law: ajk-interim-constitution-1974 }]
+  - id: ajk-pm-office
+    name: Prime Minister's Office, Azad Jammu and Kashmir
+    kind: head_of_state_office
+    parent: ajk-government
+  - id: ajk-cabinet
+    name: Cabinet of Azad Jammu and Kashmir
+    kind: cabinet
+    parent: ajk-government
+  - id: ajk-assembly
+    name: Azad Jammu and Kashmir Legislative Assembly
+    kind: legislature
+    branch: legislative
+    description: 53-member Assembly — 45 directly elected seats (33 in AJK, 12 for Jammu and Kashmir refugees settled in Pakistan) plus 8 reserved seats.
+    legal_basis: [{ law: ajk-interim-constitution-1974 }]
+    confidence: medium
+    sectors: [governance]
+  - id: ajk-council
+    name: Azad Jammu and Kashmir Council
+    kind: intergovernmental_forum
+    description: Joint body chaired by the Prime Minister of Pakistan, with the AJK President (vice-chair), the AJK Prime Minister, federal ministers and members elected by the AJK Assembly; an advisory body since the 13th Amendment.
+    legal_basis: [{ law: ajk-interim-constitution-1974, provision: "s. 21" }]
+    confidence: medium
+    sectors: [governance]
+  - id: ajk-supreme-court
+    name: Supreme Court of Azad Jammu and Kashmir
+    kind: court
+    branch: judicial
+    legal_basis: [{ law: ajk-interim-constitution-1974 }]
+    sectors: [justice]
+  - id: ajk-high-court
+    name: High Court of Azad Jammu and Kashmir
+    kind: court
+    branch: judicial
+    legal_basis: [{ law: ajk-interim-constitution-1974 }]
+    sectors: [justice]
+  - id: ajk-health
+    name: Health Department, Azad Jammu and Kashmir
+    kind: department
+    parent: ajk-government
+    sectors: [health]
+  - id: ajk-education
+    name: Education Department, Azad Jammu and Kashmir
+    kind: department
+    parent: ajk-government
+    sectors: [education]
+  - id: ajk-finance
+    name: Finance Department, Azad Jammu and Kashmir
+    kind: department
+    parent: ajk-government
+    sectors: [finance]
+  - id: ajk-home
+    name: Home Department, Azad Jammu and Kashmir
+    kind: department
+    parent: ajk-government
+    sectors: [interior]
+  - id: ajk-pnd
+    name: Planning and Development Department, Azad Jammu and Kashmir
+    kind: department
+    parent: ajk-government
+    sectors: [planning]
+  - id: ajk-local-government-dept
+    name: Local Government and Rural Development Department, Azad Jammu and Kashmir
+    kind: department
+    parent: ajk-government
+    sectors: [local_government]
+  - id: ajk-police
+    name: Azad Jammu and Kashmir Police
+    kind: law_enforcement
+    parent: ajk-home
+    sectors: [interior]
+  - id: ajk-sdma
+    name: State Disaster Management Authority AJK
+    kind: autonomous_body
+    parent: ajk-government
+    sectors: [disaster]
+
+positions:
+  - id: ajk-president
+    title: President of Azad Jammu and Kashmir
+    org: ajk-president-office
+    role: head
+    appointment: { method: indirect_election, by: ajk-assembly, term: 5 years, legal_basis: [{ law: ajk-interim-constitution-1974 }] }
+  - id: ajk-prime-minister
+    title: Prime Minister of Azad Jammu and Kashmir
+    org: ajk-pm-office
+    role: head
+    appointment: { method: indirect_election, by: ajk-assembly, legal_basis: [{ law: ajk-interim-constitution-1974 }] }
+  - id: ajk-minister
+    title: Minister (Azad Jammu and Kashmir)
+    org: ajk-cabinet
+    role: member
+    appointment: { method: appointment_on_advice, by: ajk-president, on_advice_of: ajk-prime-minister }
+  - id: ajk-mla
+    title: Member, AJK Legislative Assembly
+    org: ajk-assembly
+    role: member
+    seats: 53
+    appointment: { method: direct_election, by: pk-electorate, notes: "Elections are conducted by the AJK Election Commission." }
+    confidence: medium
+  - id: ajk-speaker
+    title: Speaker, AJK Legislative Assembly
+    org: ajk-assembly
+    role: presiding_officer
+    appointment: { method: indirect_election, by: ajk-assembly }
+  - id: ajk-council-chair
+    title: Chairman, AJK Council
+    org: ajk-council
+    role: head
+    ex_officio_of: fed-prime-minister
+    appointment: { method: ex_officio, legal_basis: [{ law: ajk-interim-constitution-1974, provision: "s. 21" }] }
+  - id: ajk-chief-secretary
+    title: Chief Secretary, Azad Jammu and Kashmir
+    org: ajk-government
+    role: administrative_head
+    grade: BS-21/22
+    appointment: { method: posting, by: fed-prime-minister, nominated_by: fed-establishment-division, notes: "Lent officer from the Federal Government." }
+  - id: ajk-igp
+    title: Inspector General of Police, AJK
+    org: ajk-police
+    role: head
+    appointment: { method: posting, by: fed-prime-minister, nominated_by: fed-establishment-division }
+  - id: ajk-chief-justice
+    title: Chief Justice of Azad Jammu and Kashmir
+    org: ajk-supreme-court
+    role: chief_justice
+    appointment: { method: appointment, by: ajk-president, legal_basis: [{ law: ajk-interim-constitution-1974 }] }
+    confidence: medium
+  - id: ajk-hc-chief-justice
+    title: Chief Justice, AJK High Court
+    org: ajk-high-court
+    role: chief_justice
+    appointment: { method: appointment, by: ajk-president, legal_basis: [{ law: ajk-interim-constitution-1974 }] }
+    confidence: medium
+
+relations:
+  - { from: ajk-cabinet, to: ajk-assembly, type: accountable_to }
+  - { from: fed-min-kashmir-gb, to: ajk-government, type: coordinates_with }
+  - { from: ajk-high-court, to: ajk-supreme-court, type: appeals_to }
+  - { from: ajk-council, to: ajk-government, type: advises }
+  - { from: ajk-health, to: fed-min-nhsrc, type: coordinates_with }
+  - { from: ajk-health, to: fed-imhpf, type: member_of, confidence: medium }
+  - { from: ajk-sdma, to: fed-ndma, type: coordinates_with }
+  - { from: fed-agp, to: ajk-government, type: audits, confidence: medium }

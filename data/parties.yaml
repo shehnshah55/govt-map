@@ -1,0 +1,120 @@
+# Political parties registered with the Election Commission of Pakistan
+# (Elections Act 2017, Chapter XI). Parties are outside the state, but they
+# nominate candidates, fill reserved seats from party lists and form governments,
+# so they are part of any honest map of who holds power.
+# Party heads are elected in intra-party elections that the ECP must certify
+# (Elections Act 2017, s. 208–209). Leadership data: see data/people.yaml.
+defaults:
+  organizations:
+    kind: political_party
+    branch: political
+    jurisdiction: pk
+    legal_basis: [{ law: elections-act-2017, provision: "ss. 200–213" }]
+    confidence: medium
+
+organizations:
+  - id: party-pmln
+    name: Pakistan Muslim League (Nawaz)
+    short_name: PML-N
+    name_ur: پاکستان مسلم لیگ (ن)
+    description: Centre-right party; leads the federal coalition and the Punjab government after the 2024 general election.
+    website: https://pmln.org
+    head_title: President, PML-N
+    head_appointment: { method: indirect_election, by: party-pmln, notes: "Elected by the party's general council." }
+  - id: party-ppp
+    name: Pakistan Peoples Party
+    short_name: PPP
+    name_ur: پاکستان پیپلز پارٹی
+    description: Centre-left party founded in 1967; governs Sindh and Balochistan and holds the Presidency and the Senate chair. Contests elections through its registered wing, the Pakistan Peoples Party Parliamentarians (PPPP).
+    head_title: Chairman, PPP
+    head_appointment: { method: indirect_election, by: party-ppp }
+  - id: party-pppp
+    name: Pakistan Peoples Party Parliamentarians
+    short_name: PPPP
+    description: The PPP's electoral wing registered with the ECP, under which PPP candidates contest elections.
+    head_title: President, PPPP
+    head_appointment: { method: indirect_election, by: party-pppp }
+  - id: party-pti
+    name: Pakistan Tehreek-e-Insaf
+    short_name: PTI
+    name_ur: پاکستان تحریکِ انصاف
+    description: Founded by Imran Khan in 1996; governed federally 2018–2022 and governs Khyber Pakhtunkhwa. Its candidates contested the 2024 election as independents after losing the party symbol; many later joined the Sunni Ittehad Council in the assemblies.
+    head_title: Chairman, PTI
+    head_appointment: { method: indirect_election, by: party-pti }
+  - id: party-mqmp
+    name: Muttahida Qaumi Movement – Pakistan
+    short_name: MQM-P
+    description: Urban-Sindh party, strongest in Karachi and Hyderabad; a federal coalition partner.
+    head_title: Convener, MQM-P
+    head_appointment: { method: indirect_election, by: party-mqmp }
+  - id: party-juif
+    name: Jamiat Ulema-e-Islam (F)
+    short_name: JUI-F
+    description: Deobandi religious party with a base in Khyber Pakhtunkhwa and northern Balochistan.
+    head_title: Emir, JUI-F
+    head_appointment: { method: indirect_election, by: party-juif }
+  - id: party-pmlq
+    name: Pakistan Muslim League (Q)
+    short_name: PML-Q
+    head_title: President, PML-Q
+    head_appointment: { method: indirect_election, by: party-pmlq }
+  - id: party-ipp
+    name: Istehkam-e-Pakistan Party
+    short_name: IPP
+    description: Formed in 2023 by former PTI members; a federal coalition partner.
+    head_title: President, IPP
+    head_appointment: { method: indirect_election, by: party-ipp }
+  - id: party-ji
+    name: Jamaat-e-Islami Pakistan
+    short_name: JI
+    head_title: Emir, Jamaat-e-Islami
+    head_appointment: { method: indirect_election, by: party-ji, notes: "Elected by the party's members (arkan) in a direct vote." }
+  - id: party-anp
+    name: Awami National Party
+    short_name: ANP
+    description: Pashtun nationalist, secular party based in Khyber Pakhtunkhwa.
+    head_title: President, ANP
+    head_appointment: { method: indirect_election, by: party-anp }
+  - id: party-bap
+    name: Balochistan Awami Party
+    short_name: BAP
+    head_title: President, BAP
+    head_appointment: { method: indirect_election, by: party-bap }
+  - id: party-bnpm
+    name: Balochistan National Party (Mengal)
+    short_name: BNP-M
+    head_title: President, BNP-M
+    head_appointment: { method: indirect_election, by: party-bnpm }
+  - id: party-np
+    name: National Party
+    short_name: NP
+    head_title: President, National Party
+    head_appointment: { method: indirect_election, by: party-np }
+  - id: party-pkmap
+    name: Pashtunkhwa Milli Awami Party
+    short_name: PkMAP
+    head_title: Chairman, PkMAP
+    head_appointment: { method: indirect_election, by: party-pkmap }
+  - id: party-mwm
+    name: Majlis Wahdat-e-Muslimeen
+    short_name: MWM
+    head_title: Chairman, MWM
+    head_appointment: { method: indirect_election, by: party-mwm }
+  - id: party-sic
+    name: Sunni Ittehad Council
+    short_name: SIC
+    description: Small Barelvi party that PTI-backed independents joined after the 2024 election; the Supreme Court's reserved-seats rulings of 2024–2025 turned on this arrangement.
+    head_title: Chairman, SIC
+    head_appointment: { method: indirect_election, by: party-sic }
+
+positions:
+  - { id: party-pmln-senior-vp, title: "Senior Vice-President and Chief Organiser, PML-N", org: party-pmln, role: officer, appointment: { method: appointment, by: party-pmln-head } }
+  - { id: party-ppp-co-chairman, title: "Co-Chairman, PPP", org: party-ppp, role: deputy, appointment: { method: indirect_election, by: party-ppp } }
+
+relations:
+  - { from: fed-ecp, to: party-pmln, type: regulates, description: "Registration, intra-party elections, accounts and symbols" }
+  - { from: fed-ecp, to: party-ppp, type: regulates }
+  - { from: fed-ecp, to: party-pti, type: regulates }
+  - { from: fed-ecp, to: party-mqmp, type: regulates }
+  - { from: fed-ecp, to: party-juif, type: regulates }
+  - { from: party-pppp, to: party-ppp, type: part_of, description: "Electoral wing" }
