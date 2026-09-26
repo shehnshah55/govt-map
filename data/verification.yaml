@@ -178,3 +178,90 @@ verification:
     sources:
       - { title: "Dawn — PM unveils 'new political map' of Pakistan", url: "https://www.dawn.com/news/1572590" }
       - { title: "Survey of Pakistan — political map news", url: "https://www.mapofpakistan.gov.pk/NewsDetail/NTE2MTY4YWItZGQ3MS00Zjc4LThhMjgtMWYzZDAxYjczYmJj" }
+  # ── Quality and verification pass, 26 September 2026 ─────────────────────
+  - claim: "Governor of Sindh"
+    status: corrected
+    finding: Nehal Hashmi (PML-N) has been Governor since 13 March 2026, replacing Kamran Tessori (MQM-P). The record previously showed Tessori as the incumbent.
+    records: [sd-governor, nehal-hashmi, kamran-tessori]
+    checked: "2026-09-26"
+    sources:
+      - { title: "Radio Pakistan — Nehal Hashmi takes oath as Governor of Sindh", url: "https://www.radio.gov.pk/13-03-2026/nehal-hashmi-sworn-in-as-sindh-governor" }
+      - { title: "Dawn — PML-N stalwart Nehal Hashmi sworn in as Sindh governor", url: "https://www.dawn.com/news/1981671" }
+  - claim: "President of Azad Jammu and Kashmir"
+    status: corrected
+    finding: Barrister Sultan Mahmood Chaudhry died in office on 31 January 2026. Dr Najeeb Naqi (PML-N) was elected on 24 September 2026 with 32 votes to 13 and sworn in the same day.
+    records: [ajk-president, najeeb-naqi, sultan-mahmood-chaudhry]
+    checked: "2026-09-26"
+    sources:
+      - { title: "Express Tribune — AJK President Sultan Mahmood laid to rest", url: "https://tribune.com.pk/story/2590270/ajk-president-sultan-mahmood-laid-to-rest-with-state-military-honours" }
+      - { title: "Dawn — PML-N's Dr Najeeb Naqi sworn in as AJK president", url: "https://www.dawn.com/news/2032324/pml-ns-dr-najeeb-naqi-sworn-in-as-ajk-president-after-his-election" }
+  - claim: "Prime Minister and Speaker of Azad Jammu and Kashmir"
+    status: corrected
+    finding: After the July–August 2026 AJK general election (PML-N majority), Chaudhry Tariq Farooq was elected Speaker on 25 August and Barrister Iftikhar Gilani Prime Minister on 28 August 2026, succeeding Faisal Mumtaz Rathore (PPP).
+    records: [ajk-prime-minister, ajk-speaker, iftikhar-gilani, tariq-farooq, faisal-mumtaz-rathore]
+    checked: "2026-09-26"
+    sources:
+      - { title: "Express Tribune — Barrister Iftikhar Gilani elected 17th AJK prime minister", url: "https://tribune.com.pk/story/2626236/barrister-iftikhar-gilani-elected-17th-ajk-prime-minister" }
+      - { title: "Dawn — Speaker, deputy speaker take oath after election to AJK Assembly", url: "https://www.dawn.com/news/2025235/speaker-deputy-speaker-take-oath-after-election-to-ajk-assembly" }
+  - claim: "Chief Minister of Gilgit-Baltistan"
+    status: corrected
+    finding: The post had no holder recorded. After the 7 June 2026 election the Assembly elected Amjad Hussain Azar (PPP) unopposed on 21 June 2026.
+    records: [gb-chief-minister, amjad-hussain-azar]
+    checked: "2026-09-26"
+    sources:
+      - { title: "Arab News — Amjad Hussain sworn in as chief minister of Gilgit-Baltistan", url: "https://www.arabnews.pk/pakistan/amjad-hussain-sworn-in-as-chief-minister-of-pakistans-gilgit-baltistan-2649808" }
+      - { title: "Geo — PPP's Amjad Hussain elected unopposed as GB chief minister", url: "https://www.geo.tv/latest/669904-ppps-amjad-hussain-elected-gilgit-baltistan-chief-minister-unopposed" }
+  - claim: "Chief Justice of the Balochistan High Court"
+    status: corrected
+    finding: Justice Rozi Khan Barrech left on 14 November 2025 to join the Federal Constitutional Court. Justice Muhammad Kamran Khan Mulakhail has headed the court since; reports differ on whether he first served as acting chief justice.
+    records: [ba-hc-chief-justice, kamran-mulakhail, rozi-khan-barrech]
+    checked: "2026-09-26"
+    sources:
+      - { title: "Aaj News — Justice Kamran Malakhail sworn in as BHC Chief Justice", url: "https://english.aaj.tv/news/330448437/justice-kamran-malakhail-sworn-in-as-balochistan-high-court-chief-justice" }
+  - claim: "Dr Usman Anwar's current post"
+    status: corrected
+    finding: After leaving the post of Punjab IGP on 2 February 2026 he was appointed Director-General of the FIA on 3 February 2026. The record showed no current post.
+    records: [usman-anwar, fed-fia-dg, rao-abdul-kareem]
+    checked: "2026-09-26"
+    sources: [{ title: "Business Recorder — Rao Abdul Kareem notified as new Punjab IG; Usman Anwar appointed DG FIA", url: "https://www.brecorder.com/news/40405475/rao-abdul-kareem-notified-as-new-punjab-ig-usman-anwar-appointed-as-dg-fia" }]
+  - claim: "DG ISI and National Security Adviser tenure"
+    status: verified
+    finding: Lt Gen Asim Malik (DG ISI since 30 September 2024, NSA since 30 April 2025) had his tenure extended in October 2025; a further one-year extension was reported in September 2026.
+    records: [asim-malik, fed-dg-isi, fed-nsa]
+    checked: "2026-09-26"
+    sources:
+      - { title: "Express Tribune — DG ISI to continue in his present office", url: "https://tribune.com.pk/story/2570900/dg-isi-lt-gen-asim-malik-to-continue-in-his-present-office-security-sources" }
+      - { title: "Dawn — In a first, ISI chief made national security adviser", url: "https://www.dawn.com/news/1907660" }
+  - claim: "Inspector General of Police, Khyber Pakhtunkhwa"
+    status: unverified
+    finding: Zulfiqar Hameed is recorded as IGP. In August 2026 the KP government asked the Centre to replace him and proposed three officers; no successor notification was found.
+    records: [kp-igp, zulfiqar-hameed]
+    checked: "2026-09-26"
+    sources: [{ title: "24NewsHD — KP govt seeks transfer of IG Zulfiqar Hameed", url: "https://www.24newshd.tv/18-Aug-2026/kp-govt-seeks-transfer-ig-zulfiqar-hameed-sends-three-names-centre" }]
+  - claim: "Federal cabinet reshuffle"
+    status: verified
+    finding: A reshuffle was reported as under consideration from June to August 2026, but no notification of new portfolios was found as of 26 September 2026. Ministerial records are kept as they were; recheck when the Cabinet Division notifies changes.
+    checked: "2026-09-26"
+    sources:
+      - { title: "The Nation — Federal cabinet reshuffle on the cards (14 Jul 2026)", url: "https://www.nation.com.pk/14-Jul-2026/federal-cabinet-reshuffle-cards" }
+      - { title: "Cabinet Division — Latest news", url: "https://cabinet.gov.pk/LatestNews" }
+  - claim: "Incumbents confirmed in 2026 reporting"
+    status: verified
+    finding: "Each of these officeholders was confirmed in office by 2026 reporting or an official page, and a source is now attached to the record: governors of Punjab, KP, Balochistan and GB; speakers of the four provincial assemblies; NA Deputy Speaker and Senate Deputy Chairman; FCC, IHC, SHC and PHC chief justices; DG ISPR; NDMA, NEPRA, CCP and PMDC heads; Cabinet Secretary; chief secretaries of Sindh and Balochistan; Punjab IGP; Interior Minister; the MQM-P convener and the PTI chairman; the Balochistan finance and home ministers; the PM's focal person for polio; and the mayors of Karachi, Hyderabad and Sukkur. The GB Governor's start date was corrected to August 2022."
+    checked: "2026-09-26"
+    sources:
+      - { title: "The Nation — Punjab governor (26 Sep 2026)", url: "https://www.nation.com.pk/26-Sep-2026/political-stability-essential-address-current-challenges-punjab-governor" }
+      - { title: "The Nation — KP Assembly Speaker wins CPA award (19 Sep 2026)", url: "https://www.nation.com.pk/19-Sep-2026/kp-assembly-speaker-wins-commonwealth-parliamentary-award" }
+      - { title: "Cabinet Division — Cabinet Secretary", url: "https://cabinet.gov.pk/ProfileDetail/MzE5NTZjNGQtMDcyMC00OTRlLWE1ZDItMWY3M2I2YmI5MzJk" }
+  - claim: "Senior federal and provincial incumbents"
+    status: verified
+    finding: "Confirmed in office by September 2026 reporting or official pages: Prime Minister, Deputy PM and Foreign Minister, Finance, Planning and Information ministers, SBP Governor, Chief Justice of Pakistan, NA Speaker, Senate Chairman, and the Chief Ministers of Sindh, KP and Balochistan. A plea challenging the KP Chief Minister's election was admitted for hearing by the FCC; he remains in office."
+    records: [shehbaz-sharif, ishaq-dar, muhammad-aurangzeb, ahsan-iqbal, attaullah-tarar, jameel-ahmad, yahya-afridi, ayaz-sadiq, yousuf-raza-gilani, murad-ali-shah, sohail-afridi, sarfraz-bugti]
+    checked: "2026-09-26"
+    sources:
+      - { title: "Express Tribune — Aurangzeb at UNGA with the PM-led delegation (Sep 2026)", url: "https://tribune.com.pk/story/2631335/aurangzeb-highlights-priorities-for-climate-implementation-at-unga" }
+      - { title: "Radio Pakistan — SC opens new Judicial Year (14 Sep 2026)", url: "https://www.radio.gov.pk/14-09-2026/supreme-court-opens-new-judicial-year-with-focus-on-speedier-justice" }
+      - { title: "National Assembly — Speaker", url: "https://www.na.gov.pk/en/speaker.php" }
+      - { title: "Business Recorder — SBP governor vows focus on stability (Aug 2026)", url: "https://www.brecorder.com/news/40434815/sbp-governor-vows-focus-on-stability-reforms-and-export-growth" }
+      - { title: "Provincial Assembly of Balochistan — Sitting Chief Minister", url: "https://www.pabalochistan.gov.pk/current-members?role=chief-minister" }
+      - { title: "Chief Minister Sindh — Profile", url: "https://cm.sindh.gov.pk/cm-profile" }

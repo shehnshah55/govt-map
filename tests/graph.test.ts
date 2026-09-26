@@ -66,6 +66,27 @@ describe("data integrity", () => {
   it("dates every officeholder record", () => {
     for (const p of graph.people) expect(p.as_of, p.id).toMatch(/^\d{4}-\d{2}/);
   });
+
+  it("keeps role dates in order", () => {
+    for (const p of graph.people)
+      for (const r of p.roles) if (r.since && r.until) expect(r.since <= r.until, `${p.id} ${r.position}`).toBe(true);
+  });
+
+  it("gives each single-holder post at most one current holder", () => {
+    const current = new Map<string, string[]>();
+    for (const p of graph.people)
+      for (const r of p.roles.filter((r) => !r.until)) current.set(r.position, [...(current.get(r.position) ?? []), p.id]);
+    for (const [post, holders] of current)
+      if (!/senator|mna|mpa|^seat-|member|judge/.test(post)) expect(holders, post).toHaveLength(1);
+  });
+
+  it("reflects the 2026 changes of office in Sindh, AJK and Gilgit-Baltistan", () => {
+    const holder = (post: string) => graph.people.filter((p) => p.roles.some((r) => r.position === post && !r.until)).map((p) => p.id);
+    expect(holder("sd-governor")).toEqual(["nehal-hashmi"]);
+    expect(holder("ajk-president")).toEqual(["najeeb-naqi"]);
+    expect(holder("ajk-prime-minister")).toEqual(["iftikhar-gilani"]);
+    expect(holder("gb-chief-minister")).toEqual(["amjad-hussain-azar"]);
+  });
 });
 
 describe("queries", () => {
