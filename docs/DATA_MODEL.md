@@ -65,6 +65,8 @@ Every edge in `graph.json` has `derived: true|false`.
 | Organization with `head_title` | `<id>-head` post with that title |
 | `field_administration` block | For each division: a `division` jurisdiction, *Office of the Commissioner* and *Commissioner*. For each district: a `district` jurisdiction, *District Administration* and *Deputy Commissioner* |
 
+Generated posts carry `generated: true`, and so do the division and district offices created from `field_administration` blocks. `npm run audit:coverage` uses the flag to report authored and generated records separately.
+
 IDs are stable and predictable: `pk-pb-div-lahore`, `pk-pb-lahore`, `pk-pb-lahore-deputy-commissioner`.
 
 ## File-level defaults
@@ -102,7 +104,30 @@ A YAML file may declare `defaults.organizations` / `defaults.positions`, which a
 ## People: holdovers, extensions, backgrounds, assets
 
 Role fields: `status` (confirmed, acting, additional_charge, caretaker, interim, holding_over), `term_ended`, `term_number`, `ends`, `extensions[{granted, to, by, law, notes}]`.
-Person fields: `background[{service, rank, retired, notes}]`, used to flag retired or serving officers, judges and bureaucrats in other posts. `declared_assets[{amount_pkr, as_of, basis, source}]` records assets declared to the ECP, not audited net worth; a published source is required.
+Person fields: `background[{service, rank, retired, notes}]`, used to flag retired or serving officers, judges and bureaucrats in other posts. `declared_assets[{amount_pkr, liabilities_pkr, as_of, basis, source, notes}]` records assets declared to the ECP, not audited net worth; a published source is required.
+
+### Legal cases (`legal_cases`)
+
+Criminal and accountability proceedings against a person, recorded only from reported court outcomes. Each entry:
+
+| Field | Required | Meaning |
+|---|---|---|
+| `title` | yes | Name of the case or reference, e.g. "Avenfield reference (London flats)" |
+| `filed` | yes | Date the case, reference or FIR was filed (`YYYY`, `YYYY-MM` or `YYYY-MM-DD`) |
+| `filed_by` | no | Agency that brought it: an organization id (`fed-nab`, `fed-fia`) or a name |
+| `court` | no | Court or forum that heard it |
+| `charges` | no | What was charged, in neutral wording (e.g. "Money laundering") |
+| `status` | yes | Current status: `pending`, `convicted`, `convicted_on_appeal`, `acquitted`, `quashed`, `withdrawn`, `stayed` or `pardoned` |
+| `verdict_date` | no | Date of the verdict, or of the order that set the current status |
+| `sentence` | no | Sentence as handed down, including if later set aside |
+| `fine` | no | Fine imposed, and whether it was paid, if reported |
+| `custody` | no | Time actually spent in custody |
+| `outcome` | no | One sentence on how the case stands now (acquittal, suspension, stay) |
+| `sources` | yes, at least one | `{title, url, accessed}` for each source |
+
+The UI shows the government in office when the case was filed: `filed` is matched against the Prime Minister's terms (`pm_terms`, derived from `fed-prime-minister` roles). The current status is shown alongside the charge, so acquittals, quashed and withdrawn cases are as visible as the original charge.
+
+What may be recorded, and whether the field is published at launch, is set by the editorial policy (`docs/LAUNCH_PLAN.md` §1.4 and §4.2, still to be decided). Until then, only proceedings with a reported court outcome and a cited source are included.
 
 ## Chamber composition
 
