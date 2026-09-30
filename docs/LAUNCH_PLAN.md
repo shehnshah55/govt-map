@@ -1,1 +1,1 @@
-PLACEHOLDER
+@/workspace/govt-map-report/plan_content.txt
