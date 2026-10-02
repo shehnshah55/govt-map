@@ -466,3 +466,31 @@ Branch `launch/phase-6-freshness`, stacked on `launch/browser-tests` (PR #10). T
 ### Open
 
 - The workflow will first run on GitHub after merge. Its first report will show how many government sites block automated checks from GitHub's network.
+
+---
+
+## 2026-10-02 · Political families: tree view (§7.15)
+
+Branch `launch/family-tree`, stacked on `launch/phase-6-freshness` (PR #11). This is task D, the last in SS's order.
+
+### What changed
+
+- **`#/families`** ("Political families", in the More menu): the family groups, each a connected set of officeholders linked by recorded ties, largest first. While no ties are recorded it explains the sourcing rules and why the page is empty.
+- **`#/family/<person-id>`:**
+  - **The tree:** generations run top to bottom and spouses sit side by side. Each person shows their name, party and offices. Tapping a person opens their page; tapping a tie shows its sources.
+  - **A table of every tie with its sources**, so nothing depends on the drawing.
+  - **The members' offices.**
+  - **Where members hold or held directly elected seats:** constituency, district and province.
+- **Person pages** gain a "Family" section, with sources and a link to the tree, when the person has recorded ties.
+- **Drawing:** it uses the project's Cytoscape. Generations are computed from the ties (`generations()` in `src/lib/families.ts`), because dagre fails when two linked people must share a row. This was found in testing: a zero-length edge made the layout throw.
+- **The map view** is not built yet. §7.15 asks for it once the constituency-to-district mapping (§7.2) and boundaries are available. The page says so, and lists seats by district in the meantime.
+
+### Verified
+
+- **6 new unit tests,** using synthetic ties between arbitrary people (test-only, not claims about anyone): grouping, generations and spouse placement, wording from each side, sources on the page, the person-page section, escaping of notes, and the empty state.
+- **Chromium,** with a temporary synthetic ties file that was deleted afterwards: the tree renders with parents above children and spouses side by side, with no console errors.
+- **Browser suite:** 40 passed, now including `#/families`. All other gates pass.
+
+### Open
+
+- No family ties are recorded. Each needs an official source or two independent outlets, which needs network access.

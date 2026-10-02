@@ -19,6 +19,7 @@ const ROUTES: [string, string][] = [
   ["search", "#/search?q=minister"],
   ["facts and figures", "#/figures"],
   ["evidence list", "#/figures/posts-by-selection/elected"],
+  ["political families", "#/families"],
   ["about", "#/about"],
 ];
 
