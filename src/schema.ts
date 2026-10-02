@@ -12,7 +12,7 @@
  */
 import { z } from "zod";
 import { isSafeUrl, SAFE_URL_MESSAGE } from "./lib/safe-url.ts";
-import { ASSET_SOURCE_HOSTS, isAssetSource } from "./lib/policy.ts";
+import { ASSET_SOURCE_HOSTS, isAssetSource, isEcpSource } from "./lib/policy.ts";
 
 /** Every URL field: https only (see src/lib/safe-url.ts). Plain z.string().url() would accept javascript: and data: URLs. */
 export const SafeUrl = z.string().refine(isSafeUrl, { message: SAFE_URL_MESSAGE });
@@ -276,6 +276,11 @@ export const Person = z.object({
       source: Source.optional(),
     }),
   ),
+  /**
+   * A sourced statement that the person is not a member of any legislature (for example a cabinet
+   * notification listing them as a non-member Adviser). Used for the "Not directly elected" tag.
+   */
+  non_member: z.object({ as_of: z.string(), source: Source }).optional(),
   /** Career background: e.g. a retired Lieutenant-General now in a civilian post. */
   background: z
     .array(
@@ -372,6 +377,38 @@ export const Relative = z.object({
   notes: z.string().optional(),
 });
 
+/** An ECP result document. Only ECP publications are accepted (docs/EDITORIAL_POLICY.md § Elections). */
+const EcpSource = Source.refine((src) => isEcpSource(src.url), { message: "must be an ECP publication (ecp.gov.pk)" });
+const Tally = z.object({ name: z.string(), party: z.string().optional(), votes: z.number().int().nonnegative() });
+
+/**
+ * A seat checked for the Form 45 / Form 47 question. Form 45 is the result of the count at each
+ * polling station; Form 47 is the provisional consolidated result for the constituency. When the
+ * Form 45 totals give a different winner from Form 47, the declared winner is labelled
+ * "not legally elected", always with these figures and documents beside the label.
+ */
+export const ElectionCheck = z.object({
+  seat: z.string(),
+  election: z.string(),
+  /** The person declared the winner on Form 47. */
+  person: z.string(),
+  form47: z.object({ winner: Tally, source: EcpSource }),
+  form45: z.object({
+    /** Highest total in the Form 45s. */
+    leader: Tally,
+    /** The Form 47 winner's total in the same Form 45s. */
+    declared_winner: Tally,
+    polling_stations: z.number().int().positive().optional(),
+    of_polling_stations: z.number().int().positive().optional(),
+    sources: z.array(EcpSource).min(1),
+  }),
+  /** Party or observer compilations used to find the seat. They are never the evidence. */
+  found_via: z.array(Source).optional(),
+  status: z.enum(["differs", "matches", "under_review"]),
+  checked: z.string(),
+  notes: z.string().optional(),
+});
+
 export const Law = z.object({
   id: z.string().regex(/^[a-z0-9-]+$/),
   title: z.string(),
@@ -455,6 +492,7 @@ export const DataFile = z.object({
   people: z.array(Person).optional(),
   relations: z.array(Relation).optional(),
   relatives: z.array(Relative).optional(),
+  election_checks: z.array(ElectionCheck).optional(),
   laws: z.array(Law).optional(),
   field_administration: z.array(FieldAdministration).optional(),
   legislature_seats: z.array(LegislatureSeats).optional(),
@@ -468,7 +506,7 @@ export const DataFile = z.object({
         finding: z.string().optional(),
         origin: z.string().optional(), // where the claim came from (e.g. the uploaded spreadsheet)
         /** Set when the entry is about content the policy may hide (src/lib/policy.ts); hidden content's checks are hidden with it. */
-        topic: z.enum(["legal_cases", "declared_assets", "relatives"]).optional(),
+        topic: z.enum(["legal_cases", "declared_assets", "relatives", "election_checks"]).optional(),
         checked: z.string(),
         sources: z.array(Source),
       }),
@@ -499,6 +537,7 @@ export type Position = z.infer<typeof Position>;
 export type Person = z.infer<typeof Person>;
 export type Relation = z.infer<typeof Relation>;
 export type Relative = z.infer<typeof Relative>;
+export type ElectionCheck = z.infer<typeof ElectionCheck>;
 export type RelationType = z.infer<typeof RelationType>;
 export type Law = z.infer<typeof Law>;
 export type Jurisdiction = z.infer<typeof Jurisdiction>;
@@ -532,6 +571,8 @@ export interface Graph {
   pm_terms: { person: string; since: string; until?: string; status: string }[];
   /** Family ties between officeholders (published only within the rules of docs/EDITORIAL_POLICY.md). */
   relatives: (Relative & { _file: string })[];
+  /** Seats checked against the ECP's Form 45 and Form 47 (docs/EDITORIAL_POLICY.md § Elections). */
+  election_checks: (ElectionCheck & { _file: string })[];
   /** All edges: authored relations plus those derived from parents, appointments and roles. */
   edges: (Relation & { derived: boolean })[];
 }

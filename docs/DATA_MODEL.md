@@ -138,6 +138,31 @@ The UI shows the government in office when the case was filed: `filed` is matche
 
 Minors and relatives without a public role are never recorded.
 
+## Form 45 / Form 47 checks (`data/elections/*.yaml`)
+
+`election_checks[{seat, election, person, form47, form45, found_via, status, checked, notes}]` records a seat checked against the ECP's own result documents. Form 45 is the result of the count at each polling station; Form 47 is the provisional consolidated result for the constituency.
+
+| Field | Meaning |
+|---|---|
+| `seat` | A directly elected seat (`seat-na-…`, `seat-pp-…`, …) |
+| `election` | Polling date, e.g. `2024-02-08` |
+| `person` | The person Form 47 declared the winner; they must hold or have held the seat |
+| `form47` | `{winner: {name, party, votes}, source}`; the source must be an ECP publication |
+| `form45` | `{leader, declared_winner, polling_stations, of_polling_stations, sources}`: the highest Form 45 total, the declared winner's Form 45 total, how many polling stations' Form 45s were counted, and the ECP documents |
+| `found_via` | Party or observer compilations that led to the seat. They are never the evidence |
+| `status` | `differs`, `matches` or `under_review` |
+
+The build enforces the rules of the editorial policy: ECP sources only; `differs` only when the Form 45 leader is someone else with more votes, counted from the Form 45s of **every** polling station; `matches` only when the figures agree. A person with a `differs` check on a seat they still hold is labelled "not legally elected" on their page and on the seat's page, always beside the figures and links to the documents. Whether labels are published is `PUBLISH.form45Labels` in `src/lib/policy.ts`.
+
+## How chosen: "Not directly elected"
+
+Derived, not authored (`src/lib/elections.ts`). A person is tagged when either:
+
+- they hold a seat voters don't fill directly: a Senate seat, or a reserved, technocrat or non-Muslim seat. Nobody can sit in two houses at once (Art. 223), so they hold no directly elected seat; or
+- `non_member: {as_of, source}` on their record cites a source saying they are not a member of any legislature, and they hold a political office (minister, adviser, special assistant).
+
+A minister whose seat is simply not recorded is **not** tagged. The person's page lists each office with how it was filled.
+
 ## Chamber composition
 
 `organization.composition{as_of, total, parties[{party, seats, side: treasury|opposition|other}], sources}` drives the seating charts. `party` is a party id, or `independent` / `other`. The build warns if seats do not sum to `total`.

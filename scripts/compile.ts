@@ -25,6 +25,7 @@ import {
   Relation,
   type Graph,
   type Relative,
+  type ElectionCheck,
   type LegalRef,
   type Origin,
   type RelationType,
@@ -79,6 +80,7 @@ export function compile(dataDir: string): CompileResult {
   const laws: WithFile<Law>[] = [];
   const relations: (Relation & { _file: string })[] = [];
   const relatives: WithFile<Relative>[] = [];
+  const electionChecks: WithFile<ElectionCheck>[] = [];
   const fieldAdmin: { block: NonNullable<DataFile["field_administration"]>[number]; file: string }[] = [];
   const seatBlocks: { block: NonNullable<DataFile["legislature_seats"]>[number]; file: string }[] = [];
   const annotations: { a: NonNullable<DataFile["annotations"]>[number]; file: string }[] = [];
@@ -120,6 +122,7 @@ export function compile(dataDir: string): CompileResult {
     d.laws?.forEach((x) => laws.push({ ...x, _file: file }));
     d.relations?.forEach((x) => relations.push({ ...x, _file: file }));
     d.relatives?.forEach((x) => relatives.push({ ...x, _file: file }));
+    d.election_checks?.forEach((x) => electionChecks.push({ ...x, _file: file }));
     d.field_administration?.forEach((block) => fieldAdmin.push({ block, file }));
     d.legislature_seats?.forEach((block) => seatBlocks.push({ block, file }));
     d.annotations?.forEach((a) => annotations.push({ a, file }));
@@ -516,6 +519,33 @@ export function compile(dataDir: string): CompileResult {
     }
   }
 
+  // Form 45 / Form 47 checks (docs/EDITORIAL_POLICY.md § Elections). The figures must support the status.
+  {
+    const posById = new Map(positions.map((p) => [p.id, p]));
+    const byId = new Map(people.map((p) => [p.id, p]));
+    const seen = new Set<string>();
+    for (const c of electionChecks) {
+      const ctx = `${c._file} election check ${c.seat} (${c.election})`;
+      const seat = posById.get(c.seat);
+      if (!seat) errors.push(`${ctx}: unknown seat`);
+      else if (seat.appointment?.method !== "direct_election") errors.push(`${ctx}: only directly elected seats have Form 45 results`);
+      const person = byId.get(c.person);
+      if (!person) errors.push(`${ctx}: unknown person "${c.person}"`);
+      else if (!person.roles.some((r) => r.position === c.seat)) errors.push(`${ctx}: "${c.person}" has no role in ${c.seat}`);
+      if (seen.has(`${c.seat}|${c.election}`)) errors.push(`${ctx}: checked twice`);
+      seen.add(`${c.seat}|${c.election}`);
+      const f45 = c.form45;
+      if (f45.declared_winner.name !== c.form47.winner.name) errors.push(`${ctx}: form45.declared_winner must be the Form 47 winner (${c.form47.winner.name})`);
+      const differs = f45.leader.name !== f45.declared_winner.name && f45.leader.votes > f45.declared_winner.votes;
+      if (c.status === "differs" && !differs) errors.push(`${ctx}: status "differs" needs a Form 45 leader other than the declared winner, with more votes`);
+      if (c.status === "matches" && differs) errors.push(`${ctx}: the Form 45 figures give a different winner, so status can't be "matches"`);
+      if (f45.polling_stations && f45.of_polling_stations && f45.polling_stations > f45.of_polling_stations) errors.push(`${ctx}: more polling stations counted than exist`);
+      // a label rests on every polling station's Form 45, not a partial set
+      if (c.status === "differs" && !(f45.polling_stations && f45.polling_stations === f45.of_polling_stations))
+        errors.push(`${ctx}: status "differs" needs the Form 45s of every polling station (polling_stations equal to of_polling_stations)`);
+    }
+  }
+
   // Two people currently holding the same single-seat post is almost always a stale record.
   const currentHolders = new Map<string, string[]>();
   for (const person of people)
@@ -676,6 +706,7 @@ export function compile(dataDir: string): CompileResult {
     laws,
     verification,
     relatives,
+    election_checks: electionChecks,
     pm_terms: people
       .flatMap((p) => p.roles.filter((r) => r.position === "fed-prime-minister" && r.since).map((r) => ({ person: p.id, since: r.since!, until: r.until, status: r.status })))
       .sort((a, b) => a.since.localeCompare(b.since)),
