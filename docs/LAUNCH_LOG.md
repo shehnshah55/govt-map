@@ -382,3 +382,48 @@ Branch `launch/form45-labels`, stacked on `launch/phase-2-policy` (PR #8). Task 
 
 - Fetch the ECP's Form 45 and Form 47 PDFs for the seats of directly elected officeholders in the data, starting with about 25 current ones, and record the checks.
 - Add `non_member` records for ministers, advisers and special assistants from Cabinet Division notifications.
+
+---
+
+## 2026-10-02 · Browser and accessibility tests (§9.3)
+
+Branch `launch/browser-tests`, stacked on `launch/form45-labels` (PR #9). Task E in SS's order.
+
+### What changed
+
+- **`npm run test:e2e`** (Playwright, `e2e/smoke.spec.ts`) covers 17 routes at 1280 px and 375 px:
+  - home, an org page (Ministry of Health), a person, a place and a law;
+  - Directory, Officials, Parliament, Appointments, Tree, Map, Verification, Accountability and Search;
+  - Facts and figures, an evidence list and About.
+
+  Each route must have no console errors, no failed or 4xx/5xx requests, no sideways scrolling, and no **serious or critical** axe-core violations. Two interaction tests are added: the starter map by mouse and keyboard, and search with keyboard selection.
+- Find my representative, the Ordinance tracker, Turnover and the Changelog are in §9.3 but don't exist yet. They will be added when those pages are built.
+- **No browser is downloaded.** Locally the tests use the Chromium already on the machine (`CHROME_PATH`). In CI they use the runner's system Chrome.
+- **New dev dependencies,** pinned so the local browser matches: `@playwright/test` and `playwright-core` 1.56.1, and `@axe-core/playwright` 4.13.0. `npm audit` reports 0 vulnerabilities.
+- **CI:** a new `browser` job. Its report and screenshots are uploaded as an artifact, using `actions/upload-artifact` pinned at v4.6.2.
+- vitest is now limited to `tests/`.
+
+### Accessibility and layout fixes the tests found (all pre-existing)
+
+- **Colour contrast below 4.5:1 in light mode:** status chips, confidence chips, flags and "Appointed by" text. Five light-mode tokens are darkened slightly, keeping their hue:
+
+  | Token | Before | After |
+  |---|---|---|
+  | `--power` | `#b86d17` | `#995a13` |
+  | `--warn` | `#a8690c` | `#945c0b` |
+  | `--ok` | `#2e7d4f` | `#2c774b` |
+  | `--unknown` | `#7d8a82` | `#616c65` |
+  | `--k-gold` | `#8a6d0b` | `#80650a` |
+
+  Each now reaches at least 4.6:1 on every surface it's used on. Dark mode already passed.
+- **Nested interactive elements:**
+  - The seating chart SVG had `role="img"` but contains links; it is now `role="group"`.
+  - The tree page had links inside `<summary>`, which is itself the toggle. The page link is now the first item inside each expanded body.
+- **Invalid ARIA:** the figures filter links used `aria-pressed`. They now use `aria-current="page"`.
+- **Sideways scrolling at 375 px** on the law and appointments pages, caused by long law-name tags that couldn't wrap. A tag still moves to the next line as one box; only a tag wider than the column wraps inside.
+
+### Verified
+
+- `npm run test:e2e`: 38 passed (17 routes × 2 widths, plus 2 interaction tests × 2).
+- A separate axe sweep of 13 pages in light and dark mode found nothing serious or critical.
+- All other gates pass.

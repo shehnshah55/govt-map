@@ -88,8 +88,9 @@ export function treeView(ctx: Ctx): View {
     const posts = (ix.postsByOrg.get(o.id) ?? []).filter((p) => !p.area && !p.seat_type && p.role !== "judge" && p.role !== "member");
     const kids = (ix.children.get(o.id) ?? []).filter((c) => !c.abolished);
     if (!posts.length && !kids.length) return html`<div class="leaf">${originTag(o._origin)}<a href="#/org/${o.id}">${o.name}</a></div>`;
-    return html`<details ${depth === 0 ? raw("open") : ""}><summary>${originTag(o._origin)}<a href="#/org/${o.id}">${o.name}</a><span class="hint num">${kids.length ? `${kids.length} bodies` : ""}${posts.length ? ` · ${posts.length} posts` : ""}</span></summary>
-      ${posts.map(postLeaf)}${kids.map((k) => node(k, depth + 1))}</details>`;
+    // links can't sit inside <summary> (it is itself the toggle), so the page link opens the contents
+    return html`<details ${depth === 0 ? raw("open") : ""}><summary>${originTag(o._origin)}<span class="name">${o.name}</span><span class="hint num">${kids.length ? `${kids.length} bodies` : ""}${posts.length ? ` · ${posts.length} posts` : ""}</span></summary>
+      <div class="leaf"><a class="open-link" href="#/org/${o.id}">Open ${o.short_name ?? o.name} →</a></div>${posts.map(postLeaf)}${kids.map((k) => node(k, depth + 1))}</details>`;
   };
   const rootsFor = (tier: string) =>
     ix.g.organizations.filter(

@@ -29,3 +29,32 @@ jobs:
         run: npm run check:build
       - name: Coverage report is up to date
         run: npm run audit:coverage -- --check
+  browser:
+    # Browser smoke tests (docs/LAUNCH_PLAN.md §9.3): every page type at 1280 and 375 px, with no
+    # console errors, failed requests or sideways scrolling, and no serious or critical axe findings.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+      - run: npm run build
+      - name: Use the runner's Chrome (no browser download)
+        run: echo "CHROME_PATH=$(command -v google-chrome || command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
+      - run: test -x "$CHROME_PATH" && "$CHROME_PATH" --version
+      - run: npm run test:e2e
+      - name: Keep the report and screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: browser-tests
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14

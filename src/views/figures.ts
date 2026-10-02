@@ -4,7 +4,7 @@
  */
 import { barFigure, evidence, FIGURE_IDS, isGov, pmTimeline, readiness, type Gov } from "../lib/analytics.ts";
 import { barChart, readinessCard, termTimeline } from "../ui/charts.ts";
-import { html } from "../ui/dom.ts";
+import { html, raw } from "../ui/dom.ts";
 import { hrefFor, kindLabel, link, selectionTag, type Ctx, type View } from "./common.ts";
 import { TIERS, TIER_LABEL } from "./tiers.ts";
 
@@ -36,7 +36,7 @@ export function figuresView(ctx: Ctx, params: URLSearchParams): View {
         <nav class="filters" aria-label="Choose a government for the charts below">
           <span class="hint">Show:</span>
           ${["all", ...TIERS].map(
-            (t) => html`<a class="chip-btn" href="#/figures${q(t)}" aria-current="${t === gov ? "true" : "false"}" aria-pressed="${String(t === gov)}">${t === "all" ? "All governments" : TIER_LABEL[t]}</a>`,
+            (t) => html`<a class="chip-btn" href="#/figures${q(t)}" ${t === gov ? raw('aria-current="page"') : ""}>${t === "all" ? "All governments" : TIER_LABEL[t]}</a>`,
           )}
         </nav>
         <div class="charts">${filterable.map(chart)}</div>

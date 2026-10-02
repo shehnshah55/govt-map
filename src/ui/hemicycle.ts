@@ -128,7 +128,7 @@ export function hemicycle(ix: GraphIndex, chamberId: string): Raw {
   });
   const presiding = presidingId ? occupants.get(presidingId) : undefined;
   const totals = (s: "treasury" | "opposition" | "other") => comp.parties.filter((p) => p.side === s).reduce((n, p) => n + p.seats, 0);
-  const svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Seating chart of the ${esc(o.name)}">
+  const svg = `<svg viewBox="0 0 ${W} ${H}" role="group" aria-label="Seating chart of the ${esc(o.name)}. Each seat links to its member or party.">
     <text x="60" y="${cy + 30}" font-size="15" fill="var(--muted)" font-family="IBM Plex Sans, sans-serif">◀ Opposition · ${totals("opposition")}</text>
     <text x="${W - 60}" y="${cy + 30}" font-size="15" fill="var(--muted)" text-anchor="end" font-family="IBM Plex Sans, sans-serif">Treasury benches · ${totals("treasury")} ▶</text>
     ${circles.join("")}${namedSvg.join("")}
