@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 import { compile } from "../scripts/compile.ts";
 import { toCsvExports, toPopolo } from "../scripts/exports.ts";
-import { isAssetSource, LICENCE, PUBLISH, publicGraph } from "../src/lib/policy.ts";
+import { isAssetSource, isEncyclopediaUrl, LICENCE, PUBLISH, publicGraph } from "../src/lib/policy.ts";
 import { Person } from "../src/schema.ts";
 
 const DATA = new URL("../data", import.meta.url).pathname;
@@ -43,6 +43,23 @@ describe("what the public build contains", () => {
   it("leaves the full graph untouched for validation and the coverage audit", () => {
     expect(full.meta.licence).toBeUndefined();
     expect(full.people.filter((p) => p.legal_cases?.length).length).toBeGreaterThan(0);
+  });
+
+  it("strips Wikipedia and Britannica citations from the published graph (§0.2.2)", () => {
+    expect(isEncyclopediaUrl("https://en.wikipedia.org/wiki/Pakistan")).toBe(true);
+    expect(isEncyclopediaUrl("https://www.britannica.com/place/Pakistan")).toBe(true);
+    expect(isEncyclopediaUrl("https://www.dawn.com/news/1")).toBe(false);
+
+    // Source YAML still has encyclopedia citations (Phase 0 baseline); the publish path must not.
+    const authoredWiki = full.people.some((p) => p.roles.some((r) => isEncyclopediaUrl(r.source?.url)))
+      || full.verification.some((v) => v.sources?.some((s) => isEncyclopediaUrl(s.url)));
+    expect(authoredWiki).toBe(true);
+
+    const publishedText = JSON.stringify(published);
+    expect(publishedText).not.toMatch(/wikipedia\.org/i);
+    expect(publishedText).not.toMatch(/britannica\.com/i);
+    expect(published.people.some((p) => p.roles.some((r) => isEncyclopediaUrl(r.source?.url)))).toBe(false);
+    expect(published.verification.some((v) => v.sources?.some((s) => isEncyclopediaUrl(s.url)))).toBe(false);
   });
 });
 
