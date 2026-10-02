@@ -104,7 +104,7 @@ A YAML file may declare `defaults.organizations` / `defaults.positions`, which a
 ## People: holdovers, extensions, backgrounds, assets
 
 Role fields: `status` (confirmed, acting, additional_charge, caretaker, interim, holding_over), `term_ended`, `term_number`, `ends`, `extensions[{granted, to, by, law, notes}]`.
-Person fields: `background[{service, rank, retired, notes}]`, used to flag retired or serving officers, judges and bureaucrats in other posts. `declared_assets[{amount_pkr, liabilities_pkr, as_of, basis, source, notes}]` records assets declared to the ECP, not audited net worth; a published source is required.
+Person fields: `background[{service, rank, retired, notes}]`, used to flag retired or serving officers, judges and bureaucrats in other posts. `declared_assets[{amount_pkr, liabilities_pkr, as_of, basis, source, notes}]` records assets declared to the ECP, not audited net worth. The source must be an ECP publication: validation rejects any other host (`ASSET_SOURCE_HOSTS` in `src/lib/policy.ts`), and so does the CSV importer in `data/assets/`.
 
 ### Legal cases (`legal_cases`)
 
@@ -127,7 +127,16 @@ Criminal and accountability proceedings against a person, recorded only from rep
 
 The UI shows the government in office when the case was filed: `filed` is matched against the Prime Minister's terms (`pm_terms`, derived from `fed-prime-minister` roles). The current status is shown alongside the charge, so acquittals, quashed and withdrawn cases are as visible as the original charge.
 
-What may be recorded, and whether the field is published at launch, is set by the editorial policy (`docs/LAUNCH_PLAN.md` §1.4 and §4.2, still to be decided). Until then, only proceedings with a reported court outcome and a cited source are included.
+**Not published.** Following SS's §1.4 decision, `legal_cases` is removed from the built `graph.json` and from every export by `publicGraph()` in `src/lib/policy.ts` (`PUBLISH.legalCases = false`), until a lawyer has reviewed it. The build fails if any case would be published while the flag is off. The records stay in `data/` for review. Under the editorial policy (`docs/EDITORIAL_POLICY.md`), only proceedings evidenced by a court order, judgment or a court's own website may be published; the current entries cite press reports and must be re-sourced first.
+
+## Family ties (`relatives`)
+
+`relatives[{from, to, relation, sources, notes}]` records a family tie between two people, once per pair. `relation` is `parent`, `spouse`, `sibling`, `grandparent`, `uncle_or_aunt`, `cousin` or `in_law`, read as "`from` is the `relation` of `to`". The build enforces the editorial policy:
+
+- both people must exist and hold or have held at least one public or party office (a role);
+- `sources` must include an official (`.gov.pk`) source, or sources from at least two different outlets.
+
+Minors and relatives without a public role are never recorded.
 
 ## Chamber composition
 
@@ -135,4 +144,4 @@ What may be recorded, and whether the field is published at launch, is set by th
 
 ## Verification log (`data/verification.yaml`)
 
-Each entry records `{claim, records[], status: verified|corrected|conflict|unverified, finding, origin, checked, sources[]}`. It is shown in the app's Verification page. Claims from outside datasets, such as the uploaded spreadsheet, carry `origin`.
+Each entry records `{claim, records[], status: verified|corrected|conflict|unverified, finding, origin, topic, checked, sources[]}`. `topic` (`legal_cases`, `declared_assets` or `relatives`) marks entries about content the policy can hide; an entry whose topic is hidden is left out of the public build too. It is shown in the app's Verification page. Claims from outside datasets, such as the uploaded spreadsheet, carry `origin`.

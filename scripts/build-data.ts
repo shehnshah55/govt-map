@@ -7,11 +7,15 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { compile } from "./compile.ts";
 import { toCsvExports, toPopolo } from "./exports.ts";
+import { PUBLISH, publicGraph } from "../src/lib/policy.ts";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const checkOnly = process.argv.includes("--check");
 
-const { graph, errors, warnings } = compile(join(root, "data"));
+const { graph: full, errors, warnings } = compile(join(root, "data"));
+// the published graph: fields hidden by the editorial policy are removed before anything is written
+const graph = publicGraph(full);
+if (!PUBLISH.legalCases && graph.people.some((p) => p.legal_cases)) throw new Error("policy: legal cases must not be published");
 for (const w of warnings) console.warn(`warning: ${w}`);
 if (errors.length) {
   for (const e of errors) console.error(`error: ${e}`);

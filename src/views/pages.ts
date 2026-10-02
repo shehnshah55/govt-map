@@ -405,8 +405,10 @@ export function searchView(ctx: Ctx, q: string): View {
 export function aboutView(ctx: Ctx, single: boolean): View {
   const { ix } = ctx;
   const files = ["organizations.csv", "positions.csv", "tenures.csv", "jurisdictions.csv", "laws.csv", "edges.csv", "popolo.json"];
+  const asOf = ix.g.people.map((p) => p.as_of).sort();
+  const dateRange = [asOf[0] ?? "", asOf.at(-1) ?? ""];
   const body = html`
-    <header class="pagehead"><div class="eyebrow">About</div><h1>Method, model and sources</h1>
+    <header class="pagehead"><div class="eyebrow">About and methodology</div><h1>Method, sources and policy</h1>
       <p class="lede">An open, source-cited model of the Pakistani state, modelled on CivLab's US and San Francisco Government Graphs and on open machinery-of-government registers in other countries.</p></header>
     <div class="layout"><div class="prose">
       <h2>What is in the graph</h2>
@@ -421,6 +423,21 @@ export function aboutView(ctx: Ctx, single: boolean): View {
       <p>Some posts follow a fixed pattern. Every federal Division has a Federal Secretary, every Ministry has a Federal Minister, and every provincial department has a Minister and a Secretary. The build creates these posts automatically and marks them “Standard post”. A post written out explicitly in the data replaces the generated one.</p>
       <h2>Confidence</h2>
       <p>Records are <b>high</b> confidence when checked against the Constitution, a statute or an official website. <b>Verify</b> marks records from reliable public reporting, and <b>Provisional</b> marks records that still need checking. Officeholders change often, so each person record carries an as-of date.</p>
+      <h2>Sources</h2>
+      <p>Every fact cites a source. Official records come first: the Constitution and statutes, the Gazette, ECP results and notifications, government notifications, and the websites of the assemblies, courts and bodies themselves. Next comes state media reporting an official notification, then reputable newspapers for dates and context. Wikipedia and other encyclopedias are never cited. Who holds a post needs one official source or two independent press reports that agree.</p>
+      <h2>What is recorded, and what is not</h2>
+      <p>The project records public bodies, public offices and people in their public roles. It does not record private individuals, home addresses, personal phone numbers or emails, or photographs.</p>
+      <ul>
+        <li><b>Declared assets</b> come only from statements published by the Election Commission. They are declared values, not audited net worth.</li>
+        <li><b>Family ties</b> are recorded only between people who both hold or held a public or party office, and only when an official source or two independent outlets state them.</li>
+        <li><b>Legal cases</b> are not published at present. They are held back from the site and from every download until a legal review is complete.</li>
+      </ul>
+      <h2>Corrections</h2>
+      <p>Anyone, including the people named, can ask for a correction: <a href="${ctx.repo}/issues/new?template=correction.yml" target="_blank" rel="noopener noreferrer">open a correction request</a> with the page, what is wrong and a source. Requests are acknowledged within 7 days, and accepted corrections are logged publicly in the <a href="#/verification">verification log</a>. The full editorial policy is in the repository's docs/EDITORIAL_POLICY.md.</p>
+      <h2>Licence and how to cite</h2>
+      <p>The data is released under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">Creative Commons Attribution 4.0 (CC BY 4.0)</a>; the code is under the MIT licence. Please cite it as:</p>
+      <p class="mono" style="font-size:var(--s-sm)">Pakistan Government Graph (${ix.g.meta.data_as_of}). Data released under CC BY 4.0. ${ctx.repo}</p>
+      <p>Officeholder records were last checked between ${dateRange[0]} and ${dateRange[1]}; each record shows its own date.</p>
       <h2>Inspirations</h2>
       <ul>
         <li>CivLab's US Gov Graph and SF Gov Graph: entities, positions and people linked by legal relationships, with vacancy and acting tracking.</li>
@@ -441,7 +458,7 @@ export function aboutView(ctx: Ctx, single: boolean): View {
             ? html`<p class="hint">Downloads are available from the repository build (<span class="mono">npm run data</span> writes them to <span class="mono">public/data/export/</span>).</p>`
             : html`<ul class="plain">${files.map((f) => html`<li><a href="data/export/${f}">${f}</a></li>`)}<li><a href="data/graph.json">graph.json</a> (everything)</li></ul>`
         }
-        <p class="hint" style="margin-top:10px">Built ${ix.g.meta.generated.slice(0, 10)} · officeholders as of ${ix.g.meta.data_as_of}</p>
+        <p class="hint" style="margin-top:10px">Built ${ix.g.meta.generated.slice(0, 10)} · officeholders as of ${ix.g.meta.data_as_of} · data under CC BY 4.0</p>
       </div>
       <div class="panel"><h3>Contribute</h3><p class="hint">Every record lives in a YAML file in <a href="${ctx.repo}/tree/main/data" target="_blank" rel="noopener noreferrer">data/</a>. Each page links to its file. Add a source with every change. <span class="mono">npm run validate</span> checks every reference before merge.</p></div>
     </aside></div>`;

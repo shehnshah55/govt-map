@@ -75,4 +75,7 @@ Structural records cite primary law. **Officeholder records were compiled from p
 
 ## Licence
 
-MIT (code). Data is released for public use; please attribute "Pakistan Government Graph".
+- **Data:** everything in `data/` and the files built from it (`graph.json` and the exports) is released under [CC BY 4.0](LICENSE-DATA). Attribute it as "Pakistan Government Graph".
+- **Code:** [MIT](LICENSE).
+
+What the project records, how it sources facts, and how corrections work are set out in [docs/EDITORIAL_POLICY.md](docs/EDITORIAL_POLICY.md). To report an error, open a **Correction request** issue.
