@@ -4,17 +4,19 @@ The audit trail for taking the project public (`docs/LAUNCH_PLAN.md` §0.1.4). O
 
 ## §1 answers from SS
 
-Asked on 2026-09-26. Not yet answered.
+Asked on 2026-09-26. Locked on 2026-09-30.
 
 | # | Question | Answer |
 |---|---|---|
-| 1 | Publisher name | pending |
-| 2 | Corrections contact | pending |
-| 3 | Custom domain | pending |
-| 4 | Legal cases at launch | pending |
-| 5 | Declared assets at launch | pending |
-| 6 | Family ties (`relative_of`) | pending |
-| 7 | Urdu interface | pending |
+| 1 | Publisher name | **Pakistan Government Graph** (project name for attribution / CC BY) |
+| 2 | Corrections contact | **GitHub Issues** using the Correction-request template (§3.3), until a dedicated project email exists |
+| 3 | Custom domain | GitHub Pages default address for now |
+| 4 | Legal cases at launch | **(a) Hide** from the public build / exports until after Pakistani lawyer review (§4.4) |
+| 5 | Declared assets at launch | Keep, sourced to ECP publications only |
+| 6 | Family ties (`relative_of`) | Include, with a family **tree / map** view (§6 and §7.15) |
+| 7 | Urdu interface | Names in Urdu and English only; no full Urdu interface (skip §7.9) |
+
+Also recorded: landing-page analytics and infographics (§7.14).
 
 ---
 
@@ -81,6 +83,58 @@ Some figures differ from the review appendix because they are measured different
 
 ### Open
 
-- §1 answers from SS (needed before Phase 2).
+- ~~§1 answers from SS (needed before Phase 2)~~ — locked on 2026-09-30 (see the table above).
 - Replace the 4 Wikipedia and 2 Britannica citations with permitted sources (a data phase).
 - Add `accessed` dates to sources as records are touched (§0.2.4).
+
+---
+
+## 2026-09-30 · §1 answers locked
+
+Branch `launch/section-1-locked`, from `main` at `2ef5f66`.
+
+### What changed
+
+- Locked the three remaining §1 decisions (publisher, corrections contact, legal cases) per SS approval.
+- Confirmed the four answers already on `main`'s LAUNCH_PLAN §1 table (GitHub Pages domain; declared assets ECP-only; family ties include + tree/map; Urdu names only).
+- Created this `docs/LAUNCH_LOG.md` on mainline with the locked table (Phase 0's log still lives only on `launch/phase-0-baseline`). Canonical §1 record is this log (§1 of the plan says to record answers here).
+- `docs/LAUNCH_PLAN.md` §1 answers table on `main` still shows Pending for items 1, 2 and 4; sync that mirror table in a follow-up if desired.
+
+### Verified
+
+- Doc-only change; no code or data gates required.
+
+### Open
+
+- Optionally sync LAUNCH_PLAN §1 answers table (items 1, 2, 4) to match this log.
+- Create the dedicated project corrections email when ready, then update this table, About, and `SECURITY.md`.
+- Phase 2 policy can proceed with these answers (§4 hard stop cleared for §1).
+- Phase 0 baseline PR (#3) still open separately.
+- Branch `launch/section-1-answers` was abandoned after a bad partial write to LAUNCH_PLAN; prefer this branch / delete the abandoned one.
+
+---
+
+## 2026-10-02 · Decisions from SS, and log merge
+
+Branch `launch/phase-0-baseline` (PR #3). Merged `launch/section-1-locked` (PR #5) into it so both PRs can land without a conflict on this file. The two logs are combined here: the locked §1 table, then every entry in date order.
+
+### Decisions from SS (asked one at a time, 2026-10-02)
+
+| Topic | Decision |
+|---|---|
+| Form 45 / Form 47 | Strong label: an officeholder is shown as **"not legally elected"** where the Form 45 totals show a different winner from the Form 47 result. |
+| How the label is shown | Live from launch, **always with attribution**: the Form 45 source and the figures appear next to the label. Added to the lawyer review in §10 (with legal cases, declared assets and family ties). |
+| Form 45 source | **Both, cross-checked.** Party compilations are used to find seats; a seat is labelled only after the ECP's own Form 45 PDFs confirm the figures. |
+| Label scope | Directly elected officeholders already in the data first (about 25 people), then seat by seat as members are added. |
+| Never chosen by voters | A neutral **"Not directly elected"** tag on reserved-seat members, senators, and unelected ministers, advisers and special assistants, saying how they were chosen. |
+| Withheld asset statements | If the 2026 amendment to s.138 of the Elections Act is law: show a **"withheld"** notice (date and source) **together with the last published statement** and its year. To be verified once the network allows. |
+| Network | SS is switching the environment to a broader network access level. Not yet in effect on 2026-10-02 (ECP, press, CivLab, NA still blocked). |
+| PR order | Merge #5, then #3, then #4 (retargeted to `main`). |
+| Work order | CivLab-style layout (CivLab's page patterns, this project's own palette and identity), then Phase 1 security, then the Form 45/47 label, then declared assets. One PR each, with a stop for review after each. |
+
+Because the CivLab layout needs the live site, and the network is still blocked, Phase 1 (security, no network needed) starts first; the layout follows as soon as `graph.civlab.org` is reachable.
+
+### Open
+
+- Network access (blocks the CivLab layout, Form 45/47 data, declared assets and every data phase).
+- Lawyer review (§10) now also covers the "not legally elected" label.
