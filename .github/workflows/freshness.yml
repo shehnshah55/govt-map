@@ -1,0 +1,60 @@
+# Weekly freshness check (docs/LAUNCH_PLAN.md §8). Lists officeholder records not re-checked for
+# 90 days, legal cases due for re-check, and broken source and law links, in one issue:
+# "Records needing re-verification". It never edits data.
+name: Freshness
+on:
+  schedule:
+    - cron: "17 3 * * 1" # Mondays 03:17 UTC
+  release:
+    types: [published]
+  workflow_dispatch:
+# Nothing at workflow level; the job asks for only what it needs.
+permissions: {}
+concurrency:
+  group: freshness
+  cancel-in-progress: false
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # check out the data
+      issues: write # open or update the one report issue
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+      - name: List every source and law URL in the published data
+        run: npx tsx scripts/staleness.ts urls --out link-check/urls.md
+      - name: Check links (reported, never fixed automatically)
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          args: --no-progress --max-retries 2 --timeout 30 --max-concurrency 8 --accept "200..=299,429" link-check/urls.md
+          format: json
+          output: link-check/lychee.json
+          fail: false
+          jobSummary: false
+      - name: Write the report
+        run: npx tsx scripts/staleness.ts report --links link-check/lychee.json --out link-check/report.md
+      - name: Open or update the issue
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        with:
+          script: |
+            const fs = require("fs");
+            const body = fs.readFileSync("link-check/report.md", "utf8");
+            const title = "Records needing re-verification";
+            const { data: open } = await github.rest.issues.listForRepo({ owner: context.repo.owner, repo: context.repo.repo, state: "open", per_page: 100 });
+            const existing = open.find((i) => i.title === title && !i.pull_request && i.body?.includes("<!-- staleness-report -->"));
+            if (existing) {
+              await github.rest.issues.update({ owner: context.repo.owner, repo: context.repo.repo, issue_number: existing.number, body });
+              core.info(`updated #${existing.number}`);
+            } else {
+              const { data } = await github.rest.issues.create({ owner: context.repo.owner, repo: context.repo.repo, title, body });
+              core.info(`opened #${data.number}`);
+            }

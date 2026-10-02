@@ -427,3 +427,42 @@ Branch `launch/browser-tests`, stacked on `launch/form45-labels` (PR #9). Task E
 - `npm run test:e2e`: 38 passed (17 routes × 2 widths, plus 2 interaction tests × 2).
 - A separate axe sweep of 13 pages in light and dark mode found nothing serious or critical.
 - All other gates pass.
+
+---
+
+## 2026-10-02 · Phase 6: Keeping it fresh
+
+Branch `launch/phase-6-freshness`, stacked on `launch/browser-tests` (PR #10). Task C in SS's order.
+
+### What changed
+
+- **`.github/workflows/freshness.yml`:** runs every Monday at 03:17 UTC, on each published release and on demand.
+  1. It lists every source and law URL in the published data.
+  2. It checks them with lychee, pinned to `lycheeverse/lychee-action` v2.9.0 (lychee 0.24.2).
+  3. It writes a report and opens or updates **one** issue, "Records needing re-verification".
+
+  It never edits data. Permissions are `contents: read` and `issues: write`, granted to this job only. All actions are pinned to SHAs.
+- **`scripts/staleness.ts`** builds the report:
+  - officeholders whose record is more than 90 days old, oldest first;
+  - legal cases due for re-check;
+  - broken links, each with the records that cite it.
+
+  It is built from `publicGraph()`, so while legal cases are unpublished the public issue gives only their count, and their sources are not checked or listed.
+
+  Two safeguards:
+  - If most links fail in the same run, the report treats it as a network problem on the runner and doesn't list hundreds of false "broken" links.
+  - Government sites that block automated checks are a known risk, so the report asks for every broken link to be confirmed by hand.
+- **`docs/MONITORING.md`:** a design only, for agents that watch Cabinet Division, Establishment Division, provincial S&GAD, ECP, assembly, court and Gazette publications.
+  - Agents propose; people decide. An agent may only open a pull request with a cited diff, and nothing is merged automatically.
+  - Agents never touch legal cases, assets, family ties or Form 45 checks.
+  - Each source starts in report-only mode.
+
+### Verified
+
+- **Run locally against today's data:** 208 URLs. The report lists 55 officeholder records more than 90 days old, and 4 legal cases due (count only). No case title or case-only source appears in the URL list or the report.
+- **lychee 0.24.2 was run locally** (release binary) to capture its real JSON shape, which is now a test fixture. Its "cited by" lookup handles the trailing slash lychee adds to bare domains.
+- **6 new tests:** stale-record selection, hidden cases, the lychee 0.24 shape and the older one, outage handling, and table escaping. All gates pass.
+
+### Open
+
+- The workflow will first run on GitHub after merge. Its first report will show how many government sites block automated checks from GitHub's network.

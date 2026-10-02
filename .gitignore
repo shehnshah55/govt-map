@@ -6,3 +6,5 @@ public/data/
 .DS_Store
 test-results/
 playwright-report/
+link-check/
+staleness-report.md
