@@ -84,6 +84,20 @@ Ask all of these in a single message and record the answers in `docs/LAUNCH_LOG.
 6. **Family ties (`relative_of`)**: include at launch under the policy in §3.3, or defer?
 7. **Urdu interface**: Urdu names only (current), or a full Urdu interface toggle (larger job, §7.9)?
 
+### §1 answers from SS (26 September 2026)
+
+| # | Question | Answer |
+|---|---|---|
+| 1 | Publisher name | **Pending**: ask SS |
+| 2 | Corrections contact | **Pending**: ask SS |
+| 3 | Web address | GitHub Pages default address for now |
+| 4 | Legal cases at launch | **Pending**: ask SS. Until answered, treat as (a): hidden from the public build |
+| 5 | Declared assets | Keep, sourced to ECP publications only |
+| 6 | Family ties | Include, with a family **tree / map** view (§6 and §7.15) |
+| 7 | Urdu | Names in Urdu and English only; no full Urdu interface (skip §7.9) |
+
+SS also asked for **analytics and infographics on the landing page** (see §7.14).
+
 ---
 
 ## §2 Phase 0: Baseline, honest numbers
@@ -163,7 +177,7 @@ Write it to cover:
 
 ### 4.4 Human review (launch blocker)
 
-Add to §10: **A Pakistani lawyer reviews the editorial policy and the live `legal_cases`, `declared_assets` and `relative_of` content before the repo goes public**, with PECA 2016 (as amended in 2025) and defamation law in mind. Claude cannot sign this off.
+Add to §10: **A Pakistani lawyer reviews the editorial policy and the live `legal_cases`, `declared_assets` and `relative_of` content, and every "not legally elected" (Form 45/47) label, before the repo goes public**, with PECA 2016 (as amended in 2025) and defamation law in mind. Claude cannot sign this off.
 
 ---
 
@@ -263,6 +277,37 @@ Branch per feature (`launch/phase-5-urls`, `launch/phase-5-find-rep`, …). Ever
     - Automated `axe` checks in the Playwright suite (§8.3).
 13. **Performance.** Measure `graph.json` size once the data is filled (it will grow a lot). If it passes about 2 MB gzipped, split it: a core index plus per-government chunks loaded on demand. Target: Lighthouse performance ≥ 90 on mobile for the home page and an org page.
 
+14. **Landing-page analytics and infographics** (requested by SS). Branch: `launch/phase-5-analytics`.
+
+    The home page opens with a row of stat tiles and a few charts, each linking to a full, filterable page. Every number is computed at build time from the data. Nothing on these pages is typed in by hand.
+
+    **Career records** (per person, also shown on each person's page):
+    - times elected to each house (NA, Senate, each provincial assembly), for example "elected to the Senate 4 times"
+    - total years in elected office, and offices held (minister, CM, Speaker…)
+    - **party changes**: the number of documented changes of party, with dates and the parties involved. "Never changed party" is shown only when the full party history in the coverage window is sourced; otherwise show "party history incomplete".
+    - landing-page tiles: "most-elected legislators", "longest-serving", "most party changes", "never changed party", split by house and government
+
+    **Declared assets** (ECP only, per §4.2):
+    - list of members with their latest ECP-declared assets, liabilities and net assets (assets minus liabilities), with the fiscal year and a link to the ECP document
+    - **highest and lowest declared net assets**, per house and per party, comparing **only statements from the same fiscal year**
+    - asset change across years for the same person (from ECP statements only)
+    - the median declared net assets per house and per party
+
+    **Rules that make this defensible:**
+    1. **Coverage window on every figure.** State it on each tile and chart (for example "NA elections 2002–2024; Senate elections 2003–2024"). Don't claim a lifetime count unless the data covers the person's whole career. Collect historical results from ECP publications as far back as they are reliably available, and put the window in `docs/COVERAGE.md`.
+    2. **Neutral labels.** Say "highest declared net assets", not "richest"; say "party changes", not "turncoats". Add a caption on every asset chart: "Declared to the ECP, including spouse and dependants as the form requires; values are as declared, often at historical cost, and are not audited."
+    3. **Defining a party change.** Only a documented change of party membership counts. Joining a coalition doesn't. Cases where candidates were legally unable to contest under their own party's symbol (for example PTI-backed independents in 2024 who later joined the Sunni Ittehad Council) are counted and shown **separately**, with a note, not as ordinary switches.
+    4. **Rank only complete records.** A person is included in a ranking only if the data behind their figure is complete for the stated window. Show the count of people excluded ("based on 312 of 336 members with a 2024-25 statement").
+    5. **Every figure links to its evidence.** Clicking a tile or bar opens the list of records behind it, each with its ECP or Assembly source.
+    6. **Data for this.** It needs historical ECP election results (§3a extended back in time) and ECP annual asset statements, which are published as Gazette PDFs. Write ingestion scripts for both under `scripts/ingest/`, keep staging CSVs, and verify under §0.3, with 100% of the asset figures that appear in any "highest / lowest" list checked against the PDF.
+    7. **Charts.** Build them as static SVG at build time or with a small in-repo component. Don't add a charting CDN. Charts must be accessible: text labels, a data table alternative, sufficient contrast in both themes, and no meaning carried by colour alone.
+
+15. **Political families: tree and map view.**
+    - A "Political families" page listing each family group (connected `relative_of` records).
+    - A **family tree** per group, drawn with the existing Cytoscape + dagre setup: generations top to bottom, spouses side by side. Each person node shows current and past offices and party.
+    - A **map** of where each family's members hold or held seats (constituency → district), once the §7.2 constituency-to-district mapping exists.
+    - Every link shows its source on hover or tap. Only public officeholders and party office-bearers appear (§4.2). No minors, and no relatives without a public role.
+
 ---
 
 ## §8 Phase 6: Keeping it fresh
@@ -324,7 +369,7 @@ Write `docs/LAUNCH_READINESS.md`:
 
 - [ ] All phase PRs merged; CI green on `main`.
 - [ ] `docs/LAUNCH_READINESS.md` reviewed.
-- [ ] 👤 Lawyer has reviewed the editorial policy and the sensitive content (§4.4).
+- [ ] 👤 Lawyer has reviewed the editorial policy and the sensitive content, including the Form 45/47 "not legally elected" labels (§4.4).
 - [ ] 👤 Corrections email is live and monitored.
 - [ ] 👤 Branch protection on `main`: require PR review, require CI, no force-push.
 - [ ] 👤 Secret scanning and Dependabot alerts enabled (repo Settings → Code security).
