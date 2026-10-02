@@ -1,0 +1,25 @@
+name: New data
+description: Suggest a body, post, officeholder, law or other record that is missing.
+title: "New data: "
+labels: ["data"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What is missing
+      description: The body, post, person, law or relationship to add, and where it belongs (for example "Punjab Food Authority, under the Food Department").
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Sources
+      description: Official sources first (the Act or notification that creates the body, the official website, the Gazette). Wikipedia is not accepted as a source, but links it cites may be.
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else
+    validations:
+      required: false
