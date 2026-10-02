@@ -25,6 +25,33 @@ console.log(
 );
 if (checkOnly) process.exit(0);
 
+// Launch hygiene (§1.4 / §0.2.2): strip legal_cases and encyclopedia citations from the
+// published graph and exports only. Source YAML is unchanged so lawyer review can still
+// use the authored records; Wikipedia/Britannica must not ship as citations.
+const WIKI_HOST = /wikipedia\.org|britannica\.com/i;
+const dropBadSource = <T extends { url?: string }>(s: T | undefined) =>
+  s && s.url && WIKI_HOST.test(s.url) ? undefined : s;
+for (const person of graph.people) {
+  delete (person as { legal_cases?: unknown }).legal_cases;
+  for (const role of person.roles) {
+    const cleaned = dropBadSource(role.source);
+    if (cleaned !== role.source) {
+      if (cleaned) role.source = cleaned;
+      else delete role.source;
+    }
+  }
+  if (person.declared_assets) {
+    for (const a of person.declared_assets) {
+      const cleaned = dropBadSource(a.source);
+      if (cleaned) a.source = cleaned;
+    }
+  }
+}
+for (const v of graph.verification ?? []) {
+  if (!v.sources) continue;
+  v.sources = v.sources.filter((s) => !s.url || !WIKI_HOST.test(s.url));
+}
+
 const out = join(root, "public", "data");
 mkdirSync(join(out, "export"), { recursive: true });
 writeFileSync(join(out, "graph.json"), JSON.stringify(graph));
