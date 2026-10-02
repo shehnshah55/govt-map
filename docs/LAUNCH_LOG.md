@@ -20,6 +20,31 @@ Also recorded: landing-page analytics and infographics (§7.14).
 
 ---
 
+## 2026-10-02 · Hygiene + Pages docs + §1 mirror
+
+Branch `launch/hygiene-pages-section1`.
+
+### What changed
+
+- Added `docs/SECTION1_ANSWERS.md` mirroring the locked §1 table (for syncing `LAUNCH_PLAN.md` §1 on main, which still shows Pending for items 1/2/4).
+- Added `docs/PAGES.md` with exact Settings → Pages → Source **GitHub Actions** steps; expected URL https://shehnshah55.github.io/govt-map/.
+- Build hygiene in `scripts/build-data.ts`: published `graph.json` / exports omit `legal_cases` (§1.4) and drop Wikipedia/Britannica source URLs (§0.2.2). Authored YAML unchanged.
+- Deploy site on main after #5 merge: still **failure** (Not Found) until SS enables Pages.
+
+### Verified
+
+- Doc and build-data edits only; full `validate`/`test`/`build` should be run on the PR branch in CI.
+
+### Open
+
+- Apply `SECTION1_ANSWERS.md` into `LAUNCH_PLAN.md` §1 table on main (use mirror or `section1_plan.diff`).
+- User: enable Pages (Settings → Pages → Source: GitHub Actions); mark PR #3 ready for review (still draft + dirty vs main).
+- Strip wiki/Britannica from authored YAML when convenient (build already strips them from publish output).
+- Bulk `accessed` dates still unset (0 of ~172); only set when a source is actually fetched.
+- P1 About/corrections UX, P2 data fill, P3 a11y — follow-up; Phase 1 security is PR #6 (draft, stacked on #4).
+
+---
+
 ## 2026-09-30 · §1 answers locked
 
 Branch `launch/section-1-locked`, from `main` at `2ef5f66`.
