@@ -31,6 +31,7 @@ import {
   type Ctx,
   type View,
 } from "./common.ts";
+import { safeHref } from "../lib/safe-url.ts";
 
 const STRUCTURAL: RelationType[] = ["part_of", "established_by", "head_of", "seat_in"];
 
@@ -162,7 +163,7 @@ export function orgView(ctx: Ctx, id: string): View | undefined {
             ${o.parent ? html`<dt>Part of</dt><dd>${link(ix, o.parent)}</dd>` : ""}
             ${o.established ? html`<dt>Established</dt><dd class="num">${o.established}</dd>` : ""}
             ${o.abolished ? html`<dt>Abolished</dt><dd class="num">${o.abolished}</dd>` : ""}
-            ${o.website ? html`<dt>Website</dt><dd><a href="${o.website}" target="_blank" rel="noopener">${o.website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}</a></dd>` : ""}
+            ${o.website ? html`<dt>Website</dt><dd><a href="${safeHref(o.website)}" target="_blank" rel="noopener noreferrer">${o.website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}</a></dd>` : ""}
             ${o.employees ? html`<dt>Employees</dt><dd class="num">${o.employees.count.toLocaleString()} (${o.employees.as_of})</dd>` : ""}
             ${o.budget?.length ? html`<dt>Budget</dt><dd>${o.budget.map((b) => html`<div class="num">Rs ${(b.amount_pkr / 1e9).toFixed(1)}bn ${b.type}, FY${b.fiscal_year}</div>`)}</dd>` : ""}
             <dt>Sub-bodies</dt><dd class="num">${all.length}</dd>
@@ -423,7 +424,7 @@ export function personView(ctx: Ctx, id: string): View | undefined {
             ? html`<section><h2>Declared assets</h2>
               <div class="tablewrap"><table><thead><tr><th>Declared</th><th class="n">Assets (PKR)</th><th class="n">Liabilities</th><th class="n">Net worth</th><th>Basis</th><th>Source</th></tr></thead>
               <tbody>${person.declared_assets.map(
-                (a) => html`<tr><td class="num">${a.as_of}</td><td class="n">Rs ${formatPkr(a.amount_pkr)}</td><td class="n">${a.liabilities_pkr != null ? `Rs ${formatPkr(a.liabilities_pkr)}` : "—"}</td><td class="n">${a.liabilities_pkr != null ? `Rs ${formatPkr(a.amount_pkr - a.liabilities_pkr)}` : "—"}</td><td>${a.basis}${a.notes ? html`<div class="hint">${a.notes}</div>` : ""}</td><td><a href="${a.source.url}" target="_blank" rel="noopener">${a.source.title}</a></td></tr>`,
+                (a) => html`<tr><td class="num">${a.as_of}</td><td class="n">Rs ${formatPkr(a.amount_pkr)}</td><td class="n">${a.liabilities_pkr != null ? `Rs ${formatPkr(a.liabilities_pkr)}` : "—"}</td><td class="n">${a.liabilities_pkr != null ? `Rs ${formatPkr(a.amount_pkr - a.liabilities_pkr)}` : "—"}</td><td>${a.basis}${a.notes ? html`<div class="hint">${a.notes}</div>` : ""}</td><td><a href="${safeHref(a.source.url)}" target="_blank" rel="noopener noreferrer">${a.source.title}</a></td></tr>`,
               )}</tbody></table></div>
               <p class="hint" style="margin-top:8px">Assets as declared to the Election Commission in nomination papers or annual statements. These are self-declared values, often at historical cost, not audited net worth.</p></section>`
             : ""
@@ -435,7 +436,7 @@ export function personView(ctx: Ctx, id: string): View | undefined {
         }
         ${
           !person.declared_assets?.length && person.roles.some((r) => !r.until && ix.post.get(r.position)?._selection === "elected")
-            ? html`<section><h2>Declared assets</h2><p class="hint">As an elected member, this person files an annual statement of assets and liabilities with the Election Commission (Elections Act 2017, s. 137), published on <a href="https://www.ecp.gov.pk" target="_blank" rel="noopener">ecp.gov.pk</a>. It has not been imported yet; see data/assets/README.md.</p></section>`
+            ? html`<section><h2>Declared assets</h2><p class="hint">As an elected member, this person files an annual statement of assets and liabilities with the Election Commission (Elections Act 2017, s. 137), published on <a href="https://www.ecp.gov.pk" target="_blank" rel="noopener noreferrer">ecp.gov.pk</a>. It has not been imported yet; see data/assets/README.md.</p></section>`
             : ""
         }
         ${person.notes ? html`<section><h2>Notes</h2><p class="prose">${person.notes}</p></section>` : ""}
@@ -591,7 +592,7 @@ export function lawView(ctx: Ctx, id: string): View | undefined {
             <dt>Type</dt><dd>${law.kind}</dd>
             ${law.year ? html`<dt>Year</dt><dd class="num">${law.year}</dd>` : ""}
             <dt>Jurisdiction</dt><dd>${link(ix, law.jurisdiction)}</dd>
-            ${law.url ? html`<dt>Text</dt><dd><a href="${law.url}" target="_blank" rel="noopener">Official text</a></dd>` : html`<dt>Text</dt><dd><a href="https://pakistancode.gov.pk" target="_blank" rel="noopener">Search Pakistan Code</a></dd>`}
+            ${law.url ? html`<dt>Text</dt><dd><a href="${safeHref(law.url)}" target="_blank" rel="noopener noreferrer">Official text</a></dd>` : html`<dt>Text</dt><dd><a href="https://pakistancode.gov.pk" target="_blank" rel="noopener noreferrer">Search Pakistan Code</a></dd>`}
             <dt>File</dt><dd>${editLink(ctx, law._file)}</dd>
           </dl>
         </div>

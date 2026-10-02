@@ -7,6 +7,7 @@ import { casesTable, CASES_NOTE, confidenceChip, graphPanel, holdingFlags, hrefF
 import { formatPkr } from "./entities.ts";
 import { starterMap } from "./starter-map.ts";
 import { TIERS, TIER_GOVT, TIER_HEADS, TIER_LABEL } from "./tiers.ts";
+import { safeHref } from "../lib/safe-url.ts";
 
 
 function holderName(ctx: Ctx, postId: string) {
@@ -376,7 +377,7 @@ function assetsSection(ctx: Ctx) {
   return html`<section><h2>Declared assets <span class="count num">${rows.length}</span></h2>
     <p class="hint" style="margin-bottom:10px">Assets declared to the Election Commission in nomination papers or annual statements. These are self-declared, often at historical cost, and are not audited net worth. Only figures with a verifiable published source are shown.</p>
     <div class="tablewrap"><table><thead><tr><th>Person</th><th class="n">Declared assets</th><th>Declared</th><th>Basis</th><th>Source</th></tr></thead><tbody>${rows.map(
-      ({ p, a }) => html`<tr><td>${link(ix, p.id)}${p.party ? html`<div class="hint">${partyLink(ix, p.party)}</div>` : ""}</td><td class="n">Rs ${formatPkr(a.amount_pkr)}</td><td class="num">${a.as_of}</td><td>${a.basis}${a.notes ? html`<div class="hint">${a.notes}</div>` : ""}</td><td><a href="${a.source.url}" target="_blank" rel="noopener">${a.source.title}</a></td></tr>`,
+      ({ p, a }) => html`<tr><td>${link(ix, p.id)}${p.party ? html`<div class="hint">${partyLink(ix, p.party)}</div>` : ""}</td><td class="n">Rs ${formatPkr(a.amount_pkr)}</td><td class="num">${a.as_of}</td><td>${a.basis}${a.notes ? html`<div class="hint">${a.notes}</div>` : ""}</td><td><a href="${safeHref(a.source.url)}" target="_blank" rel="noopener noreferrer">${a.source.title}</a></td></tr>`,
     )}</tbody></table></div></section>`;
 }
 
@@ -444,7 +445,7 @@ export function aboutView(ctx: Ctx, single: boolean): View {
         }
         <p class="hint" style="margin-top:10px">Built ${ix.g.meta.generated.slice(0, 10)} · officeholders as of ${ix.g.meta.data_as_of}</p>
       </div>
-      <div class="panel"><h3>Contribute</h3><p class="hint">Every record lives in a YAML file in <a href="${ctx.repo}/tree/main/data" target="_blank" rel="noopener">data/</a>. Each page links to its file. Add a source with every change. <span class="mono">npm run validate</span> checks every reference before merge.</p></div>
+      <div class="panel"><h3>Contribute</h3><p class="hint">Every record lives in a YAML file in <a href="${ctx.repo}/tree/main/data" target="_blank" rel="noopener noreferrer">data/</a>. Each page links to its file. Add a source with every change. <span class="mono">npm run validate</span> checks every reference before merge.</p></div>
     </aside></div>`;
   return { title: "About", body };
 }

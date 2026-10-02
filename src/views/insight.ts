@@ -4,6 +4,7 @@ import type { Org, Post } from "../lib/graph-index.ts";
 import { esc, html, raw, type Raw } from "../ui/dom.ts";
 import { hemicycle } from "../ui/hemicycle.ts";
 import { appointmentSentence, holdingFlags, hrefFor, link, originTag, partyLink, postTags, roleOf, selectionTag, type Ctx, type View } from "./common.ts";
+import { safeHref } from "../lib/safe-url.ts";
 
 export function parliamentView(ctx: Ctx): View {
   const { ix } = ctx;
@@ -193,7 +194,7 @@ export function verificationView(ctx: Ctx): View {
           <div class="meta"><span class="tag ${cls[x.status]}">${x.status}</span>${x.origin ? html`<span class="hint">from ${x.origin}</span>` : ""}<span class="hint">checked ${x.checked}</span></div>
           ${x.finding ? html`<p style="margin-top:6px">${x.finding}</p>` : ""}
           ${x.records?.length ? html`<div class="hint" style="margin-top:6px">Records: ${x.records.map((r, i) => html`${i ? ", " : ""}${link(ix, r)}`)}</div>` : ""}</div>
-        <div><ul class="plain">${x.sources.map((s) => html`<li>${s.url ? html`<a href="${s.url}" target="_blank" rel="noopener">${s.title}</a>` : s.title}</li>`)}</ul></div>
+        <div><ul class="plain">${x.sources.map((s) => html`<li>${s.url ? html`<a href="${safeHref(s.url)}" target="_blank" rel="noopener noreferrer">${s.title}</a>` : s.title}</li>`)}</ul></div>
       </div>`,
     )}</div>`;
   return { title: "Verification", body };

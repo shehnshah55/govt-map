@@ -11,6 +11,12 @@
  * they infer are shared by the build script and the web app.
  */
 import { z } from "zod";
+import { isSafeUrl, SAFE_URL_MESSAGE } from "./lib/safe-url.ts";
+
+/** Every URL field: https only (see src/lib/safe-url.ts). Plain z.string().url() would accept javascript: and data: URLs. */
+export const SafeUrl = z.string().refine(isSafeUrl, { message: SAFE_URL_MESSAGE });
+/** Display colours go straight into SVG attributes and inline styles, so only #rrggbb is allowed. */
+export const HexColor = z.string().regex(/^#[0-9a-fA-F]{6}$/, "colour must be #rrggbb");
 
 export const Branch = z.enum([
   "executive",
@@ -101,7 +107,7 @@ export const Sector = z.enum([
 
 export const Source = z.object({
   title: z.string(),
-  url: z.string().url().optional(),
+  url: SafeUrl.optional(),
   accessed: z.string().optional(),
 });
 
@@ -161,7 +167,7 @@ export const Organization = z.object({
   /** Set for historical bodies that no longer exist (kept for lineage edges). */
   abolished: z.string().optional(),
   legal_basis: z.array(LegalRef).optional(),
-  website: z.string().url().optional(),
+  website: SafeUrl.optional(),
   employees: z
     .object({ count: z.number(), as_of: z.string(), source: Source })
     .optional(),
@@ -173,7 +179,7 @@ export const Organization = z.object({
   /** Headquarters city (for the geographic view). */
   hq: z.string().optional(),
   /** Display colour (used for political parties). */
-  color: z.string().optional(),
+  color: HexColor.optional(),
   /** Overrides the origin derived from the first legal_basis entry. */
   origin: Origin.optional(),
   history: z.array(HistoryEntry).optional(),
@@ -352,7 +358,7 @@ export const Law = z.object({
   creates: z.enum(["constitutional", "statutory", "executive"]).optional(),
   year: z.number().optional(),
   jurisdiction: z.string(),
-  url: z.string().url().optional(),
+  url: SafeUrl.optional(),
   summary: z.string().optional(),
   confidence: Confidence.default("high"),
 });
@@ -451,7 +457,7 @@ export const DataFile = z.object({
         tenure: Tenure.optional(),
         origin: Origin.optional(),
         hq: z.string().optional(),
-        color: z.string().optional(),
+        color: HexColor.optional(),
       }),
     )
     .optional(),

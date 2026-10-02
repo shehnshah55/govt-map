@@ -16,6 +16,7 @@ import {
 } from "../ui/labels.ts";
 import type { Holding, Human, Org } from "../lib/graph-index.ts";
 import { mountGraph, type LayoutName, type Lens, type VEdge, type VNode } from "../ui/graph-view.ts";
+import { safeHref } from "../lib/safe-url.ts";
 
 export interface View {
   title: string;
@@ -136,11 +137,11 @@ export function legalList(ix: GraphIndex, refs: LegalRef[] | undefined): Raw {
 
 export function sourcesList(sources: Source[] | undefined): Raw {
   if (!sources?.length) return html`<p class="hint">Structure from the cited legal instruments.</p>`;
-  return html`<ul class="plain">${sources.map((s) => html`<li>${s.url ? html`<a href="${s.url}" target="_blank" rel="noopener">${s.title}</a>` : s.title}</li>`)}</ul>`;
+  return html`<ul class="plain">${sources.map((s) => html`<li>${s.url ? html`<a href="${safeHref(s.url)}" target="_blank" rel="noopener noreferrer">${s.title}</a>` : s.title}</li>`)}</ul>`;
 }
 
 export function editLink(ctx: Ctx, file: string) {
-  return html`<a href="${ctx.repo}/blob/main/${file}" target="_blank" rel="noopener" class="mono">${file}</a>`;
+  return html`<a href="${ctx.repo}/blob/main/${file}" target="_blank" rel="noopener noreferrer" class="mono">${file}</a>`;
 }
 
 /** "Appointed by the President on the advice of the Prime Minister; nominated by …" */
@@ -365,7 +366,7 @@ export function casesTable(ix: GraphIndex, rows: { person: Human; c: NonNullable
       }</td>
       <td><span class="tag ${cls}">${label}</span>${c.verdict_date ? html`<div class="hint num">${c.verdict_date}</div>` : ""}${c.outcome ? html`<div class="hint">${c.outcome}</div>` : ""}</td>
       <td>${c.sentence ? html`<div>${c.sentence}</div>` : ""}${c.fine ? html`<div>Fine: ${c.fine}</div>` : ""}${c.custody ? html`<div class="hint">Custody: ${c.custody}</div>` : ""}</td>
-      <td>${c.sources.map((s, i) => html`${i ? html`<br />` : ""}<a href="${s.url}" target="_blank" rel="noopener">${s.title}</a>`)}</td>
+      <td>${c.sources.map((s, i) => html`${i ? html`<br />` : ""}<a href="${safeHref(s.url)}" target="_blank" rel="noopener noreferrer">${s.title}</a>`)}</td>
     </tr>`;
   })}</tbody></table></div>`;
 }
