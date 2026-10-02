@@ -7,6 +7,9 @@ import { casesTable, CASES_NOTE, confidenceChip, graphPanel, holdingFlags, hrefF
 import { formatPkr } from "./entities.ts";
 import { starterMap } from "./starter-map.ts";
 import { TIERS, TIER_GOVT, TIER_HEADS, TIER_LABEL } from "./tiers.ts";
+import { barFigure, headlineTiles } from "../lib/analytics.ts";
+import { barChart, statTiles } from "../ui/charts.ts";
+import { evidenceHref } from "./figures.ts";
 import { safeHref } from "../lib/safe-url.ts";
 
 
@@ -17,8 +20,6 @@ function holderName(ctx: Ctx, postId: string) {
 
 export function homeView(ctx: Ctx): View {
   const { ix } = ctx;
-  const c = ix.g.meta.counts;
-  const districts = ix.g.jurisdictions.filter((j) => j.kind === "district").length;
   const seatCount = ix.g.positions.filter((p) => p.area || p.seat_type).reduce((n, p) => n + (p.seats ?? 1), 0);
   const featured = ix.org.get("fed-pm-office")!;
   const pm = ix.effectiveHolders("fed-prime-minister")[0];
@@ -44,19 +45,11 @@ export function homeView(ctx: Ctx): View {
         <a class="btn ghost" href="#/explore">Explore the whole graph</a>
       </div>
     </section>
+    ${statTiles(headlineTiles(ix))}
     <section class="stack" style="margin-bottom:22px">
       <h2>Start here <span class="count">The Federation and its units. Select one to see what it is, who leads it and where to go next.</span></h2>
       ${starter.body}
     </section>
-    <div class="stats">
-      <div class="stat"><b>${c.organizations}</b><span>Government bodies</span></div>
-      <div class="stat"><b>${c.positions}</b><span>Posts</span></div>
-      <div class="stat"><b>${seatCount.toLocaleString()}</b><span>Elected seats</span></div>
-      <div class="stat"><b>${c.people}</b><span>Officeholders</span></div>
-      <div class="stat"><b>${districts}</b><span>Districts</span></div>
-      <div class="stat"><b>${c.laws}</b><span>Laws cited</span></div>
-      <div class="stat"><b>${c.edges.toLocaleString()}</b><span>Connections</span></div>
-    </div>
     <div class="stack">
       <section class="feature">
         <div style="display:grid;gap:10px">
@@ -72,6 +65,11 @@ export function homeView(ctx: Ctx): View {
             ${pmoBodies.map((o) => html`<li>${link(ix, o.id, ix.shortLabel(o.id))} <span class="hint">· ${kindLabel(o.kind)}</span></li>`)}
           </ul>
         </div>
+      </section>
+      <section>
+        <h2>Facts and figures <span class="count">Counted from the records, as of ${ix.g.meta.data_as_of}. Select a bar to see the records behind it.</span></h2>
+        <div class="charts">${["posts-by-selection", "appointers"].map((id) => barChart(barFigure(ix, id)!, (b) => evidenceHref(id, b.key), { compact: true }))}</div>
+        <p style="margin-top:12px"><a class="btn ghost" href="#/figures">All facts and figures</a></p>
       </section>
       <section>
         <h2>Governments <span class="count">Federation, four provinces, the capital and two territories</span></h2>

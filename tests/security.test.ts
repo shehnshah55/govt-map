@@ -10,6 +10,9 @@ import type { Ctx, View } from "../src/views/common.ts";
 import { lawView, orgView, personView, placeView, postView } from "../src/views/entities.ts";
 import { directoryView, electedView, officialsView } from "../src/views/directory.ts";
 import { appointmentsView, mapView, parliamentView, treeView, verificationView } from "../src/views/insight.ts";
+import { barFigure, FIGURE_IDS } from "../src/lib/analytics.ts";
+import { figureEvidenceView, figuresView } from "../src/views/figures.ts";
+import { TIERS } from "../src/views/tiers.ts";
 import { aboutView, accountabilityView, exploreView, homeView, lawsView, searchView, sectorView, sectorsView } from "../src/views/pages.ts";
 
 const DATA = new URL("../data", import.meta.url).pathname;
@@ -117,6 +120,8 @@ describe("escaping", () => {
     ["search", () => searchView(ctx, `minister${PAYLOAD}`)],
     ["directory", () => directoryView(ctx, undefined)],
     ["officials", () => officialsView(ctx, undefined)],
+    ...["all", ...TIERS].map((g) => [`figures ${g}`, () => figuresView(ctx, new URLSearchParams({ gov: g }))] as [string, () => View | undefined]),
+    ...FIGURE_IDS.flatMap((f) => barFigure(ix, f)!.bars.map((b) => [`figure ${f}/${b.key}`, () => figureEvidenceView(ctx, f, b.key, new URLSearchParams())] as [string, () => View | undefined])),
     ...[...new Set(hostile.organizations.flatMap((o) => o.sectors ?? []))].map((s) => [`sector ${s}`, () => sectorView(ctx, s as Sector)] as [string, () => View | undefined]),
     ...hostile.organizations.map((o) => [`org ${o.id}`, () => orgView(ctx, o.id)] as [string, () => View | undefined]),
     ...hostile.people.map((p) => [`person ${p.id}`, () => personView(ctx, p.id)] as [string, () => View | undefined]),
