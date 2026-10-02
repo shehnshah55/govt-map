@@ -140,7 +140,7 @@ export function hemicycle(ix: GraphIndex, chamberId: string): Raw {
     html`<li><i style="background:${color(p.party)}"></i>${p.party.startsWith("party-") ? html`<a href="#/org/${p.party}">${label(p.party)}</a>` : label(p.party)} <span class="hint num">${p.seats}</span></li>`;
   const officeHolders = named.filter((n) => n.occ.offices.length);
   return html`<div class="hemi-wrap">
-    ${raw(svg)}
+    ${raw(svg) /* safe: names and tooltips pass through esc(); hrefs are ids (schema: [a-z0-9-]) and escaped; fills are #rrggbb (schema) or CSS vars; the rest is numbers */}
     <div class="hemi-legend">
       <div><h4>Treasury benches · ${totals("treasury")}</h4><ul>${comp.parties.filter((p) => p.side === "treasury").map(legendRow)}</ul></div>
       <div><h4>Opposition · ${totals("opposition")}</h4><ul>${comp.parties.filter((p) => p.side === "opposition").map(legendRow)}</ul></div>

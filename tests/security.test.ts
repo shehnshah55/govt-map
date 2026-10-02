@@ -1,4 +1,6 @@
+import { createHash } from "node:crypto";
 import { describe, expect, it } from "vitest";
+import { checkPage } from "../scripts/check-build.ts";
 import { compile } from "../scripts/compile.ts";
 import { isSafeUrl, safeHref } from "../src/lib/safe-url.ts";
 import { GraphIndex } from "../src/lib/graph-index.ts";
@@ -134,5 +136,23 @@ describe("escaping", () => {
     }
     expect(failures).toEqual([]);
     expect(rendered).toBeGreaterThan(1000);
+  });
+});
+
+describe("build check", () => {
+  const policy = (script: string) => `<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src ${script}; object-src 'none'; base-uri 'self'" />`;
+  const body = "console.log(1)";
+  const hash = `'sha256-${createHash("sha256").update(body).digest("base64")}'`;
+
+  it("passes a hashed inline script and a same-origin script", () => {
+    expect(checkPage(`${policy(hash)}<script type="module">${body}</script>`)).toEqual([]);
+    expect(checkPage(`${policy("'self'")}<script type="module" crossorigin src="./assets/index.js"></script>`)).toEqual([]);
+  });
+
+  it("fails a missing policy, an unhashed or edited inline script, 'unsafe-inline' and third-party loads", () => {
+    expect(checkPage("<p>no policy</p>")).toEqual(["no Content-Security-Policy meta tag"]);
+    expect(checkPage(`${policy(hash)}<script>${body};alert(1)</script>`)).toHaveLength(1);
+    expect(checkPage(`${policy("'self' 'unsafe-inline'")}`)).toContain("script-src allows 'unsafe-inline'");
+    expect(checkPage(`${policy("'self'")}<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=X" />`)).toHaveLength(1);
   });
 });
