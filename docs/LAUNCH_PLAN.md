@@ -371,8 +371,9 @@ Write `docs/LAUNCH_READINESS.md`:
 - [ ] `docs/LAUNCH_READINESS.md` reviewed.
 - [ ] 👤 Lawyer has reviewed the editorial policy and the sensitive content, including the Form 45/47 "not legally elected" labels (§4.4).
 - [ ] 👤 Corrections email is live and monitored.
-- [ ] 👤 Branch protection on `main`: require PR review, require CI, no force-push.
+- [ ] 👤 Branch protection on `main`: require PR review (with **review from Code Owners**, so `.github/CODEOWNERS` applies), require CI, no force-push.
 - [ ] 👤 Secret scanning and Dependabot alerts enabled (repo Settings → Code security).
+- [ ] 👤 Private vulnerability reporting enabled (repo Settings → Code security), so the route in `SECURITY.md` works.
 - [ ] 👤 Repository visibility changed to **public** (Settings → General → Danger Zone).
 - [ ] 👤 GitHub Pages enabled (Settings → Pages → Source: GitHub Actions), and the custom domain with HTTPS enforced if chosen.
 - [ ] Post-launch smoke test on the live URL (Claude can run §9.3 against it).
