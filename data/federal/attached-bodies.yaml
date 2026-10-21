@@ -88,7 +88,7 @@ organizations:
   - { id: fed-pta, name: Pakistan Telecommunication Authority, short_name: PTA, kind: regulator, parent: fed-min-it, legal_basis: [{ law: telecom-act-1996 }], website: "https://www.pta.gov.pk", sectors: [it_telecom] }
   - { id: fed-usf, name: Universal Service Fund, short_name: USF, kind: autonomous_body, parent: fed-min-it, sectors: [it_telecom], needs_source: true, confidence: low }
   - { id: fed-nitb, name: National Information Technology Board, short_name: NITB, kind: autonomous_body, parent: fed-min-it, sectors: [it_telecom, governance] }
-  - { id: fed-pseb, name: Pakistan Software Export Board, short_name: PSEB, kind: autonomous_body, parent: fed-min-it, sectors: [it_telecom, commerce], needs_source: true, confidence: low }
+  - { id: fed-pseb, name: Pakistan Software Export Board, short_name: PSEB, kind: autonomous_body, parent: fed-min-it, sectors: [it_telecom, commerce], website: https://pseb.org.pk/ }
 
   # Information & culture
   - { id: fed-pemra, name: Pakistan Electronic Media Regulatory Authority, short_name: PEMRA, kind: regulator, parent: fed-information-division, legal_basis: [{ law: pemra-ordinance-2002 }], website: "https://pemra.gov.pk", sectors: [information] }
@@ -110,7 +110,7 @@ organizations:
   - { id: fed-pak-epa, head_title: "Director General, Pak-EPA", name: Pakistan Environmental Protection Agency, short_name: Pak-EPA, kind: regulator, legal_basis: [{ law: pepa-1997 }], parent: fed-min-climate-change, sectors: [environment] }
   - { id: fed-ndma, name: National Disaster Management Authority, short_name: NDMA, kind: autonomous_body, parent: fed-pm-office, legal_basis: [{ law: ndm-act-2010 }], website: "https://www.ndma.gov.pk", sectors: [disaster], confidence: medium, description: "Executive arm of the National Disaster Management Commission (chaired by the PM); coordinates provincial and district disaster management authorities." }
   - { id: fed-parc, name: Pakistan Agricultural Research Council, short_name: PARC, kind: research_institute, parent: fed-min-food-security, sectors: [agriculture, science], legal_basis: [{ law: parc-ordinance-1981 }] }
-  - { id: fed-dpp, name: Department of Plant Protection, kind: attached_department, parent: fed-min-food-security, sectors: [agriculture], needs_source: true, confidence: low }
+  - { id: fed-dpp, name: Department of Plant Protection, kind: attached_department, parent: fed-min-food-security, sectors: [agriculture], website: https://plantprotection.gov.pk/ }
   - { id: fed-fgeha, name: Federal Government Employees Housing Authority, short_name: FGEHA, kind: autonomous_body, parent: fed-min-housing, sectors: [housing], legal_basis: [{ law: fgeha-act-2020 }] }
   - { id: fed-estate-office, name: Estate Office, kind: attached_department, parent: fed-min-housing, sectors: [housing], needs_source: true, confidence: low }
   - { id: fed-nchr, name: National Commission for Human Rights, short_name: NCHR, kind: commission, parent: fed-min-human-rights, branch: constitutional, sectors: [human_rights], legal_basis: [{ law: nchr-act-2012 }], website: "https://nchr.gov.pk/", description: "Statutory independent human-rights institution (2012)." }
@@ -118,7 +118,7 @@ organizations:
   - { id: fed-ncrc, name: National Commission on the Rights of Child, short_name: NCRC, kind: commission, parent: fed-min-human-rights, sectors: [human_rights], legal_basis: [{ law: ncrc-act-2017 }], website: "https://ncrc.gov.pk/" }
 
   # IPC, KA&GB, overseas, poverty, religious, S&T, privatisation
-  - { id: fed-psb, name: Pakistan Sports Board, kind: autonomous_body, parent: fed-min-ipc, sectors: [culture], needs_source: true, confidence: low }
+  - { id: fed-psb, name: Pakistan Sports Board, kind: autonomous_body, parent: fed-min-ipc, sectors: [culture], website: https://sports.gov.pk/ }
   - { id: fed-opf, name: Overseas Pakistanis Foundation, short_name: OPF, kind: autonomous_body, parent: fed-min-overseas-pakistanis, sectors: [labour], website: "https://opf.org.pk/" }
   - { id: fed-beoe, name: Bureau of Emigration and Overseas Employment, kind: attached_department, parent: fed-min-overseas-pakistanis, sectors: [labour], legal_basis: [{ law: emigration-ordinance-1979 }] }
   - { id: fed-eobi, name: Employees' Old-Age Benefits Institution, short_name: EOBI, kind: autonomous_body, parent: fed-min-overseas-pakistanis, sectors: [labour, social_protection], legal_basis: [{ law: eobi-act-1976 }] }

@@ -195,8 +195,10 @@ organizations:
     jurisdiction: pk
     parent: fed-national-assembly
     sectors: [finance, revenue]
-    needs_source: true
-    confidence: low
+    sources:
+      - title: "National Assembly of Pakistan: Standing Committee on Finance and Revenue"
+        url: "https://na.gov.pk/en/cmen.php?comm=MTQ="
+        accessed: "2026-10-21"
 
   - id: fed-senate-sc-finance
     name: Senate Standing Committee on Finance and Revenue

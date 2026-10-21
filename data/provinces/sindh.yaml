@@ -74,6 +74,10 @@ organizations:
   - accountability
   - finance
   jurisdiction: pk-sd
+  sources:
+    - title: "Provincial Assembly of Sindh: Public Accounts Committee"
+      url: "https://www.pas.gov.pk/public-accounts-committee"
+      accessed: "2026-10-21"
 - id: sd-assembly-sc-health
   name: Standing Committee on Health, Provincial Assembly of Sindh
   kind: committee
@@ -222,6 +226,7 @@ organizations:
   - accountability
   confidence: medium
   jurisdiction: pk-sd
+  website: https://acesindh.gos.pk/
 - id: sd-pdma
   name: Provincial Disaster Management Authority, Sindh
   short_name: PDMA

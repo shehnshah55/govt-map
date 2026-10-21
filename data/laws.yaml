@@ -425,7 +425,7 @@ laws:
   - { id: psqca-act-1996, title: "Pakistan Standards and Quality Control Authority Act, 1996", kind: act, year: 1996, jurisdiction: pk, url: "https://pakistancode.gov.pk/english/UY2FqaJw1-apaUY2Fqa-apqVag%3D%3D-sg-jjjjjjjjjjjjj" }
   - { id: pnra-ordinance-2001, title: "Pakistan Nuclear Regulatory Authority Ordinance, 2001", kind: ordinance, year: 2001, jurisdiction: pk, url: "https://pakistancode.gov.pk/english/UY2FqaJw1-apaUY2Fqa-cp%2BUY2Fr-sg-jjjjjjjjjjjjj" }
   - { id: civil-courts-ordinance-1962, title: "West Pakistan Civil Courts Ordinance, 1962", kind: ordinance, year: 1962, jurisdiction: pk, url: "https://pakistancode.gov.pk/english/UY2FqaJw1-apaUY2Fqa-apaUY2Npa5tiaQ%3D%3D-sg-jjjjjjjjjjjjj", summary: "Establishes the District Courts and Civil Judges; criminal courts of Session are constituted under the Code of Criminal Procedure, 1898." }
-  - { id: punjab-food-authority-act-2011, title: "Punjab Food Authority Act, 2011", kind: act, year: 2011, jurisdiction: pk-pb, needs_source: true, confidence: low }
+  - { id: punjab-food-authority-act-2011, title: "Punjab Food Authority Act, 2011", kind: act, year: 2011, jurisdiction: pk-pb, url: "https://pfa.gop.pk/wp-content/uploads/2023/02/The-Punjab-Food-Authority-Act-2011.pdf" }
   - { id: sindh-food-authority-act-2016, title: "Sindh Food Authority Act, 2016", kind: act, year: 2016, jurisdiction: pk-sd, confidence: medium, url: "https://sindhlaws.gov.pk/GazetteDownload.aspx?PubID=PUB-17-000025" }
   - { id: kp-food-authority-act-2014, title: "Khyber Pakhtunkhwa Food Safety Authority Act, 2014", kind: act, year: 2014, jurisdiction: pk-kp, confidence: medium, url: "https://kpcode.kp.gov.pk/homepage/lawDetails/669" }
 

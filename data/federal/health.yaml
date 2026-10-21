@@ -169,8 +169,10 @@ organizations:
     kind: programme
     parent: fed-nih
     description: Integrated disease surveillance and response, public health laboratories and the national IHR (2005) focal point.
-    confidence: low
-    needs_source: true
+    sources:
+      - title: "National Institutes of Health, Islamabad (Center for Disease Control)"
+        url: "https://www.nih.org.pk/"
+        accessed: "2026-10-21"
   - id: fed-hsa
     name: Health Services Academy
     short_name: HSA
@@ -300,8 +302,7 @@ organizations:
     kind: hospital
     parent: fed-min-nhsrc
     jurisdiction: pk-ict
-    needs_source: true
-    confidence: low
+    website: https://fgpc.gov.pk/
   - id: fed-nirm
     name: National Institute of Rehabilitation Medicine
     short_name: NIRM
@@ -315,8 +316,8 @@ organizations:
     kind: hospital
     parent: fed-min-nhsrc
     jurisdiction: pk-ict
-    confidence: low
-    needs_source: true
+    confidence: medium
+    website: https://fgh.gov.pk/
 
   # ── Parliamentary oversight ────────────────────────────────────────────────
   - id: fed-na-sc-health
@@ -331,8 +332,10 @@ organizations:
     kind: committee
     branch: legislative
     parent: fed-senate
-    needs_source: true
-    confidence: low
+    sources:
+      - title: "Senate of Pakistan: Standing Committee on National Health Services, Regulations and Coordination"
+        url: "https://senate.gov.pk/com/index.php?id=MzI1"
+        accessed: "2026-10-21"
 
 positions:
   - id: fed-min-nhsrc-minister
