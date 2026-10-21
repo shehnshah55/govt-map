@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 /**
- * Browser smoke tests (docs/LAUNCH_PLAN.md §9.3): npm run test:e2e after npm run build.
+ * Browser smoke tests: npm run test:e2e after npm run build.
  * No browser is downloaded. Locally, CHROME_PATH points at a Chromium already on the machine;
  * in CI the runner's system Chrome is used.
  */

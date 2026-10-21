@@ -1,5 +1,5 @@
 /**
- * Weekly freshness report (docs/LAUNCH_PLAN.md §8). It never edits data: it writes a Markdown
+ * Weekly freshness report. It never edits data: it writes a Markdown
  * report that the scheduled workflow posts to one issue, "Records needing re-verification".
  *
  *   npx tsx scripts/staleness.ts urls  [--out link-check/urls.md]
