@@ -9,8 +9,12 @@ import type { Graph, Source } from "../schema.ts";
 
 /** Decisions from SS (docs/LAUNCH_LOG.md, §1 answers). */
 export const PUBLISH = {
-  /** §1.4: hidden from the public build and exports until a Pakistani lawyer has reviewed them (§4.4). */
-  legalCases: false,
+  /**
+   * SS, 20 October 2026: legal cases are published when they are grounded, cited and traceable.
+   * Only cases marked `publish: true` that pass publishedCaseProblems() reach the public build;
+   * everything else stays in data/ (docs/EDITORIAL_POLICY.md).
+   */
+  legalCases: true,
   /** SS, 2 October 2026: "not legally elected" labels are live from launch, always with their evidence. Part of the lawyer review (§10). */
   form45Labels: true,
 } as const;
@@ -57,6 +61,54 @@ function keepSources(sources: Source[] | undefined): Source[] | undefined {
   return sources.filter((s) => !isEncyclopediaUrl(s.url));
 }
 
+type LegalCase = NonNullable<Graph["people"][number]["legal_cases"]>[number];
+
+const isHttpUrl = (url: string | undefined) => {
+  try {
+    return ["http:", "https:"].includes(new URL(url ?? "").protocol);
+  } catch {
+    return false;
+  }
+};
+
+/** Statuses where no court has found guilt, so the charge stays an allegation and the page says so. */
+export const ALLEGATION_STATUSES: readonly string[] = ["pending", "stayed", "withdrawn", "quashed", "acquitted"];
+
+/**
+ * The publishing gate for one case: what it lacks to be published. A published case must show the
+ * charge, its outcome (status) with the date that outcome is stated as of and the source for it, and
+ * at least one cited source; none of them may be an encyclopedia.
+ */
+export function caseProblems(c: LegalCase): string[] {
+  const out: string[] = [];
+  if (!c.charges?.trim()) out.push("no charge");
+  if (!c.status) out.push("no status (outcome)");
+  if (!c.status_as_of?.trim()) out.push("no status_as_of date");
+  else if (!/^\d{4}(-\d{2}(-\d{2})?)?$/.test(c.status_as_of)) out.push(`status_as_of "${c.status_as_of}" is not YYYY, YYYY-MM or YYYY-MM-DD`);
+  if (!isHttpUrl(c.status_source?.url)) out.push("no status_source URL");
+  else if (isEncyclopediaUrl(c.status_source?.url)) out.push("status_source is an encyclopedia");
+  if (!c.sources?.length || !c.sources.every((s) => isHttpUrl(s.url))) out.push("a source without a URL");
+  if (c.sources?.some((s) => isEncyclopediaUrl(s.url))) out.push("an encyclopedia source");
+  return out;
+}
+
+/** Every case marked publish: true that fails the gate, as "person: case: problems". The build fails on any. */
+export function publishedCaseProblems(g: Graph): string[] {
+  return g.people.flatMap((p) =>
+    (p.legal_cases ?? []).filter((c) => c.publish === true).flatMap((c) => {
+      const problems = caseProblems(c);
+      return problems.length ? [`${p.id}: legal case "${c.title}": ${problems.join(", ")}`] : [];
+    }),
+  );
+}
+
+/** Cases that may be published: opted in with publish: true, and passing the gate. Internal flags are stripped. */
+function publishableCases(cases: LegalCase[]): LegalCase[] {
+  return cases
+    .filter((c) => c.publish === true && caseProblems(c).length === 0)
+    .map(({ publish: _p, hold_reason: _h, ...rest }) => rest);
+}
+
 /** The graph as published: fields the policy hides are removed, and the licence is stated. */
 export function publicGraph(g: Graph): Graph {
   const hidden = new Set<string>([...(PUBLISH.legalCases ? [] : ["legal_cases"]), ...(PUBLISH.form45Labels ? [] : ["election_checks"])]);
@@ -72,9 +124,13 @@ export function publicGraph(g: Graph): Graph {
         return rest;
       });
       let person = { ...p, roles };
-      if (hidden.has("legal_cases") && person.legal_cases) {
-        const { legal_cases: _hidden, ...rest } = person;
-        person = rest;
+      if (person.legal_cases) {
+        const cases = hidden.has("legal_cases") ? [] : publishableCases(person.legal_cases);
+        if (cases.length) person = { ...person, legal_cases: cases };
+        else {
+          const { legal_cases: _hidden, ...rest } = person;
+          person = rest;
+        }
       }
       if (person.declared_assets) {
         // Encyclopedia URLs cannot be asset sources (§1.5 + §0.2.2); drop the figure if its only citation is one.

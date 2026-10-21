@@ -116,18 +116,22 @@ Criminal and accountability proceedings against a person, recorded only from rep
 | `filed` | yes | Date the case, reference or FIR was filed (`YYYY`, `YYYY-MM` or `YYYY-MM-DD`) |
 | `filed_by` | no | Agency that brought it: an organization id (`fed-nab`, `fed-fia`) or a name |
 | `court` | no | Court or forum that heard it |
-| `charges` | no | What was charged, in neutral wording (e.g. "Money laundering") |
+| `charges` | to publish | What was charged, worded as an allegation (e.g. "Alleged money laundering (FIA charges)") |
 | `status` | yes | Current status: `pending`, `convicted`, `convicted_on_appeal`, `acquitted`, `quashed`, `withdrawn`, `stayed` or `pardoned` |
 | `verdict_date` | no | Date of the verdict, or of the order that set the current status |
 | `sentence` | no | Sentence as handed down, including if later set aside |
 | `fine` | no | Fine imposed, and whether it was paid, if reported |
 | `custody` | no | Time actually spent in custody |
 | `outcome` | no | One sentence on how the case stands now (acquittal, suspension, stay) |
+| `status_as_of` | to publish | Date the recorded `status` is stated as of, from `status_source` |
+| `status_source` | to publish | `{title, url}` of the source that states the current status |
+| `publish` | to publish | `true` to publish; anything else keeps the case in `data/` only |
+| `hold_reason` | no | Why a case is held back. Never published |
 | `sources` | yes, at least one | `{title, url, accessed}` for each source |
 
 The UI shows the government in office when the case was filed: `filed` is matched against the Prime Minister's terms (`pm_terms`, derived from `fed-prime-minister` roles). The current status is shown alongside the charge, so acquittals, quashed and withdrawn cases are as visible as the original charge.
 
-**Not published.** Following SS's §1.4 decision, `legal_cases` is removed from the built `graph.json` and from every export by `publicGraph()` in `src/lib/policy.ts` (`PUBLISH.legalCases = false`), until a lawyer has reviewed it. The build fails if any case would be published while the flag is off. The records stay in `data/` for review. Under the editorial policy (`docs/EDITORIAL_POLICY.md`), only proceedings evidenced by a court order, judgment or a court's own website may be published; the current entries cite press reports and must be re-sourced first.
+**Published when cited.** `publicGraph()` in `src/lib/policy.ts` publishes only cases marked `publish: true` that pass `caseProblems()`: a charge, a status, a `status_as_of` date, a `status_source` URL and cited source URLs. The build fails if a case marked `publish: true` lacks any of them, and `publish`/`hold_reason` are stripped from the output. Held-back cases stay in `data/` (see `docs/EDITORIAL_POLICY.md`).
 
 ## Family ties (`relatives`)
 

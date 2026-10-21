@@ -17,15 +17,18 @@ describe("freshness report", () => {
     expect(markdown).not.toContain(`(\`${fresh.id}\`)`);
   });
 
-  it("never lists hidden legal cases or their sources, only a count", () => {
-    const { markdown, counts } = report(graph, TODAY);
-    const cases = graph.people.flatMap((p) => p.legal_cases ?? []);
-    expect(cases.length).toBeGreaterThan(0);
-    expect(counts.casesDue).toBeGreaterThan(0);
-    const urls = [...citedUrls(publicGraph(graph)).keys()].join("\n");
-    for (const c of cases) {
-      expect(markdown).not.toContain(c.title);
-      for (const s of c.sources) if (s.url && !graph.verification.some((v) => !v.topic && v.sources.some((x) => x.url === s.url))) expect(urls).not.toContain(s.url);
+  it("lists published legal cases only, never held-back ones, and link-checks their sources", () => {
+    const { markdown } = report(graph, TODAY);
+    const held = graph.people.flatMap((p) => p.legal_cases ?? []).filter((c) => c.publish !== true);
+    const shown = publicGraph(graph).people.flatMap((p) => p.legal_cases ?? []);
+    expect(held.length).toBeGreaterThan(0);
+    expect(shown.length).toBeGreaterThan(0);
+    const heldOnly = held.filter((h) => !shown.some((c) => c.title === h.title));
+    for (const c of heldOnly) expect(markdown).not.toContain(c.title);
+    const urls = [...citedUrls(publicGraph(graph)).keys()];
+    for (const c of shown) {
+      for (const s of c.sources) expect(urls).toContain(s.url);
+      expect(urls).toContain(c.status_source!.url);
     }
   });
 

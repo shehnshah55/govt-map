@@ -73,3 +73,17 @@ test("search suggests and navigates", async ({ page }) => {
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/#\/(post|org|person)\//);
 });
+
+test("published legal cases show the outcome beside the charge, dated and cited; held-back cases do not appear", async ({ page }) => {
+  await page.goto("#/person/nawaz-sharif");
+  const row = page.locator("table.cases tbody tr", { hasText: "Avenfield reference (London flats)" });
+  await expect(row).toBeVisible();
+  await expect(row.locator(".case-charge")).toContainText("as alleged by NAB");
+  await expect(row.locator(".case-outcome .tag")).toHaveText("Acquitted");
+  await expect(row.locator(".case-outcome")).toContainText("as of 2023-11-29");
+  await expect(row.locator('.case-outcome a[href="https://www.dawn.com/news/1793562"]')).toBeVisible();
+  await expect(row.locator(".case-allegation")).toHaveText("Allegations are not findings of guilt.");
+  await page.goto("#/person/asif-ali-zardari");
+  await expect(page.locator("#app h1").first()).toBeVisible();
+  await expect(page.getByText("Criminal and accountability cases")).toHaveCount(0);
+});

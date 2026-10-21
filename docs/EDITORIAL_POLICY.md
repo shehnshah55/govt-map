@@ -23,14 +23,15 @@ Who holds a post needs one official source, or two independent press sources tha
 
 ## Legal cases
 
-**Not published at present.** Legal cases are hidden from the public site, `graph.json` and every export until the lawyer review is complete (decision of 30 September 2026; `PUBLISH.legalCases` in `src/lib/policy.ts`).
+**Published when grounded, cited and traceable** (decision of SS, 20 October 2026, replacing the hold of 30 September 2026). No fiction, presumption or unverified reports.
 
-If they are published later, these rules apply:
-
-- Only proceedings evidenced by a court order or judgment, or by a court's own cause list or website, are recorded. Allegations that never reached a court are not.
-- The **current** status is always shown, and acquittals, quashed cases, withdrawals and stays are shown as prominently as the charge.
-- Wording is neutral: "charged under…", "acquitted on…".
-- Every record is re-checked at least every 90 days, or shown as stale.
+- **Opt in, case by case.** A case reaches the site, `graph.json` and the exports only when it is marked `publish: true` in `data/`. Any case whose source is missing, unreachable or does not support every detail stays in `data/` with `publish: false` and a `hold_reason`, and is not published.
+- **Sources.** A court order, judgment, cause list or a court's own website comes first, then the Gazette and other official sources, then established outlets (Dawn, APP, Al Jazeera, Reuters and the like) reporting the court's decision. Encyclopedias are never a source. Every detail shown (charge, court, dates, sentence, custody) must be stated by a cited source; anything a source does not state is left out rather than guessed.
+- **Outcome beside the charge.** Each published case shows its current outcome (`pending`, `convicted`, `acquitted`, `stayed`, `quashed`, `withdrawn`, …) next to the charge, with the date that outcome is stated as of (`status_as_of`) and a link to the source for that outcome (`status_source`). If the outcome cannot be sourced, the case is held back rather than show a charge without its outcome.
+- **Neutral wording.** Charges are worded as allegations ("as alleged by NAB", "charged under…", "acquitted on…"), and pages say that allegations are not findings of guilt. Acquittals, stays, withdrawals and quashed cases are shown as prominently as the charge.
+- **Enforced at build time.** `publishedCaseProblems()` in `src/lib/policy.ts` fails the build if any case marked `publish: true` lacks a charge, a status, a `status_as_of` date, a `status_source` URL or a cited source URL.
+- **Freshness.** Published case sources are link-checked weekly with every other cited URL, and each case is re-checked when its person's record is.
+- **Corrections.** Anyone, including the people named, can [open an issue](https://github.com/shehnshah55/govt-map/issues/new?template=correction.yml) with a source. A case whose outcome changes, or whose source turns out not to support it, is corrected or set back to `publish: false`.
 
 ## Declared assets
 

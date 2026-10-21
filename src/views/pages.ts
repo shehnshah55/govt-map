@@ -430,7 +430,7 @@ export function aboutView(ctx: Ctx, single: boolean): View {
       <ul>
         <li><b>Declared assets</b> come only from statements published by the Election Commission. They are declared values, not audited net worth.</li>
         <li><b>Family ties</b> are recorded only between people who both hold or held a public or party office, and only when an official source or two independent outlets state them.</li>
-        <li><b>Legal cases</b> are not published at present. They are held back from the site and from every download until a legal review is complete.</li>
+        <li><b>Legal cases</b> are published only when every detail is cited. Each case shows its current outcome beside the charge, with the date that outcome is stated as of and a link to its source. Charges are allegations, not findings of guilt. A case whose source does not support it is held back.</li>
       </ul>
       <h2>Corrections</h2>
       <p>Anyone, including the people named, can ask for a correction: <a href="${ctx.repo}/issues/new?template=correction.yml" target="_blank" rel="noopener noreferrer">open a correction request</a> with the page, what is wrong and a source. Requests are acknowledged within 7 days, and accepted corrections are logged publicly in the <a href="#/verification">verification log</a>. The full editorial policy is in the repository's docs/EDITORIAL_POLICY.md.</p>
