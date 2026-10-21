@@ -168,6 +168,7 @@ export function compile(dataDir: string): CompileResult {
         legal_basis: [{ law: "land-revenue-act-1967" }],
         confidence: div.confidence,
         sources: block.sources,
+        generated: true,
         _file: file,
       });
       positions.push({
@@ -202,7 +203,8 @@ export function compile(dataDir: string): CompileResult {
           parent: commOffice,
           description: `Headed by the Deputy Commissioner, who is the District Collector (land revenue), District Magistrate functions (price control, public order coordination), and coordinator of provincial line departments in ${district}.`,
           legal_basis: [{ law: "land-revenue-act-1967" }],
-            confidence: div.confidence,
+          confidence: div.confidence,
+          generated: true,
           _file: file,
         });
         positions.push({

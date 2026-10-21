@@ -12,7 +12,8 @@
     "build:single": "npm run data && vite build --mode single",
     "preview": "vite preview",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "npm run data && tsc --noEmit",
+    "audit:coverage": "tsx scripts/audit-coverage.ts"
   },
   "license": "MIT",
   "dependencies": {

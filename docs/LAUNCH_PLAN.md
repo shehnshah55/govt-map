@@ -177,7 +177,7 @@ Write it to cover:
 
 ### 4.4 Human review (launch blocker)
 
-Add to §10: **A Pakistani lawyer reviews the editorial policy and the live `legal_cases`, `declared_assets` and `relative_of` content before the repo goes public**, with PECA 2016 (as amended in 2025) and defamation law in mind. Claude cannot sign this off.
+Add to §10: **A Pakistani lawyer reviews the editorial policy and the live `legal_cases`, `declared_assets` and `relative_of` content, and every "not legally elected" (Form 45/47) label, before the repo goes public**, with PECA 2016 (as amended in 2025) and defamation law in mind. Claude cannot sign this off.
 
 ---
 
@@ -369,7 +369,7 @@ Write `docs/LAUNCH_READINESS.md`:
 
 - [ ] All phase PRs merged; CI green on `main`.
 - [ ] `docs/LAUNCH_READINESS.md` reviewed.
-- [ ] 👤 Lawyer has reviewed the editorial policy and the sensitive content (§4.4).
+- [ ] 👤 Lawyer has reviewed the editorial policy and the sensitive content, including the Form 45/47 "not legally elected" labels (§4.4).
 - [ ] 👤 Corrections email is live and monitored.
 - [ ] 👤 Branch protection on `main`: require PR review, require CI, no force-push.
 - [ ] 👤 Secret scanning and Dependabot alerts enabled (repo Settings → Code security).

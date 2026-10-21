@@ -192,6 +192,8 @@ export const Organization = z.object({
   head_title: z.string().optional(),
   /** How the head is filled, for the generated head post. */
   head_appointment: z.lazy(() => Appointment).optional(),
+  /** True when created by the build (division and district offices from field_administration blocks). */
+  generated: z.boolean().optional(),
 });
 
 export const AppointmentMethod = z.enum([
