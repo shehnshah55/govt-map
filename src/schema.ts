@@ -625,3 +625,49 @@ export interface Graph {
   /** All edges: authored relations plus those derived from parents, appointments and roles. */
   edges: (Relation & { derived: boolean })[];
 }
+
+// ── Service index (data/service-index/, docs/SERVICE_INDEX.md) ──────────────
+// Citizen-facing pages and documents on official websites, found by scripts/crawl.ts. Each item
+// is a link to the official page itself, with a short verbatim excerpt: never a summary of ours.
+
+export const ServiceKind = z.enum(["form", "fee", "procedure", "contact", "notification", "other"]);
+
+export const ServiceItem = z
+  .object({
+    /** First 12 hex characters of the SHA-1 of the URL. */
+    id: z.string().regex(/^[0-9a-f]{12}$/),
+    /** The official page or document: the source of record. */
+    url: SafeUrl,
+    title: z.string().min(1).max(300),
+    /** The registry entry (data/official-sites.yaml) whose host this is. */
+    site_id: z.string().regex(/^[a-z0-9-]+$/),
+    /** The body in the graph that runs the site. */
+    body_id: z.string().min(1),
+    kind: ServiceKind,
+    type: z.enum(["html", "pdf", "doc"]),
+    language: z.enum(["en", "ur", "mixed"]),
+    /** When we last fetched it (UTC, ISO 8601). */
+    fetched_at: z.string().regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/),
+    http_status: z.number().int().min(200).max(299),
+    /** SHA-256 of the bytes we fetched. */
+    content_hash: z.string().regex(/^[0-9a-f]{64}$/),
+    /** Verbatim from the page, at most 300 characters. */
+    excerpt: z.string().max(300).optional(),
+    /** Bytes, for documents. */
+    size: z.number().int().positive().optional(),
+    /** Page count, for PDFs. */
+    pages: z.number().int().positive().optional(),
+  })
+  .strict();
+
+export const ServiceIndexChunk = z
+  .object({
+    schema: z.literal(1),
+    level: SiteLevel,
+    items: z.array(ServiceItem),
+  })
+  .strict();
+
+export type ServiceKind = z.infer<typeof ServiceKind>;
+export type ServiceItem = z.infer<typeof ServiceItem>;
+export type ServiceIndexChunk = z.infer<typeof ServiceIndexChunk>;

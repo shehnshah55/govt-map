@@ -1,7 +1,8 @@
 /** Official websites (#/sources), the "Official websites" panel on body pages, and Find a service (#/find). */
-import type { OfficialSite, SiteCategory, SiteLevel, SiteStatus } from "../schema.ts";
+import type { OfficialSite, ServiceItem, ServiceKind, SiteCategory, SiteLevel, SiteStatus } from "../schema.ts";
 import { rankRecords, rankSites } from "../lib/find.ts";
 import { safeHref } from "../lib/safe-url.ts";
+import { loadServiceItems, ServiceIndex, type ServiceHit } from "../lib/service-search.ts";
 import { html, type Raw } from "../ui/dom.ts";
 import { hrefFor, link, type Ctx, type View } from "./common.ts";
 import { wireFilters } from "./entities.ts";
@@ -99,7 +100,50 @@ export function officialSitesPanel(ctx: Ctx, bodyId: string): Raw {
   )}</ul><p class="hint"><a href="#/sources">All official websites</a></p></div>`;
 }
 
-const EXAMPLES = ["How do I renew my CNIC?", "Passport fee", "NTN tax filer", "BISP Kafaalat", "shanakhti card banwane ka tareeqa", "بجلی کا بل", "phone blocked PTA", "vehicle registration Lahore"];
+export const KIND_LABEL: Record<ServiceKind, string> = {
+  form: "Form",
+  fee: "Fees",
+  procedure: "How to apply",
+  contact: "Contact",
+  notification: "Notification",
+  other: "Service page",
+};
+
+const sizeLabel = (n: number) => (n >= 1048576 ? `${(n / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(n / 1024))} KB`);
+
+/** Who runs the page: the body in the graph when there is one, else the registry site's name. */
+function department(ctx: Ctx, it: ServiceItem): Raw {
+  return ctx.ix.org.has(it.body_id) ? link(ctx.ix, it.body_id) : html`${sites(ctx).find((s) => s.id === it.site_id)?.name ?? it.site_id}`;
+}
+
+/** Results from the service index: title, department, kind, last-checked date and the official link. */
+export function serviceResults(ctx: Ctx, hits: readonly ServiceHit[], total: number): Raw {
+  if (!total) return html`<p class="hint">The index of official pages is empty in this build.</p>`;
+  if (!hits.length) return html`<p class="hint">No page or document in our index of ${total.toLocaleString("en")} official pages matched. Try other words, or use the official websites above.</p>`;
+  return html`<ol class="rels plain services">${hits.map(({ item: it }) => {
+    const href = safeHref(it.url);
+    const host = hostOf(it.url).split("/")[0];
+    return html`<li class="rel" data-kind="${it.kind}"><div class="verb">${KIND_LABEL[it.kind]}${it.type === "pdf" ? " · PDF" : it.type === "doc" ? " · Word" : ""}</div><div>
+      <a href="${href}" target="_blank" rel="noopener noreferrer" dir="auto"${it.language === "ur" ? html` lang="ur"` : ""}><b>${it.title}</b></a>
+      <div class="hint">${department(ctx, it)} · <span class="mono">${host}</span> · checked <span class="num">${it.fetched_at.slice(0, 10)}</span>${it.pages ? ` · ${it.pages} page${it.pages === 1 ? "" : "s"}` : ""}${it.size && it.type !== "html" ? ` · ${sizeLabel(it.size)}` : ""}</div>
+      ${it.excerpt ? html`<div class="desc" dir="auto">“${it.excerpt}”</div>` : ""}</div></li>`;
+  })}</ol>`;
+}
+
+let serviceIndex: Promise<ServiceIndex> | undefined;
+function getServiceIndex(ctx: Ctx): Promise<ServiceIndex> {
+  serviceIndex ??= loadServiceItems().then((items) => {
+    const names = new Map(sites(ctx).map((s) => [s.id, s]));
+    return new ServiceIndex(items, (it) => {
+      const org = ctx.ix.org.get(it.body_id);
+      const site = names.get(it.site_id);
+      return [org?.name, org?.short_name, org?.name_ur, site?.name, site?.name_ur, ...(site?.services ?? [])].filter(Boolean).join(" ");
+    });
+  });
+  return serviceIndex;
+}
+
+const EXAMPLES = ["How do I renew my CNIC?", "Passport fee", "Domicile certificate", "FBR NTN registration", "NTN tax filer", "BISP Kafaalat", "shanakhti card banwane ka tareeqa", "بجلی کا بل", "phone blocked PTA", "vehicle registration Lahore"];
 
 export function findView(ctx: Ctx, q: string): View {
   const { ix } = ctx;
@@ -108,7 +152,7 @@ export function findView(ctx: Ctx, q: string): View {
   const records = query ? rankRecords(ix, query) : [];
   const body = html`
     <header class="pagehead"><div class="eyebrow">Find a service</div><h1>${query ? html`Where to go for “${query}”` : "Find a government service"}</h1>
-      <p class="lede">Type a question in English, اردو or Roman Urdu. You get links to the official websites and the bodies responsible, never an answer written by us.</p></header>
+      <p class="lede">Type a question in English, اردو or Roman Urdu. You get links to the official websites, to forms, fees and procedures on them, and to the bodies responsible: never an answer written by us.</p></header>
     <div class="toolbar"><input id="find-q" type="search" value="${query}" placeholder="e.g. How do I renew my CNIC?" aria-label="Your question" dir="auto" autocomplete="off" /><button type="button" id="find-go">Find</button></div>
     ${
       !query
@@ -123,6 +167,7 @@ export function findView(ctx: Ctx, q: string): View {
             )}</div>`
           : html`<p class="hint">No official website matched. Try fewer words, or browse <a href="#/sources">all official websites</a>.</p>`
       }</section>
+      <section><h2>Pages and documents on official websites</h2><div id="service-results" aria-live="polite"><p class="hint">Searching the index of official pages…</p></div></section>
       <section><h2>In the graph</h2>${
         records.length
           ? html`<div class="rels">${records.map((r) => html`<div class="rel"><div class="verb">${r.kind}</div><div><a href="${hrefFor(ix, r.id)}">${r.label}</a></div>${r.sub ? html`<div class="desc">${r.sub}</div>` : ""}</div>`)}</div>`
@@ -143,6 +188,20 @@ export function findView(ctx: Ctx, q: string): View {
       input.addEventListener("keydown", (e) => {
         if (e.key === "Enter") go();
       });
+      const box = root.querySelector<HTMLElement>("#service-results");
+      let live = true;
+      if (box && query)
+        getServiceIndex(ctx)
+          .then((index) => {
+            // safe: serviceResults escapes every value through html``
+            if (live) box.innerHTML = serviceResults(ctx, index.search(query, 20), index.items.length).html;
+          })
+          .catch(() => {
+            if (live) box.innerHTML = html`<p class="hint">The index of official pages could not be loaded.</p>`.html;
+          });
+      return () => {
+        live = false;
+      };
     },
   };
 }

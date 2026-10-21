@@ -19,6 +19,7 @@ It follows CivLab's [US Gov Graph](https://graph.civlab.org/us) (entities, posit
 | People | 134; 85 / 174 (49%) of current roles cite a source |
 | Laws | 149; 3 link to their text, 46 have a summary |
 | Connections | 6,034 typed edges |
+| Service index | 4,592 forms, fees, procedures and contact pages from 126 official websites (Find a service) |
 | Data date range | Laws from 1924 to 2026; officeholder records last checked between 2025-06 and 2026-09 |
 
 Full breakdown: [docs/COVERAGE.md](docs/COVERAGE.md).
@@ -45,6 +46,10 @@ Full breakdown: [docs/COVERAGE.md](docs/COVERAGE.md).
 - **Search** across bodies, posts, people, places and laws (press `/`). Urdu names in Nastaliq. Light and dark themes.
 - **Open data**: `graph.json`, CSVs, and a [Popolo](https://www.popoloproject.com/) export.
 
+## Find a service
+
+`#/find` searches, in English, اردو or Roman Urdu, the [official websites](data/official-sites.yaml) and an index of the forms, fee tables, procedures, contact pages and notifications on them ([docs/SERVICE_INDEX.md](docs/SERVICE_INDEX.md)). Every result links to the official page, with the department, the kind of page and the date it was last checked. The index ships with the site and is searched in the browser; a weekly workflow re-crawls it and opens a pull request. Many government sites block networks outside Pakistan, so coverage is partial; the docs explain how to crawl from a Pakistani network.
+
 ## Run it
 
 ```bash
@@ -62,6 +67,8 @@ npm run build:single # one self-contained HTML file in dist-single/
 data/                 hand-authored YAML (source of truth)
 scripts/compile.ts    validation, conventions, derived edges
 scripts/build-data.ts writes public/data/graph.json and exports
+data/service-index/   official pages and documents found by the crawler (JSON, one item per line)
+scripts/crawl.ts      the polite crawler that builds data/service-index/ (docs/SERVICE_INDEX.md)
 src/schema.ts         the data model (zod)
 src/lib/              graph index and queries
 src/views/, src/ui/   the web app (TypeScript, Cytoscape.js)

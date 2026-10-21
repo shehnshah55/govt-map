@@ -167,3 +167,45 @@ Citations with an `accessed` date (required by §0.2.4): 0 / 168 (0%).
 | sindh.gov.pk | 1 | 1 |
 | thenationalnews.com | 3 | 1 |
 | thenews.pk | 3 | 1 |
+
+## Service index
+
+4,592 official pages and documents in `data/service-index/` (0.56 MB gzipped), from 126 of the 224 registry websites, fetched between 2026-10-21 and 2026-10-21. 140 websites are reachable from outside Pakistan and tied to a body; the rest need a crawl from a Pakistani network (docs/SERVICE_INDEX.md).
+
+| Kind | Items |
+|---|---:|
+| form | 467 / 4,592 (10%) |
+| fee | 180 / 4,592 (4%) |
+| procedure | 710 / 4,592 (15%) |
+| contact | 265 / 4,592 (6%) |
+| notification | 1,566 / 4,592 (34%) |
+| other | 1,404 / 4,592 (31%) |
+
+| Type | Items |
+|---|---:|
+| html | 2,669 / 4,592 (58%) |
+| pdf | 1,824 / 4,592 (40%) |
+| doc | 99 / 4,592 (2%) |
+
+| Language | Items |
+|---|---:|
+| en | 4,496 / 4,592 (98%) |
+| ur | 57 / 4,592 (1%) |
+| mixed | 39 / 4,592 (<1%) |
+
+### By government
+
+| Government | Websites with items | Items |
+|---|---:|---:|
+| federal | 76 of 121 | 2,930 |
+| ict | 5 of 8 | 184 |
+| punjab | 5 of 28 | 201 |
+| sindh | 13 of 21 | 428 |
+| kp | 12 of 19 | 543 |
+| balochistan | 7 of 15 | 229 |
+| ajk | 4 of 7 | 44 |
+| gb | 4 of 5 | 33 |
+
+### Reachable websites with no items yet
+
+ajkpm, cabinet, exciseportal-balochistan, finance-balochistan, hsa, ihc, ipo, kp, most, phc, phrc, pmo, punjab-zameen, sbca
