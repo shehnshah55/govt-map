@@ -74,6 +74,8 @@ organizations:
   - accountability
   - finance
   jurisdiction: pk-ba
+  needs_source: true
+  confidence: low
 - id: ba-assembly-sc-health
   name: Standing Committee on Health, Provincial Assembly of Balochistan
   kind: committee
@@ -82,6 +84,8 @@ organizations:
   sectors:
   - health
   jurisdiction: pk-ba
+  needs_source: true
+  confidence: low
 - id: ba-high-court
   name: Balochistan High Court
   short_name: BHC
@@ -152,6 +156,8 @@ organizations:
   - finance
   - local_government
   jurisdiction: pk-ba
+  needs_source: true
+  confidence: low
 - id: ba-sgad
   name: Services and General Administration Department, Balochistan
   short_name: S&GAD
@@ -201,6 +207,7 @@ organizations:
   sectors:
   - revenue
   jurisdiction: pk-ba
+  legal_basis: [{ law: balochistan-revenue-authority-act-2015 }]
 - id: ba-police
   name: Balochistan Police
   kind: law_enforcement
@@ -222,6 +229,7 @@ organizations:
   - accountability
   confidence: medium
   jurisdiction: pk-ba
+  legal_basis: [{ law: balochistan-anti-corruption-act-2010 }]
 - id: ba-pdma
   name: Provincial Disaster Management Authority, Balochistan
   short_name: PDMA
@@ -268,6 +276,8 @@ organizations:
   - health
   description: Provincial arm of the Polio Eradication Initiative, coordinated by the National EOC.
   jurisdiction: pk-ba
+  needs_source: true
+  confidence: low
 - id: ba-healthcare-commission
   name: Balochistan Healthcare Commission
   short_name: BHCC
@@ -301,25 +311,29 @@ organizations:
   - health
   description: Field wing of the health department; District Health Officers / CEOs of District Health Authorities report through it.
   jurisdiction: pk-ba
+  needs_source: true
+  confidence: low
 - id: ba-pphi
   name: People's Primary Healthcare Initiative Balochistan
   short_name: PPHI Balochistan
   kind: autonomous_body
   parent: ba-health
-  confidence: medium
+  confidence: low
   branch: executive
   sectors:
   - health
   jurisdiction: pk-ba
+  needs_source: true
 - id: ba-civil-hospital-quetta
   name: Sandeman Provincial (Civil) Hospital, Quetta
   kind: hospital
   parent: ba-health
-  confidence: medium
+  confidence: low
   branch: executive
   sectors:
   - health
   jurisdiction: pk-ba
+  needs_source: true
 - id: ba-higher-education
   name: Higher and Technical Education Department, Balochistan
   kind: department
