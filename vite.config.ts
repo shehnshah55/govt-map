@@ -11,7 +11,9 @@ function singleFileCsp(): Plugin {
   return {
     name: "single-file-csp",
     enforce: "post",
-    generateBundle(_options, bundle) {
+    // order "post", and listed after viteSingleFile(): it must run once the script is inlined
+    // (vite-plugin-singlefile inlines in its own "post" generateBundle since 2.3.4)
+    generateBundle: { order: "post", handler(_options, bundle) {
       const page = bundle["index.html"];
       if (!page || page.type !== "asset") return;
       let html = String(page.source);
@@ -29,7 +31,7 @@ function singleFileCsp(): Plugin {
       );
       if (html === before) this.error("single-file build: Content-Security-Policy meta not found in index.html");
       page.source = html;
-    },
+    } },
   };
 }
 
