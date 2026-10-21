@@ -304,7 +304,7 @@ const CNIC = /\b\d{5}-\d{7}-\d\b|\b(cnic|nic|شناختی)\b[^\d]{0,20}\d{13}\b/
 const MOBILE = /(?:\+92|0092|\b0)[\s-]?3\d{2}[\s-]?\d{7}\b/g;
 const PERSONAL_EMAIL = /\b[\w.+-]+@(gmail|yahoo|hotmail|outlook|live|ymail|icloud)\.[a-z.]+\b/gi;
 /** Pages that list individuals (merit lists, results, seniority lists): never indexed. */
-export const LISTS_PEOPLE = /\b(merit[- ]?lists?|results?|shortlist(ed)?|short[- ]listed|candidates?|roll[- ]?n(o|umbers?)|selected|selection lists?|award lists?|waiting lists?|seniority lists?|employees? lists?|list of (employees|officers|students|beneficiar)|beneficiar(y|ies) lists?|transfers?[- ]postings?|postings?|interview schedule|admit cards?|answer keys?|defaulters?)\b/i;
+export const LISTS_PEOPLE = /\b(merit[- ]?lists?|results?|shortlist(ed)?|short[- ]listed|candidates?|roll[- ]?n(o|umbers?)|selected|selection lists?|award lists?|waiting lists?|seniority lists?|employees? lists?|list of (employees|officers|students|beneficiar)|beneficiar(y|ies) lists?|transfers?[- ]postings?|postings?|interview schedule|admit cards?|answer keys?|defaulters?)\b|\b[sdw]\/o\b|\b(son|daughter|wife|widow) of\b|ولد|زوجہ|بنت/i;
 
 /** Why a page must not be indexed, or undefined when it is fine. */
 export function personalDataReason(text: string): string | undefined {

@@ -179,3 +179,12 @@ describe("crawler politeness, end to end against a local server", () => {
     expect(r.items).toEqual([]);
   }, 30_000);
 });
+
+describe("notices addressed to a named person", () => {
+  it("are treated as personal data", async () => {
+    const { LISTS_PEOPLE } = await import("../scripts/crawl-lib.ts");
+    expect(LISTS_PEOPLE.test("Final Notice - Mr A s/o B")).toBe(true);
+    expect(LISTS_PEOPLE.test("Show cause notice to the son of the applicant")).toBe(true);
+    expect(LISTS_PEOPLE.test("Domicile certificate procedure")).toBe(false);
+  });
+});

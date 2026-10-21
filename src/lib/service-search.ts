@@ -12,9 +12,9 @@ import { keyTerms } from "./find.ts";
  * with a `kind` also says what sort of page the person wants (a fee table, a form …).
  */
 export const SERVICE_SYNONYMS: { phrases: string[]; kind?: ServiceKind }[] = [
-  { phrases: ["cnic", "nic", "id card", "identity card", "national identity card", "shanakhti card", "shnakhti card", "shanakhti", "شناختی کارڈ", "شناختی", "smart card", "nicop"] },
+  { phrases: ["cnic", "id card", "identity card", "national identity card", "shanakhti card", "shnakhti card", "shanakhti", "شناختی کارڈ", "شناختی", "smart card", "nicop"] },
   { phrases: ["domicile", "domicil", "domisile", "dumisail", "domicile certificate", "ڈومیسائل", "ڈومیسائل سرٹیفکیٹ"] },
-  { phrases: ["passport", "pasport", "e-passport", "mrp", "پاسپورٹ"] },
+  { phrases: ["passport", "pasport", "e-passport", "machine readable passport", "پاسپورٹ"] },
   { phrases: ["visa", "ویزا", "e-visa"] },
   { phrases: ["fee", "fees", "charges", "tariff", "rates", "fis", "فیس", "فیسیں", "kitni fees"], kind: "fee" },
   { phrases: ["form", "forms", "proforma", "performa", "application form", "فارم"], kind: "form" },
@@ -154,7 +154,15 @@ export class ServiceIndex {
       for (const c of ranking) s += (this.match(c).get(doc) ?? 0) * 0.5 + (item.kind === c.kind ? 2 : 0);
       hits.push({ item, score: s + (item.type === "html" ? 0.05 : 0) });
     }
-    return hits.sort((a, b) => b.score - a.score || a.item.title.localeCompare(b.item.title)).slice(0, limit);
+    hits.sort((a, b) => b.score - a.score || a.item.title.localeCompare(b.item.title));
+    // the same title on the same site (a page and its print or language copy) is shown once
+    const shown = new Set<string>();
+    return hits.filter((h) => {
+      const key = `${h.item.site_id}\n${h.item.title.toLowerCase()}`;
+      if (shown.has(key)) return false;
+      shown.add(key);
+      return true;
+    }).slice(0, limit);
   }
 
   /** Documents matching any variant of a concept, with the best variant's score. */
