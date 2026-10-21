@@ -103,7 +103,7 @@ the crawler itself**, and that page is what is stored and cited; seed lists are 
 |---|---|---|
 | `data/official-sites.yaml` (this repository) | CC BY 4.0 ([LICENSE-DATA](../LICENSE-DATA)) | the list of sites crawled |
 | official sitemaps (`robots.txt` / `sitemap.xml` of each site) | published by each site for crawlers | discovery |
-| [RayyanAlam1/gov-service-navigator](https://github.com/RayyanAlam1/gov-service-navigator) (`db/seed/*.ts`) | MIT | six official URLs (DGIP, NADRA, Punjab, Sindh) tried as discovery seeds; no content copied |
+| [RayyanAlam1/gov-service-navigator](https://github.com/RayyanAlam1/gov-service-navigator) (`db/seed/*.ts`) | MIT | six official URLs (DGIP, NADRA, Punjab, Sindh) checked as discovery seeds: three were already registry homepages, two are on NADRA (not reachable from outside Pakistan) and one is on a host not in the registry, so none added pages; no content copied |
 | [opendata.com.pk](https://opendata.com.pk/) (CKAN catalogue) | per dataset | searched; no dataset of government service pages was found, nothing used |
 | data.gov.pk | — | not reachable when checked (404), nothing used |
 | Wikidata | CC0 | not needed: the registry already lists the sites |
