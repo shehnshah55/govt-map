@@ -94,8 +94,11 @@ function answerPanel(ctx: Ctx, a: Answer): Raw {
     main = html`<p><b>The graph doesn't answer this.</b></p><p>${SCOPE}</p>
       <p class="btnrow"><a class="btn ghost" href="#/search?q=${encodeURIComponent(a.question)}">Search the graph instead</a><a class="btn ghost" href="#/services">Public services directory</a></p>`;
   else if (a.status === "ambiguous") main = html`<p><b>Several records match.</b> Choose one below, or add a place or body to your question (for example “Governor of Sindh”).</p>`;
-  else if (a.services.length) main = serviceCards(ix, a);
-  else main = html`<div class="ans-lines">${a.lines.map((l) => html`<p>${pieces(ix, l, a.intent === "holder")}</p>`)}</div>`;
+  else if (a.services.length && !a.lines.length) main = serviceCards(ix, a);
+  else
+    main = html`<div class="ans-lines">${a.lines.map((l) => html`<p>${pieces(ix, l, a.intent === "holder")}</p>`)}</div>${
+      a.services.length ? html`<section class="ans-part"><h3>Related services</h3>${serviceCards(ix, a)}</section>` : ""
+    }`;
   return html`<section class="panel answer" aria-labelledby="ans-h">
     <h2 id="ans-h" class="visually-hidden">Answer</h2>
     <p class="hint">You asked: <q dir="auto" ${a.lang === "ur" ? html`lang="ur" class="urdu"` : ""}>${a.question}</q></p>
@@ -133,8 +136,9 @@ export function askView(ctx: Ctx, q: string): View {
       <p class="hint">Ask is modelled on <a href="https://pakistangov.online" target="_blank" rel="noopener noreferrer">Ask Pakistan</a>, an independent AI search for government services. This version uses no AI: it reads a fixed set of question types and answers only from this site's cited records, so it cannot make up an answer.</p>
     </div>`;
   const mount = (root: HTMLElement) => {
-    // a shared link may carry numbers typed before redaction existed, or pasted by hand: take them out of the address bar
-    if (a.removed.length) {
+    // a shared or pasted link may carry numbers, or more than Ask reads: the address shows only the question as read
+    const inAddress = new URLSearchParams(location.hash.split("?")[1] ?? "").get("q") ?? "";
+    if (inAddress !== a.question) {
       try {
         history.replaceState(null, "", askHref(a.question));
       } catch {

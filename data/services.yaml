@@ -50,7 +50,7 @@ services:
     title: Income tax, NTN, sales tax on goods and customs
     title_ur: انکم ٹیکس، این ٹی این، اشیا پر سیلز ٹیکس اور کسٹمز
     group: tax
-    keywords: [income tax, tax return, tax returns, ntn, filer, non filer, active taxpayer, active taxpayer list, atl, iris, withholding tax, customs, customs duty, tax, ٹیکس, انکم ٹیکس, ٹیکس ریٹرن, فائلر, کسٹمز]
+    keywords: [income tax, tax return, tax returns, ntn, filer, non filer, active taxpayer, active taxpayer list, atl, iris, withholding tax, customs, customs duty, انکم ٹیکس, ٹیکس ریٹرن, فائلر, کسٹمز]
     bodies: [fed-fbr]
 
   - id: sales-tax-services

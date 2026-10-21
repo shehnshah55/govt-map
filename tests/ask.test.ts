@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import { compile } from "../scripts/compile.ts";
 import { ask, detectLang, displayName, EXAMPLES, isOfficialUrl, isQuestion, normalize, type Piece } from "../src/lib/ask.ts";
 import { GraphIndex } from "../src/lib/graph-index.ts";
-import { redact } from "../src/lib/redact.ts";
+import { redact, RULES } from "../src/lib/redact.ts";
 import { askView, servicesView } from "../src/views/ask.ts";
 
 const { graph, errors } = compile(new URL("../data", import.meta.url).pathname);
@@ -43,14 +43,34 @@ describe("redaction", () => {
     expect(askView(ctx, "35202-1234567-1 passport").body.html).not.toContain("1234567");
   });
 
-  it("takes time in proportion to the text, however it is crafted", () => {
-    // an unanchored email pattern once took 10 s on 100,000 characters (a shared link could freeze a tab)
-    for (const s of ["1".repeat(100_000), "a.".repeat(50_000) + "@", "ab1234567".repeat(11_000), "1-".repeat(50_000)]) {
-      const t = performance.now();
-      redact(s);
-      redact(s.slice(0, 1999));
-      expect(performance.now() - t, s.slice(0, 12)).toBeLessThan(200);
-    }
+  it("each rule takes time in proportion to the text, however it is crafted", () => {
+    // run on the rules themselves: redact() caps text at 2,000 characters, which would hide a slow
+    // rule. An unanchored email pattern once took 10 s on 100,000 characters (a link could freeze a tab).
+    for (const [kind, re] of RULES)
+      for (const s of ["1".repeat(100_000), "a.".repeat(50_000) + "@", "ab1234567".repeat(11_000), "1-".repeat(50_000), "+".repeat(100_000)]) {
+        const t = performance.now();
+        s.replace(re, "");
+        expect(performance.now() - t, `${kind} on ${s.slice(0, 6)}…`).toBeLessThan(250);
+      }
+  });
+
+  it.each([
+    ["an en dash", "35202–1234567–1"],
+    ["a left-to-right mark from an Urdu page", "35202\u200E-1234567-1"],
+    ["a zero-width space", "35202\u200B1234567\u200B1"],
+    ["underscores", "35202_1234567_1"],
+    ["slashes", "35202/1234567/1"],
+    ["a dotted mobile number", "0300.1234567"],
+  ])("removes a number written with %s", (_name, text) => {
+    const r = redact(text);
+    expect(r.removed.length, JSON.stringify(text)).toBeGreaterThan(0);
+    expect(r.text).not.toMatch(/\d{4}/);
+  });
+
+  it("removes a number past Ask's 300-character limit before cutting, so none of it slips through", () => {
+    const a = ask(ix, "x".repeat(295) + " 35202-1234567-1");
+    expect(a.removed).toContain("CNIC");
+    expect(a.question).not.toMatch(/\d{3}/);
   });
 
   it("catches a passport number run into a word", () => {
@@ -176,6 +196,40 @@ describe("reading questions", () => {
       for (const id of [...ids(a.lines), ...a.choices]) expect(ix.kindOf(id), `${q}: ${id}`).toBeDefined();
     }
   }, 30_000);
+
+  it("reads the review's hard cases right", () => {
+    // a possessive doesn't run into the next word ("PM's" is not "PMS", the provincial exam)
+    expect(ask(ix, "where is the PM's office").subject).toBe("fed-pm-office");
+    // "who was elected" asks for the holder; "how is it appointed" asks how
+    expect(ask(ix, "Who was elected from NA-122?").intent).toBe("holder");
+    expect(ask(ix, "who is the elected chief minister of punjab").subject).toBe("pb-chief-minister");
+    expect(ask(ix, "who is the elected chief minister of punjab").intent).toBe("holder");
+    expect(ask(ix, "how is the chief justice appointed").intent).toBe("appointer");
+    // a person's main post, not their party office or seat
+    expect(ask(ix, "who appointed maryam nawaz").readAs && ids([ask(ix, "who appointed maryam nawaz").readAs!])).toContain("pb-chief-minister");
+    // a role question with a service word stays about posts
+    expect(ask(ix, "who is the minister for oil and gas").intent).not.toBe("service");
+    // a body in the place named, flagged as the closest match
+    const police = ask(ix, "who controls the police in punjab");
+    expect([police.subject, police.closest]).toEqual(["pb-police", true]);
+    // a post in the body named, before one in a body beneath it
+    expect(ask(ix, "who is the secretary of the pm office").subject).toBe("fed-pspm");
+    // unrecognised words are reported on summaries and ambiguous answers too
+    expect(ask(ix, "who appoints the dc of narnia").ignored).toEqual(["narnia"]);
+    expect(ask(ix, "who is the governor of narnia").ignored).toEqual(["narnia"]);
+  });
+
+  it("offers everyone who shares a partial name", () => {
+    const a = ask(ix, "who is ayub khan");
+    expect(a.status).toBe("ambiguous");
+    expect(a.choices.length).toBeGreaterThan(1);
+  });
+
+  it("writes grammatical summaries and articles", () => {
+    const text = (q: string) => ask(ix, q).lines.map((l) => l.map((p) => (typeof p === "string" ? p : displayName(ix, p.id))).join("")).join(" ");
+    expect(text("who appoints the chairman")).not.toMatch(/,:|undefined/);
+    expect(text("what does HSA do")).not.toMatch(/\ban university\b/);
+  });
 
   it("answers every example question", () => {
     for (const e of EXAMPLES) expect(ask(ix, e.q).status, e.q).toBe("answered");

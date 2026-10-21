@@ -83,6 +83,12 @@ test("a question typed in the search box opens Ask, with the CNIC removed", asyn
   expect(problems).toEqual([]);
 });
 
+test("a pasted search link with a CNIC is shown and kept without it", async ({ page }) => {
+  await page.goto("#/search?q=35202%E2%80%931234567%E2%80%931");
+  await expect(page.locator("#app h1")).toContainText("[CNIC removed]");
+  expect(decodeURIComponent(page.url())).not.toMatch(/\d{5}/);
+});
+
 test("Ask answers from its own box, and scrubs numbers from a pasted link", async ({ page }) => {
   await page.goto("#/ask?q=passport%20AB1234567%20lost");
   await expect(page.locator(".answer")).toContainText("Passports");

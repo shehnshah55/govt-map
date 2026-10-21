@@ -75,8 +75,13 @@ function route(path: string): View | undefined {
       return familyView(ctx, seg[1]);
     case "figures":
       return seg[1] ? figureEvidenceView(ctx, seg[1], seg[2] ?? "", params) : figuresView(ctx, params);
-    case "search":
-      return searchView(ctx, redact(params.get("q") ?? "").text);
+    case "search": {
+      const typed = params.get("q") ?? "";
+      const q = redact(typed).text.slice(0, 200);
+      // a pasted link may carry a CNIC or phone number: show it removed, and take it out of the address bar too
+      if (q !== typed) scrubAddress(`/search?q=${encodeURIComponent(q)}`);
+      return searchView(ctx, q);
+    }
     case "ask":
       return askView(ctx, params.get("q") ?? "");
     case "services":
@@ -106,6 +111,16 @@ function render(path: string) {
   document.querySelectorAll<HTMLDetailsElement>(".nav details").forEach((d) => (d.open = false));
   window.scrollTo(0, 0);
   cleanup = view.mount?.(app) ?? undefined;
+}
+
+/** Replaces the address (and its history entry) with a cleaned one, without a new render. */
+function scrubAddress(path: string) {
+  current = path;
+  try {
+    history.replaceState(null, "", `#${path}`);
+  } catch {
+    /* sandboxed: keep state in memory */
+  }
 }
 
 /** Hash routing with an in-memory fallback for sandboxed frames that block history writes. */

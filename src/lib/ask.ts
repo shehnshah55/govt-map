@@ -94,13 +94,16 @@ const STOP = new Set(
 
 /** Question words, by what they ask. When a question has several, the highest weight wins. */
 const INTENT_WORDS: [Intent, number, string[]][] = [
-  ["appointer", 6, ["who appoints", "who appointed", "who chooses", "who selects", "who elects", "who nominates", "who picks", "appointed by", "chosen by", "elected by", "selected by", "appoints", "appointed", "chosen", "elected", "selected", "nominated", "muqarrar", "muqarar", "taqarruri", "taqarrur", "taqarur", "tainati", "lagata", "lagati", "lagate", "chunta", "chunti", "chuna", "chunte", "intikhab", "مقرر", "تقرر", "تقرری", "تعینات", "تعیناتی", "منتخب", "چنتا", "چنا", "لگاتا", "انتخاب"]],
+  ["appointer", 6, ["who appoints", "who appointed", "who chooses", "who selects", "who elects", "who nominates", "who picks", "appointed by", "chosen by", "elected by", "selected by", "appoints", "muqarrar", "muqarar", "taqarruri", "taqarrur", "taqarur", "tainati", "lagata", "lagati", "lagate", "chunta", "chunti", "chuna", "chunte", "intikhab", "مقرر", "تقرر", "تقرری", "تعینات", "تعیناتی", "منتخب", "چنتا", "چنا", "لگاتا", "انتخاب"]],
   ["accountable", 6, ["accountable to", "accountable", "answerable to", "answerable", "reports to", "report to", "oversees", "oversee", "oversight", "supervises", "supervise", "who controls", "controls", "who audits", "audits", "audit", "audited", "remove", "removes", "removed", "dismiss", "dismissed", "impeach", "impeachment", "jawabdeh", "jawab deh", "nigrani", "hata sakta", "hata sakti", "hatata", "hatana", "جوابدہ", "جواب دہ", "نگرانی", "ہٹا", "ہٹاتا", "برطرف"]],
   ["law", 5, ["which law", "what law", "legal basis", "under which law", "under what law", "established by", "created by", "set up by", "created", "established", "formed", "kis qanoon", "qanoon", "qanun", "kanoon", "قانون", "آئین"]],
   ["service", 4, ["how do i", "how can i", "how to", "where do i", "where can i", "where to", "apply", "apply for", "renew", "renewal", "register", "get a", "get my", "make a", "lodge", "file a", "contact", "helpline", "website", "kaise", "kese", "kaisay", "kaisy", "kahan", "kahaan", "kidhar", "banwana", "banwani", "banwane", "banwaen", "banwayen", "banwaein", "banta", "banti", "milta", "milti", "کیسے", "کہاں", "کدھر", "بنوانا", "بنوانی", "بنواؤں", "بنوائیں", "بنتا", "بنتی", "ملتا", "ملتی", "درخواست", "تجدید", "رابطہ", "ویب سائٹ"]],
   ["holder", 4, ["who heads", "who leads", "who runs", "who holds", "who is in charge", "in charge", "name of", "kaun", "kon", "koun", "کون", "کس کے پاس"]],
-  ["about", 3, ["what is", "what s", "what are", "what does", "what do", "tell me about", "explain", "about", "role of", "function of", "functions of", "kya hai", "kya hain", "kya karta", "kya karti", "kya karte", "ka kaam", "kaam", "zimmedari", "کیا ہے", "کیا کرتا", "کیا کرتی", "کیا کرتے", "کام", "ذمہ داری"]],
-  ["holder", 2, ["who is", "who s", "who are", "who", "current"]],
+  ["about", 3, ["what is", "what are", "what does", "what do", "tell me about", "explain", "about", "role of", "function of", "functions of", "kya hai", "kya hain", "kya karta", "kya karti", "kya karte", "ka kaam", "kaam", "zimmedari", "کیا ہے", "کیا کرتا", "کیا کرتی", "کیا کرتے", "کام", "ذمہ داری"]],
+  ["holder", 2, ["who is", "who are", "who was", "who", "current"]],
+  // a bare participle asks how a post is filled ("how is the CJ appointed?") only when nothing
+  // asks who: "who was elected from NA-122?" and "the newly appointed IG" ask for the holder
+  ["appointer", 1.5, ["appointed", "chosen", "elected", "selected", "nominated"]],
 ];
 
 /** Words for posts, as post titles use them (the first entry), and how people say them. */
@@ -154,6 +157,7 @@ const EXTRA_NAMES: Record<string, string[]> = {
   "pk-pb-faisalabad": ["faisalabad", "فیصل آباد"],
   "pk-pb-multan": ["multan", "ملتان"],
   "fed-coas": ["coas", "army chief", "آرمی چیف", "سپہ سالار"],
+  "fed-pm-office": ["pm office", "pmo", "pm house", "prime minister office", "wazir e azam office"],
   "fed-cdf": ["cdf"],
   "fed-national-assembly": ["qaumi assembly", "national assembly"],
   "fed-senate": ["senate", "ایوان بالا", "سینیٹ"],
@@ -172,7 +176,7 @@ const PLACE_HEAD: Record<string, string> = {
 };
 
 /** Leading honorifics and ranks, so "Shehbaz Sharif" finds "Muhammad Shehbaz Sharif". */
-const HONORIFICS = new Set("mr mrs ms dr justice syed sardar chaudhry chaudhary mian muhammad mohammad khawaja rana malik lt gen r field marshal admiral air chief marshal general maj brig col".split(" "));
+const HONORIFICS = new Set("mr mrs ms dr prof engr barrister justice syed sardar chaudhry chaudhary mian muhammad mohammad khawaja rana malik makhdoom nawabzada sahibzada pir maulana mufti haji begum lt gen r field marshal admiral air chief marshal general maj brig col".split(" "));
 
 const key = (tokens: string[]) => tokens.join("");
 /** A dictionary key: the words without stop words, joined, so spacing and hyphens don't matter. */
@@ -223,8 +227,10 @@ function lexicon(ix: GraphIndex): Lexicon {
   for (const p of ix.g.positions) if (titles.get(p.title) === 1 && words(p.title).filter((w) => !STOP.has(w)).length >= 2) add(p.title, p.id);
   for (const l of ix.g.laws) [l.title, l.short].forEach((n) => add(n, l.id));
   for (const [id, variants] of Object.entries(EXTRA_NAMES)) if (ix.kindOf(id)) for (const v of variants) add(v, id);
-  // "Maryam Nawaz" for "Maryam Nawaz Sharif", unless the two words are someone's whole name
-  for (const [name, id] of partial) if (!names.has(contentKey(name))) add(name, id);
+  // "Maryam Nawaz" for "Maryam Nawaz Sharif", unless the two words already name someone or something
+  // in full. Everyone sharing a partial name gets it, so "Ayub Khan" offers both Ayub Khans.
+  const taken = new Set(names.keys());
+  for (const [name, id] of partial) if (!taken.has(contentKey(name))) add(name, id);
   const intents = new Map<string, [Intent, number]>();
   for (const [intent, weight, phrases] of INTENT_WORDS) for (const p of phrases) if (!intents.has(fullKey(p))) intents.set(fullKey(p), [intent, weight]);
   const services = new Map<string, string[]>();
@@ -265,12 +271,15 @@ interface Reading {
   role?: string;
   /** Words left over once names, roles, question words and stop words are taken out. */
   rest: string[];
+  /** The leftover words that no service keyword explains either: shown as "not recognised". */
+  unexplained: string[];
   services: string[];
 }
 
 function read(ix: GraphIndex, text: string): Reading {
   const lex = lexicon(ix);
-  const all = words(text);
+  // a possessive ("PM's") leaves a lone "s", which would join its neighbour into another word ("pms")
+  const all = words(text).filter((w) => w !== "s");
   let intent: Intent | undefined;
   let best = 0;
   const intentTokens = new Set<number>();
@@ -279,7 +288,9 @@ function read(ix: GraphIndex, text: string): Reading {
     for (let k = m.at; k < m.at + m.n; k++) intentTokens.add(k);
     if (w > best) [intent, best] = [i, w];
   }
-  const services = [...new Set(scan(all, lex.services).flatMap((m) => m.value))];
+  const serviceHits = scan(all, lex.services);
+  const services = [...new Set(serviceHits.flatMap((m) => m.value))];
+  const serviceTokens = new Set(serviceHits.flatMap((m) => Array.from({ length: m.n }, (_, k) => m.at + k)));
   // names and roles are read from the content words only
   const content = all.map((w, i) => ({ w, i })).filter((t) => !STOP.has(t.w));
   const tokens = content.map((t) => t.w);
@@ -292,8 +303,9 @@ function read(ix: GraphIndex, text: string): Reading {
     else continue;
     for (let k = m.at; k < m.at + m.n; k++) used.add(content[k].i);
   }
-  const rest = all.filter((w, i) => !used.has(i) && !intentTokens.has(i) && !STOP.has(w) && w.length > 1);
-  return { intent, named, role, rest, services };
+  const restAt = all.map((_, i) => i).filter((i) => !used.has(i) && !intentTokens.has(i) && !STOP.has(all[i]) && all[i].length > 1);
+  // service words still help find a record ("police in Punjab"), but they aren't "not recognised"
+  return { intent, named, role, rest: restAt.map((i) => all[i]), unexplained: restAt.filter((i) => !serviceTokens.has(i)).map((i) => all[i]), services };
 }
 
 /** Words in a title that make it a different post from the role named. */
@@ -326,7 +338,9 @@ function postsForRole(ix: GraphIndex, role: string, scope: string[], rest: strin
     const t = ` ${normalize(p.title)} `;
     // "Prime Minister's Office" staff are not the Prime Minister
     if (!t.includes(` ${roleWords} `) || t.includes(` ${roleWords} s `)) return false;
-    if (!NOT_THE_ROLE.test(roleWords) && NOT_THE_ROLE.test(t.replace(` ${roleWords} `, " "))) return false;
+    // with no body named, "Principal Secretary" is not a "secretary" post (but "the secretary of the PM
+    // office" is); and a "deputy speaker" asked for is a deputy
+    if (!scope.length && !NOT_THE_ROLE.test(roleWords) && NOT_THE_ROLE.test(t)) return false;
     if (!inScope(p)) return false;
     const h = ` ${hay(p)} `;
     return extra.every((w) => h.includes(` ${w}`));
@@ -335,10 +349,12 @@ function postsForRole(ix: GraphIndex, role: string, scope: string[], rest: strin
   const usedRest = posts.length > 0 && rest.length > 0;
   if (!posts.length && rest.length) posts = ix.g.positions.filter((p) => match(p, []));
   const exactPlace = new Set(places);
+  // a post in the body named outranks one in a body beneath it ("the secretary of the PM office")
+  const exactOrg = new Set(scope.filter((id) => ix.org.has(id)));
   const score = (p: Post) => {
     const t = normalize(p.title);
     const jur = ix.org.get(p.org)?.jurisdiction ?? "";
-    return (t.startsWith(roleWords) ? 10 : 0) + (exactPlace.has(jur) || (p.area && exactPlace.has(p.area)) ? 8 : 0) + (p.generated ? 0 : 3) - trailDepth(ix, p);
+    return (t.startsWith(roleWords) ? 10 : 0) + (exactPlace.has(jur) || (p.area && exactPlace.has(p.area)) ? 8 : 0) + (exactOrg.has(p.org) ? 12 : 0) + (p.generated ? 0 : 3) - trailDepth(ix, p);
   };
   return { posts: posts.sort((a, b) => score(b) - score(a) || a.title.localeCompare(b.title)), scored: true, usedRest };
 }
@@ -408,7 +424,8 @@ function resolve(ix: GraphIndex, r: Reading): { subject?: string; choices: strin
     // "police in Punjab": the body in the place named, before the place itself
     if (kind === "jurisdiction" && r.rest.length) {
       const within = ix.search(r.rest.join(" "), 30).find((x) => (x.kind === "organization" || x.kind === "position") && ix.placeTrail(ix.org.get(ix.post.get(x.id)?.org ?? x.id)?.jurisdiction ?? "").some((j) => ids.includes(j.id)));
-      if (within) return { subject: within.id, choices: [], usedRest: true };
+      // found by a plain search of the leftover words, so shown as the closest match
+      if (within) return { subject: within.id, choices: [], usedRest: true, closest: true };
     }
     const pick = inPlace[0] ?? (ids.length === 1 || kind === "jurisdiction" ? ids[0] : undefined);
     if (pick) return { subject: pick, choices: ids.filter((id) => id !== pick) };
@@ -433,7 +450,25 @@ const STATUS_PHRASE: Record<string, string> = {
   holding_over: "holding over after the term ended",
 };
 
-const article = (s: string) => (/^[aeiou]/i.test(s) ? "an" : "a");
+/** "an ombudsman", "a university", "a European…": by sound, for the words record kinds use. */
+const article = (s: string) => (/^(?:[aeio]|u(?!n[iy]|s[eu]|ti|r[aeiou]))/i.test(s) ? "an" : "a");
+
+/**
+ * The post a person is mainly known for, for "who appointed X?": a state office before a party
+ * office, and an executive post before an assembly seat.
+ */
+function mainPost(ix: GraphIndex, p: Human): string | undefined {
+  const rank = (id: string) => {
+    const post = ix.post.get(id);
+    const org = post ? ix.org.get(post.org) : undefined;
+    if (!post) return 9;
+    if (org?.kind === "political_party") return 8;
+    if (post.area || post.seat_type) return 5;
+    return post.role === "head" || post.role === "chief_justice" ? 0 : 2;
+  };
+  const current = p.roles.filter((r) => !r.until).map((r) => r.position);
+  return current.sort((a, b) => rank(a) - rank(b))[0];
+}
 
 class Builder {
   lines: Piece[][] = [];
@@ -530,10 +565,12 @@ function appointerSummary(b: Builder, posts: Post[]) {
   }
   for (const [k, ps] of [...groups].sort((x, y) => y[1].length - x[1].length).slice(0, 8)) {
     const a = ps[0].appointment;
-    const which: Piece[] = ps.length === 1 ? [{ id: ps[0].id }] : [`${ps.length} posts, such as `, { id: ps[0].id }, ","];
-    if (k === "none") b.line(...which, " are not yet recorded with how they are filled.");
-    else if (a?.by) b.line(...which, ` ${ps.length === 1 ? "is" : "are"} ${METHOD_PHRASE[a.method] ?? "filled by"} `, { id: a.by }, a.on_advice_of && ", on the advice of ", a.on_advice_of && { id: a.on_advice_of }, ".");
-    else b.line(...which, `: ${METHOD_LABEL[a!.method]?.toLowerCase()}.`);
+    const one = ps.length === 1;
+    const which: Piece[] = one ? [{ id: ps[0].id }] : [`${ps.length} posts, such as `, { id: ps[0].id }, ","];
+    const method = a ? (METHOD_LABEL[a.method]?.toLowerCase() ?? a.method.replace(/_/g, " ")) : "";
+    if (k === "none") b.line(...which, one ? " is not yet recorded with how it is filled." : " are not yet recorded with how they are filled.");
+    else if (a?.by) b.line(...which, ` ${one ? "is" : "are"} ${METHOD_PHRASE[a.method] ?? "filled by"} `, { id: a.by }, a.on_advice_of && ", on the advice of ", a.on_advice_of && { id: a.on_advice_of }, ".");
+    else b.line(...which, ` ${one ? "is" : "are"} ${method}.`);
     ps.forEach((p) => p.appointment?.legal_basis?.forEach((l) => b.law(l)));
   }
   if (groups.size > 8) b.line(`${groups.size - 8} more patterns are on the posts' pages.`);
@@ -647,7 +684,10 @@ function aboutPost(b: Builder, p: Post) {
 
 /** Answers a question from the graph. */
 export function ask(ix: GraphIndex, input: string): Answer {
-  const { text, removed } = redact(input.slice(0, 300));
+  // redact first, then cut to length: a number straddling the cut would otherwise slip through in part
+  const red = redact(input);
+  const removed = red.removed;
+  const text = red.text.slice(0, 300);
   // the search box removes numbers before Ask sees them; its placeholders still say what went
   for (const [, kind] of text.matchAll(/\[(CNIC|passport number|phone number|email address|long number) removed\]/g)) if (!removed.includes(kind as Redaction)) removed.push(kind as Redaction);
   const question = text.trim();
@@ -660,18 +700,22 @@ export function ask(ix: GraphIndex, input: string): Answer {
     .map((id) => ix.g.services.find((s) => s.id === id)!)
     .map((topic) => ({ topic, bodies: topic.bodies.map((id) => ix.org.get(id)).filter((o): o is Org => !!o) }));
   const b = new Builder(ix);
+  const ignored = found.usedRest ? [] : r.unexplained;
 
-  // a service question, or a service word with nothing else recognised
-  if (services.length && (r.intent === "service" || !r.intent || !found.subject || found.closest)) {
+  // a service question, or a service word with nothing else recognised; a role word asks about a post
+  // ("who is the minister for oil and gas" is not about gas bills)
+  const roleQuestion = !!r.role && r.intent !== "service";
+  // a question that asks who or what about a record it found stays about that record
+  if (services.length && !roleQuestion && (r.intent === "service" || !found.subject || (!r.intent && found.closest))) {
     for (const s of services) for (const o of s.bodies) if (o.website) b.source({ title: `${o.short_name ?? o.name}: official website`, url: o.website });
-    return { ...base, intent: "service", status: "answered", readAs: ["Where to go for: ", services.map((s) => s.topic.title).join("; ")], services, sources: b.sources };
+    return { ...base, intent: "service", status: "answered", readAs: ["Where to go for: ", services.map((s) => s.topic.title).join("; ")], services, sources: b.sources, ignored };
   }
   if (found.ambiguous && r.intent === "appointer" && found.choices.every((id) => ix.post.has(id))) {
     const all = r.role ? postsForRole(ix, r.role, [], r.rest).posts : found.choices.map((id) => ix.post.get(id)!);
     appointerSummary(b, all);
-    return { ...base, intent: "appointer", status: "answered", readAs: [`How ${all.length} posts titled “${r.role ?? "…"}” are filled`], lines: b.lines, laws: b.laws, sources: lawSources(ix, b), choices: found.choices };
+    return { ...base, intent: "appointer", status: "answered", readAs: [`How ${all.length} posts titled “${r.role ?? "…"}” are filled`], lines: b.lines, laws: b.laws, sources: lawSources(ix, b), choices: found.choices, ignored };
   }
-  if (found.ambiguous) return { ...base, intent: r.intent, status: "ambiguous", choices: found.choices, readAs: r.role ? [`Several posts match “${r.role}”`] : ["Several records match"] };
+  if (found.ambiguous) return { ...base, intent: r.intent, status: "ambiguous", choices: found.choices, readAs: r.role ? [`Several posts match “${r.role}”`] : ["Several records match"], ignored };
   if (!found.subject) {
     const near = r.rest.length ? ix.search(r.rest.join(" "), 5).map((x) => x.id) : [];
     return { ...base, intent: r.intent, status: "not_covered", choices: near };
@@ -701,7 +745,7 @@ export function ask(ix: GraphIndex, input: string): Answer {
       }
       break;
     case "appointer": {
-      const post = kind === "person" ? ix.person.get(subject)!.roles.find((x) => !x.until)?.position : headOrSelf;
+      const post = kind === "person" ? mainPost(ix, ix.person.get(subject)!) : headOrSelf;
       if (post) {
         appointer(b, post);
         readAs = ["Who appoints ", { id: post }];
@@ -712,13 +756,13 @@ export function ask(ix: GraphIndex, input: string): Answer {
       break;
     }
     case "accountable": {
-      const target = kind === "jurisdiction" ? (headOrSelf ?? subject) : kind === "person" ? (ix.person.get(subject)!.roles.find((x) => !x.until)?.position ?? subject) : subject;
+      const target = kind === "jurisdiction" ? (headOrSelf ?? subject) : kind === "person" ? (mainPost(ix, ix.person.get(subject)!) ?? subject) : subject;
       accountable(b, target);
       readAs = ["Whom ", { id: target }, " answers to"];
       break;
     }
     case "law": {
-      const target = kind === "person" ? (ix.person.get(subject)!.roles.find((x) => !x.until)?.position ?? subject) : kind === "jurisdiction" ? (headOrSelf ?? subject) : subject;
+      const target = kind === "person" ? (mainPost(ix, ix.person.get(subject)!) ?? subject) : kind === "jurisdiction" ? (headOrSelf ?? subject) : subject;
       if (kind === "law") aboutLaw(b, subject);
       else legalBasis(b, target);
       readAs = ["The law behind ", { id: target }];
@@ -735,8 +779,8 @@ export function ask(ix: GraphIndex, input: string): Answer {
   // every answer says something, even if only that the record holds nothing more
   if (!b.lines.length) b.line("Nothing more is recorded about ", { id: subject }, " yet.");
   b.sources = lawSources(ix, b);
-  const ignored = found.usedRest ? [] : r.rest;
-  return { ...base, intent, status: "answered", subject, readAs, closest: found.closest, ignored, lines: b.lines, sources: b.sources, laws: b.laws, choices: found.choices };
+  // service words alongside a subject ("population of Punjab"): the answer is about the subject, with the services after it
+  return { ...base, intent, status: "answered", subject, readAs, closest: found.closest, ignored, lines: b.lines, sources: b.sources, laws: b.laws, choices: found.choices, services };
 }
 
 /** Whether text typed in the search box reads as a question, so Enter opens Ask instead of search. */
