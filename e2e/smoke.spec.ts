@@ -39,7 +39,10 @@ for (const [name, route] of ROUTES) {
     const problems = watch(page);
     await page.goto(route);
     await expect(page.locator("#app h1").first()).toBeVisible();
-    await page.waitForLoadState("networkidle");
+    // settled when loaded and its fonts are in; "networkidle" waits on every open request, so one
+    // request the preview server is slow to answer times the test out though the page is fine
+    await page.waitForLoadState("load");
+    await page.evaluate(() => document.fonts.ready.then(() => undefined));
 
     // no sideways scrolling at either width
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
