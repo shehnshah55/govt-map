@@ -136,7 +136,7 @@ The UI shows the government in office when the case was filed: `filed` is matche
 - both people must exist and hold or have held at least one public or party office (a role);
 - `sources` must include an official (`.gov.pk`) source, or sources from at least two different outlets.
 
-Minors and relatives without a public role are never recorded.
+Minors and relatives without a public role are never recorded. Ties appear on the "Political families" page (`#/families`), on a tree for each family (`#/family/<person-id>`, generations from `generations()` in `src/lib/families.ts`) and in a "Family" section on each member's page, always with their sources.
 
 ## Form 45 / Form 47 checks (`data/elections/*.yaml`)
 

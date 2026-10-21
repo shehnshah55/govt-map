@@ -35,6 +35,7 @@ import { safeHref } from "../lib/safe-url.ts";
 import { careerSummary } from "../lib/analytics.ts";
 import { checksForSeat } from "../lib/elections.ts";
 import { electionSections, electionTags, form45Panel } from "./election-labels.ts";
+import { familySection } from "./families.ts";
 import type { Human } from "../lib/graph-index.ts";
 
 /** Career records as far as the data goes (§7.14). Each figure says what it is based on. */
@@ -460,6 +461,7 @@ export function personView(ctx: Ctx, id: string): View | undefined {
             ? html`<section><h2>Declared assets</h2><p class="hint">As an elected member, this person files an annual statement of assets and liabilities with the Election Commission (Elections Act 2017, s. 137), published on <a href="https://www.ecp.gov.pk" target="_blank" rel="noopener noreferrer">ecp.gov.pk</a>. It has not been imported yet; see data/assets/README.md.</p></section>`
             : ""
         }
+        ${familySection(ix, person.id)}
         ${person.notes ? html`<section><h2>Notes</h2><p class="prose">${person.notes}</p></section>` : ""}
       </div>
       <aside class="rail">
