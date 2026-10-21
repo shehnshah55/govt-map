@@ -1717,3 +1717,17 @@ table.tl tr.tl-missing .tl-track { background: none; }
 .form45 { border-color: color-mix(in srgb, var(--bad) 45%, var(--line)); display: grid; gap: 10px; }
 .form45 h2 { font-size: var(--s-lg); margin: 0; }
 .form45 p { margin: 0; }
+
+/* Legal case timelines: compact, chronological, each event with its labelled source */
+.case-timeline {
+  margin: 8px 0 0;
+  padding-left: 1.1em;
+  font-size: var(--s-sm);
+  max-width: 46ch;
+}
+.case-timeline li {
+  margin: 0 0 4px;
+}
+.case-timeline .case-src {
+  white-space: nowrap;
+}

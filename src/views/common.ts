@@ -17,6 +17,7 @@ import {
 import type { Holding, Human, Org } from "../lib/graph-index.ts";
 import { mountGraph, type LayoutName, type Lens, type VEdge, type VNode } from "../ui/graph-view.ts";
 import { safeHref } from "../lib/safe-url.ts";
+import { ALLEGATION_STATUSES } from "../lib/policy.ts";
 
 export interface View {
   title: string;
@@ -354,22 +355,41 @@ const CASE_STATUS: Record<string, [string, string]> = {
   pardoned: ["Pardoned", "flag-info"],
 };
 
+const SOURCE_KIND: Record<string, string> = { court_record: "Court record", official: "Official", news: "News report" };
+
+/** The case's dated history as a compact list, oldest first, each event with its own labelled source. */
+function caseTimeline(timeline: NonNullable<Human["legal_cases"]>[number]["timeline"]): Raw | string {
+  if (!timeline?.length) return "";
+  return html`<ol class="case-timeline" aria-label="Case timeline">${timeline.map(
+    (e) => html`<li><span class="num">${e.date}</span>${e.court ? html` · <span class="hint">${e.court}</span>` : ""}<div>${e.description}${
+      e.source_url
+        ? html` <a class="case-src" href="${safeHref(e.source_url)}" title="${e.source_title ?? ""}" target="_blank" rel="noopener noreferrer">${SOURCE_KIND[e.source_type ?? "news"]}</a>`
+        : ""
+    }</div></li>`,
+  )}</ol>`;
+}
+
 export function casesTable(ix: GraphIndex, rows: { person: Human; c: NonNullable<Human["legal_cases"]>[number] }[], showPerson: boolean): Raw {
-  return html`<div class="tablewrap"><table><thead><tr>${showPerson ? html`<th>Person</th>` : ""}<th>Case</th><th>Filed</th><th>Status</th><th>Sentence, fine, custody</th><th>Source</th></tr></thead><tbody>${rows.map(({ person, c }) => {
+  const ext = (s: { title: string; url?: string }) => html`<a href="${safeHref(s.url)}" target="_blank" rel="noopener noreferrer">${s.title}</a>`;
+  return html`<div class="tablewrap"><table class="cases"><thead><tr>${showPerson ? html`<th>Person</th>` : ""}<th>Case and charge</th><th>Outcome</th><th>Filed</th><th>Sentence, fine, custody</th><th>Sources</th></tr></thead><tbody>${rows.map(({ person, c }) => {
     const gov = governmentAt(ix, c.filed);
     const [label, cls] = CASE_STATUS[c.status];
     return html`<tr>
       ${showPerson ? html`<td>${link(ix, person.id)}${person.party ? html`<div class="hint">${partyLink(ix, person.party)}</div>` : ""}</td>` : ""}
-      <td><b>${c.title}</b>${c.charges ? html`<div class="hint">${c.charges}</div>` : ""}${c.court ? html`<div class="hint">${c.court}</div>` : ""}</td>
+      <td><b>${c.title}</b>${c.charges ? html`<div class="case-charge"><span class="hint">Charge:</span> ${c.charges}</div>` : ""}${c.court ? html`<div class="hint">${c.court}</div>` : ""}${
+        ALLEGATION_STATUSES.includes(c.status) ? html`<div class="hint case-allegation">Allegations are not findings of guilt.</div>` : ""
+      }${caseTimeline(c.timeline)}</td>
+      <td class="case-outcome"><span class="tag ${cls}">${label}</span>${c.status_as_of ? html`<div class="hint num">as of ${c.status_as_of}</div>` : ""}${c.outcome ? html`<div class="hint">${c.outcome}</div>` : ""}${
+        c.status_source ? html`<div class="hint">Outcome source: ${ext(c.status_source)}</div>` : ""
+      }</td>
       <td class="num">${c.filed}${c.filed_by ? html`<div class="hint">by ${ix.org.has(c.filed_by) ? link(ix, c.filed_by, ix.shortLabel(c.filed_by)) : c.filed_by}</div>` : ""}${
         gov ? html`<div class="hint">under PM ${link(ix, gov.person, ix.label(gov.person))}${gov.status === "caretaker" ? " (caretaker)" : ""}</div>` : ""
       }</td>
-      <td><span class="tag ${cls}">${label}</span>${c.verdict_date ? html`<div class="hint num">${c.verdict_date}</div>` : ""}${c.outcome ? html`<div class="hint">${c.outcome}</div>` : ""}</td>
       <td>${c.sentence ? html`<div>${c.sentence}</div>` : ""}${c.fine ? html`<div>Fine: ${c.fine}</div>` : ""}${c.custody ? html`<div class="hint">Custody: ${c.custody}</div>` : ""}</td>
-      <td>${c.sources.map((s, i) => html`${i ? html`<br />` : ""}<a href="${safeHref(s.url)}" target="_blank" rel="noopener noreferrer">${s.title}</a>`)}</td>
+      <td>${c.sources.map((s, i) => html`${i ? html`<br />` : ""}${ext(s)}`)}</td>
     </tr>`;
   })}</tbody></table></div>`;
 }
 
 export const CASES_NOTE =
-  "Recorded only from reported court outcomes, with sources. A case filed is not a conviction; acquittals and stays are shown with the same prominence. The government in power is worked out from the filing date.";
+  "Each case is published only with a cited source, and its outcome is shown beside the charge with the date that outcome is stated as of. Charges are allegations: a case filed is not a conviction, and allegations are not findings of guilt. Acquittals and stays are shown with the same prominence as convictions. The government in power is worked out from the filing date. To report an error, open an issue with a source.";
