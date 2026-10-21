@@ -1,11 +1,10 @@
 /**
  * Pakistan Government Graph — data model.
  *
- * The ontology borrows from CivLab's US/SF Gov Graph (entities, positions,
- * people and the legal relationships between them), the Popolo / Open Civic
- * Data standard (Organization, Post, Person, Membership) and the UK/Canadian/
- * Australian machinery-of-government registers (every body carries a type,
- * a parent, a legal basis and a source). See docs/DATA_MODEL.md.
+ * Bodies, posts, people and the legal relationships between them. Every body
+ * carries a type, a parent, a legal basis and a source. The Popolo export uses
+ * the Popolo / Open Civic Data vocabulary (Organization, Post, Person,
+ * Membership). See docs/DATA_MODEL.md.
  *
  * These zod schemas validate the hand-authored YAML in data/ and the types
  * they infer are shared by the build script and the web app.
@@ -547,7 +546,7 @@ export type Tenure = z.infer<typeof Tenure>;
 export type HistoryEntry = z.infer<typeof HistoryEntry>;
 export type Origin = z.infer<typeof Origin>;
 
-/** How a post is filled, in the categories of the platform brief (elected vs unelected by type). */
+/** How a post is filled (elected vs unelected, by type). */
 export type Selection = "elected" | "political" | "constitutional" | "judicial" | "military" | "civil_service" | "regulatory" | "statutory" | "ex_officio";
 export type DataFile = z.infer<typeof DataFile>;
 

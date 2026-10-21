@@ -227,7 +227,7 @@ export interface GraphTab {
   layout: LayoutName;
 }
 
-/** Slide-over detail drawer (platform brief §4.1): summary of any node without leaving the graph. */
+/** Slide-over detail drawer: summary of any node without leaving the graph. */
 export function openDrawer(ctx: Ctx, id: string) {
   const { ix } = ctx;
   document.querySelector(".drawer")?.remove();

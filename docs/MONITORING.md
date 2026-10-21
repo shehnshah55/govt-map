@@ -2,9 +2,9 @@
 
 **Status: design only.** Nothing described here runs yet. What runs today is the weekly freshness check (`.github/workflows/freshness.yml`): it lists stale records and broken links in one issue and never changes data.
 
-This document describes how automated agents could later watch official sources for changes and propose updates. The rule that governs all of it:
+This document describes how automated monitoring scripts could later watch official sources for changes and propose updates. The rule that governs all of it:
 
-> **Agents propose; people decide.** An agent may only open a pull request with a cited diff. Nothing is merged automatically, and a person reviews every change against its source before it is merged.
+> **Scripts propose; people decide.** A monitoring script may only open a pull request with a cited diff. Nothing is merged automatically, and a person reviews every change against its source before it is merged.
 
 ## What to watch
 
@@ -18,9 +18,9 @@ This document describes how automated agents could later watch official sources 
 | **Supreme Court, Federal Constitutional Court and High Courts** | Judges' appointments, elevations and retirements; judgments in cases already recorded | Judicial posts; `legal_cases` status (if published) |
 | **Gazette of Pakistan** and Pakistan Code | New Acts, Ordinances and amendments that create, abolish or change bodies and posts | `laws`, `legal_basis`, `history` |
 
-## How an agent would work
+## How a monitoring script would work
 
-1. **Fetch** each source on a schedule, from official URLs only (§0.2 of the launch plan), and keep the raw documents (PDF or HTML) in a staging area outside the repository.
+1. **Fetch** each source on a schedule, from official URLs only (see Sources in `docs/EDITORIAL_POLICY.md`), and keep the raw documents (PDF or HTML) in a staging area outside the repository.
 2. **Extract** candidate changes into a staging CSV, with the document's URL, title, notification number, date and the date it was fetched. One row per change.
 3. **Match** each row to an existing record by ID. Where a person or body can't be matched with confidence, the row goes into the pull request as a question for the reviewer, not a guess.
 4. **Write** the change into the YAML as a normal edit: close the old role with `until`, add the new role with `since`, and add the `source` with `accessed`. Never delete history.
@@ -33,10 +33,10 @@ This document describes how automated agents could later watch official sources 
 
 ## Rules
 
-- **No auto-merge, ever.** The agent's token can open pull requests, but it can't approve or merge them. Branch protection requires review by a code owner (`.github/CODEOWNERS`).
-- **Official sources only.** Agents don't use press reports as the basis for a change. A press report can only prompt a look at the official source.
-- **No sensitive content by agent.** Agents never add or change `legal_cases`, `declared_assets`, `relatives` or `election_checks` by themselves. They may only flag that an official document seems relevant, in an issue.
-- **Least privilege.** Each agent runs with read access to the repository plus permission to open pull requests, and no other secrets. Scheduled runs use `permissions:` set per job, as the existing workflows do.
+- **No auto-merge, ever.** The script's token can open pull requests, but it can't approve or merge them. Branch protection requires review by a code owner (`.github/CODEOWNERS`).
+- **Official sources only.** Scripts don't use press reports as the basis for a change. A press report can only prompt a look at the official source.
+- **No sensitive content by script.** Scripts never add or change `legal_cases`, `declared_assets`, `relatives` or `election_checks` by themselves. They may only flag that an official document seems relevant, in an issue.
+- **Least privilege.** Each script runs with read access to the repository plus permission to open pull requests, and no other secrets. Scheduled runs use `permissions:` set per job, as the existing workflows do.
 - **Rate and politeness.** Fetch each source at most daily, identify the project in the User-Agent, and respect robots.txt.
 - **Everything is logged.** Each run records what it fetched, what it proposed and what it skipped, as a workflow artifact.
 
