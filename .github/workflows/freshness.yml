@@ -1,5 +1,6 @@
 # Weekly freshness check (docs/LAUNCH_PLAN.md §8). Lists officeholder records not re-checked for
-# 90 days, legal cases due for re-check, and broken source and law links, in one issue:
+# 90 days, legal cases due for re-check, and broken source, law and official-website links
+# (data/official-sites.yaml), in one issue:
 # "Records needing re-verification". It never edits data.
 name: Freshness
 on:
@@ -30,7 +31,7 @@ jobs:
       - run: npm ci
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
-      - name: List every source and law URL in the published data
+      - name: List every source, law and official-website URL in the published data
         run: npx tsx scripts/staleness.ts urls --out link-check/urls.md
       - name: Check links (reported, never fixed automatically)
         uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0

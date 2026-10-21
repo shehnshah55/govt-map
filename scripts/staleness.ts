@@ -1,5 +1,5 @@
 /**
- * Weekly freshness report (docs/LAUNCH_PLAN.md §8). It never edits data: it writes a Markdown
+ * Weekly freshness report. It never edits data: it writes a Markdown
  * report that the scheduled workflow posts to one issue, "Records needing re-verification".
  *
  *   npx tsx scripts/staleness.ts urls  [--out link-check/urls.md]
@@ -35,7 +35,7 @@ export function citedUrls(g: Graph): Map<string, Set<string>> {
     if (Array.isArray(x)) return x.forEach((v) => walk(v, id));
     if (!x || typeof x !== "object") return;
     for (const [k, v] of Object.entries(x)) {
-      if (k === "url" || k === "website") add(v, id);
+      if (k === "url" || k === "website" || k === "source_url") add(v, id);
       else walk(v, id);
     }
   };
@@ -43,6 +43,7 @@ export function citedUrls(g: Graph): Map<string, Set<string>> {
   for (const v of g.verification) walk(v.sources, `verification: ${v.claim}`);
   for (const r of g.relatives) walk(r.sources, `relatives: ${r.from} / ${r.to}`);
   for (const c of g.election_checks) walk(c, `election check: ${c.seat}`);
+  for (const s of g.official_sites ?? []) add(s.url, `official site: ${s.id}`);
   return out;
 }
 
@@ -76,8 +77,16 @@ export function report(full: Graph, today: string, links: { broken: BrokenLink[]
     .filter((p) => p.roles.some((r) => !r.until) && ageDays(p.as_of, today) > STALE_DAYS)
     .sort((a, b) => a.as_of.localeCompare(b.as_of) || a.id.localeCompare(b.id));
   // legal cases have no check date of their own: they are due when their person's record is
-  const casesDue = full.people.filter((p) => p.legal_cases?.length && ageDays(p.as_of, today) > STALE_DAYS).reduce((n, p) => n + p.legal_cases!.length, 0);
+  // only published cases are listed (the issue is public); held-back cases stay in data/
+  const dueCases = g.people.filter((p) => p.legal_cases?.length && ageDays(p.as_of, today) > STALE_DAYS).flatMap((p) => p.legal_cases!.map((c) => ({ p, c })));
+  const casesDue = dueCases.length;
   const urls = new Map([...citedUrls(g)].map(([u, ids]) => [norm(u), ids]));
+  // Registry sites already known to fail from CI runners (data/official-sites.yaml `status`) are marked, not hidden.
+  const siteStatus = new Map((g.official_sites ?? []).map((s) => [norm(s.url), s.status]));
+  const knownIssue = (u: string) => {
+    const st = siteStatus.get(norm(u));
+    return st && st !== "verified" ? ` (known: ${st.replace(/_/g, " ")})` : "";
+  };
   const cell = (t: string) => t.replace(/\|/g, "\\|").replace(/\s+/g, " ").slice(0, 90);
   const lines = [
     MARKER,
@@ -93,7 +102,13 @@ export function report(full: Graph, today: string, links: { broken: BrokenLink[]
     "",
     PUBLISH.legalCases
       ? casesDue
-        ? "See the people above with legal cases: each case's current status must be re-checked against the court record."
+        ? [
+            "Each case's current status must be re-checked against the court record or a fresh source.",
+            "",
+            "| Person | Case | Status | As of |",
+            "|---|---|---|---|",
+            ...dueCases.map(({ p, c }) => `| ${p.name} (\`${p.id}\`) | ${cell(c.title)} | ${c.status} | ${c.status_as_of ?? ""} |`),
+          ].join("\n")
         : "None."
       : `${casesDue} case records belong to people not re-checked for ${STALE_DAYS} days. Legal cases are not published at present, so they are not listed here; check them in \`data/people.yaml\`.`,
     "",
@@ -107,7 +122,7 @@ export function report(full: Graph, today: string, links: { broken: BrokenLink[]
           "",
           "| URL | Result | Cited by |",
           "|---|---|---|",
-          ...broken.map((b) => `| ${cell(b.url)} | ${cell(b.status)} | ${[...(urls.get(norm(b.url)) ?? [])].slice(0, 5).map((id) => `\`${cell(id)}\``).join(", ")} |`),
+          ...broken.map((b) => `| ${cell(b.url)} | ${cell(b.status)}${knownIssue(b.url)} | ${[...(urls.get(norm(b.url)) ?? [])].slice(0, 5).map((id) => `\`${cell(id)}\``).join(", ")} |`),
         ]
       : ["None found, or the link check did not run."]),
     "",
