@@ -1,6 +1,10 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 
+// axe as the site is checked: its defaults, plus label-in-name (WCAG 2.5.3), which axe 4.13 still
+// marks experimental and leaves off, so the suite does not wait for an axe upgrade to catch it
+const axeFor = (page: Page) => new AxeBuilder({ page }).options({ rules: { "label-content-name-mismatch": { enabled: true } } });
+
 /** Every kind of page (docs/LAUNCH_PLAN.md §9.3). */
 const ROUTES: [string, string][] = [
   ["home", "#/"],
@@ -49,7 +53,7 @@ for (const [name, route] of ROUTES) {
     expect(overflow, "horizontal overflow in px").toBeLessThanOrEqual(0);
 
     // no serious or critical accessibility violations
-    const axe = await new AxeBuilder({ page }).analyze();
+    const axe = await axeFor(page).analyze();
     const bad = axe.violations
       .filter((v) => v.impact === "serious" || v.impact === "critical")
       .map((v) => `${v.impact} ${v.id}: ${v.help} (${v.nodes.length}× e.g. ${v.nodes[0]?.target.join(" ")})`);
@@ -172,7 +176,7 @@ test.describe("dark mode and the narrowest phones", () => {
     test(`${route} passes axe in dark mode and fits 320px`, async ({ page }) => {
       await page.goto(route);
       await expect(page.locator("#app h1").first()).toBeVisible();
-      const axe = await new AxeBuilder({ page }).analyze();
+      const axe = await axeFor(page).analyze();
       expect(axe.violations.filter((v) => v.impact === "serious" || v.impact === "critical").map((v) => `${v.id} ${v.nodes[0]?.target.join(" ")}`)).toEqual([]);
       await page.setViewportSize({ width: 320, height: 800 });
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);

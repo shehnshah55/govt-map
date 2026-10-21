@@ -527,6 +527,7 @@ Swept with axe (WCAG 2.2 AA plus best practice) on 25 routes, in light and dark,
 | Sectors heat map below 4.5:1 contrast in both themes (CI never visited the page) | Shade capped at 50% |
 | Touch targets under 24px (WCAG 2.5.8) | 24px between stacked links; tag-style links 24px tall |
 | Heading order on Parliament and Map | Fixed |
+| Home link's spoken name left out its visible "Open data" (WCAG 2.5.3, label in name). axe 4.13 leaves this rule off as experimental; Dependabot's axe 4.14 bump (#21) turned it on and failed | Name now comes from the visible text; the browser tests switch the rule on |
 
 All findings are now zero. Checked by hand:
 
