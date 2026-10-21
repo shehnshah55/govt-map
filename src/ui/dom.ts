@@ -9,6 +9,11 @@ export class Raw {
     return this.html;
   }
 }
+/**
+ * Marks a string as already-safe HTML. Use it only on constants (raw(""), raw("open")) or on markup
+ * whose every dynamic value went through esc() or a schema check, with a comment saying which.
+ * tests/security.test.ts renders every page type from hostile data to catch mistakes.
+ */
 export const raw = (html: string) => new Raw(html);
 
 export function html(strings: TemplateStringsArray, ...values: unknown[]): Raw {

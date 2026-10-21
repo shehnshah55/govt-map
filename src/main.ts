@@ -1,3 +1,4 @@
+import "./fonts.css";
 import "./styles.css";
 import graphData from "../public/data/graph.json";
 import type { Graph, Sector } from "./schema.ts";
@@ -77,6 +78,7 @@ function render(path: string) {
   cleanup = undefined;
   const view = route(path) ?? {
     title: "Not found",
+    // safe: the only dynamic value, the path from the address bar, passes through esc()
     body: raw(`<header class="pagehead"><h1>Not found</h1><p class="lede">Nothing in the graph matches <span class="mono">${esc(path)}</span>. Try the search box.</p></header>`),
   };
   app.innerHTML = view.body.html;
@@ -125,7 +127,7 @@ function showSuggestions() {
   sel = -1;
   box.hidden = !results.length;
   box.innerHTML = results
-    .map((r) => `<a href="${hrefFor(ix, r.id)}" role="option"><span class="chip">${esc(r.kind === "jurisdiction" ? "place" : r.kind === "organization" ? "body" : r.kind === "position" ? "post" : r.kind)}</span><span>${esc(r.label)}</span>${r.sub ? `<span class="sub">${esc(r.sub)}</span>` : ""}</a>`)
+    .map((r) => `<a href="${esc(hrefFor(ix, r.id))}" role="option"><span class="chip">${esc(r.kind === "jurisdiction" ? "place" : r.kind === "organization" ? "body" : r.kind === "position" ? "post" : r.kind)}</span><span>${esc(r.label)}</span>${r.sub ? `<span class="sub">${esc(r.sub)}</span>` : ""}</a>`)
     .join("");
 }
 input.addEventListener("input", showSuggestions);

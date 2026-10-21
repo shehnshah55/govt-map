@@ -4,6 +4,7 @@ import type { Org, Post } from "../lib/graph-index.ts";
 import { esc, html, raw, type Raw } from "../ui/dom.ts";
 import { hemicycle } from "../ui/hemicycle.ts";
 import { appointmentSentence, holdingFlags, hrefFor, link, originTag, partyLink, postTags, roleOf, selectionTag, type Ctx, type View } from "./common.ts";
+import { safeHref } from "../lib/safe-url.ts";
 
 export function parliamentView(ctx: Ctx): View {
   const { ix } = ctx;
@@ -162,7 +163,7 @@ export function mapView(ctx: Ctx): View {
     <header class="pagehead"><div class="eyebrow">Geography</div><h1>Where the state sits</h1>
       <p class="lede">Headquarters of federal, provincial and territorial bodies by city. District field offices are left out. Bodies without a recorded headquarters are placed in their government's capital.</p></header>
     <div class="layout">
-      <div class="panel mapbox">${raw(svg)}<ul class="plain hint" style="margin-top:10px">${base.notes.map((n) => html`<li>${n}</li>`)}</ul></div>
+      <div class="panel mapbox">${raw(svg) /* safe: city names come from the fixed CITIES table and pass through esc(); the base map is constant; the rest is numbers */}<ul class="plain hint" style="margin-top:10px">${base.notes.map((n) => html`<li>${n}</li>`)}</ul></div>
       <aside class="rail">${cities.map(
         ([city, list]) => html`<div class="panel"><h3>${city} · ${list.length}</h3><ul class="plain">${list
           .filter((o) => !o.parent || ix.org.get(o.parent)?.kind === "state" || ["regulator", "court", "constitutional_body", "armed_service", "military_hq", "legislature", "chamber"].includes(o.kind))
@@ -193,7 +194,7 @@ export function verificationView(ctx: Ctx): View {
           <div class="meta"><span class="tag ${cls[x.status]}">${x.status}</span>${x.origin ? html`<span class="hint">from ${x.origin}</span>` : ""}<span class="hint">checked ${x.checked}</span></div>
           ${x.finding ? html`<p style="margin-top:6px">${x.finding}</p>` : ""}
           ${x.records?.length ? html`<div class="hint" style="margin-top:6px">Records: ${x.records.map((r, i) => html`${i ? ", " : ""}${link(ix, r)}`)}</div>` : ""}</div>
-        <div><ul class="plain">${x.sources.map((s) => html`<li>${s.url ? html`<a href="${s.url}" target="_blank" rel="noopener">${s.title}</a>` : s.title}</li>`)}</ul></div>
+        <div><ul class="plain">${x.sources.map((s) => html`<li>${s.url ? html`<a href="${safeHref(s.url)}" target="_blank" rel="noopener noreferrer">${s.title}</a>` : s.title}</li>`)}</ul></div>
       </div>`,
     )}</div>`;
   return { title: "Verification", body };

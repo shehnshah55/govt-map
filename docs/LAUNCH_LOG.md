@@ -179,3 +179,73 @@ Because the CivLab layout needs the live site, and the network is still blocked,
 
 - Network access (blocks the CivLab layout, Form 45/47 data, declared assets and every data phase).
 - Lawyer review (§10) now also covers the "not legally elected" label.
+
+---
+
+## 2026-10-02 · Phase 1: Security hardening
+
+Branch `launch/phase-1-security`, stacked on `launch/home-pm-office-map` (PR #4) at `1c4b3af`. No network access was needed; no data changed.
+
+### What changed
+
+- **URLs from the data:**
+  - `src/lib/safe-url.ts` holds one rule: `https:` only (`http:` only for hosts in an allowlist, empty today). It rejects `javascript:`, `data:`, `vbscript:`, mixed-case and whitespace variants, and URLs with credentials.
+  - `Source.url`, `Organization.website` and `Law.url` use it in the schema. The asset CSV check in `compile.ts` uses it too.
+  - All data URLs already met the rule.
+  - Views also wrap every data URL in `safeHref()`, and every external link has `rel="noopener noreferrer"`.
+- **`raw()` audit:**
+  - Party colours must be `#rrggbb` (they go into SVG attributes and inline styles).
+  - The hemicycle and search suggestions now escape their hand-built attributes.
+  - Each remaining dynamic `raw()` says why it is safe.
+- **Escaping test:** `tests/security.test.ts` injects `<script>`, `"><img onerror>`, `<svg onload>` and `javascript:` URLs into every text and URL field. It then renders every page type, more than 1,000 pages, and scans the markup for real tags, `on*` attributes and dangerous URLs.
+  - Checked that it fails when a single `safeHref()` or `esc()` is removed.
+- **Content-Security-Policy:** a `<meta>` in `index.html`: `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'none'; object-src 'none'`.
+  - The single-file build gets its own policy from `vite.config.ts`: its inline script is allowed by SHA-256 hash, never `'unsafe-inline'`, and its inlined fonts by `data:`.
+  - **Deviation from §3.1:** `frame-ancestors 'none'` is left out. Browsers ignore it in a `<meta>` tag and log an error, so it only works as an HTTP header, which GitHub Pages can't set.
+  - `object-src 'none'` and a referrer policy were added.
+- **Fonts:** self-hosted from the Fontsource npm packages (SIL OFL 1.1), replacing Google Fonts. Only the weights and subsets in use are loaded, woff2 only, about 380 KB in total. The Urdu font is the Arabic-script subset of Noto Nastaliq Urdu, weight 400 only (the only weight the site uses).
+  - **New dependencies:** `@fontsource/ibm-plex-sans`, `@fontsource/ibm-plex-mono`, `@fontsource/noto-nastaliq-urdu` and `@fontsource-variable/source-serif-4`. They are needed so the site makes no runtime call to a font CDN (§0.4).
+- **Build check:** `npm run check:build` (`scripts/check-build.ts`) fails if a built page:
+  - lacks the CSP;
+  - allows `'unsafe-inline'`, `'unsafe-eval'` or a wildcard for scripts;
+  - has an inline script without its hash;
+  - loads anything from another site.
+- **CI and supply chain:**
+  - Actions are pinned to the commits their tags pointed at today: checkout v4.4.0, setup-node v4.4.0, upload-pages-artifact v3.0.1, deploy-pages v4.0.5.
+  - CI is `contents: read`. The Pages workflow grants nothing at workflow level and gives its job only what deployment needs.
+  - Checkout no longer keeps the token.
+  - CI runs `npm audit --audit-level=high`, the single-file build and `check:build`.
+  - Dependabot is set to weekly, grouped updates for npm and github-actions.
+- **Repository files:**
+  - `SECURITY.md`: private vulnerability reporting, or a details-free issue.
+  - `.github/CODEOWNERS`: @shehnshah55.
+  - A PR template with the §0.2 source checklist.
+  - Issue forms: Correction request, New data and Bug. Blank issues are off.
+- **§10:** added "review from Code Owners" to the branch-protection item, and a 👤 item to enable private vulnerability reporting.
+
+### Verified
+
+- **Gates on a clean clone:** all pass:
+  - `npm audit --audit-level=high`: 0 vulnerabilities
+  - `validate`
+  - `test`: 49 tests
+  - `typecheck`
+  - `build`
+  - `build:single`
+  - `check:build`
+  - `audit:coverage -- --check`
+- **Chromium, on the dev server, the production build and the single file (`file://`):** 10 routes each, including the graph explorer, parliament, map and a person with an Urdu name.
+  - Every page renders and all 7 font faces load.
+  - No CSP violations, no console errors and no requests to any other host.
+  - An injected `<img onerror>`, a `javascript:` link and an inline `<script>` were all blocked, with CSP reports, in both the production build and the single file.
+- **Secret scan:** gitleaks 8.28.0 (release checksum verified). All 7 remote branches were fetched first; the clone is not shallow.
+  - `gitleaks git --log-opts=--all`: 19 commits, **no leaks found**. The other 4 of the 23 commits are merge commits.
+  - `gitleaks dir` on the working tree: no leaks found.
+  - A history-wide search for e-mail addresses and Pakistani phone numbers found only the dummy `user:pass@example.org` in the new URL test.
+- **Coverage:** unchanged, since no data changed.
+
+### Open
+
+- 👤 Enable private vulnerability reporting, secret scanning and Dependabot alerts. Make branch protection require code-owner review (§10).
+- When a project e-mail exists, add it to `SECURITY.md` and the Correction request form.
+- `frame-ancestors` (clickjacking protection) needs an HTTP header. If the site moves to a host that can set headers, add `frame-ancestors 'none'` there.

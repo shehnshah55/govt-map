@@ -118,13 +118,13 @@ export function hemicycle(ix: GraphIndex, chamberId: string): Raw {
       if (taken.has(s)) continue;
       const href = b.party.startsWith("party-") ? `#/org/${b.party}` : `#/org/${chamberId}`;
       circles.push(
-        `<a href="${href}"><circle class="hemi-seat" cx="${(cx + s.x * R).toFixed(1)}" cy="${(cy - s.y * R).toFixed(1)}" r="${(r * R).toFixed(1)}" fill="${color(b.party)}"><title>${esc(label(b.party))} (${b.side}) — member not yet recorded; click for the party</title></circle></a>`,
+        `<a href="${esc(href)}"><circle class="hemi-seat" cx="${(cx + s.x * R).toFixed(1)}" cy="${(cy - s.y * R).toFixed(1)}" r="${(r * R).toFixed(1)}" fill="${esc(color(b.party))}"><title>${esc(label(b.party))} (${b.side}) — member not yet recorded; click for the party</title></circle></a>`,
       );
     }
   }
   const namedSvg = named.map(({ occ, party, x, y }) => {
     const tip = [occ.person.name, label(party), occ.seat, ...occ.offices].filter(Boolean).join(" · ");
-    return `<a href="#/person/${esc(occ.person.id)}"><circle class="hemi-seat" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(r * R * 1.15).toFixed(1)}" fill="${color(party)}" stroke="var(--ink)" stroke-width="2.4"><title>${esc(tip)}</title></circle></a>`;
+    return `<a href="#/person/${esc(occ.person.id)}"><circle class="hemi-seat" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(r * R * 1.15).toFixed(1)}" fill="${esc(color(party))}" stroke="var(--ink)" stroke-width="2.4"><title>${esc(tip)}</title></circle></a>`;
   });
   const presiding = presidingId ? occupants.get(presidingId) : undefined;
   const totals = (s: "treasury" | "opposition" | "other") => comp.parties.filter((p) => p.side === s).reduce((n, p) => n + p.seats, 0);
@@ -137,16 +137,16 @@ export function hemicycle(ix: GraphIndex, chamberId: string): Raw {
   </svg>`;
 
   const legendRow = (p: (typeof comp.parties)[number]) =>
-    html`<li><i style="background:${raw(color(p.party))}"></i>${p.party.startsWith("party-") ? html`<a href="#/org/${p.party}">${label(p.party)}</a>` : label(p.party)} <span class="hint num">${p.seats}</span></li>`;
+    html`<li><i style="background:${color(p.party)}"></i>${p.party.startsWith("party-") ? html`<a href="#/org/${p.party}">${label(p.party)}</a>` : label(p.party)} <span class="hint num">${p.seats}</span></li>`;
   const officeHolders = named.filter((n) => n.occ.offices.length);
   return html`<div class="hemi-wrap">
-    ${raw(svg)}
+    ${raw(svg) /* safe: names and tooltips pass through esc(); hrefs are ids (schema: [a-z0-9-]) and escaped; fills are #rrggbb (schema) or CSS vars; the rest is numbers */}
     <div class="hemi-legend">
       <div><h4>Treasury benches · ${totals("treasury")}</h4><ul>${comp.parties.filter((p) => p.side === "treasury").map(legendRow)}</ul></div>
       <div><h4>Opposition · ${totals("opposition")}</h4><ul>${comp.parties.filter((p) => p.side === "opposition").map(legendRow)}</ul></div>
       ${totals("other") ? html`<div><h4>Other or vacant · ${totals("other")}</h4><ul>${comp.parties.filter((p) => p.side === "other").map(legendRow)}</ul></div>` : ""}
       <div><h4>Office-holders in this House (ringed)</h4><ul>${officeHolders.map(
-        (n) => html`<li><i style="background:${raw(color(n.party))}"></i><a href="#/person/${n.occ.person.id}">${n.occ.person.name}</a> <span class="hint">${label(n.party)}${n.occ.seat ? ` · ${n.occ.seat}` : ""} · ${n.occ.offices.join("; ")}</span></li>`,
+        (n) => html`<li><i style="background:${color(n.party)}"></i><a href="#/person/${n.occ.person.id}">${n.occ.person.name}</a> <span class="hint">${label(n.party)}${n.occ.seat ? ` · ${n.occ.seat}` : ""} · ${n.occ.offices.join("; ")}</span></li>`,
       )}</ul></div>
     </div>
     <p class="hint" style="margin-top:10px">Party positions as of ${comp.as_of} (${comp.confidence} confidence). ${comp.notes ?? ""} Ringed seats are members recorded by name. Other seats show party strength only, not individual members.</p>

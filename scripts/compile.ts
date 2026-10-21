@@ -13,6 +13,7 @@
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import { parse } from "yaml";
+import { isSafeUrl } from "../src/lib/safe-url.ts";
 import {
   DataFile,
   Jurisdiction,
@@ -388,8 +389,8 @@ export function compile(dataDir: string): CompileResult {
         errors.push(`${file}: unknown person "${pid}"`);
         continue;
       }
-      if (!url?.startsWith("http") || !Number(assets)) {
-        errors.push(`${file}: row for ${pid} needs a numeric assets_pkr and a source_url`);
+      if (!isSafeUrl(url) || !Number(assets)) {
+        errors.push(`${file}: row for ${pid} needs a numeric assets_pkr and an https source_url`);
         continue;
       }
       (person.declared_assets ??= []).push({

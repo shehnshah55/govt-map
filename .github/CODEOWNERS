@@ -1,0 +1,10 @@
+# Every change needs review from the project owner. Branch protection must require code-owner
+# review for this to take effect (repository Settings, see docs/LAUNCH_PLAN.md §10).
+*                    @shehnshah55
+
+# Called out so they stay owner-reviewed even if the default rule above changes.
+/data/people.yaml    @shehnshah55
+/data/assets/        @shehnshah55
+/src/schema.ts       @shehnshah55
+/.github/            @shehnshah55
+/SECURITY.md         @shehnshah55

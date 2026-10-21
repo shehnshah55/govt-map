@@ -1,0 +1,41 @@
+name: Correction request
+description: Something on the site is wrong or out of date.
+title: "Correction: "
+labels: ["correction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. Anyone can ask for a correction, including the people named on the site. Corrections are checked against the source you give and recorded publicly in the verification log.
+        Please don't include private contact details or personal documents here; this page is public.
+  - type: input
+    id: record
+    attributes:
+      label: Page or record
+      description: The address of the page with the error (for example https://…/#/person/…), or the record ID.
+    validations:
+      required: true
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What is wrong
+      description: What the site says now, and what it should say.
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source
+      description: A link to an official record if possible (Gazette, ECP, Assembly or court website, an official notification), otherwise a news report. We can't change a record without a source.
+    validations:
+      required: true
+  - type: dropdown
+    id: relation
+    attributes:
+      label: Are you the person named, or acting for them?
+      options:
+        - "No"
+        - "Yes, I am the person named"
+        - "Yes, I act for the person named"
+    validations:
+      required: false
