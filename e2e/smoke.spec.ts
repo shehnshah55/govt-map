@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 
-/** Every kind of page (docs/LAUNCH_PLAN.md §9.3). */
+/** Every kind of page. */
 const ROUTES: [string, string][] = [
   ["home", "#/"],
   ["org: Ministry of Health", "#/org/fed-min-nhsrc"],
@@ -17,6 +17,8 @@ const ROUTES: [string, string][] = [
   ["verification", "#/verification"],
   ["accountability", "#/accountability"],
   ["search", "#/search?q=minister"],
+  ["find a service", "#/find?q=How%20do%20I%20renew%20my%20CNIC%3F"],
+  ["official websites", "#/sources"],
   ["facts and figures", "#/figures"],
   ["evidence list", "#/figures/posts-by-selection/elected"],
   ["political families", "#/families"],
@@ -92,4 +94,11 @@ test("published legal cases show the outcome beside the charge, dated and cited;
   await page.goto("#/person/asif-ali-zardari");
   await expect(page.locator("#app h1").first()).toBeVisible();
   await expect(page.getByText("Criminal and accountability cases")).toHaveCount(0);
+});
+
+test("old #/ask links open Find a service", async ({ page }) => {
+  await page.goto("#/ask?q=passport");
+  await expect(page.locator("#app h1").first()).toContainText("passport");
+  await expect(page.locator("#app .eyebrow").first()).toHaveText("Find a service");
+  expect(new URL(page.url()).hash).toBe("#/find?q=passport");
 });

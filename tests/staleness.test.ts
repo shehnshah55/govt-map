@@ -44,7 +44,9 @@ describe("freshness report", () => {
       const row = markdown.split("\n").find((l) => l.startsWith(`| ${b.url} `))!;
       expect(row.split("|").at(-2)!.trim(), b.url).toMatch(/^`.+`/);
     }
-    expect(links.broken.some((b) => b.url.endsWith(".gov.pk/") && !citedUrls(graph).has(b.url))).toBe(true);
+    // the fixture's bare-domain case: cited without the slash lychee adds (the official-sites registry, which
+    // stores homepages with a slash, is left out so this still exercises the normalisation)
+    expect(links.broken.some((b) => b.url.endsWith(".gov.pk/") && !citedUrls({ ...graph, official_sites: [] }).has(b.url))).toBe(true);
   });
 
   it("reads the older fail_map shape too", () => {

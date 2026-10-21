@@ -94,7 +94,7 @@ A YAML file may declare `defaults.organizations` / `defaults.positions`, which a
 | Field | Values | How it is set |
 |---|---|---|
 | `_origin` (what creates the office or body) | constitutional, statutory, executive, conventional, unrecorded | From the first instrument in `legal_basis` (Constitution or amendment → constitutional; Act, Ordinance or Order → statutory; Rules of Business or notification → executive; a law's `creates` overrides). Departments without a basis are executive; other bodies inherit their parent's origin. Can be overridden with `origin`. Posts use their appointment's legal basis, falling back to their body's origin. |
-| `_selection` (how a post is filled, the brief's elected/unelected taxonomy) | elected, political, constitutional, judicial, military, civil_service, regulatory, statutory, ex_officio | From the appointment method, the body's branch and kind, and the appointing authority. For example, appointment at the PM's advice with no fixed term is `political`. |
+| `_selection` (how a post is filled: elected or unelected, by type) | elected, political, constitutional, judicial, military, civil_service, regulatory, statutory, ex_officio | From the appointment method, the body's branch and kind, and the appointing authority. For example, appointment at the PM's advice with no fixed term is `political`. |
 | `_tenure` | fixed, age_limit, pleasure, coterminous, service, elected_term (+ years, age, renewable, extension_by, holdover) | Authored `tenure`, or derived: judges retire at 65 (SC, Art. 179) or 62 (HC, Art. 195); political appointees serve at pleasure; civil servants and military hold service postings; "N years" terms are fixed. |
 
 ## Legal lineage and tenure (`data/annotations/*.yaml`)

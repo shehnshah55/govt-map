@@ -1,5 +1,5 @@
 /**
- * Political families (docs/LAUNCH_PLAN.md §7.15): groups of officeholders connected by recorded
+ * Political families: groups of officeholders connected by recorded
  * family ties. Only ties that pass the editorial policy reach the graph (scripts/compile.ts checks
  * that both people hold or held an office, and the sourcing), so everything here is publishable.
  */
