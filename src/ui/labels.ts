@@ -156,7 +156,7 @@ export const CONFIDENCE_NOTE = {
   low: "Provisional. Needs verification before use.",
 } as const;
 
-/** How a post is filled — the platform brief's elected / unelected taxonomy. */
+/** How a post is filled: the elected / unelected taxonomy. */
 export const SELECTION_LABEL = {
   elected: "Elected",
   political: "Political appointee",

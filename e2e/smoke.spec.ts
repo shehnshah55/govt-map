@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 
-/** Every kind of page (docs/LAUNCH_PLAN.md §9.3). */
+/** Every kind of page. */
 const ROUTES: [string, string][] = [
   ["home", "#/"],
   ["org: Ministry of Health", "#/org/fed-min-nhsrc"],

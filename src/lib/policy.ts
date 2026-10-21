@@ -1,5 +1,5 @@
 /**
- * The editorial policy, as code (docs/EDITORIAL_POLICY.md, docs/LAUNCH_PLAN.md §4).
+ * The editorial policy, as code (docs/EDITORIAL_POLICY.md).
  *
  * What the public build may contain is decided here, once: the site, graph.json and every export
  * are written from publicGraph(), so a field hidden here is absent from all of them, not only from
@@ -7,7 +7,7 @@
  */
 import type { Graph, Source } from "../schema.ts";
 
-/** Decisions from SS (docs/LAUNCH_LOG.md, §1 answers). */
+/** Publishing decisions (docs/EDITORIAL_POLICY.md). */
 export const PUBLISH = {
   /** §1.4: hidden from the public build and exports until a Pakistani lawyer has reviewed them (§4.4). */
   legalCases: false,

@@ -1,5 +1,5 @@
 /**
- * Small, dependency-free charts for the facts-and-figures pages (§7.14 rule 7).
+ * Small, dependency-free charts for the facts-and-figures pages.
  *
  * Bar charts are real <table>s: the label, the bar and the value sit in one row, so the chart is
  * its own data table for screen readers, print and copy-paste. Bars are a single hue (the

@@ -2,7 +2,7 @@
 
 The Pakistan Government Graph records how the Pakistani state is organised and who holds public office. This policy says what the project records, what it leaves out, and how it handles sources, sensitive content and corrections. Parts of it are enforced in code. Those parts name the file that enforces them.
 
-The policy and the sensitive content it covers are reviewed by a Pakistani lawyer before the project is made public (docs/LAUNCH_PLAN.md §4.4 and §10), with the Prevention of Electronic Crimes Act 2016 (as amended in 2025) and defamation law in mind.
+The policy and the sensitive content it covers are reviewed by a Pakistani lawyer before the project is made public, with the Prevention of Electronic Crimes Act 2016 (as amended in 2025) and defamation law in mind.
 
 ## Scope
 

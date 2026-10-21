@@ -1,5 +1,5 @@
 /**
- * Facts and figures (docs/LAUNCH_PLAN.md §7.14). Every number here is derived from the compiled
+ * Facts and figures. Every number here is derived from the compiled
  * graph (public/data/graph.json, written at build time); nothing is typed in by hand.
  *
  * Each bar chart is a grouping of record ids, so the same function gives both the count and the

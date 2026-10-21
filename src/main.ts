@@ -32,7 +32,7 @@ function route(path: string): View | undefined {
     case undefined:
       return homeView(ctx);
     case "org":
-    case "departments": // CivLab-style alias: /departments/<id>
+    case "departments": // alias: /departments/<id>
       return orgView(ctx, seg[1]);
     case "post":
       return postView(ctx, seg[1]);
