@@ -57,6 +57,12 @@ If they are published later, these rules apply:
 
 Descriptions say what a body, law or office does, not whether it is good. They don't use adjectives about people.
 
+## Official websites and Ask
+
+- `data/official-sites.yaml` lists the official websites of public bodies. An entry must be on a government domain (`.gov.pk`, `.gop.pk`, `.gos.pk`, `.gob.pk`, `.gok.pk`, `.gkp.pk`) or on a host listed in `OFFICIAL_ORG_HOSTS` with the reason it is that body's own site. This is enforced (`isOfficialSiteUrl` in `src/lib/policy.ts`). Private companies, aggregators and unofficial mirrors are never listed.
+- Each entry records when it was last checked and its result: `verified`, `cert_issue` (the site loads but its TLS certificate chain is incomplete) or `unreachable_from_ci` (an automated check could not load it, often because the site blocks networks outside Pakistan). Unreachable sites are flagged, not dropped, until someone confirms them by hand. The weekly freshness report re-checks every URL.
+- **Ask** (`#/ask`) only points to official websites and to records in the graph. It never writes an answer, gives advice or quotes fees, and it runs entirely in the browser: questions are not sent anywhere.
+
 ## Corrections and right of reply
 
 - Anyone, including the people named, can ask for a correction using the **Correction request** form on the project's GitHub Issues page. A dedicated email address will be added when one exists.

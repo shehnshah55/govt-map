@@ -43,6 +43,7 @@ export function citedUrls(g: Graph): Map<string, Set<string>> {
   for (const v of g.verification) walk(v.sources, `verification: ${v.claim}`);
   for (const r of g.relatives) walk(r.sources, `relatives: ${r.from} / ${r.to}`);
   for (const c of g.election_checks) walk(c, `election check: ${c.seat}`);
+  for (const s of g.official_sites ?? []) add(s.url, `official site: ${s.id}`);
   return out;
 }
 
@@ -78,6 +79,12 @@ export function report(full: Graph, today: string, links: { broken: BrokenLink[]
   // legal cases have no check date of their own: they are due when their person's record is
   const casesDue = full.people.filter((p) => p.legal_cases?.length && ageDays(p.as_of, today) > STALE_DAYS).reduce((n, p) => n + p.legal_cases!.length, 0);
   const urls = new Map([...citedUrls(g)].map(([u, ids]) => [norm(u), ids]));
+  // Registry sites already known to fail from CI runners (data/official-sites.yaml `status`) are marked, not hidden.
+  const siteStatus = new Map((g.official_sites ?? []).map((s) => [norm(s.url), s.status]));
+  const knownIssue = (u: string) => {
+    const st = siteStatus.get(norm(u));
+    return st && st !== "verified" ? ` (known: ${st.replace(/_/g, " ")})` : "";
+  };
   const cell = (t: string) => t.replace(/\|/g, "\\|").replace(/\s+/g, " ").slice(0, 90);
   const lines = [
     MARKER,
@@ -107,7 +114,7 @@ export function report(full: Graph, today: string, links: { broken: BrokenLink[]
           "",
           "| URL | Result | Cited by |",
           "|---|---|---|",
-          ...broken.map((b) => `| ${cell(b.url)} | ${cell(b.status)} | ${[...(urls.get(norm(b.url)) ?? [])].slice(0, 5).map((id) => `\`${cell(id)}\``).join(", ")} |`),
+          ...broken.map((b) => `| ${cell(b.url)} | ${cell(b.status)}${knownIssue(b.url)} | ${[...(urls.get(norm(b.url)) ?? [])].slice(0, 5).map((id) => `\`${cell(id)}\``).join(", ")} |`),
         ]
       : ["None found, or the link check did not run."]),
     "",

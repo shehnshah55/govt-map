@@ -1,0 +1,2038 @@
+# Official websites of public bodies (docs/EDITORIAL_POLICY.md § Official websites and Ask).
+#
+# One entry per website: its homepage, the government it belongs to, a topic, what people use
+# it for (English, Urdu and Roman Urdu keywords for #/ask) and the body in the graph that runs it.
+# Only government domains, or hosts listed in OFFICIAL_ORG_HOSTS (src/lib/policy.ts), are allowed.
+#
+# status is the result of the last check (GET, following redirects, retried once):
+#   verified             the homepage loaded
+#   cert_issue           it loads, but the server sends an incomplete TLS certificate chain
+#   unreachable_from_ci  an automated check could not load it (often: blocks networks outside
+#                        Pakistan). Kept, not dropped, until checked by hand.
+# The weekly freshness workflow re-checks every URL here.
+official_sites:
+  # ── Federal ───────────────────────────────────────────────────────────────
+  - id: agpr
+    name: "Accountant General Pakistan Revenues"
+    url: https://agpr.gov.pk/
+    level: federal
+    category: government
+    services: ["pension slip", "salary slip", "GP fund"]
+    status: verified
+    checked: "2026-10-21"
+  - id: aiou
+    name: "Allama Iqbal Open University"
+    url: https://aiou.edu.pk/
+    level: federal
+    category: jobs_education
+    services: ["AIOU", "admission", "open university", "distance learning"]
+    status: verified
+    checked: "2026-10-21"
+  - id: anf
+    name: "Anti Narcotics Force"
+    url: https://anf.gov.pk/
+    level: federal
+    category: police_safety
+    body_id: fed-anf
+    services: ["narcotics", "drugs complaint", "منشیات"]
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: agp
+    name: "Auditor-General of Pakistan"
+    name_ur: "آڈیٹر جنرل آف پاکستان"
+    url: https://agp.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-agp
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: bisp
+    name: "Benazir Income Support Programme"
+    url: https://bisp.gov.pk/
+    level: federal
+    category: social_protection
+    body_id: fed-bisp
+    services: ["BISP", "Benazir", "Kafaalat", "kafalat", "Benazir card", "بی آئی ایس پی", "بینظیر", "taleemi wazaif", "nashonuma", "financial assistance", "maali imdad", "مالی امداد"]
+    status: verified
+    checked: "2026-10-21"
+  - id: 8171-bisp
+    name: "BISP 8171 Eligibility Check Portal"
+    url: https://8171.bisp.gov.pk/
+    level: federal
+    category: social_protection
+    body_id: fed-bisp
+    services: ["8171", "BISP eligibility", "Benazir eligibility", "8171 check", "Kafaalat status"]
+    portal: true
+    status: verified
+    checked: "2026-10-21"
+  - id: invest
+    name: "Board of Investment"
+    url: https://invest.gov.pk/
+    level: federal
+    category: tax_business
+    body_id: fed-boi
+    services: ["foreign investment", "investment", "business visa"]
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: cabinet
+    name: "Cabinet Division"
+    url: https://cabinet.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-cabinet-division
+    status: verified
+    checked: "2026-10-21"
+  - id: savings
+    name: "Central Directorate of National Savings"
+    url: https://savings.gov.pk/
+    level: federal
+    category: tax_business
+    body_id: fed-national-savings
+    services: ["prize bond", "prize bond result", "national savings", "behbood", "قومی بچت", "پرائز بانڈ"]
+    status: verified
+    checked: "2026-10-21"
+  - id: cppa
+    name: "Central Power Purchasing Agency"
+    url: https://cppa.gov.pk/
+    level: federal
+    category: utilities
+    body_id: fed-cppa
+    status: verified
+    checked: "2026-10-21"
+  - id: cc
+    name: "Competition Commission of Pakistan"
+    url: https://cc.gov.pk/
+    level: federal
+    category: regulators
+    body_id: fed-ccp
+    services: ["competition complaint", "cartel"]
+    status: verified
+    checked: "2026-10-21"
+  - id: cga
+    name: "Controller General of Accounts"
+    url: https://cga.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-cga
+    status: verified
+    checked: "2026-10-21"
+  - id: cii
+    name: "Council of Islamic Ideology"
+    url: https://cii.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-cii
+    status: verified
+    checked: "2026-10-21"
+  - id: dgip
+    name: "Directorate General of Immigration & Passports"
+    url: https://dgip.gov.pk/
+    level: federal
+    category: identity_travel
+    body_id: fed-passports
+    services: ["passport", "pasport", "پاسپورٹ", "passport fee", "passport renewal", "urgent passport", "e-passport", "visa"]
+    status: verified
+    checked: "2026-10-21"
+  - id: dra
+    name: "Drug Regulatory Authority of Pakistan"
+    name_ur: "ڈرگ ریگولیٹری اتھارٹی آف پاکستان"
+    url: https://www.dra.gov.pk/
+    level: federal
+    category: health
+    body_id: fed-drap
+    services: ["medicine registration", "drug registration", "medicine price", "DRAP", "fake medicine", "دوا"]
+    status: verified
+    checked: "2026-10-21"
+  - id: ead
+    name: "Economic Affairs Division"
+    url: https://ead.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-min-economic-affairs
+    status: verified
+    checked: "2026-10-21"
+  - id: ecp
+    name: "Election Commission of Pakistan"
+    name_ur: "الیکشن کمیشن آف پاکستان"
+    url: https://ecp.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-ecp
+    services: ["vote", "voter registration", "vote ka pata", "8300", "polling station", "electoral roll", "ووٹ", "انتخابات", "election", "elections"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "HTTP 500 when checked"
+  - id: eobi
+    name: "Employees' Old-Age Benefits Institution"
+    url: https://eobi.gov.pk/
+    level: federal
+    category: social_protection
+    body_id: fed-eobi
+    services: ["EOBI", "old-age pension", "pension", "پنشن", "budhapa pension"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: establishment
+    name: "Establishment Division"
+    url: https://establishment.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-establishment-division
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "HTTP 500 when checked"
+  - id: fesco
+    name: "Faisalabad Electric Supply Company"
+    url: https://fesco.com.pk/
+    level: federal
+    category: utilities
+    body_id: fed-discos
+    services: ["FESCO bill", "electricity bill Faisalabad", "new connection"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: fbise
+    name: "Federal Board of Intermediate & Secondary Education"
+    url: https://fbise.edu.pk/
+    level: federal
+    category: jobs_education
+    body_id: fed-fbise
+    services: ["matric", "intermediate", "FBISE result", "certificate verification", "board result"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "HTTP 403 when checked"
+  - id: fbr
+    name: "Federal Board of Revenue"
+    name_ur: "فیڈرل بورڈ آف ریونیو"
+    url: https://fbr.gov.pk/
+    level: federal
+    category: tax_business
+    body_id: fed-fbr
+    services: ["NTN", "tax filer", "filer", "income tax", "income tax return", "tax return", "ٹیکس", "انکم ٹیکس", "active taxpayer list", "ATL", "sales tax registration", "customs duty"]
+    status: verified
+    checked: "2026-10-21"
+  - id: epi
+    name: "Federal Directorate of Immunization (EPI)"
+    url: https://www.epi.gov.pk/
+    level: federal
+    category: health
+    body_id: fed-epi
+    services: ["vaccination", "immunization", "polio", "ٹیکے", "teekay", "حفاظتی ٹیکے"]
+    status: verified
+    checked: "2026-10-21"
+  - id: fia
+    name: "Federal Investigation Agency"
+    url: https://fia.gov.pk/
+    level: federal
+    category: police_safety
+    body_id: fed-fia
+    services: ["cyber crime", "immigration", "human smuggling", "FIA complaint", "ایف آئی اے"]
+    status: verified
+    checked: "2026-10-21"
+  - id: fpsc
+    name: "Federal Public Service Commission"
+    url: https://fpsc.gov.pk/
+    level: federal
+    category: jobs_education
+    body_id: fed-fpsc
+    services: ["CSS", "CSS exam", "federal jobs", "FPSC jobs", "سی ایس ایس", "government job", "sarkari naukri", "سرکاری نوکری"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+  - id: federalshariatcourt
+    name: "Federal Shariat Court"
+    name_ur: "وفاقی شرعی عدالت"
+    url: https://www.federalshariatcourt.gov.pk/
+    level: federal
+    category: law_justice
+    body_id: fed-federal-shariat-court
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: fto
+    name: "Federal Tax Ombudsman"
+    url: https://fto.gov.pk/
+    level: federal
+    category: law_justice
+    body_id: fed-tax-ombudsman
+    services: ["tax complaint", "complaint against FBR", "tax ombudsman"]
+    status: verified
+    checked: "2026-10-21"
+  - id: gepco
+    name: "Gujranwala Electric Power Company"
+    url: https://gepco.com.pk/
+    level: federal
+    category: utilities
+    body_id: fed-discos
+    services: ["GEPCO bill", "electricity bill Gujranwala", "new connection"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: hsa
+    name: "Health Services Academy"
+    url: https://www.hsa.edu.pk/
+    level: federal
+    category: health
+    body_id: fed-hsa
+    status: verified
+    checked: "2026-10-21"
+  - id: hec
+    name: "Higher Education Commission"
+    url: https://www.hec.gov.pk/
+    level: federal
+    category: jobs_education
+    body_id: fed-hec
+    services: ["degree attestation", "degree verification", "HEC attestation", "equivalence", "scholarship", "ڈگری تصدیق", "degree ki tasdeeq"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: hesco
+    name: "Hyderabad Electric Supply Company"
+    url: https://hesco.gov.pk/
+    level: federal
+    category: utilities
+    body_id: fed-discos
+    services: ["HESCO bill", "electricity bill Hyderabad", "new connection"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: ipo
+    name: "Intellectual Property Organization of Pakistan"
+    url: https://www.ipo.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-ipo
+    services: ["trademark", "patent", "copyright registration", "ٹریڈ مارک"]
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: ispr
+    name: "Inter-Services Public Relations"
+    url: https://www.ispr.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-ispr
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "HTTP 403 when checked"
+  - id: iesco
+    name: "Islamabad Electric Supply Company"
+    url: https://iesco.com.pk/
+    level: federal
+    category: utilities
+    body_id: fed-discos
+    services: ["IESCO bill", "electricity bill Islamabad", "new connection"]
+    status: verified
+    checked: "2026-10-21"
+  - id: ljcp
+    name: "Law & Justice Commission of Pakistan"
+    url: https://ljcp.gov.pk/
+    level: federal
+    category: law_justice
+    body_id: fed-law-justice-commission
+    status: verified
+    checked: "2026-10-21"
+  - id: mocc
+    name: "Ministry of Climate Change & Environmental Coordination"
+    url: https://mocc.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-min-climate-change
+    status: verified
+    checked: "2026-10-21"
+  - id: commerce
+    name: "Ministry of Commerce"
+    url: https://www.commerce.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-min-commerce
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "HTTP 403 when checked"
+  - id: communications
+    name: "Ministry of Communications"
+    url: https://communications.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-min-communications
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: mod
+    name: "Ministry of Defence"
+    url: https://mod.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-min-defence
+    status: verified
+    checked: "2026-10-21"
+  - id: modp
+    name: "Ministry of Defence Production"
+    url: https://modp.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-min-defence-production
+    status: verified
+    checked: "2026-10-21"
+  - id: petroleum
+    name: "Ministry of Energy (Petroleum Division)"
+    url: https://petroleum.gov.pk/
+    level: federal
+    category: utilities
+    body_id: fed-petroleum-division
+    status: verified
+    checked: "2026-10-21"
+  - id: power
+    name: "Ministry of Energy (Power Division)"
+    url: https://power.gov.pk/
+    level: federal
+    category: utilities
+    body_id: fed-power-division
+    status: verified
+    checked: "2026-10-21"
+  - id: mofept
+    name: "Ministry of Federal Education & Professional Training"
+    url: https://mofept.gov.pk/
+    level: federal
+    category: jobs_education
+    body_id: fed-min-education
+    services: ["federal education"]
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: finance-federal
+    name: "Ministry of Finance"
+    url: https://finance.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-min-finance
+    status: verified
+    checked: "2026-10-21"
+  - id: mofa
+    name: "Ministry of Foreign Affairs"
+    url: https://mofa.gov.pk/
+    level: federal
+    category: overseas
+    body_id: fed-min-foreign-affairs
+    services: ["document attestation", "attestation", "تصدیق", "embassy", "consulate"]
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: mohw
+    name: "Ministry of Housing & Works"
+    url: https://mohw.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-min-housing
+    status: verified
+    checked: "2026-10-21"
+  - id: mohr
+    name: "Ministry of Human Rights"
+    url: https://mohr.gov.pk/
+    level: federal
+    category: law_justice
+    body_id: fed-min-human-rights
+    status: verified
+    checked: "2026-10-21"
+  - id: moip
+    name: "Ministry of Industries & Production"
+    url: https://moip.gov.pk/
+    level: federal
+    category: tax_business
+    body_id: fed-min-industries
+    status: verified
+    checked: "2026-10-21"
+  - id: moib
+    name: "Ministry of Information & Broadcasting"
+    url: https://moib.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-min-information
+    status: verified
+    checked: "2026-10-21"
+  - id: ipc
+    name: "Ministry of Inter-Provincial Coordination"
+    url: https://ipc.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-min-ipc
+    status: verified
+    checked: "2026-10-21"
+  - id: interior
+    name: "Ministry of Interior and Narcotics Control"
+    url: https://interior.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-min-interior
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "HTTP 404 when checked"
+  - id: moitt
+    name: "Ministry of IT & Telecommunication"
+    url: https://moitt.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-min-it
+    status: verified
+    checked: "2026-10-21"
+  - id: kagb
+    name: "Ministry of Kashmir Affairs and Gilgit-Baltistan"
+    url: https://kagb.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-min-kashmir-gb
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: molaw
+    name: "Ministry of Law & Justice"
+    url: https://molaw.gov.pk/
+    level: federal
+    category: law_justice
+    body_id: fed-min-law
+    status: verified
+    checked: "2026-10-21"
+  - id: moma
+    name: "Ministry of Maritime Affairs"
+    url: https://moma.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-min-maritime-affairs
+    status: verified
+    checked: "2026-10-21"
+  - id: mnfsr
+    name: "Ministry of National Food Security & Research"
+    url: https://mnfsr.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-min-food-security
+    status: verified
+    checked: "2026-10-21"
+  - id: nhsrc
+    name: "Ministry of National Health Services, Regulations & Coordination"
+    name_ur: "وزارتِ قومی صحت، ضوابط و رابطہ کاری"
+    url: https://nhsrc.gov.pk/
+    level: federal
+    category: health
+    body_id: fed-min-nhsrc
+    services: ["health ministry", "health policy"]
+    status: verified
+    checked: "2026-10-21"
+  - id: ophrd
+    name: "Ministry of Overseas Pakistanis & Human Resource Development"
+    url: https://ophrd.gov.pk/
+    level: federal
+    category: overseas
+    body_id: fed-min-overseas-pakistanis
+    services: ["overseas Pakistanis", "protector", "emigration"]
+    status: verified
+    checked: "2026-10-21"
+  - id: pc
+    name: "Ministry of Planning, Development & Special Initiatives (Planning Commission)"
+    url: https://pc.gov.pk/
+    level: federal
+    category: statistics
+    body_id: fed-min-planning
+    status: verified
+    checked: "2026-10-21"
+  - id: privatisation
+    name: "Ministry of Privatisation"
+    url: https://privatisation.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-min-privatisation
+    status: verified
+    checked: "2026-10-21"
+  - id: mora
+    name: "Ministry of Religious Affairs & Interfaith Harmony (Hajj)"
+    url: https://mora.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-min-religious-affairs
+    services: ["Hajj", "Umrah", "حج", "hajj application"]
+    status: verified
+    checked: "2026-10-21"
+  - id: most
+    name: "Ministry of Science and Technology"
+    url: https://most.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-min-science-technology
+    status: verified
+    checked: "2026-10-21"
+  - id: mowr
+    name: "Ministry of Water Resources"
+    url: https://mowr.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-min-water-resources
+    status: verified
+    checked: "2026-10-21"
+  - id: mepco
+    name: "Multan Electric Power Company"
+    url: https://mepco.com.pk/
+    level: federal
+    category: utilities
+    body_id: fed-discos
+    services: ["MEPCO bill", "electricity bill Multan", "new connection"]
+    status: verified
+    checked: "2026-10-21"
+  - id: nab
+    name: "National Accountability Bureau"
+    name_ur: "قومی احتساب بیورو"
+    url: https://nab.gov.pk/
+    level: federal
+    category: law_justice
+    body_id: fed-nab
+    services: ["corruption complaint", "NAB complaint"]
+    status: verified
+    checked: "2026-10-21"
+  - id: na
+    name: "National Assembly of Pakistan"
+    name_ur: "قومی اسمبلی"
+    url: https://na.gov.pk/
+    level: federal
+    category: legislature
+    body_id: fed-national-assembly
+    services: ["National Assembly", "MNA", "قومی اسمبلی"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: nacta
+    name: "National Counter Terrorism Authority"
+    url: https://www.nacta.gov.pk/
+    level: federal
+    category: police_safety
+    body_id: fed-nacta
+    status: verified
+    checked: "2026-10-21"
+  - id: nadra
+    name: "National Database & Registration Authority (NADRA)"
+    url: https://nadra.gov.pk/
+    level: federal
+    category: identity_travel
+    body_id: fed-nadra
+    services: ["CNIC", "ID card", "identity card", "shanakhti card", "شناختی کارڈ", "NICOP", "B-Form", "form B", "bay form", "ب فارم", "family registration certificate", "FRC", "POC", "smart card"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "HTTP 403 when checked"
+  - id: ndma
+    name: "National Disaster Management Authority"
+    url: https://ndma.gov.pk/
+    level: federal
+    category: police_safety
+    body_id: fed-ndma
+    services: ["flood", "disaster", "سیلاب", "earthquake", "relief"]
+    status: verified
+    checked: "2026-10-21"
+  - id: nepra
+    name: "National Electric Power Regulatory Authority"
+    url: https://nepra.org.pk/
+    level: federal
+    category: regulators
+    body_id: fed-nepra
+    services: ["electricity tariff", "bijli tariff", "electricity complaint", "load shedding complaint", "NEPRA complaint"]
+    status: verified
+    checked: "2026-10-21"
+  - id: endpolio
+    name: "National Emergency Operations Centre for Polio Eradication"
+    url: https://www.endpolio.com.pk/
+    level: federal
+    category: government
+    body_id: fed-neoc
+    status: verified
+    checked: "2026-10-21"
+  - id: neeca
+    name: "National Energy Efficiency & Conservation Authority"
+    url: https://neeca.gov.pk/
+    level: federal
+    category: utilities
+    status: verified
+    checked: "2026-10-21"
+  - id: nha
+    name: "National Highway Authority"
+    url: https://nha.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-nha
+    services: ["highway toll", "M-tag", "motorway toll"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "HTTP 403 when checked"
+  - id: nhmp
+    name: "National Highways & Motorway Police"
+    url: https://nhmp.gov.pk/
+    level: federal
+    category: police_safety
+    body_id: fed-nhmp
+    services: ["motorway", "driving licence", "traffic fine", "e-challan", "130", "موٹروے"]
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: nitb
+    name: "National Information Technology Board"
+    url: https://nitb.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-nitb
+    services: ["e-office", "e-governance"]
+    status: verified
+    checked: "2026-10-21"
+  - id: nih
+    name: "National Institute of Health"
+    name_ur: "قومی ادارہ صحت"
+    url: https://nih.org.pk/
+    level: federal
+    category: health
+    body_id: fed-nih
+    services: ["vaccine", "lab test", "disease outbreak"]
+    status: verified
+    checked: "2026-10-21"
+  - id: navttc
+    name: "National Vocational & Technical Training Commission"
+    url: https://navttc.gov.pk/
+    level: federal
+    category: jobs_education
+    body_id: fed-navttc
+    services: ["skills training", "vocational training", "hunarmand", "technical course"]
+    status: verified
+    checked: "2026-10-21"
+  - id: ogra
+    name: "Oil & Gas Regulatory Authority"
+    url: https://ogra.org.pk/
+    level: federal
+    category: regulators
+    body_id: fed-ogra
+    services: ["petrol price", "LPG price", "CNG", "gas complaint", "OGRA"]
+    status: verified
+    checked: "2026-10-21"
+  - id: paf
+    name: "Pakistan Air Force"
+    url: https://www.paf.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-air-force
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: pakistanarmy
+    name: "Pakistan Army"
+    url: https://www.pakistanarmy.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-army
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "HTTP 403 when checked"
+  - id: pbm
+    name: "Pakistan Bait-ul-Mal"
+    url: https://pbm.gov.pk/
+    level: federal
+    category: social_protection
+    body_id: fed-pbm
+    services: ["Bait-ul-Mal", "baitulmal", "بیت المال", "financial aid", "medical aid"]
+    status: verified
+    checked: "2026-10-21"
+  - id: pbs
+    name: "Pakistan Bureau of Statistics"
+    url: https://www.pbs.gov.pk/
+    level: federal
+    category: statistics
+    body_id: fed-pbs
+    services: ["census", "population", "inflation", "CPI", "مردم شماری"]
+    status: verified
+    checked: "2026-10-21"
+  - id: citizenportal
+    name: "Pakistan Citizen's Portal (PMDU)"
+    url: https://citizenportal.gov.pk/
+    level: federal
+    category: government
+    services: ["complaint", "shikayat", "شکایت", "citizen portal", "PMDU"]
+    portal: true
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: pakistancode
+    name: "Pakistan Code (Federal Laws Database)"
+    url: https://pakistancode.gov.pk/
+    level: federal
+    category: law_justice
+    services: ["federal laws", "act", "ordinance", "قانون"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: pemra
+    name: "Pakistan Electronic Media Regulatory Authority"
+    url: https://pemra.gov.pk/
+    level: federal
+    category: regulators
+    body_id: fed-pemra
+    services: ["TV complaint", "channel complaint", "cable"]
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: phrc
+    name: "Pakistan Health Research Council"
+    url: https://www.phrc.org.pk/
+    level: federal
+    category: health
+    body_id: fed-phrc
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: pmdc
+    name: "Pakistan Medical & Dental Council"
+    name_ur: "پاکستان میڈیکل اینڈ ڈینٹل کونسل"
+    url: https://pmdc.pk/
+    level: federal
+    category: health
+    body_id: fed-pmdc
+    services: ["doctor registration", "PMDC registration", "MDCAT", "license verification"]
+    status: verified
+    checked: "2026-10-21"
+  - id: pmd
+    name: "Pakistan Meteorological Department"
+    url: https://pmd.gov.pk/
+    level: federal
+    category: police_safety
+    body_id: fed-pmd
+    services: ["weather", "mosam", "موسم", "rain forecast", "heatwave"]
+    status: verified
+    checked: "2026-10-21"
+  - id: pakistan
+    name: "Pakistan National Portal (Government of Pakistan)"
+    name_ur: "وفاقی حکومت پاکستان"
+    url: https://pakistan.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-federation
+    status: verified
+    checked: "2026-10-21"
+  - id: paknavy
+    name: "Pakistan Navy"
+    url: https://www.paknavy.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-navy
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "HTTP 403 when checked"
+  - id: pnra
+    name: "Pakistan Nuclear Regulatory Authority"
+    url: https://pnra.org/
+    level: federal
+    category: regulators
+    body_id: fed-pnra
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: pakpost
+    name: "Pakistan Post"
+    url: https://pakpost.gov.pk/
+    level: federal
+    category: utilities
+    body_id: fed-pakistan-post
+    services: ["parcel tracking", "post office", "money order", "ڈاک", "registered letter", "UMS"]
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: pakrail
+    name: "Pakistan Railways"
+    url: https://pakrail.gov.pk/
+    level: federal
+    category: utilities
+    body_id: fed-pakistan-railways
+    services: ["train ticket", "train booking", "railway", "ریل", "train timing"]
+    status: verified
+    checked: "2026-10-21"
+  - id: psw
+    name: "Pakistan Single Window"
+    url: https://psw.gov.pk/
+    level: federal
+    category: tax_business
+    services: ["import", "export", "single window", "customs clearance"]
+    portal: true
+    status: verified
+    checked: "2026-10-21"
+  - id: pta
+    name: "Pakistan Telecommunication Authority"
+    url: https://pta.gov.pk/
+    level: federal
+    category: regulators
+    body_id: fed-pta
+    services: ["PTA", "mobile registration", "phone registration", "PTA tax", "SIM", "complaint against telecom", "پی ٹی اے"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: pakistantradeportal
+    name: "Pakistan Trade Portal"
+    url: https://pakistantradeportal.gov.pk/
+    level: federal
+    category: tax_business
+    body_id: fed-tdap
+    services: ["export statistics", "trade portal"]
+    portal: true
+    status: verified
+    checked: "2026-10-21"
+  - id: pesco
+    name: "Peshawar Electric Supply Company"
+    url: https://pesco.com.pk/
+    level: federal
+    category: utilities
+    body_id: fed-discos
+    services: ["PESCO bill", "electricity bill Peshawar", "new connection"]
+    status: verified
+    checked: "2026-10-21"
+  - id: bill-pitc
+    name: "PITC Electricity Bill Portal (Power Information Technology Company)"
+    url: https://bill.pitc.com.pk/
+    level: federal
+    category: utilities
+    body_id: fed-power-division
+    services: ["electricity bill", "bijli ka bill", "بجلی کا بل", "duplicate bill", "bill check"]
+    portal: true
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: pass
+    name: "Poverty Alleviation & Social Safety Division"
+    url: https://pass.gov.pk/
+    level: federal
+    category: social_protection
+    body_id: fed-min-poverty-alleviation
+    services: ["poverty alleviation", "social safety", "Ehsaas"]
+    status: verified
+    checked: "2026-10-21"
+  - id: president
+    name: "President of Pakistan (Aiwan-e-Sadr)"
+    name_ur: "ایوانِ صدر"
+    url: https://president.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-president-office
+    services: ["President"]
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: pid
+    name: "Press Information Department"
+    url: https://pid.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-pid
+    status: verified
+    checked: "2026-10-21"
+  - id: pmo
+    name: "Prime Minister's Office"
+    name_ur: "وزیراعظم آفس"
+    url: https://pmo.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-pm-office
+    services: ["Prime Minister"]
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: dirbs-pta
+    name: "PTA Device Identification, Registration & Blocking System (DIRBS)"
+    url: https://dirbs.pta.gov.pk/
+    level: federal
+    category: regulators
+    body_id: fed-pta
+    services: ["IMEI", "phone blocked", "mobile blocked", "PTA approved", "device registration", "DIRBS", "phone check"]
+    portal: true
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: ppra
+    name: "Public Procurement Regulatory Authority"
+    url: https://ppra.gov.pk/
+    level: federal
+    category: regulators
+    body_id: fed-ppra
+    services: ["tenders", "procurement", "e-PADS"]
+    status: verified
+    checked: "2026-10-21"
+  - id: qesco
+    name: "Quetta Electric Supply Company"
+    url: https://qesco.com.pk/
+    level: federal
+    category: utilities
+    body_id: fed-discos
+    services: ["QESCO bill", "electricity bill Quetta", "new connection"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: radio
+    name: "Radio Pakistan"
+    url: https://radio.gov.pk/
+    level: federal
+    category: government
+    status: verified
+    checked: "2026-10-21"
+  - id: secp
+    name: "Securities and Exchange Commission of Pakistan"
+    url: https://www.secp.gov.pk/
+    level: federal
+    category: government
+    body_id: fed-secp
+    services: ["company registration", "register a company", "SECP", "کمپنی رجسٹریشن", "eServices company"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "HTTP 403 when checked"
+  - id: sehatsahulat
+    name: "Sehat Sahulat Programme (Prime Minister's National Health Programme)"
+    url: https://sehatsahulat.gov.pk/
+    level: federal
+    category: health
+    body_id: fed-sehat-sahulat
+    services: ["Sehat card", "sehat sahulat", "صحت کارڈ", "health insurance", "free treatment"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: senate
+    name: "Senate of Pakistan"
+    name_ur: "ایوانِ بالا (سینیٹ)"
+    url: https://senate.gov.pk/
+    level: federal
+    category: legislature
+    body_id: fed-senate
+    services: ["Senate", "senator", "سینیٹ"]
+    status: verified
+    checked: "2026-10-21"
+  - id: smeda
+    name: "Small & Medium Enterprises Development Authority"
+    url: https://smeda.org/
+    level: federal
+    category: tax_business
+    body_id: fed-smeda
+    services: ["small business", "SME", "business plan", "chhota karobar", "کاروبار"]
+    status: verified
+    checked: "2026-10-21"
+  - id: sbp
+    name: "State Bank of Pakistan"
+    url: https://www.sbp.org.pk/
+    level: federal
+    category: government
+    body_id: fed-sbp
+    services: ["exchange rate", "banking complaint", "State Bank", "prize bond", "currency notes"]
+    status: verified
+    checked: "2026-10-21"
+  - id: sngpl
+    name: "Sui Northern Gas Pipelines Ltd"
+    url: https://sngpl.com.pk/
+    level: federal
+    category: utilities
+    body_id: fed-sngpl
+    services: ["gas bill", "SNGPL bill", "sui gas bill", "گیس کا بل", "new gas connection"]
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: ssgc
+    name: "Sui Southern Gas Company Ltd"
+    url: https://www.ssgc.com.pk/
+    level: federal
+    category: utilities
+    body_id: fed-ssgc
+    services: ["gas bill", "SSGC bill", "sui gas bill", "گیس کا بل", "new gas connection"]
+    status: verified
+    checked: "2026-10-21"
+  - id: sepco
+    name: "Sukkur Electric Power Company"
+    url: https://sepco.com.pk/
+    level: federal
+    category: utilities
+    body_id: fed-discos
+    services: ["SEPCO bill", "electricity bill Sukkur", "new connection"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: supremecourt
+    name: "Supreme Court of Pakistan"
+    name_ur: "عدالتِ عظمیٰ پاکستان"
+    url: https://www.supremecourt.gov.pk/
+    level: federal
+    category: law_justice
+    body_id: fed-supreme-court
+    services: ["case status", "cause list", "Supreme Court judgment"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "HTTP 403 when checked"
+  - id: tdap
+    name: "Trade Development Authority of Pakistan"
+    url: https://tdap.gov.pk/
+    level: federal
+    category: tax_business
+    body_id: fed-tdap
+    services: ["exporter registration", "trade fair", "export"]
+    status: verified
+    checked: "2026-10-21"
+  - id: tesco
+    name: "Tribal Areas Electricity Supply Company"
+    url: https://tesco.gov.pk/
+    level: federal
+    category: utilities
+    body_id: fed-discos
+    services: ["TESCO bill", "electricity bill tribal areas"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: mohtasib
+    name: "Wafaqi Mohtasib (Federal Ombudsman)"
+    url: https://mohtasib.gov.pk/
+    level: federal
+    category: law_justice
+    body_id: fed-wafaqi-mohtasib
+    services: ["ombudsman complaint", "complaint against government department", "wafaqi mohtasib", "وفاقی محتسب"]
+    status: verified
+    checked: "2026-10-21"
+  - id: wapda
+    name: "Water & Power Development Authority"
+    url: https://wapda.gov.pk/
+    level: federal
+    category: utilities
+    body_id: fed-wapda
+    status: verified
+    checked: "2026-10-21"
+  - id: weboc
+    name: "WeBOC (Web-Based One Customs), Pakistan Customs"
+    name_ur: "فیڈرل بورڈ آف ریونیو"
+    url: https://weboc.gov.pk/
+    level: federal
+    category: tax_business
+    body_id: fed-fbr
+    services: ["customs clearance", "customs", "import", "export", "کسٹمز"]
+    portal: true
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: wwf
+    name: "Workers Welfare Fund"
+    url: https://wwf.gov.pk/
+    level: federal
+    category: social_protection
+    body_id: fed-wwf
+    services: ["Workers Welfare Fund", "worker welfare", "marriage grant", "death grant", "scholarship for workers' children"]
+    status: verified
+    checked: "2026-10-21"
+  # ── Islamabad Capital Territory ───────────────────────────────────────────
+  - id: cda
+    name: "Capital Development Authority, Islamabad"
+    url: https://cda.gov.pk/
+    level: ict
+    category: government
+    body_id: fed-cda
+    services: ["building plan Islamabad", "plot", "CDA"]
+    status: verified
+    checked: "2026-10-21"
+  - id: islamabadexcise
+    name: "Excise & Taxation Department, Islamabad"
+    url: https://islamabadexcise.gov.pk/
+    level: ict
+    category: tax_business
+    services: ["vehicle registration Islamabad", "token tax", "car registration", "number plate"]
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: fde
+    name: "Federal Directorate of Education, Islamabad"
+    url: https://fde.gov.pk/
+    level: ict
+    category: jobs_education
+    body_id: fed-fde
+    services: ["Islamabad schools", "school admission Islamabad"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "HTTP 403 when checked"
+  - id: ictadministration
+    name: "Islamabad Capital Territory Administration"
+    url: https://ictadministration.gov.pk/
+    level: ict
+    category: government
+    body_id: fed-ict-administration
+    services: ["domicile Islamabad", "arms licence Islamabad", "ڈومیسائل"]
+    status: verified
+    checked: "2026-10-21"
+  - id: islamabadpolice
+    name: "Islamabad Capital Territory Police"
+    url: https://islamabadpolice.gov.pk/
+    level: ict
+    category: police_safety
+    body_id: fed-ict-police
+    services: ["FIR", "police complaint", "character certificate", "Islamabad police", "15", "ایف آئی آر"]
+    status: verified
+    checked: "2026-10-21"
+  - id: ihc
+    name: "Islamabad High Court"
+    url: https://www.ihc.gov.pk/
+    level: ict
+    category: law_justice
+    body_id: fed-islamabad-high-court
+    services: ["case status", "cause list Islamabad"]
+    status: verified
+    checked: "2026-10-21"
+  - id: mci
+    name: "Metropolitan Corporation Islamabad"
+    url: https://mci.gov.pk/
+    level: ict
+    category: government
+    body_id: fed-imc
+    services: ["Islamabad municipal", "birth certificate Islamabad"]
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: pims
+    name: "Pakistan Institute of Medical Sciences"
+    url: https://pims.gov.pk/
+    level: ict
+    category: government
+    body_id: fed-pims
+    status: verified
+    checked: "2026-10-21"
+  # ── Punjab ────────────────────────────────────────────────────────────────
+  - id: agripunjab
+    name: "Agriculture Department, Punjab"
+    url: https://agripunjab.gov.pk/
+    level: punjab
+    category: government
+    body_id: pb-agriculture
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: cmpunjab
+    name: "Chief Minister Punjab"
+    url: https://cmpunjab.gov.pk/
+    level: punjab
+    category: government
+    body_id: pb-cm-office
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: ekhidmatmarkaz-punjab
+    name: "e-Khidmat Markaz Punjab"
+    url: https://ekhidmatmarkaz.punjab.gov.pk/
+    level: punjab
+    category: citizen_services
+    services: ["e-Khidmat", "domicile", "birth certificate", "driving licence", "character certificate", "ڈومیسائل"]
+    portal: true
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: excise-punjab
+    name: "Excise, Taxation & Narcotics Control Department, Punjab"
+    url: https://excise.punjab.gov.pk/
+    level: punjab
+    category: tax_business
+    body_id: pb-excise-taxation
+    services: ["vehicle registration", "token tax", "car registration", "property tax", "گاڑی رجسٹریشن", "number plate"]
+    status: verified
+    checked: "2026-10-21"
+  - id: punjab
+    name: "Government of the Punjab"
+    url: https://punjab.gov.pk/
+    level: punjab
+    category: government
+    body_id: pb-government
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: labour-punjab
+    name: "Labour & Human Resource Department, Punjab"
+    url: https://labour.punjab.gov.pk/
+    level: punjab
+    category: social_protection
+    body_id: pb-labour
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: lda
+    name: "Lahore Development Authority"
+    url: https://lda.gop.pk/
+    level: punjab
+    category: government
+    services: ["building plan Lahore", "map approval", "housing scheme verification"]
+    status: verified
+    checked: "2026-10-21"
+  - id: lhc
+    name: "Lahore High Court"
+    url: https://www.lhc.gov.pk/
+    level: punjab
+    category: law_justice
+    body_id: pb-high-court
+    services: ["case status", "cause list Lahore"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+  - id: pshealthpunjab
+    name: "Primary & Secondary Healthcare Department, Punjab"
+    url: https://pshealthpunjab.gov.pk/
+    level: punjab
+    category: health
+    body_id: pb-primary-secondary-healthcare
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: pap
+    name: "Provincial Assembly of the Punjab"
+    url: https://pap.gov.pk/
+    level: punjab
+    category: legislature
+    body_id: pb-assembly
+    services: ["Punjab Assembly", "MPA Punjab"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: pdma-punjab
+    name: "Provincial Disaster Management Authority, Punjab"
+    url: https://pdma.gop.pk/
+    level: punjab
+    category: police_safety
+    body_id: pb-pdma
+    services: ["flood Punjab", "disaster", "سیلاب", "relief"]
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: pesrp
+    name: "Punjab Education Sector Reform Programme"
+    url: https://pesrp.edu.pk/
+    level: punjab
+    category: jobs_education
+    status: verified
+    checked: "2026-10-21"
+  - id: rescue
+    name: "Punjab Emergency Service (Rescue 1122)"
+    url: https://www.rescue.gov.pk/
+    level: punjab
+    category: police_safety
+    services: ["1122", "ambulance", "rescue", "ریسکیو", "emergency"]
+    status: verified
+    checked: "2026-10-21"
+  - id: pessi-punjab
+    name: "Punjab Employees Social Security Institution"
+    url: https://pessi.punjab.gov.pk/
+    level: punjab
+    category: social_protection
+    services: ["social security card", "PESSI", "workers hospital"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: pfa
+    name: "Punjab Food Authority"
+    url: https://pfa.gop.pk/
+    level: punjab
+    category: health
+    body_id: pb-pfa
+    services: ["food licence", "food complaint", "adulteration"]
+    status: verified
+    checked: "2026-10-21"
+  - id: phc
+    name: "Punjab Healthcare Commission"
+    url: https://www.phc.org.pk/
+    level: punjab
+    category: health
+    body_id: pb-healthcare-commission
+    status: verified
+    checked: "2026-10-21"
+  - id: pitb
+    name: "Punjab Information Technology Board"
+    url: https://pitb.gov.pk/
+    level: punjab
+    category: government
+    services: ["Punjab apps", "e-governance Punjab"]
+    status: verified
+    checked: "2026-10-21"
+  - id: punjab-zameen
+    name: "Punjab Land Records Authority"
+    url: https://punjab-zameen.gov.pk/
+    level: punjab
+    category: land_records
+    body_id: pb-board-of-revenue
+    services: ["fard", "land record", "zameen", "زمین", "فرد", "intiqal", "mutation"]
+    portal: true
+    status: verified
+    checked: "2026-10-21"
+  - id: punjablaws
+    name: "Punjab Laws Online (Punjab Code)"
+    url: https://punjablaws.gov.pk/
+    level: punjab
+    category: law_justice
+    services: ["Punjab laws", "قانون"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: punjabpolice
+    name: "Punjab Police"
+    url: https://punjabpolice.gov.pk/
+    level: punjab
+    category: police_safety
+    body_id: pb-police
+    services: ["FIR", "police complaint", "character certificate", "police verification", "15", "ایف آئی آر", "پولیس"]
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: ppsc
+    name: "Punjab Public Service Commission"
+    url: https://ppsc.gop.pk/
+    level: punjab
+    category: jobs_education
+    body_id: pb-psc
+    services: ["PPSC", "PPSC jobs", "Punjab government jobs", "PMS"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: pra-punjab
+    name: "Punjab Revenue Authority"
+    url: https://pra.punjab.gov.pk/
+    level: punjab
+    category: tax_business
+    body_id: pb-revenue-authority
+    services: ["sales tax on services", "restaurant tax", "PRA"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: psca
+    name: "Punjab Safe Cities Authority"
+    url: https://psca.gop.pk/
+    level: punjab
+    category: police_safety
+    services: ["e-challan", "traffic challan", "Safe City", "challan Lahore"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "timed out when checked"
+  - id: pspa-punjab
+    name: "Punjab Social Protection Authority"
+    url: https://pspa.punjab.gov.pk/
+    level: punjab
+    category: social_protection
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: tevta
+    name: "Punjab Technical Education & Vocational Training Authority"
+    url: https://tevta.gop.pk/
+    level: punjab
+    category: jobs_education
+    services: ["technical training", "vocational training", "TEVTA admission"]
+    status: verified
+    checked: "2026-10-21"
+  - id: schools-punjab
+    name: "School Education Department, Punjab"
+    url: https://schools.punjab.gov.pk/
+    level: punjab
+    category: jobs_education
+    body_id: pb-school-education
+    services: ["school admission Punjab", "teacher transfer"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "HTTP 403 when checked"
+  - id: health-punjab
+    name: "Specialized Healthcare & Medical Education Department, Punjab"
+    url: https://health.punjab.gov.pk/
+    level: punjab
+    category: health
+    body_id: pb-specialized-healthcare
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: wasa-punjab
+    name: "WASA Lahore"
+    url: https://wasa.punjab.gov.pk/
+    level: punjab
+    category: utilities
+    services: ["water bill Lahore", "paani ka bill", "پانی کا بل", "sewerage complaint"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "HTTP 403 when checked"
+  # ── Sindh ─────────────────────────────────────────────────────────────────
+  - id: excise
+    name: "Excise, Taxation & Narcotics Control Department, Sindh"
+    url: https://excise.gos.pk/
+    level: sindh
+    category: tax_business
+    body_id: sd-excise-taxation
+    services: ["vehicle registration", "token tax", "car registration", "property tax", "گاڑی رجسٹریشن", "number plate"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "HTTP 403 when checked"
+  - id: finance-sindh
+    name: "Finance Department, Sindh"
+    url: https://finance.gos.pk/
+    level: sindh
+    category: government
+    body_id: sd-finance
+    status: verified
+    checked: "2026-10-21"
+  - id: sindh
+    name: "Government of Sindh"
+    url: https://www.sindh.gov.pk/
+    level: sindh
+    category: government
+    body_id: sd-government
+    status: verified
+    checked: "2026-10-21"
+  - id: kmc
+    name: "Karachi Metropolitan Corporation"
+    url: https://kmc.gos.pk/
+    level: sindh
+    category: government
+    body_id: sd-kmc
+    services: ["Karachi municipal", "birth certificate Karachi"]
+    status: verified
+    checked: "2026-10-21"
+  - id: karachipolice
+    name: "Karachi Police"
+    url: https://karachipolice.gov.pk/
+    level: sindh
+    category: police_safety
+    services: ["FIR", "Karachi police", "police complaint"]
+    status: verified
+    checked: "2026-10-21"
+  - id: kwsc
+    name: "Karachi Water & Sewerage Corporation"
+    url: https://kwsc.gos.pk/
+    level: sindh
+    category: utilities
+    services: ["water bill Karachi", "water tanker", "paani ka bill", "پانی کا بل", "sewerage complaint"]
+    status: verified
+    checked: "2026-10-21"
+  - id: pas
+    name: "Provincial Assembly of Sindh"
+    url: https://www.pas.gov.pk/
+    level: sindh
+    category: legislature
+    body_id: sd-assembly
+    services: ["Sindh Assembly", "MPA Sindh"]
+    status: verified
+    checked: "2026-10-21"
+  - id: pdma-sindh
+    name: "Provincial Disaster Management Authority, Sindh"
+    url: https://pdma.gos.pk/
+    level: sindh
+    category: police_safety
+    body_id: sd-pdma
+    services: ["flood Sindh", "disaster", "سیلاب", "relief"]
+    status: verified
+    checked: "2026-10-21"
+  - id: sindheducation
+    name: "School Education & Literacy Department, Sindh"
+    url: https://sindheducation.gov.pk/
+    level: sindh
+    category: jobs_education
+    body_id: sd-school-education
+    services: ["school admission Sindh"]
+    status: verified
+    checked: "2026-10-21"
+  - id: sbca
+    name: "Sindh Building Control Authority"
+    url: https://sbca.gos.pk/
+    level: sindh
+    category: government
+    body_id: sd-sbca
+    services: ["building plan Karachi", "illegal construction"]
+    status: verified
+    checked: "2026-10-21"
+  - id: sessi
+    name: "Sindh Employees' Social Security Institution"
+    url: https://sessi.gov.pk/
+    level: sindh
+    category: social_protection
+    services: ["social security card", "SESSI", "workers hospital"]
+    status: verified
+    checked: "2026-10-21"
+  - id: sfa
+    name: "Sindh Food Authority"
+    url: https://sfa.gos.pk/
+    level: sindh
+    category: health
+    body_id: sd-sfa
+    services: ["food licence", "food complaint"]
+    status: verified
+    checked: "2026-10-21"
+  - id: shcc
+    name: "Sindh Healthcare Commission"
+    url: https://www.shcc.org.pk/
+    level: sindh
+    category: health
+    body_id: sd-healthcare-commission
+    status: verified
+    checked: "2026-10-21"
+  - id: sindhhighcourt
+    name: "Sindh High Court"
+    url: https://sindhhighcourt.gov.pk/
+    level: sindh
+    category: law_justice
+    body_id: sd-high-court
+    services: ["case status", "cause list Sindh"]
+    status: verified
+    checked: "2026-10-21"
+  - id: sindhhec
+    name: "Sindh Higher Education Commission"
+    url: https://sindhhec.gov.pk/
+    level: sindh
+    category: jobs_education
+    body_id: sd-shec
+    status: verified
+    checked: "2026-10-21"
+  - id: sindhlaws
+    name: "Sindh Laws (Sindh Code)"
+    url: https://sindhlaws.gov.pk/
+    level: sindh
+    category: law_justice
+    services: ["Sindh laws"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: sindhpolice
+    name: "Sindh Police"
+    url: https://sindhpolice.gov.pk/
+    level: sindh
+    category: police_safety
+    body_id: sd-police
+    services: ["FIR", "police complaint", "character certificate", "police verification", "15", "ایف آئی آر", "پولیس"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "HTTP 403 when checked"
+  - id: spsc
+    name: "Sindh Public Service Commission"
+    url: https://spsc.gos.pk/
+    level: sindh
+    category: jobs_education
+    body_id: sd-psc
+    services: ["SPSC", "SPSC jobs", "Sindh government jobs", "CCE"]
+    status: verified
+    checked: "2026-10-21"
+  - id: srb
+    name: "Sindh Revenue Board"
+    url: https://www.srb.gos.pk/
+    level: sindh
+    category: tax_business
+    body_id: sd-revenue-authority
+    services: ["sales tax on services", "SRB"]
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: sspa
+    name: "Sindh Social Protection Authority"
+    url: https://sspa.gos.pk/
+    level: sindh
+    category: social_protection
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: sindhzameen
+    name: "Sindh Zameen (Land Records, Board of Revenue Sindh)"
+    url: https://sindhzameen.gos.pk/
+    level: sindh
+    category: tax_business
+    body_id: sd-board-of-revenue
+    services: ["land record", "zameen", "زمین", "deh", "fard"]
+    portal: true
+    status: verified
+    checked: "2026-10-21"
+  # ── Khyber Pakhtunkhwa ────────────────────────────────────────────────────
+  - id: dastak-kp
+    name: "Dastak (KP Citizen Services App Portal)"
+    url: https://dastak.kp.gov.pk/
+    level: kp
+    category: citizen_services
+    services: ["arms licence", "domicile", "Dastak app"]
+    portal: true
+    status: verified
+    checked: "2026-10-21"
+  - id: kpese
+    name: "Elementary & Secondary Education Department, Khyber Pakhtunkhwa"
+    url: https://kpese.gov.pk/
+    level: kp
+    category: jobs_education
+    body_id: kp-elementary-secondary-education
+    services: ["school admission KP", "teacher"]
+    status: verified
+    checked: "2026-10-21"
+  - id: kpexcise
+    name: "Excise, Taxation & Narcotics Control Department, Khyber Pakhtunkhwa"
+    url: https://www.kpexcise.gov.pk/
+    level: kp
+    category: tax_business
+    body_id: kp-excise-taxation
+    services: ["vehicle registration", "token tax", "car registration", "property tax", "گاڑی رجسٹریشن"]
+    status: verified
+    checked: "2026-10-21"
+  - id: kp
+    name: "Government of Khyber Pakhtunkhwa"
+    url: https://kp.gov.pk/
+    level: kp
+    category: government
+    body_id: kp-government
+    status: verified
+    checked: "2026-10-21"
+  - id: healthkp
+    name: "Health Department, Khyber Pakhtunkhwa"
+    url: https://healthkp.gov.pk/
+    level: kp
+    category: health
+    body_id: kp-health
+    status: verified
+    checked: "2026-10-21"
+  - id: kpfsa
+    name: "Khyber Pakhtunkhwa Food Safety & Halal Food Authority"
+    url: https://kpfsa.gov.pk/
+    level: kp
+    category: health
+    body_id: kp-food-authority
+    services: ["food licence", "food complaint", "halal"]
+    status: verified
+    checked: "2026-10-21"
+  - id: hcc-kp
+    name: "Khyber Pakhtunkhwa Health Care Commission"
+    url: https://www.hcc.kp.gov.pk/
+    level: kp
+    category: health
+    body_id: kp-healthcare-commission
+    status: verified
+    checked: "2026-10-21"
+  - id: kpitb
+    name: "Khyber Pakhtunkhwa Information Technology Board"
+    url: https://kpitb.gov.pk/
+    level: kp
+    category: government
+    services: ["KP apps", "e-governance KP"]
+    status: verified
+    checked: "2026-10-21"
+  - id: kppolice
+    name: "Khyber Pakhtunkhwa Police"
+    url: https://www.kppolice.gov.pk/
+    level: kp
+    category: police_safety
+    body_id: kp-police
+    services: ["FIR", "police complaint", "character certificate", "police verification", "ایف آئی آر", "پولیس"]
+    status: verified
+    checked: "2026-10-21"
+  - id: kppsc
+    name: "Khyber Pakhtunkhwa Public Service Commission"
+    url: https://www.kppsc.gov.pk/
+    level: kp
+    category: jobs_education
+    body_id: kp-psc
+    services: ["KPPSC", "KPPSC jobs", "KP government jobs", "PMS"]
+    status: verified
+    checked: "2026-10-21"
+  - id: kpra
+    name: "Khyber Pakhtunkhwa Revenue Authority"
+    url: https://kpra.gov.pk/
+    level: kp
+    category: tax_business
+    body_id: kp-revenue-authority
+    services: ["sales tax on services", "KPRA"]
+    status: verified
+    checked: "2026-10-21"
+  - id: kpra-kp
+    name: "Khyber Pakhtunkhwa Revenue Authority"
+    url: https://kpra.kp.gov.pk/
+    level: kp
+    category: tax_business
+    body_id: kp-revenue-authority
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: ecitizen-kp
+    name: "KP e-Citizen Portal"
+    url: https://ecitizen.kp.gov.pk/
+    level: kp
+    category: citizen_services
+    services: ["domicile KP", "birth certificate", "e-citizen"]
+    portal: true
+    status: verified
+    checked: "2026-10-21"
+  - id: estamping-kp
+    name: "KP e-Stamping"
+    url: https://estamping.kp.gov.pk/
+    level: kp
+    category: tax_business
+    body_id: kp-board-of-revenue
+    services: ["e-stamp", "stamp paper", "اسٹامپ پیپر"]
+    portal: true
+    status: verified
+    checked: "2026-10-21"
+  - id: lgkp
+    name: "Local Government Department, Khyber Pakhtunkhwa"
+    url: https://lgkp.gov.pk/
+    level: kp
+    category: government
+    status: verified
+    checked: "2026-10-21"
+  - id: peshawarhighcourt
+    name: "Peshawar High Court"
+    url: https://peshawarhighcourt.gov.pk/
+    level: kp
+    category: law_justice
+    body_id: kp-high-court
+    services: ["case status", "cause list Peshawar"]
+    status: verified
+    checked: "2026-10-21"
+  - id: pakp
+    name: "Provincial Assembly of Khyber Pakhtunkhwa"
+    url: https://www.pakp.gov.pk/
+    level: kp
+    category: legislature
+    body_id: kp-assembly
+    services: ["KP Assembly", "MPA KP"]
+    status: verified
+    checked: "2026-10-21"
+  - id: pdma-kp
+    name: "Provincial Disaster Management Authority, Khyber Pakhtunkhwa"
+    url: https://pdma.gov.pk/
+    level: kp
+    category: police_safety
+    body_id: kp-pdma
+    services: ["flood KP", "disaster", "سیلاب", "relief"]
+    status: verified
+    checked: "2026-10-21"
+  - id: rescuekp
+    name: "Rescue 1122 Khyber Pakhtunkhwa"
+    url: https://rescuekp.gov.pk/
+    level: kp
+    category: police_safety
+    services: ["1122", "ambulance", "rescue", "ریسکیو", "emergency"]
+    status: verified
+    checked: "2026-10-21"
+  # ── Balochistan ───────────────────────────────────────────────────────────
+  - id: balochistancode
+    name: "Balochistan Code"
+    url: https://balochistancode.gob.pk/
+    level: balochistan
+    category: law_justice
+    services: ["Balochistan laws"]
+    status: verified
+    checked: "2026-10-21"
+  - id: jobs-balochistan
+    name: "Balochistan Government Jobs Portal"
+    url: https://jobs.balochistan.gov.pk/
+    level: balochistan
+    category: jobs_education
+    services: ["Balochistan jobs", "government job"]
+    status: verified
+    checked: "2026-10-21"
+  - id: bhc
+    name: "Balochistan High Court"
+    url: https://bhc.gov.pk/
+    level: balochistan
+    category: law_justice
+    body_id: ba-high-court
+    services: ["case status", "cause list Quetta"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "HTTP 403 when checked"
+  - id: balochistanpolice
+    name: "Balochistan Police"
+    url: https://balochistanpolice.gov.pk/
+    level: balochistan
+    category: police_safety
+    body_id: ba-police
+    services: ["FIR", "police complaint", "character certificate", "ایف آئی آر", "پولیس"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: bpsc
+    name: "Balochistan Public Service Commission"
+    url: https://bpsc.gob.pk/
+    level: balochistan
+    category: jobs_education
+    body_id: ba-psc
+    services: ["BPSC", "BPSC jobs", "Balochistan government jobs"]
+    status: verified
+    checked: "2026-10-21"
+  - id: bra
+    name: "Balochistan Revenue Authority"
+    url: https://bra.gob.pk/
+    level: balochistan
+    category: tax_business
+    body_id: ba-revenue-authority
+    services: ["sales tax on services", "BRA"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+  - id: balochistan-zameen
+    name: "Balochistan Zameen (Land Records)"
+    url: https://balochistan-zameen.gob.pk/
+    level: balochistan
+    category: land_records
+    body_id: ba-board-of-revenue
+    services: ["land record", "zameen", "زمین"]
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "HTTP 500 when checked"
+  - id: exciseportal-balochistan
+    name: "Excise Portal Balochistan (vehicle tax/registration)"
+    url: https://exciseportal.balochistan.gov.pk/
+    level: balochistan
+    category: tax_business
+    body_id: ba-excise-taxation
+    services: ["vehicle registration", "token tax", "vehicle verification"]
+    portal: true
+    status: verified
+    checked: "2026-10-21"
+  - id: excise-balochistan
+    name: "Excise, Taxation & Anti-Narcotics Department, Balochistan"
+    url: https://excise.balochistan.gov.pk/
+    level: balochistan
+    category: tax_business
+    body_id: ba-excise-taxation
+    services: ["vehicle registration", "token tax", "property tax"]
+    status: verified
+    checked: "2026-10-21"
+  - id: finance-balochistan
+    name: "Finance Department, Balochistan"
+    url: https://finance.balochistan.gov.pk/
+    level: balochistan
+    category: government
+    body_id: ba-finance
+    status: verified
+    checked: "2026-10-21"
+  - id: balochistan
+    name: "Government of Balochistan"
+    url: https://balochistan.gov.pk/
+    level: balochistan
+    category: government
+    body_id: ba-government
+    status: verified
+    checked: "2026-10-21"
+  - id: health-balochistan
+    name: "Health Department, Balochistan"
+    url: https://health.balochistan.gov.pk/
+    level: balochistan
+    category: health
+    body_id: ba-health
+    status: verified
+    checked: "2026-10-21"
+  - id: pabalochistan
+    name: "Provincial Assembly of Balochistan"
+    url: https://www.pabalochistan.gov.pk/
+    level: balochistan
+    category: legislature
+    body_id: ba-assembly
+    services: ["Balochistan Assembly", "MPA Balochistan"]
+    status: verified
+    checked: "2026-10-21"
+  - id: pdma-balochistan
+    name: "Provincial Disaster Management Authority, Balochistan"
+    url: https://www.pdma.gob.pk/
+    level: balochistan
+    category: police_safety
+    body_id: ba-pdma
+    services: ["flood Balochistan", "disaster", "سیلاب", "relief"]
+    status: verified
+    checked: "2026-10-21"
+  - id: sed-balochistan
+    name: "School Education Department, Balochistan"
+    url: https://sed.balochistan.gov.pk/
+    level: balochistan
+    category: jobs_education
+    body_id: ba-school-education
+    services: ["school admission Balochistan"]
+    status: verified
+    checked: "2026-10-21"
+  # ── Azad Jammu and Kashmir ────────────────────────────────────────────────
+  - id: ajkassembly
+    name: "Azad Jammu & Kashmir Legislative Assembly"
+    url: https://ajkassembly.gok.pk/
+    level: ajk
+    category: legislature
+    body_id: ajk-assembly
+    status: verified
+    checked: "2026-10-21"
+  - id: ajkpolice
+    name: "Azad Jammu & Kashmir Police"
+    url: https://ajkpolice.gok.pk/
+    level: ajk
+    category: police_safety
+    body_id: ajk-police
+    services: ["FIR", "AJK police", "police complaint"]
+    status: verified
+    checked: "2026-10-21"
+  - id: ajk
+    name: "Government of Azad Jammu & Kashmir"
+    url: https://ajk.gov.pk/
+    level: ajk
+    category: government
+    body_id: ajk-government
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "HTTP 403 when checked"
+  - id: healthajk
+    name: "Health Department, Azad Jammu & Kashmir"
+    url: https://healthajk.gok.pk/
+    level: ajk
+    category: health
+    body_id: ajk-health
+    status: verified
+    checked: "2026-10-21"
+  - id: ajkhighcourt
+    name: "High Court of Azad Jammu & Kashmir"
+    url: https://ajkhighcourt.gok.pk/
+    level: ajk
+    category: law_justice
+    body_id: ajk-high-court
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: ajkpm
+    name: "Prime Minister of Azad Jammu & Kashmir"
+    url: https://ajkpm.gok.pk/
+    level: ajk
+    category: government
+    body_id: ajk-pm-office
+    status: verified
+    checked: "2026-10-21"
+  - id: ajksupremecourt
+    name: "Supreme Court of Azad Jammu & Kashmir"
+    url: https://ajksupremecourt.gok.pk/
+    level: ajk
+    category: law_justice
+    body_id: ajk-supreme-court
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "HTTP 500 when checked"
+  # ── Gilgit-Baltistan ──────────────────────────────────────────────────────
+  - id: gbexcise
+    name: "Excise & Taxation Department, Gilgit-Baltistan"
+    url: https://gbexcise.gov.pk/
+    level: gb
+    category: tax_business
+    services: ["vehicle registration GB", "token tax"]
+    status: verified
+    checked: "2026-10-21"
+  - id: gba
+    name: "Gilgit-Baltistan Assembly"
+    url: https://www.gba.gov.pk/
+    level: gb
+    category: legislature
+    body_id: gb-assembly
+    status: cert_issue
+    checked: "2026-10-21"
+    notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: gbcc
+    name: "Gilgit-Baltistan Chief Court"
+    url: https://www.gbcc.gov.pk/
+    level: gb
+    category: law_justice
+    body_id: gb-chief-court
+    status: verified
+    checked: "2026-10-21"
+  - id: gbp
+    name: "Gilgit-Baltistan Police"
+    url: https://gbp.gov.pk/
+    level: gb
+    category: police_safety
+    body_id: gb-police
+    services: ["FIR", "GB police", "police complaint"]
+    status: verified
+    checked: "2026-10-21"
+  - id: gilgitbaltistan
+    name: "Government of Gilgit-Baltistan"
+    url: https://gilgitbaltistan.gov.pk/
+    level: gb
+    category: government
+    body_id: gb-government
+    status: verified
+    checked: "2026-10-21"

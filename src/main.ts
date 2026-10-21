@@ -10,6 +10,7 @@ import { directoryView, electedView, officialsView } from "./views/directory.ts"
 import { appointmentsView, mapView, parliamentView, treeView, verificationView } from "./views/insight.ts";
 import { figureEvidenceView, figuresView } from "./views/figures.ts";
 import { familiesView, familyView } from "./views/families.ts";
+import { askView, sourcesView } from "./views/sources.ts";
 import { aboutView, accountabilityView, exploreView, homeView, lawsView, searchView, sectorView, sectorsView } from "./views/pages.ts";
 
 declare const __SINGLE__: boolean;
@@ -74,6 +75,10 @@ function route(path: string): View | undefined {
       return seg[1] ? figureEvidenceView(ctx, seg[1], seg[2] ?? "", params) : figuresView(ctx, params);
     case "search":
       return searchView(ctx, params.get("q") ?? "");
+    case "ask":
+      return askView(ctx, params.get("q") ?? "");
+    case "sources":
+      return sourcesView(ctx);
     case "about":
       return aboutView(ctx, __SINGLE__);
   }

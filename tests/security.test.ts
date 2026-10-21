@@ -14,6 +14,7 @@ import { barFigure, FIGURE_IDS } from "../src/lib/analytics.ts";
 import { figureEvidenceView, figuresView } from "../src/views/figures.ts";
 import { TIERS } from "../src/views/tiers.ts";
 import { aboutView, accountabilityView, exploreView, homeView, lawsView, searchView, sectorView, sectorsView } from "../src/views/pages.ts";
+import { askView, sourcesView } from "../src/views/sources.ts";
 
 const DATA = new URL("../data", import.meta.url).pathname;
 
@@ -56,7 +57,7 @@ describe("URL allowlist", () => {
 /** Text fields that reach the page. References (ids, kinds, dates) are left alone so the graph still resolves. */
 const TEXT_KEYS = new Set([
   "name", "name_ur", "short_name", "title", "head_title", "description", "notes", "summary", "provision", "headquarters", "hq", "capital",
-  "claim", "finding", "change", "functions", "charges", "outcome", "sentence", "custody", "basis", "court", "consultation", "removal", "filed_by",
+  "claim", "finding", "change", "functions", "charges", "outcome", "sentence", "custody", "basis", "court", "consultation", "removal", "filed_by", "services",
 ]);
 const URL_KEYS = new Set(["url", "website"]);
 const PAYLOAD = `"'><img src=x onerror=alert(1)><script>alert(1)</script><svg onload=alert(1)>`;
@@ -118,6 +119,10 @@ describe("escaping", () => {
     ["verification", () => verificationView(ctx)],
     ["accountability", () => accountabilityView(ctx)],
     ["search", () => searchView(ctx, `minister${PAYLOAD}`)],
+    ["official websites", () => sourcesView(ctx)],
+    ["ask (empty)", () => askView(ctx, "")],
+    ["ask (hostile query)", () => askView(ctx, `CNIC${PAYLOAD}`)],
+    ["ask (matching sites)", () => askView(ctx, "CNIC passport police bill")],
     ["directory", () => directoryView(ctx, undefined)],
     ["officials", () => officialsView(ctx, undefined)],
     ...["all", ...TIERS].map((g) => [`figures ${g}`, () => figuresView(ctx, new URLSearchParams({ gov: g }))] as [string, () => View | undefined]),

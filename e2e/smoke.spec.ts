@@ -17,6 +17,8 @@ const ROUTES: [string, string][] = [
   ["verification", "#/verification"],
   ["accountability", "#/accountability"],
   ["search", "#/search?q=minister"],
+  ["ask", "#/ask?q=How%20do%20I%20renew%20my%20CNIC%3F"],
+  ["official websites", "#/sources"],
   ["facts and figures", "#/figures"],
   ["evidence list", "#/figures/posts-by-selection/elected"],
   ["political families", "#/families"],
