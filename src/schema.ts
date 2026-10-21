@@ -508,7 +508,7 @@ export const OfficialSite = z.object({
   url: SafeUrl.refine((u) => isOfficialSiteUrl(u), { message: "official site must be on a government domain or a host in OFFICIAL_ORG_HOSTS (src/lib/policy.ts)" }),
   level: SiteLevel,
   category: SiteCategory,
-  /** What people come to the site for, in English, Urdu and Roman Urdu. Used by #/ask. */
+  /** What people come to the site for, in English, Urdu and Roman Urdu. Used by Find a service (#/find). */
   services: z.array(z.string()).optional(),
   /** The body in the graph that runs the site. */
   body_id: z.string().optional(),

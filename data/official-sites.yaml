@@ -1,7 +1,7 @@
-# Official websites of public bodies (docs/EDITORIAL_POLICY.md § Official websites and Ask).
+# Official websites of public bodies (docs/EDITORIAL_POLICY.md § Official websites and Find a service).
 #
 # One entry per website: its homepage, the government it belongs to, a topic, what people use
-# it for (English, Urdu and Roman Urdu keywords for #/ask) and the body in the graph that runs it.
+# it for (English, Urdu and Roman Urdu keywords for Find a service, #/find) and the body in the graph that runs it.
 # Only government domains, or hosts listed in OFFICIAL_ORG_HOSTS (src/lib/policy.ts), are allowed.
 #
 # status is the result of the last check (GET, following redirects, retried once):

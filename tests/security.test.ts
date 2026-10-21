@@ -14,7 +14,7 @@ import { barFigure, FIGURE_IDS } from "../src/lib/analytics.ts";
 import { figureEvidenceView, figuresView } from "../src/views/figures.ts";
 import { TIERS } from "../src/views/tiers.ts";
 import { aboutView, accountabilityView, exploreView, homeView, lawsView, searchView, sectorView, sectorsView } from "../src/views/pages.ts";
-import { askView, sourcesView } from "../src/views/sources.ts";
+import { findView, sourcesView } from "../src/views/sources.ts";
 
 const DATA = new URL("../data", import.meta.url).pathname;
 
@@ -120,9 +120,9 @@ describe("escaping", () => {
     ["accountability", () => accountabilityView(ctx)],
     ["search", () => searchView(ctx, `minister${PAYLOAD}`)],
     ["official websites", () => sourcesView(ctx)],
-    ["ask (empty)", () => askView(ctx, "")],
-    ["ask (hostile query)", () => askView(ctx, `CNIC${PAYLOAD}`)],
-    ["ask (matching sites)", () => askView(ctx, "CNIC passport police bill")],
+    ["find a service (empty)", () => findView(ctx, "")],
+    ["find a service (hostile query)", () => findView(ctx, `CNIC${PAYLOAD}`)],
+    ["find a service (matching sites)", () => findView(ctx, "CNIC passport police bill")],
     ["directory", () => directoryView(ctx, undefined)],
     ["officials", () => officialsView(ctx, undefined)],
     ...["all", ...TIERS].map((g) => [`figures ${g}`, () => figuresView(ctx, new URLSearchParams({ gov: g }))] as [string, () => View | undefined]),

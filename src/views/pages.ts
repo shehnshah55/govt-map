@@ -432,8 +432,8 @@ export function aboutView(ctx: Ctx, single: boolean): View {
         <li><b>Family ties</b> are recorded only between people who both hold or held a public or party office, and only when an official source or two independent outlets state them.</li>
         <li><b>Legal cases</b> are not published at present. They are held back from the site and from every download until a legal review is complete.</li>
       </ul>
-      <h2>Official websites and Ask</h2>
-      <p>The <a href="#/sources">official websites</a> list covers federal, provincial and territorial bodies, each tied to its record in the graph and re-checked every week. <a href="#/ask">Ask</a> matches a question in English, Urdu or Roman Urdu to those websites and to the bodies responsible. It only links to official sources, never writes an answer, and runs in your browser: your question is not sent anywhere.</p>
+      <h2>Official websites and Find a service</h2>
+      <p>The <a href="#/sources">official websites</a> list covers federal, provincial and territorial bodies, each tied to its record in the graph and re-checked every week. <a href="#/find">Find a service</a> matches a question in English, Urdu or Roman Urdu to those websites and to the bodies responsible. It only links to official sources, never writes an answer, and runs in your browser: your question is not sent anywhere.</p>
       <h2>Corrections</h2>
       <p>Anyone, including the people named, can ask for a correction: <a href="${ctx.repo}/issues/new?template=correction.yml" target="_blank" rel="noopener noreferrer">open a correction request</a> with the page, what is wrong and a source. Requests are acknowledged within 7 days, and accepted corrections are logged publicly in the <a href="#/verification">verification log</a>. The full editorial policy is in the repository's docs/EDITORIAL_POLICY.md.</p>
       <h2>Licence and how to cite</h2>

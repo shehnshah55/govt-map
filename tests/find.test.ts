@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { compile } from "../scripts/compile.ts";
-import { foldRoman, keyTerms, normalise, rankRecords, rankSites } from "../src/lib/ask.ts";
+import { foldRoman, keyTerms, normalise, rankRecords, rankSites, redirectOldPath } from "../src/lib/find.ts";
 import { GraphIndex } from "../src/lib/graph-index.ts";
 
 const { graph } = compile(new URL("../data", import.meta.url).pathname);
@@ -27,7 +27,7 @@ describe("text normalisation", () => {
   });
 });
 
-describe("ask: official websites for a question", () => {
+describe("find a service: official websites for a question", () => {
   it("finds NADRA for identity cards in English, Roman Urdu and Urdu", () => {
     expect(top("How do I renew my CNIC?")[0]).toBe("nadra.gov.pk");
     expect(top("shanakhti card banwane ka tareeqa")[0]).toBe("nadra.gov.pk");
@@ -54,5 +54,14 @@ describe("ask: official websites for a question", () => {
   it("falls back to single words for graph records", () => {
     expect(rankRecords(ix, "Punjab Police").some((r) => r.id === "pb-police")).toBe(true);
     expect(rankRecords(ix, "who runs the Punjab Police").length).toBeGreaterThan(0);
+  });
+});
+
+describe("old #/ask links", () => {
+  it("redirect to #/find with the same query", () => {
+    expect(redirectOldPath("/ask")).toBe("/find");
+    expect(redirectOldPath("/ask?q=CNIC")).toBe("/find?q=CNIC");
+    expect(redirectOldPath("/find?q=CNIC")).toBeUndefined();
+    expect(redirectOldPath("/asks")).toBeUndefined();
   });
 });

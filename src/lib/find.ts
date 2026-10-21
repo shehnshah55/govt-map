@@ -1,5 +1,5 @@
 /**
- * "Ask": finds the official websites and bodies that answer a question, in English, Urdu or
+ * "Find a service": finds the official websites and bodies that answer a question, in English, Urdu or
  * Roman Urdu. Pure (no DOM, no network): it ranks registry entries (data/official-sites.yaml)
  * and graph records, and returns links. It never writes an answer of its own.
  */
@@ -104,4 +104,9 @@ export function rankRecords(ix: GraphIndex, q: string, limit = 12) {
   for (const t of normalise(q).split(" ").filter((w) => w.length > 2 && !STOP.has(w)))
     for (const r of ix.search(t, limit)) if (!seen.has(r.id) || seen.get(r.id)!.score < r.score) seen.set(r.id, r);
   return [...seen.values()].sort((a, b) => b.score - a.score).slice(0, limit);
+}
+
+/** Old links: #/ask (the earlier name of Find a service) open #/find with the same query. */
+export function redirectOldPath(path: string): string | undefined {
+  return /^\/ask(?=$|[/?])/.test(path) ? `/find${path.slice(4)}` : undefined;
 }

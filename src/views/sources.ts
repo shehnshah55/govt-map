@@ -1,6 +1,6 @@
-/** Official websites (#/sources), the "Official websites" panel on body pages, and Ask (#/ask). */
+/** Official websites (#/sources), the "Official websites" panel on body pages, and Find a service (#/find). */
 import type { OfficialSite, SiteCategory, SiteLevel, SiteStatus } from "../schema.ts";
-import { rankRecords, rankSites } from "../lib/ask.ts";
+import { rankRecords, rankSites } from "../lib/find.ts";
 import { safeHref } from "../lib/safe-url.ts";
 import { html, type Raw } from "../ui/dom.ts";
 import { hrefFor, link, type Ctx, type View } from "./common.ts";
@@ -101,18 +101,18 @@ export function officialSitesPanel(ctx: Ctx, bodyId: string): Raw {
 
 const EXAMPLES = ["How do I renew my CNIC?", "Passport fee", "NTN tax filer", "BISP Kafaalat", "shanakhti card banwane ka tareeqa", "بجلی کا بل", "phone blocked PTA", "vehicle registration Lahore"];
 
-export function askView(ctx: Ctx, q: string): View {
+export function findView(ctx: Ctx, q: string): View {
   const { ix } = ctx;
   const query = q.trim();
   const siteHits = query ? rankSites(sites(ctx), query, ix) : [];
   const records = query ? rankRecords(ix, query) : [];
   const body = html`
-    <header class="pagehead"><div class="eyebrow">Ask</div><h1>${query ? html`Where to go for “${query}”` : "Ask about a government service"}</h1>
+    <header class="pagehead"><div class="eyebrow">Find a service</div><h1>${query ? html`Where to go for “${query}”` : "Find a government service"}</h1>
       <p class="lede">Type a question in English, اردو or Roman Urdu. You get links to the official websites and the bodies responsible, never an answer written by us.</p></header>
-    <div class="toolbar"><input id="ask-q" type="search" value="${query}" placeholder="e.g. How do I renew my CNIC?" aria-label="Your question" dir="auto" autocomplete="off" /><button type="button" id="ask-go">Ask</button></div>
+    <div class="toolbar"><input id="find-q" type="search" value="${query}" placeholder="e.g. How do I renew my CNIC?" aria-label="Your question" dir="auto" autocomplete="off" /><button type="button" id="find-go">Find</button></div>
     ${
       !query
-        ? html`<section><h2>Try</h2><div class="sectors">${EXAMPLES.map((e) => html`<a href="#/ask?q=${encodeURIComponent(e)}" dir="auto">${e}</a>`)}</div></section>`
+        ? html`<section><h2>Try</h2><div class="sectors">${EXAMPLES.map((e) => html`<a href="#/find?q=${encodeURIComponent(e)}" dir="auto">${e}</a>`)}</div></section>`
         : html`
       <section><h2>Official websites</h2>${
         siteHits.length
@@ -131,15 +131,15 @@ export function askView(ctx: Ctx, q: string): View {
       <p class="hint">Results are links, not advice. Fees, forms and deadlines change: confirm on the official site before you act.</p>`
     }`;
   return {
-    title: query ? `Ask: ${query}` : "Ask",
+    title: query ? `Find a service: ${query}` : "Find a service",
     body,
     mount: (root) => {
-      const input = root.querySelector<HTMLInputElement>("#ask-q")!;
+      const input = root.querySelector<HTMLInputElement>("#find-q")!;
       const go = () => {
         const v = input.value.trim();
-        if (v) ctx.go(`/ask?q=${encodeURIComponent(v)}`);
+        if (v) ctx.go(`/find?q=${encodeURIComponent(v)}`);
       };
-      root.querySelector("#ask-go")!.addEventListener("click", go);
+      root.querySelector("#find-go")!.addEventListener("click", go);
       input.addEventListener("keydown", (e) => {
         if (e.key === "Enter") go();
       });
