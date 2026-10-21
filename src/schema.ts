@@ -175,6 +175,8 @@ export const Organization = z.object({
   tags: z.array(z.string()).optional(),
   sources: z.array(Source).optional(),
   confidence: Confidence.default("high"),
+  /** True when no reachable source for the body's existence or legal basis has been found yet. */
+  needs_source: z.boolean().optional(),
   notes: z.string().optional(),
   /** Headquarters city (for the geographic view). */
   hq: z.string().optional(),
@@ -273,6 +275,10 @@ export const Person = z.object({
         .array(z.object({ granted: z.string().optional(), to: z.string().optional(), by: z.string().optional(), law: z.string().optional(), notes: z.string().optional() }))
         .optional(),
       source: Source.optional(),
+      /** Confidence in this role's facts when it differs from the person's (e.g. "low" while unsourced). */
+      confidence: Confidence.optional(),
+      /** True when no reachable source supporting this role has been found yet. */
+      needs_source: z.boolean().optional(),
     }),
   ),
   /**
@@ -356,6 +362,8 @@ export const Person = z.object({
     .optional(),
   as_of: z.string(),
   confidence: Confidence.default("medium"),
+  /** True when no reachable source supporting this person's record has been found yet. */
+  needs_source: z.boolean().optional(),
   notes: z.string().optional(),
 });
 
@@ -450,6 +458,8 @@ export const Law = z.object({
   url: SafeUrl.optional(),
   summary: z.string().optional(),
   confidence: Confidence.default("high"),
+  /** True when no official text of the instrument has been found yet. */
+  needs_source: z.boolean().optional(),
 });
 
 export const JurisdictionKind = z.enum([
