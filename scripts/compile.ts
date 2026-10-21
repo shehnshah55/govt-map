@@ -497,6 +497,7 @@ export function compile(dataDir: string): CompileResult {
       const ctx = `${s._file} service ${s.id}`;
       if (seen.has(s.id)) errors.push(`${ctx}: duplicate service id`);
       seen.add(s.id);
+      if (s.confidence !== "low" && !s.sources?.length) errors.push(`${ctx}: confidence "${s.confidence}" needs sources`);
       for (const b of s.bodies) {
         expect(b, ["organization"], ctx);
         const o = organizations.find((x) => x.id === b);

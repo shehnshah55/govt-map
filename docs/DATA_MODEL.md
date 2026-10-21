@@ -165,7 +165,7 @@ A minister whose seat is simply not recorded is **not** tagged. The person's pag
 
 ## Public services (`data/services.yaml`)
 
-`services[{id, title, title_ur, group, keywords, bodies, notes}]` names a public service people ask about and the bodies responsible for it. `bodies` are organization ids; the build rejects unknown ids and political parties. Each body's official website comes from its own record (`website`), so it is never repeated here. `keywords` are the words people use for the service, in English, Roman Urdu and Urdu. They are matched as whole words, with spaces and hyphens ignored, and the longest match wins ("token tax" is not "tax"). `group` sorts the directory (`#/services`).
+`services[{id, title, title_ur, group, keywords, bodies, notes}]` names a public service people ask about and the bodies responsible for it. `bodies` are organization ids; the build rejects unknown ids and political parties. Each body's official website comes from its own record (`website`), so it is never repeated here. `keywords` are the words people use for the service, in English, Roman Urdu and Urdu. They are matched as whole words, with spaces and hyphens ignored, and the longest match wins ("token tax" is not "tax"). `group` sorts the directory (`#/services`). `confidence` defaults to `low` (shown as Provisional) and can be raised only with `sources`, normally the body's own page saying it provides the service; the build enforces this.
 
 ## Ask (`src/lib/ask.ts`)
 

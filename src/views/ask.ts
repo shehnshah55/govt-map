@@ -9,7 +9,7 @@ import { redact } from "../lib/redact.ts";
 import { safeHref } from "../lib/safe-url.ts";
 import type { ServiceGroup, Source } from "../schema.ts";
 import { html, type Raw } from "../ui/dom.ts";
-import { hrefFor, link, type Ctx, type View } from "./common.ts";
+import { confidenceChip, hrefFor, link, type Ctx, type View } from "./common.ts";
 import { electionTags } from "./election-labels.ts";
 
 const SCOPE =
@@ -66,7 +66,7 @@ function bodyRow(ix: GraphIndex, o: Org): Raw {
 function serviceCards(ix: GraphIndex, a: Answer): Raw {
   return html`<div class="svc-list">${a.services.map(
     (s) => html`<article class="svc">
-      <h3>${s.topic.title}</h3>
+      <h3>${s.topic.title} ${confidenceChip(s.topic.confidence)}</h3>
       ${s.topic.title_ur ? html`<p class="urdu" lang="ur" dir="rtl">${s.topic.title_ur}</p>` : ""}
       <ul class="plain">${s.bodies.map((o) => bodyRow(ix, o))}</ul>
       ${s.topic.notes ? html`<p class="hint">${s.topic.notes}</p>` : ""}
@@ -170,11 +170,11 @@ export function servicesView(ctx: Ctx): View {
     <header class="pagehead"><div class="eyebrow">Public services</div><h1>Where to go for a public service</h1>
       <p class="lede">Which public body handles each common service, with its official website. To ask in your own words, in English, Urdu or Roman Urdu, use <a href="#/ask">Ask</a>.</p></header>
     <div class="stack">
-      <p class="hint">Each entry names the body responsible and links its official website. Steps, fees and documents change often, so they are not copied here: follow the body's own site.</p>
+      <p class="hint">Each entry names the body responsible and links its official website. Steps, fees and documents change often, so they are not copied here: follow the body's own site. Entries marked Provisional have not yet been checked against the body's own website.</p>
       ${groups.map(
         ([g, services]) => html`<section><h2>${GROUP_LABEL[g]}</h2><div class="svc-list">${services.map(
           (s) => html`<article class="svc" id="svc-${s.id}">
-            <h3>${s.title}</h3>
+            <h3>${s.title} ${confidenceChip(s.confidence)}</h3>
             ${s.title_ur ? html`<p class="urdu" lang="ur" dir="rtl">${s.title_ur}</p>` : ""}
             <ul class="plain">${s.bodies.map((id) => ix.org.get(id)).filter((o): o is Org => !!o).map((o) => bodyRow(ix, o))}</ul>
             ${s.notes ? html`<p class="hint">${s.notes}</p>` : ""}

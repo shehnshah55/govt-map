@@ -427,6 +427,10 @@ export const ServiceTopic = z.object({
   /** The bodies responsible, by organization id. */
   bodies: z.array(z.string()).min(1),
   notes: z.string().optional(),
+  /** Sources stating that these bodies handle this service, usually their own websites. */
+  sources: z.array(Source).optional(),
+  /** "low" (Provisional) until the sources are checked; "high" only with an official source. */
+  confidence: Confidence.default("low"),
 });
 
 export const Law = z.object({

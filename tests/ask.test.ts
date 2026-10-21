@@ -1,3 +1,6 @@
+import { cpSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { compile } from "../scripts/compile.ts";
 import { ask, detectLang, displayName, EXAMPLES, isOfficialUrl, isQuestion, normalize, type Piece } from "../src/lib/ask.ts";
@@ -169,6 +172,24 @@ describe("services", () => {
     expect(errors).toEqual([]);
     expect(graph.services.length).toBeGreaterThan(20);
     for (const s of graph.services) for (const b of s.bodies) expect(ix.org.get(b)?.kind, `${s.id}: ${b}`).not.toBe("political_party");
+  });
+
+  it("start provisional, and can't claim more without a source", () => {
+    expect(graph.services.every((s) => s.confidence === "low" || s.sources?.length)).toBe(true);
+    const dir = mkdtempSync(join(tmpdir(), "svc-"));
+    try {
+      cpSync(new URL("../data", import.meta.url).pathname, join(dir, "data"), { recursive: true });
+      const bad = (extra: string, bodies = "[fed-nadra]") => {
+        writeFileSync(join(dir, "data", "services.yaml"), `services:\n  - id: t\n    title: T\n    group: identity\n    keywords: [t1]\n    bodies: ${bodies}\n${extra}`);
+        return compile(join(dir, "data")).errors;
+      };
+      expect(bad("    confidence: high\n")).toEqual([expect.stringContaining('confidence "high" needs sources')]);
+      expect(bad("    confidence: high\n    sources: [{title: NADRA, url: 'https://www.nadra.gov.pk'}]\n")).toEqual([]);
+      expect(bad("", "[party-pmln]")).toEqual([expect.stringContaining("political party")]);
+      expect(bad("", "[no-such-body]")).toEqual([expect.stringContaining("unknown reference")]);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 
   it.each([

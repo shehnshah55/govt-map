@@ -8,7 +8,12 @@
 # as whole words, with spaces and hyphens ignored ("b-form", "b form" and "bform" are the same).
 # Prefer specific phrases: a bare "tax" or "bill" would catch unrelated questions.
 #
-# The Urdu titles still need review by a native speaker before launch (docs/LAUNCH_LOG.md).
+# confidence: every topic starts "low" (shown as Provisional) until the link between the service
+# and each body is checked against a fetched source, normally the body's own website; then add
+# `sources` and raise it (docs/LAUNCH_PLAN.md §0.2). The topics below were written without network
+# access to those sites and are all still provisional (docs/LAUNCH_LOG.md, 2026-10-21).
+#
+# The Urdu titles still need review by a native speaker before launch.
 
 services:
   # ── identity and travel ────────────────────────────────────────────────────
@@ -61,7 +66,6 @@ services:
     group: tax
     keywords: [vehicle registration, car registration, bike registration, motorcycle registration, number plate, token tax, motor vehicle tax, vehicle transfer, excise, gari registration, gaari registration, گاڑی رجسٹریشن, گاڑی کی رجسٹریشن, ٹوکن ٹیکس, نمبر پلیٹ, ایکسائز]
     bodies: [pb-excise-taxation, sd-excise-taxation, kp-excise-taxation, ba-excise-taxation, fed-ict-administration]
-    notes: In Islamabad, vehicles are registered by the Excise and Taxation Department of the ICT Administration.
 
   # ── welfare, pensions and health ───────────────────────────────────────────
   - id: bisp
@@ -134,7 +138,6 @@ services:
     group: utilities
     keywords: [electricity, electricity bill, bijli, bijli ka bill, bijli bill, load shedding, loadshedding, overbilling, electricity complaint, electricity connection, بجلی, بجلی کا بل, لوڈشیڈنگ]
     bodies: [fed-discos, fed-nepra]
-    notes: Bills and connections are handled by the distribution company (DISCO) for the area; NEPRA hears complaints against them.
 
   - id: gas
     title: Gas bills, connections and complaints
@@ -142,7 +145,6 @@ services:
     group: utilities
     keywords: [gas, gas bill, gas connection, sui gas, gas complaint, گیس, سوئی گیس]
     bodies: [fed-sngpl, fed-ssgc, fed-ogra]
-    notes: SNGPL serves Punjab, Khyber Pakhtunkhwa and Islamabad; SSGC serves Sindh and Balochistan; OGRA hears complaints against both.
 
   - id: telecom
     title: Mobile phones, SIMs and telecom complaints
@@ -158,7 +160,6 @@ services:
     group: complaints
     keywords: [complaint, complaints, complain, complaint against government, maladministration, ombudsman, mohtasib, shikayat, shikayat darj, شکایت, محتسب]
     bodies: [fed-wafaqi-mohtasib, pb-ombudsman, sd-ombudsman, kp-ombudsman, ba-ombudsman]
-    notes: The Wafaqi Mohtasib hears complaints against federal offices; each province has its own ombudsman for provincial offices.
 
   - id: tax-complaints
     title: Complaints against the tax authorities
@@ -187,7 +188,6 @@ services:
     group: complaints
     keywords: [corruption, bribe, bribery, rishwat, kickback, کرپشن, رشوت, بدعنوانی]
     bodies: [fed-nab, pb-cr-ace, sd-cr-ace, kp-cr-ace, ba-cr-ace]
-    notes: Each province's Anti-Corruption Establishment deals with provincial government employees.
 
   - id: procurement
     title: Government tenders and procurement
@@ -203,7 +203,6 @@ services:
     group: police
     keywords: [police, fir, report a crime, police complaint, thana, theft, robbery, motorway, پولیس, ایف آئی آر, تھانہ]
     bodies: [pb-police, sd-police, kp-police, ba-police, fed-ict-police, gb-police, ajk-police, fed-nhmp]
-    notes: The National Highways and Motorway Police cover the motorways and national highways.
 
   - id: cybercrime
     title: Cybercrime and online fraud
@@ -218,7 +217,7 @@ services:
     group: police
     keywords: [driving licence, driving license, licence, license, learner permit, learner licence, ڈرائیونگ لائسنس, لائسنس]
     bodies: [pb-police, sd-police, kp-police, fed-ict-police]
-    notes: Issued by the traffic wing of each police force. The issuing office for Balochistan is not yet recorded.
+    notes: The issuing office for Balochistan is not yet recorded.
 
   - id: court-cases
     title: Court cases and cause lists
@@ -241,7 +240,6 @@ services:
     group: land
     keywords: [land record, land records, fard, intiqal, mutation, property record, registry, zameen, zameen ka record, فرد, انتقال, زمین, رجسٹری]
     bodies: [pb-plra, pb-board-of-revenue, sd-board-of-revenue, kp-board-of-revenue, ba-board-of-revenue]
-    notes: In Punjab, fard and mutation are issued by the Punjab Land Records Authority; elsewhere by the province's Board of Revenue.
 
   - id: company-registration
     title: Registering a company

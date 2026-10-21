@@ -537,12 +537,13 @@ Branch `launch/ask`, from `main` (`2aa8544`). SS asked to reverse-engineer and i
 
 ### Verified
 
-- **Unit tests:** 138 passed, including 51 new tests in `tests/ask.test.ts`:
+- **Unit tests:** 139 passed, including 52 new tests in `tests/ask.test.ts`:
   - redaction of 9 kinds of number; seat codes, years and SMS short codes are kept;
   - the same answer in English, Roman Urdu and Urdu;
   - every titled post with a holder can be found from its own title;
   - answers name only recorded holders;
   - service routing, including longest-keyword-wins;
+  - service topics stay provisional unless they have sources, and may name only public bodies;
   - official-source marking;
   - every example question is answered.
 - **Hostile-data test:** `tests/security.test.ts` now renders Ask (with an attack payload as the question, the example questions and 120 "what does X do" answers) and the services page.
@@ -553,6 +554,7 @@ Branch `launch/ask`, from `main` (`2aa8544`). SS asked to reverse-engineer and i
 
 ### Open
 
+- **The service topics are unverified and need sources.** Each topic links a service to the bodies responsible for it. Those links were written from general knowledge, because every official site was unreachable from this environment. Under §0.2 they are therefore `confidence: low`, shown as **Provisional** on the page, with no `sources`. Notes stating further facts (which gas company serves which province, the PLRA in Punjab, and similar) were taken out for the same reason. Each topic needs the body's own page fetched and cited before it can be raised. Ask's answers about posts, bodies and laws are not affected: they come from records that already carry sources.
 - **Urdu answer wording.** Answers are in English. The Urdu service titles in `data/services.yaml` need review by a native speaker before launch.
 - **Missing websites:**
   - 54 of the 85 bodies named in service topics have no website recorded, including the Directorate General of Immigration and Passports, the DISCOs, SNGPL, SSGC and the provincial police. Adding them needs network access to confirm each address.
