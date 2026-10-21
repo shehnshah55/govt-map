@@ -414,8 +414,10 @@ function resolve(ix: GraphIndex, r: Reading): { subject?: string; choices: strin
     if (pick) return { subject: pick, choices: ids.filter((id) => id !== pick) };
     return { choices: ids, ambiguous: true };
   }
-  if (r.rest.length) {
-    const found = ix.search(r.rest.join(" "), 6);
+  // a plain search on leftover words, as a last resort: only words long enough to mean something
+  const words3 = r.rest.filter((w) => w.length >= 3);
+  if (words3.length) {
+    const found = ix.search(words3.join(" "), 6);
     if (found.length) return { subject: found[0].id, choices: found.slice(1).map((x) => x.id), closest: true, usedRest: true };
   }
   return { choices: [] };
@@ -582,7 +584,10 @@ function legalBasis(b: Builder, id: string) {
   const { ix } = b;
   const rec = ix.org.get(id) ?? ix.post.get(id);
   const basis = ix.org.get(id)?.legal_basis ?? ix.post.get(id)?.appointment?.legal_basis ?? [];
-  if (!rec) return;
+  if (!rec) {
+    b.line("No legal basis is recorded for ", { id }, ".");
+    return;
+  }
   if (basis.length) b.line({ id }, " rests on ", ...basis.flatMap((l, i) => [i ? "; " : "", { id: l.law }, l.provision ? ` ${l.provision}` : ""]), ".");
   for (const h of [...(rec.history ?? [])].sort((x, y) => x.year - y.year)) b.line(`${h.year}: `, { id: h.law }, h.provision ? ` ${h.provision}` : "", ` — ${h.change}`);
   basis.forEach((l) => b.law(l));
@@ -712,11 +717,13 @@ export function ask(ix: GraphIndex, input: string): Answer {
       readAs = ["Whom ", { id: target }, " answers to"];
       break;
     }
-    case "law":
+    case "law": {
+      const target = kind === "person" ? (ix.person.get(subject)!.roles.find((x) => !x.until)?.position ?? subject) : kind === "jurisdiction" ? (headOrSelf ?? subject) : subject;
       if (kind === "law") aboutLaw(b, subject);
-      else legalBasis(b, kind === "jurisdiction" || kind === "person" ? (headOrSelf ?? subject) : subject);
-      readAs = ["The law behind ", { id: subject }];
+      else legalBasis(b, target);
+      readAs = ["The law behind ", { id: target }];
       break;
+    }
     default:
       if (kind === "organization") aboutOrg(b, ix.org.get(subject)!);
       else if (kind === "person") aboutPerson(b, ix.person.get(subject)!);
@@ -725,6 +732,8 @@ export function ask(ix: GraphIndex, input: string): Answer {
       else aboutLaw(b, subject);
       readAs = ["About ", { id: subject }];
   }
+  // every answer says something, even if only that the record holds nothing more
+  if (!b.lines.length) b.line("Nothing more is recorded about ", { id: subject }, " yet.");
   b.sources = lawSources(ix, b);
   const ignored = found.usedRest ? [] : r.rest;
   return { ...base, intent, status: "answered", subject, readAs, closest: found.closest, ignored, lines: b.lines, sources: b.sources, laws: b.laws, choices: found.choices };

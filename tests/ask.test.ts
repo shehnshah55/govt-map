@@ -43,6 +43,20 @@ describe("redaction", () => {
     expect(askView(ctx, "35202-1234567-1 passport").body.html).not.toContain("1234567");
   });
 
+  it("takes time in proportion to the text, however it is crafted", () => {
+    // an unanchored email pattern once took 10 s on 100,000 characters (a shared link could freeze a tab)
+    for (const s of ["1".repeat(100_000), "a.".repeat(50_000) + "@", "ab1234567".repeat(11_000), "1-".repeat(50_000)]) {
+      const t = performance.now();
+      redact(s);
+      redact(s.slice(0, 1999));
+      expect(performance.now() - t, s.slice(0, 12)).toBeLessThan(200);
+    }
+  });
+
+  it("catches a passport number run into a word", () => {
+    expect(redact("passportAB1234567lost").removed).toContain("passport number");
+  });
+
   it("does not read the placeholder it leaves as part of the question", () => {
     // "[phone number removed]" contains "removed", an accountability word
     expect(ask(ix, "call me on 0300-1234567").intent).toBeUndefined();
@@ -139,6 +153,29 @@ describe("reading questions", () => {
     const w = ask(ix, "what is the weather in lahore");
     expect(w.ignored).toEqual(["weather"]);
   });
+
+  it("answers the law behind a person from the post they hold", () => {
+    const a = ask(ix, "qanoon justice");
+    expect(a.intent).toBe("law");
+    expect(a.lines.length).toBeGreaterThan(0);
+    expect(a.readAs && ids([a.readAs]).some((id) => ix.post.has(id))).toBe(true);
+  });
+
+  it("doesn't guess from two-letter words", () => {
+    expect(ask(ix, "qanoon na").subject).toBeUndefined();
+  });
+
+  it("never answers with nothing, and links only to records that exist (seeded fuzz)", () => {
+    const vocab = ["who", "is", "kaun", "hai", "کون", "appoints", "muqarrar", "what", "kya", "law", "qanoon", "accountable", "pm", "cm", "governor", "chief", "justice", "secretary", "dc", "ig", "minister", "punjab", "sindh", "kp", "پنجاب", "lahore", "nadra", "fbr", "nab", "passport", "cnic", "tax", "?", "na", "122", "<b>", "senator", "mna", "judge", "head", "amendment"];
+    let seed = 7;
+    const rnd = () => (seed = (seed * 1103515245 + 12345) % 2 ** 31) / 2 ** 31;
+    for (let i = 0; i < 250; i++) {
+      const q = Array.from({ length: 1 + Math.floor(rnd() * 7) }, () => vocab[Math.floor(rnd() * vocab.length)]).join(" ");
+      const a = ask(ix, q);
+      if (a.status === "answered") expect(a.lines.length + a.services.length, q).toBeGreaterThan(0);
+      for (const id of [...ids(a.lines), ...a.choices]) expect(ix.kindOf(id), `${q}: ${id}`).toBeDefined();
+    }
+  }, 30_000);
 
   it("answers every example question", () => {
     for (const e of EXAMPLES) expect(ask(ix, e.q).status, e.q).toBe("answered");
