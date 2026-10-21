@@ -17,6 +17,8 @@ const ROUTES: [string, string][] = [
   ["verification", "#/verification"],
   ["accountability", "#/accountability"],
   ["search", "#/search?q=minister"],
+  ["find a service", "#/find?q=How%20do%20I%20renew%20my%20CNIC%3F"],
+  ["official websites", "#/sources"],
   ["facts and figures", "#/figures"],
   ["evidence list", "#/figures/posts-by-selection/elected"],
   ["political families", "#/families"],
@@ -72,4 +74,11 @@ test("search suggests and navigates", async ({ page }) => {
   await page.keyboard.press("ArrowDown");
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/#\/(post|org|person)\//);
+});
+
+test("old #/ask links open Find a service", async ({ page }) => {
+  await page.goto("#/ask?q=passport");
+  await expect(page.locator("#app h1").first()).toContainText("passport");
+  await expect(page.locator("#app .eyebrow").first()).toHaveText("Find a service");
+  expect(new URL(page.url()).hash).toBe("#/find?q=passport");
 });

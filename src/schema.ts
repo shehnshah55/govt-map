@@ -11,7 +11,7 @@
  */
 import { z } from "zod";
 import { isSafeUrl, SAFE_URL_MESSAGE } from "./lib/safe-url.ts";
-import { ASSET_SOURCE_HOSTS, isAssetSource, isEcpSource } from "./lib/policy.ts";
+import { ASSET_SOURCE_HOSTS, isAssetSource, isEcpSource, isOfficialSiteUrl } from "./lib/policy.ts";
 
 /** Every URL field: https only (see src/lib/safe-url.ts). Plain z.string().url() would accept javascript: and data: URLs. */
 export const SafeUrl = z.string().refine(isSafeUrl, { message: SAFE_URL_MESSAGE });
@@ -476,6 +476,48 @@ export const LegislatureSeats = z.object({
   sources: z.array(Source).optional(),
 });
 
+/** Governments a registry site belongs to (data/official-sites.yaml). */
+export const SiteLevel = z.enum(["federal", "punjab", "sindh", "kp", "balochistan", "ict", "ajk", "gb"]);
+export const SiteCategory = z.enum([
+  "government", // portals, ministries, departments, offices
+  "legislature",
+  "identity_travel",
+  "tax_business",
+  "social_protection",
+  "jobs_education",
+  "health",
+  "utilities",
+  "law_justice",
+  "police_safety",
+  "regulators",
+  "land_records",
+  "citizen_services",
+  "overseas",
+  "statistics",
+]);
+/** Result of the last link check: verified, served with a broken TLS certificate chain, or not reachable from a CI runner. */
+export const SiteStatus = z.enum(["verified", "cert_issue", "unreachable_from_ci"]);
+
+/** One official government website, optionally tied to a body in the graph. */
+export const OfficialSite = z.object({
+  id: z.string().regex(/^[a-z0-9-]+$/),
+  name: z.string(),
+  name_ur: z.string().optional(),
+  /** Homepage. Must be on an official domain (OFFICIAL_SUFFIXES / OFFICIAL_ORG_HOSTS in src/lib/policy.ts). */
+  url: SafeUrl.refine((u) => isOfficialSiteUrl(u), { message: "official site must be on a government domain or a host in OFFICIAL_ORG_HOSTS (src/lib/policy.ts)" }),
+  level: SiteLevel,
+  category: SiteCategory,
+  /** What people come to the site for, in English, Urdu and Roman Urdu. Used by Find a service (#/find). */
+  services: z.array(z.string()).optional(),
+  /** The body in the graph that runs the site. */
+  body_id: z.string().optional(),
+  /** A single-service portal (e-stamping, bill lookup, …), not the body's homepage: never back-filled as its website. */
+  portal: z.boolean().optional(),
+  status: SiteStatus,
+  checked: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  notes: z.string().optional(),
+});
+
 /** A single YAML data file may contain any subset of these collections. */
 export const DataFile = z.object({
   /** Field values merged into every record of that collection in the same file. */
@@ -495,6 +537,7 @@ export const DataFile = z.object({
   laws: z.array(Law).optional(),
   field_administration: z.array(FieldAdministration).optional(),
   legislature_seats: z.array(LegislatureSeats).optional(),
+  official_sites: z.array(OfficialSite).optional(),
   /** Log of fact checks: what was verified, corrected or left unverified, and against which sources. */
   verification: z
     .array(
@@ -545,6 +588,10 @@ export type LegislatureSeats = z.infer<typeof LegislatureSeats>;
 export type Tenure = z.infer<typeof Tenure>;
 export type HistoryEntry = z.infer<typeof HistoryEntry>;
 export type Origin = z.infer<typeof Origin>;
+export type OfficialSite = z.infer<typeof OfficialSite>;
+export type SiteLevel = z.infer<typeof SiteLevel>;
+export type SiteCategory = z.infer<typeof SiteCategory>;
+export type SiteStatus = z.infer<typeof SiteStatus>;
 
 /** How a post is filled (elected vs unelected, by type). */
 export type Selection = "elected" | "political" | "constitutional" | "judicial" | "military" | "civil_service" | "regulatory" | "statutory" | "ex_officio";
@@ -572,6 +619,8 @@ export interface Graph {
   relatives: (Relative & { _file: string })[];
   /** Seats checked against the ECP's Form 45 and Form 47 (docs/EDITORIAL_POLICY.md § Elections). */
   election_checks: (ElectionCheck & { _file: string })[];
+  /** Official government websites (data/official-sites.yaml). */
+  official_sites: (OfficialSite & { _file: string })[];
   /** All edges: authored relations plus those derived from parents, appointments and roles. */
   edges: (Relation & { derived: boolean })[];
 }
