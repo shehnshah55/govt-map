@@ -219,7 +219,7 @@ export function audit(dataDir = fileURLToPath(new URL("data", root))) {
   const withItems = g.official_sites.filter((s) => svcBySite.has(s.id));
   const svcMd = `## Service index
 
-${num(svc.items.length)} official pages and documents in \`data/service-index/\` (${(svc.gzipBytes / 1048576).toFixed(2)} MB gzipped), from ${num(withItems.length)} of the ${num(g.official_sites.length)} registry websites${svcDates.length ? `, fetched between ${svcDates[0]} and ${svcDates.at(-1)}` : ""}. ${num(reachable.length)} websites are reachable from outside Pakistan and tied to a body; the rest need a crawl from a Pakistani network (docs/SERVICE_INDEX.md).
+${num(svc.items.length)} official pages and documents in \`data/service-index/\` (${(svc.bytes / 1048576).toFixed(2)} MB before compression; the build gate checks the gzipped size), from ${num(withItems.length)} of the ${num(g.official_sites.length)} registry websites${svcDates.length ? `, fetched between ${svcDates[0]} and ${svcDates.at(-1)}` : ""}. ${num(reachable.length)} websites are reachable from outside Pakistan and tied to a body; the rest need a crawl from a Pakistani network (docs/SERVICE_INDEX.md).
 
 ${table(["Kind", "Items"], svcKinds.map((k) => [k, frac(svc.items.filter((i) => i.kind === k).length, svc.items.length)]))}
 

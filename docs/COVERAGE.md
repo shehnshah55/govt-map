@@ -170,7 +170,7 @@ Citations with an `accessed` date: 0 / 168 (0%).
 
 ## Service index
 
-4,584 official pages and documents in `data/service-index/` (0.56 MB gzipped), from 126 of the 224 registry websites, fetched between 2026-10-21 and 2026-10-21. 140 websites are reachable from outside Pakistan and tied to a body; the rest need a crawl from a Pakistani network (docs/SERVICE_INDEX.md).
+4,584 official pages and documents in `data/service-index/` (2.15 MB before compression; the build gate checks the gzipped size), from 126 of the 224 registry websites, fetched between 2026-10-21 and 2026-10-21. 140 websites are reachable from outside Pakistan and tied to a body; the rest need a crawl from a Pakistani network (docs/SERVICE_INDEX.md).
 
 | Kind | Items |
 |---|---:|
