@@ -8,6 +8,7 @@ import { hrefFor, type Ctx, type View } from "./views/common.ts";
 import { lawView, orgView, personView, placeView, postView } from "./views/entities.ts";
 import { directoryView, electedView, officialsView } from "./views/directory.ts";
 import { appointmentsView, mapView, parliamentView, treeView, verificationView } from "./views/insight.ts";
+import { figureEvidenceView, figuresView } from "./views/figures.ts";
 import { aboutView, accountabilityView, exploreView, homeView, lawsView, searchView, sectorView, sectorsView } from "./views/pages.ts";
 
 declare const __SINGLE__: boolean;
@@ -64,6 +65,8 @@ function route(path: string): View | undefined {
       return verificationView(ctx);
     case "accountability":
       return accountabilityView(ctx);
+    case "figures":
+      return seg[1] ? figureEvidenceView(ctx, seg[1], seg[2] ?? "", params) : figuresView(ctx, params);
     case "search":
       return searchView(ctx, params.get("q") ?? "");
     case "about":

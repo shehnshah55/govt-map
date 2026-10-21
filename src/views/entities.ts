@@ -32,6 +32,22 @@ import {
   type View,
 } from "./common.ts";
 import { safeHref } from "../lib/safe-url.ts";
+import { careerSummary } from "../lib/analytics.ts";
+import type { Human } from "../lib/graph-index.ts";
+
+/** Career records as far as the data goes (§7.14). Each figure says what it is based on. */
+function careerFacts(ctx: Ctx, person: Human) {
+  const { ix } = ctx;
+  const c = careerSummary(ix, person);
+  const years = c.electedDays / 365.25;
+  return html`<dl class="career" style="margin-bottom:14px">
+    <div><dt>Elected to a house, terms recorded</dt><dd>${c.elected.length ? c.elected.map((e, i) => html`${i ? ", " : ""}${ix.shortLabel(e.org)} ${e.terms}`) : "none recorded"}</dd></div>
+    <div><dt>Years in elected office, as recorded</dt><dd class="num">${years >= 0.1 ? years.toFixed(1) : "–"}</dd></div>
+    <div><dt>Different offices recorded</dt><dd class="num">${c.offices}${c.firstRecorded ? html` <span class="hint">since ${c.firstRecorded.slice(0, 4)}</span>` : ""}</dd></div>
+    <div><dt>Party changes</dt><dd><span class="hint">Party history not yet recorded</span></dd></div>
+  </dl>
+  <p class="hint" style="margin:-6px 0 12px">Counts cover only the terms in this dataset, which for most people starts with their current office. "Years in elected office" includes offices filled by an elected house (Prime Minister, Chief Minister, Speaker), and overlapping offices count once.</p>`;
+}
 
 const STRUCTURAL: RelationType[] = ["part_of", "established_by", "head_of", "seat_in"];
 
@@ -401,6 +417,7 @@ export function personView(ctx: Ctx, id: string): View | undefined {
           person.roles.length > 1 || past.length
             ? html`<section><h2>Career <span class="count num">${person.roles.length} offices</span></h2>
               <p class="hint" style="margin-bottom:10px">Every office recorded for this person, current and previous: elected, appointed, military, judicial and party posts.</p>
+              ${careerFacts(ctx, person)}
               <ol class="timeline">${[...person.roles]
                 .sort((a, b) => (b.since ?? "").localeCompare(a.since ?? ""))
                 .map((r) => {

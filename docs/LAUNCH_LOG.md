@@ -249,3 +249,60 @@ Branch `launch/phase-1-security`, stacked on `launch/home-pm-office-map` (PR #4)
 - 👤 Enable private vulnerability reporting, secret scanning and Dependabot alerts. Make branch protection require code-owner review (§10).
 - When a project e-mail exists, add it to `SECURITY.md` and the Correction request form.
 - `frame-ancestors` (clickjacking protection) needs an HTTP header. If the site moves to a host that can set headers, add `frame-ancestors 'none'` there.
+
+---
+
+## 2026-10-02 · Phase 5 (§7.14): Facts and figures, first pass
+
+Branch `launch/phase-5-analytics`, stacked on `launch/phase-1-security` (PR #6). SS chose this while the network is blocked, asking for the full §7.14 set to be scaffolded. No data changed.
+
+### What changed
+
+- **`src/lib/analytics.ts`:** every figure as a pure function of the compiled graph. Each bar is a group of record ids, so a bar's count and its evidence list come from the same code.
+- **Home page:** opens with five tiles. Each links to the records behind it:
+  - government bodies
+  - posts, with "174 of 1,751 single posts with a known holder"
+  - elected seats, with "26 with a named member"
+  - people recorded
+  - laws cited
+
+  The post and seat numbers use the `docs/COVERAGE.md` definitions, and a test checks they match. Two compact charts sit below, with a link to the full page.
+- **New page `#/figures`** ("Facts and figures", in the More menu):
+  - bodies by government;
+  - bodies by sector, how posts are filled, who appoints the most posts, and what created each body. A government filter above these charts applies to all of them;
+  - a Prime Ministers timeline;
+  - three cards for the figures that rank people.
+- **Evidence:** every bar links to `#/figures/<figure>/<key>`, which lists the records it counts.
+- **Figures that wait for data:**
+  - **Career records:** most-elected, longest-serving, times elected, years in office.
+  - **Party changes:** most changes, never changed.
+  - **Declared assets:** highest and lowest declared net assets, median, change across years.
+
+  Each card says what is in the data and what is needed (§7.14 rules 1 and 4). Assets count only ECP annual statements. They are ranked only when a house has statements for at least 90% of its seats for one fiscal year, and different years are never pooled.
+- **Not used for assets:** the 4 figures in the data come from press reports of nomination papers, so the assets card says they are excluded.
+- **Person pages:** gain a "Career records" line: terms in each house, years in elected office (overlapping offices counted once), offices recorded and "party history not yet recorded". It is captioned as covering only the terms in the data.
+- **Charts:**
+  - Static HTML tables with CSS bars. No chart library and no CDN.
+  - Every bar has its label and value in text, so no meaning depends on colour.
+  - Bars use the accent colour; the "All others" bar and past Prime Ministers use a gray (`#7f8c85` light, `#6b7a71` dark). That gray reaches 3:1 contrast on the surface in both themes and stays distinct from the accent under colour blindness. These were checked with the palette validator (ΔE ≥ 17.7).
+  - Periods without Prime Minister records (1993–97, 1999–2008, 2012–13) are shown hatched and named.
+- **Pre-existing fix:** person pages overflowed sideways at 375 px, because the `.stack` grid column grew to fit long content. The column is now `minmax(0, 1fr)`.
+
+### Verified
+
+- **Gates:** all pass: `validate`, `test` (58), `typecheck`, `build`, `build:single`, `check:build`, `audit:coverage -- --check`.
+- **New tests (`tests/analytics.test.ts`):**
+  - every bar's value equals its evidence list, for every figure and government;
+  - the governments add up to the whole;
+  - tile numbers match COVERAGE;
+  - the asset threshold, including that fiscal years are never pooled;
+  - overlapping terms count once.
+- **Escaping test:** now also renders the figures page for every government and every evidence page.
+- **Chromium:**
+  - light and dark at 1280 px, and 375 px: no console errors, no sideways scroll;
+  - production build and single file: no CSP violations and no third-party requests.
+
+### Open
+
+- The ranked figures need data that requires network access: past ECP election results, party histories and ECP asset statements.
+- The 4 press-sourced asset figures should be replaced by ECP statements, per §1.5.
