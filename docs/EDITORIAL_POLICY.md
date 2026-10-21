@@ -53,6 +53,15 @@ If they are published later, these rules apply:
 - **"Not directly elected."** Officeholders who were not chosen by voters (members on reserved seats, senators, and unelected ministers, advisers and special assistants) carry a neutral tag that says how they were chosen.
 - Apart from these labels, the project makes no claims of its own about the conduct of any election.
 
+## Ask and the services directory
+
+- **Ask (`#/ask`) answers only from the records on this site.** It finds the post, body, person or place a question names and answers from that record and its sources. It uses no AI and no outside service, so it can't make up an answer. When the records don't hold the answer, it says so.
+- **Ask shows how it read the question** ("Read as: who holds Chief Minister of Punjab"), any words it didn't recognise, and when a match is only the closest one. A wrong reading is then visible, not hidden.
+- **Personal numbers are removed before a question is read.** CNIC, passport and phone numbers, email addresses and other long numbers are removed in the browser. They are never stored or sent, and they don't reach the address bar.
+- **The services directory (`#/services`) only says which body handles a service, and links its official website.** Steps, fees and documents change often, so they aren't copied here. A topic may name only public bodies that are in the graph; the build rejects anything else.
+- **"Official" sources** are government domains (`.gov.pk` and the provincial `gop.pk`, `gos.pk`, `gob.pk` and `gkp.pk`) and the websites public bodies list as their own. News reports are marked "Secondary". Party websites are never official.
+- **Answers are in English for now.** Questions can be in English, Urdu or Roman Urdu. Urdu answer wording will be added only after a native speaker has reviewed it.
+
 ## Neutral wording
 
 Descriptions say what a body, law or office does, not whether it is good. They don't use adjectives about people.

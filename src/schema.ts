@@ -409,6 +409,26 @@ export const ElectionCheck = z.object({
   notes: z.string().optional(),
 });
 
+/** What a service topic is about, for grouping the services directory. */
+export const ServiceGroup = z.enum(["identity", "tax", "welfare", "jobs", "education", "utilities", "complaints", "police", "health", "elections", "business", "travel", "land", "emergencies", "courts"]);
+
+/**
+ * A public service people ask about, and the bodies responsible for it (data/services.yaml). It
+ * points to the body and its official website only: procedures, fees and documents change too often
+ * to copy here, so they are left to the body's own site.
+ */
+export const ServiceTopic = z.object({
+  id: z.string().regex(/^[a-z0-9-]+$/),
+  title: z.string(),
+  title_ur: z.string().optional(),
+  group: ServiceGroup,
+  /** Words people use for it, in English, Roman Urdu and Urdu. Matched as whole words. */
+  keywords: z.array(z.string().min(2)).min(1),
+  /** The bodies responsible, by organization id. */
+  bodies: z.array(z.string()).min(1),
+  notes: z.string().optional(),
+});
+
 export const Law = z.object({
   id: z.string().regex(/^[a-z0-9-]+$/),
   title: z.string(),
@@ -493,6 +513,7 @@ export const DataFile = z.object({
   relations: z.array(Relation).optional(),
   relatives: z.array(Relative).optional(),
   election_checks: z.array(ElectionCheck).optional(),
+  services: z.array(ServiceTopic).optional(),
   laws: z.array(Law).optional(),
   field_administration: z.array(FieldAdministration).optional(),
   legislature_seats: z.array(LegislatureSeats).optional(),
@@ -538,6 +559,8 @@ export type Person = z.infer<typeof Person>;
 export type Relation = z.infer<typeof Relation>;
 export type Relative = z.infer<typeof Relative>;
 export type ElectionCheck = z.infer<typeof ElectionCheck>;
+export type ServiceTopic = z.infer<typeof ServiceTopic>;
+export type ServiceGroup = z.infer<typeof ServiceGroup>;
 export type RelationType = z.infer<typeof RelationType>;
 export type Law = z.infer<typeof Law>;
 export type Jurisdiction = z.infer<typeof Jurisdiction>;
@@ -573,6 +596,8 @@ export interface Graph {
   relatives: (Relative & { _file: string })[];
   /** Seats checked against the ECP's Form 45 and Form 47 (docs/EDITORIAL_POLICY.md § Elections). */
   election_checks: (ElectionCheck & { _file: string })[];
+  /** Public services and the bodies responsible for them, for Ask and the services directory. */
+  services: (ServiceTopic & { _file: string })[];
   /** All edges: authored relations plus those derived from parents, appointments and roles. */
   edges: (Relation & { derived: boolean })[];
 }

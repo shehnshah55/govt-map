@@ -43,6 +43,7 @@ export function homeView(ctx: Ctx): View {
       <div class="btnrow">
         <a class="btn" href="#/org/fed-pm-office">Start with the Prime Minister's Office</a>
         <a class="btn ghost" href="#/explore">Explore the whole graph</a>
+        <a class="btn ghost" href="#/ask">Ask a question</a>
       </div>
     </section>
     ${statTiles(headlineTiles(ix))}
@@ -448,6 +449,7 @@ export function aboutView(ctx: Ctx, single: boolean): View {
         <li>Open States and mySociety's TheyWorkForYou: legislators as roles in constituencies, with a full seat roster.</li>
         <li>FAFEN's Open Parliament Pakistan: seat codes match the ECP's, so attendance and performance data can be joined.</li>
         <li>LittleSis: people and organisations as a power network, including party membership.</li>
+        <li>Ask Pakistan (pakistangov.online), an independent search for government services: questions in English, Urdu and Roman Urdu, answers that link official sources, and personal numbers removed in the browser. This site's Ask page follows the same approach without AI, answering only from these records.</li>
       </ul>
       <p class="hint">The repository's docs/RESEARCH.md has the full comparison.</p>
     </div>

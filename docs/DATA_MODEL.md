@@ -163,6 +163,26 @@ Derived, not authored (`src/lib/elections.ts`). A person is tagged when either:
 
 A minister whose seat is simply not recorded is **not** tagged. The person's page lists each office with how it was filled.
 
+## Public services (`data/services.yaml`)
+
+`services[{id, title, title_ur, group, keywords, bodies, notes}]` names a public service people ask about and the bodies responsible for it. `bodies` are organization ids; the build rejects unknown ids and political parties. Each body's official website comes from its own record (`website`), so it is never repeated here. `keywords` are the words people use for the service, in English, Roman Urdu and Urdu. They are matched as whole words, with spaces and hyphens ignored, and the longest match wins ("token tax" is not "tax"). `group` sorts the directory (`#/services`).
+
+## Ask (`src/lib/ask.ts`)
+
+Ask answers questions from the graph in the browser, with no model and no network call. It works in four steps:
+
+1. **Redact** (`src/lib/redact.ts`): CNIC, passport and phone numbers, email addresses and other long numbers are removed first. Urdu digits are converted to ASCII so they are caught too.
+2. **Read:** the text is normalised (case, punctuation, Urdu letter forms and diacritics). Word lists then find the question type, any role word (`pm`, `wazir-e-azam`, `وزیر اعظم`), the record names (from the data's `name`, `short_name` and `name_ur`, plus a short list of common names in `EXTRA_NAMES`) and any service keywords.
+3. **Resolve:** a named post is used directly. Otherwise a role and a place or body are combined ("CM" + "Punjab" → Chief Minister of Punjab). A role alone picks the national post only when exactly one fits ("Chief Justice of Pakistan"); otherwise Ask lists the choices.
+4. **Answer** from the record: holders with dates and sources, how the post is filled and the law behind it, accountability edges, the body's description and website, or the service directory entry.
+
+Each answer shows how the question was read and the words that went unrecognised. `tests/ask.test.ts` checks the following:
+
+- every titled post with a holder can be found by asking for it;
+- answers name only recorded holders;
+- the same answer is given in all three languages;
+- numbers never reach the page or the address bar.
+
 ## Chamber composition
 
 `organization.composition{as_of, total, parties[{party, seats, side: treasury|opposition|other}], sources}` drives the seating charts. `party` is a party id, or `independent` / `other`. The build warns if seats do not sum to `total`.

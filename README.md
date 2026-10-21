@@ -42,7 +42,9 @@ Full breakdown: [docs/COVERAGE.md](docs/COVERAGE.md).
 - **Accountability**: acting and additional-charge officials, vacancies, key posts with no recorded holder, and records that need verification.
 - **Place pages**: province → division → district, with Deputy Commissioners and governing bodies.
 - **Law pages**: every body and post a statute or constitutional article creates.
-- **Search** across bodies, posts, people, places and laws (press `/`). Urdu names in Nastaliq. Light and dark themes.
+- **Ask** (modelled on Ask Pakistan): plain questions in English, Urdu or Roman Urdu, such as "Who appoints the Chief Justice?", "CM Punjab kaun hai?" or "شناختی کارڈ کہاں سے بنتا ہے؟". They are answered only from the graph's cited records, with sources, in the browser, with no AI and nothing sent anywhere. CNIC, passport and phone numbers are removed before a question is read.
+- **Public services directory**: which body handles CNICs, passports, tax, BISP, jobs, complaints, land records and more, with each body's official website, plus every official website in the graph.
+- **Search** across bodies, posts, people, places and laws (press `/`); type a question and Enter opens Ask. Urdu names in Nastaliq. Light and dark themes.
 - **Open data**: `graph.json`, CSVs, and a [Popolo](https://www.popoloproject.com/) export.
 
 ## Run it

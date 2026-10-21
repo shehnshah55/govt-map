@@ -13,6 +13,8 @@ import { appointmentsView, mapView, parliamentView, treeView, verificationView }
 import { barFigure, FIGURE_IDS } from "../src/lib/analytics.ts";
 import { figureEvidenceView, figuresView } from "../src/views/figures.ts";
 import { TIERS } from "../src/views/tiers.ts";
+import { askView, servicesView } from "../src/views/ask.ts";
+import { EXAMPLES } from "../src/lib/ask.ts";
 import { aboutView, accountabilityView, exploreView, homeView, lawsView, searchView, sectorView, sectorsView } from "../src/views/pages.ts";
 
 const DATA = new URL("../data", import.meta.url).pathname;
@@ -118,6 +120,10 @@ describe("escaping", () => {
     ["verification", () => verificationView(ctx)],
     ["accountability", () => accountabilityView(ctx)],
     ["search", () => searchView(ctx, `minister${PAYLOAD}`)],
+    ["ask: payload", () => askView(ctx, `who is the prime minister${PAYLOAD}`)],
+    ["services", () => servicesView(ctx)],
+    ...EXAMPLES.map((e) => [`ask: ${e.q}`, () => askView(ctx, e.q)] as [string, () => View | undefined]),
+    ...hostile.organizations.slice(0, 120).map((o) => [`ask about ${o.id}`, () => askView(ctx, `what does ${o.short_name ?? o.name} do`)] as [string, () => View | undefined]),
     ["directory", () => directoryView(ctx, undefined)],
     ["officials", () => officialsView(ctx, undefined)],
     ...["all", ...TIERS].map((g) => [`figures ${g}`, () => figuresView(ctx, new URLSearchParams({ gov: g }))] as [string, () => View | undefined]),

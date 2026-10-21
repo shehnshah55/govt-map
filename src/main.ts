@@ -10,6 +10,9 @@ import { directoryView, electedView, officialsView } from "./views/directory.ts"
 import { appointmentsView, mapView, parliamentView, treeView, verificationView } from "./views/insight.ts";
 import { figureEvidenceView, figuresView } from "./views/figures.ts";
 import { familiesView, familyView } from "./views/families.ts";
+import { askView, servicesView } from "./views/ask.ts";
+import { isQuestion } from "./lib/ask.ts";
+import { redact } from "./lib/redact.ts";
 import { aboutView, accountabilityView, exploreView, homeView, lawsView, searchView, sectorView, sectorsView } from "./views/pages.ts";
 
 declare const __SINGLE__: boolean;
@@ -73,7 +76,11 @@ function route(path: string): View | undefined {
     case "figures":
       return seg[1] ? figureEvidenceView(ctx, seg[1], seg[2] ?? "", params) : figuresView(ctx, params);
     case "search":
-      return searchView(ctx, params.get("q") ?? "");
+      return searchView(ctx, redact(params.get("q") ?? "").text);
+    case "ask":
+      return askView(ctx, params.get("q") ?? "");
+    case "services":
+      return servicesView(ctx);
     case "about":
       return aboutView(ctx, __SINGLE__);
   }
@@ -130,13 +137,21 @@ window.addEventListener("hashchange", () => {
 const input = document.getElementById("q") as HTMLInputElement;
 const box = document.getElementById("suggest")!;
 let sel = -1;
+/** What the box holds, with CNIC, passport and phone numbers taken out before it goes in the address bar. */
+const typed = () => redact(input.value).text.trim();
 function showSuggestions() {
   const results = ix.search(input.value, 9);
-  sel = -1;
-  box.hidden = !results.length;
-  box.innerHTML = results
-    .map((r) => `<a href="${esc(hrefFor(ix, r.id))}" role="option"><span class="chip">${esc(r.kind === "jurisdiction" ? "place" : r.kind === "organization" ? "body" : r.kind === "position" ? "post" : r.kind)}</span><span>${esc(r.label)}</span>${r.sub ? `<span class="sub">${esc(r.sub)}</span>` : ""}</a>`)
-    .join("");
+  const q = typed();
+  // a question goes to Ask; offered first so Enter opens it
+  const askRow = q && isQuestion(q) ? `<a href="${esc(`#/ask?q=${encodeURIComponent(q)}`)}" role="option"><span class="chip">ask</span><span dir="auto">${esc(q)}</span><span class="sub">Answer from the records</span></a>` : "";
+  sel = askRow ? 0 : -1;
+  box.hidden = !results.length && !askRow;
+  box.innerHTML =
+    askRow +
+    results
+      .map((r) => `<a href="${esc(hrefFor(ix, r.id))}" role="option"><span class="chip">${esc(r.kind === "jurisdiction" ? "place" : r.kind === "organization" ? "body" : r.kind === "position" ? "post" : r.kind)}</span><span>${esc(r.label)}</span>${r.sub ? `<span class="sub">${esc(r.sub)}</span>` : ""}</a>`)
+      .join("");
+  box.querySelectorAll("a").forEach((a, i) => a.setAttribute("aria-selected", String(i === sel)));
 }
 input.addEventListener("input", showSuggestions);
 input.addEventListener("focus", () => input.value && showSuggestions());
@@ -148,7 +163,7 @@ input.addEventListener("keydown", (e) => {
     items.forEach((a, i) => a.setAttribute("aria-selected", String(i === sel)));
   } else if (e.key === "Enter") {
     e.preventDefault();
-    const target = items[sel]?.getAttribute("href") ?? `#/search?q=${encodeURIComponent(input.value)}`;
+    const target = items[sel]?.getAttribute("href") ?? (isQuestion(typed()) ? `#/ask?q=${encodeURIComponent(typed())}` : `#/search?q=${encodeURIComponent(typed())}`);
     box.hidden = true;
     input.blur();
     navigate(target.slice(1));

@@ -1,0 +1,280 @@
+# Public services people ask about, and the bodies responsible for them.
+#
+# Used by Ask (#/ask) and the services directory (#/services). Each topic points to the body and to
+# the official website on its record, nothing more: procedures, fees and documents change too
+# often to copy here, so Ask sends people to the body's own site for them.
+#
+# keywords: words people use for the service, in English, Roman Urdu and Urdu. They are matched
+# as whole words, with spaces and hyphens ignored ("b-form", "b form" and "bform" are the same).
+# Prefer specific phrases: a bare "tax" or "bill" would catch unrelated questions.
+#
+# The Urdu titles still need review by a native speaker before launch (docs/LAUNCH_LOG.md).
+
+services:
+  # ── identity and travel ────────────────────────────────────────────────────
+  - id: cnic
+    title: National identity card (CNIC), NICOP and B-Form
+    title_ur: قومی شناختی کارڈ، نائیکوپ اور ب فارم
+    group: identity
+    keywords: [cnic, nic, nicop, smart card, id card, identity card, shanakhti card, shanakhti, b form, form b, crc, child registration certificate, family registration certificate, frc, poc, pakistan origin card, شناختی کارڈ, شناختی, ب فارم, نائیکوپ]
+    bodies: [fed-nadra]
+
+  - id: passport
+    title: Passports
+    title_ur: پاسپورٹ
+    group: travel
+    keywords: [passport, passports, pasport, e passport, machine readable passport, mrp, پاسپورٹ]
+    bodies: [fed-passports]
+
+  - id: overseas-employment
+    title: Working abroad and overseas Pakistanis
+    title_ur: بیرون ملک ملازمت اور اوورسیز پاکستانی
+    group: travel
+    keywords: [protector, protector of emigrants, emigration, work abroad, job abroad, overseas job, overseas employment, overseas pakistanis, bahar naukri, beroon e mulk, پروٹیکٹر, بیرون ملک]
+    bodies: [fed-beoe, fed-opf, fed-min-overseas-pakistanis]
+
+  - id: hajj
+    title: Government Hajj scheme
+    title_ur: سرکاری حج اسکیم
+    group: travel
+    keywords: [hajj, haj, hajj scheme, hajj application, حج]
+    bodies: [fed-min-religious-affairs]
+
+  # ── tax ────────────────────────────────────────────────────────────────────
+  - id: income-tax
+    title: Income tax, NTN, sales tax on goods and customs
+    title_ur: انکم ٹیکس، این ٹی این، اشیا پر سیلز ٹیکس اور کسٹمز
+    group: tax
+    keywords: [income tax, tax return, tax returns, ntn, filer, non filer, active taxpayer, active taxpayer list, atl, iris, withholding tax, customs, customs duty, tax, ٹیکس, انکم ٹیکس, ٹیکس ریٹرن, فائلر, کسٹمز]
+    bodies: [fed-fbr]
+
+  - id: sales-tax-services
+    title: Sales tax on services
+    title_ur: خدمات پر سیلز ٹیکس
+    group: tax
+    keywords: [sales tax on services, provincial sales tax, services tax, pra, srb, kpra]
+    bodies: [pb-revenue-authority, sd-revenue-authority, kp-revenue-authority, ba-revenue-authority]
+
+  - id: vehicle-registration
+    title: Vehicle registration and token tax
+    title_ur: گاڑی کی رجسٹریشن اور ٹوکن ٹیکس
+    group: tax
+    keywords: [vehicle registration, car registration, bike registration, motorcycle registration, number plate, token tax, motor vehicle tax, vehicle transfer, excise, gari registration, gaari registration, گاڑی رجسٹریشن, گاڑی کی رجسٹریشن, ٹوکن ٹیکس, نمبر پلیٹ, ایکسائز]
+    bodies: [pb-excise-taxation, sd-excise-taxation, kp-excise-taxation, ba-excise-taxation, fed-ict-administration]
+    notes: In Islamabad, vehicles are registered by the Excise and Taxation Department of the ICT Administration.
+
+  # ── welfare, pensions and health ───────────────────────────────────────────
+  - id: bisp
+    title: Benazir Income Support Programme (cash assistance)
+    title_ur: بینظیر انکم سپورٹ پروگرام
+    group: welfare
+    keywords: [bisp, benazir, benazir income support, kafaalat, kafalat, income support, cash assistance, "8171", بینظیر, کفالت]
+    bodies: [fed-bisp]
+
+  - id: eobi
+    title: Old-age pension for private-sector workers (EOBI)
+    title_ur: بڑھاپے کی پنشن (ای او بی آئی)
+    group: welfare
+    keywords: [eobi, old age pension, old age benefit, private sector pension, بڑھاپے کی پنشن]
+    bodies: [fed-eobi]
+
+  - id: health-insurance
+    title: Health insurance (Sehat Card)
+    title_ur: صحت کارڈ
+    group: health
+    keywords: [sehat card, sehat sahulat, health card, health insurance, sehat insaf card, صحت کارڈ]
+    bodies: [fed-sehat-sahulat, kp-sehat-card]
+
+  - id: medicines
+    title: Medicines, their registration and prices
+    title_ur: ادویات کی رجسٹریشن اور قیمتیں
+    group: health
+    keywords: [medicine, medicines, medicine price, drug price, drug registration, fake medicine, dawai, dawa, دوائی, دوا, ادویات]
+    bodies: [fed-drap]
+
+  - id: doctor-registration
+    title: Registration of doctors and dentists
+    title_ur: ڈاکٹروں اور ڈینٹسٹس کی رجسٹریشن
+    group: health
+    keywords: [doctor registration, dentist registration, medical licence, medical license, pmdc registration, license to practise]
+    bodies: [fed-pmdc]
+
+  # ── jobs and education ─────────────────────────────────────────────────────
+  - id: federal-jobs
+    title: Federal government jobs and the CSS exam
+    title_ur: وفاقی سرکاری ملازمتیں اور سی ایس ایس امتحان
+    group: jobs
+    keywords: [css, css exam, competitive exam, federal job, federal jobs, government job, government jobs, sarkari naukri, sarkari job, naukri, سی ایس ایس, سرکاری نوکری, نوکری, ملازمت]
+    bodies: [fed-fpsc]
+
+  - id: provincial-jobs
+    title: Provincial government jobs and the PMS exam
+    title_ur: صوبائی سرکاری ملازمتیں اور پی ایم ایس امتحان
+    group: jobs
+    keywords: [pms, pms exam, provincial job, provincial jobs, government job, government jobs, sarkari naukri, lecturer job, ppsc, spsc, kppsc, bpsc]
+    bodies: [pb-psc, sd-psc, kp-psc, ba-psc]
+
+  - id: degree-attestation
+    title: University degree attestation, equivalence and scholarships
+    title_ur: یونیورسٹی ڈگری کی تصدیق، مساوات اور اسکالرشپ
+    group: education
+    keywords: [degree attestation, degree verification, attest degree, foreign degree, degree equivalence, scholarship, scholarships, hec attestation, ڈگری, ڈگری تصدیق, اسکالرشپ]
+    bodies: [fed-hec]
+
+  - id: certificate-equivalence
+    title: Matric and intermediate certificates, O and A level equivalence
+    group: education
+    keywords: [matric equivalence, inter equivalence, o level equivalence, a level equivalence, o levels, a levels, certificate attestation, ibcc attestation, equivalence certificate]
+    bodies: [fed-ibcc]
+
+  # ── utilities and telecoms ─────────────────────────────────────────────────
+  - id: electricity
+    title: Electricity bills, connections and complaints
+    title_ur: بجلی کے بل، کنکشن اور شکایات
+    group: utilities
+    keywords: [electricity, electricity bill, bijli, bijli ka bill, bijli bill, load shedding, loadshedding, overbilling, electricity complaint, electricity connection, بجلی, بجلی کا بل, لوڈشیڈنگ]
+    bodies: [fed-discos, fed-nepra]
+    notes: Bills and connections are handled by the distribution company (DISCO) for the area; NEPRA hears complaints against them.
+
+  - id: gas
+    title: Gas bills, connections and complaints
+    title_ur: گیس کے بل، کنکشن اور شکایات
+    group: utilities
+    keywords: [gas, gas bill, gas connection, sui gas, gas complaint, گیس, سوئی گیس]
+    bodies: [fed-sngpl, fed-ssgc, fed-ogra]
+    notes: SNGPL serves Punjab, Khyber Pakhtunkhwa and Islamabad; SSGC serves Sindh and Balochistan; OGRA hears complaints against both.
+
+  - id: telecom
+    title: Mobile phones, SIMs and telecom complaints
+    title_ur: موبائل فون، سم اور ٹیلی کام شکایات
+    group: utilities
+    keywords: [sim, sims, sim registration, sim verification, mobile registration, phone registration, device registration, pta tax, dirbs, phone blocked, mobile blocked, telecom complaint, internet complaint, سم, موبائل رجسٹریشن]
+    bodies: [fed-pta]
+
+  # ── complaints and accountability ──────────────────────────────────────────
+  - id: ombudsman
+    title: Complaints against a government office
+    title_ur: سرکاری اداروں کے خلاف شکایت
+    group: complaints
+    keywords: [complaint, complaints, complain, complaint against government, maladministration, ombudsman, mohtasib, shikayat, shikayat darj, شکایت, محتسب]
+    bodies: [fed-wafaqi-mohtasib, pb-ombudsman, sd-ombudsman, kp-ombudsman, ba-ombudsman]
+    notes: The Wafaqi Mohtasib hears complaints against federal offices; each province has its own ombudsman for provincial offices.
+
+  - id: tax-complaints
+    title: Complaints against the tax authorities
+    title_ur: ٹیکس حکام کے خلاف شکایت
+    group: complaints
+    keywords: [tax complaint, fbr complaint, tax refund, tax ombudsman, fto]
+    bodies: [fed-tax-ombudsman]
+
+  - id: banking-complaints
+    title: Banking complaints
+    title_ur: بینکاری شکایات
+    group: complaints
+    keywords: [bank complaint, banking complaint, bank account, atm, card fraud, bank fraud, banking mohtasib, بینک]
+    bodies: [fed-banking-mohtasib, fed-sbp]
+
+  - id: insurance-complaints
+    title: Insurance complaints
+    title_ur: بیمہ شکایات
+    group: complaints
+    keywords: [insurance, insurance claim, insurance complaint, bima, بیمہ, انشورنس]
+    bodies: [fed-insurance-ombudsman, fed-secp]
+
+  - id: corruption
+    title: Reporting corruption
+    title_ur: بدعنوانی کی شکایت
+    group: complaints
+    keywords: [corruption, bribe, bribery, rishwat, kickback, کرپشن, رشوت, بدعنوانی]
+    bodies: [fed-nab, pb-cr-ace, sd-cr-ace, kp-cr-ace, ba-cr-ace]
+    notes: Each province's Anti-Corruption Establishment deals with provincial government employees.
+
+  - id: procurement
+    title: Government tenders and procurement
+    title_ur: سرکاری خریداری اور ٹینڈر
+    group: business
+    keywords: [tender, tenders, procurement, government tender, bid, bidding, ٹینڈر]
+    bodies: [fed-ppra, pb-ppra, sd-ppra, kp-ppra, ba-ppra]
+
+  # ── police, safety and courts ──────────────────────────────────────────────
+  - id: police
+    title: Police, FIRs and reporting a crime
+    title_ur: پولیس اور ایف آئی آر
+    group: police
+    keywords: [police, fir, report a crime, police complaint, thana, theft, robbery, motorway, پولیس, ایف آئی آر, تھانہ]
+    bodies: [pb-police, sd-police, kp-police, ba-police, fed-ict-police, gb-police, ajk-police, fed-nhmp]
+    notes: The National Highways and Motorway Police cover the motorways and national highways.
+
+  - id: cybercrime
+    title: Cybercrime and online fraud
+    title_ur: سائبر کرائم اور آن لائن فراڈ
+    group: police
+    keywords: [cybercrime, cyber crime, online fraud, online harassment, hacking, hacked, blackmail, online scam, scam, سائبر کرائم, آن لائن فراڈ]
+    bodies: [fed-nccia]
+
+  - id: driving-licence
+    title: Driving licences
+    title_ur: ڈرائیونگ لائسنس
+    group: police
+    keywords: [driving licence, driving license, licence, license, learner permit, learner licence, ڈرائیونگ لائسنس, لائسنس]
+    bodies: [pb-police, sd-police, kp-police, fed-ict-police]
+    notes: Issued by the traffic wing of each police force. The issuing office for Balochistan is not yet recorded.
+
+  - id: court-cases
+    title: Court cases and cause lists
+    title_ur: عدالتی مقدمات
+    group: courts
+    keywords: [case status, cause list, court case, court date, hearing date, petition, mukadma, muqadma, مقدمہ, مقدمات]
+    bodies: [fed-supreme-court, fed-constitutional-court, fed-islamabad-high-court, pb-high-court, sd-high-court, kp-high-court, ba-high-court]
+
+  - id: disasters
+    title: Floods, earthquakes and disaster relief
+    title_ur: سیلاب، زلزلہ اور آفات میں امداد
+    group: emergencies
+    keywords: [flood, floods, earthquake, disaster, disaster relief, flood relief, sailab, سیلاب, زلزلہ, آفات]
+    bodies: [fed-ndma, pb-pdma, sd-pdma, kp-pdma, ba-pdma]
+
+  # ── land, business and records ─────────────────────────────────────────────
+  - id: land-records
+    title: Land records (fard and mutation)
+    title_ur: زمین کا ریکارڈ (فرد اور انتقال)
+    group: land
+    keywords: [land record, land records, fard, intiqal, mutation, property record, registry, zameen, zameen ka record, فرد, انتقال, زمین, رجسٹری]
+    bodies: [pb-plra, pb-board-of-revenue, sd-board-of-revenue, kp-board-of-revenue, ba-board-of-revenue]
+    notes: In Punjab, fard and mutation are issued by the Punjab Land Records Authority; elsewhere by the province's Board of Revenue.
+
+  - id: company-registration
+    title: Registering a company
+    title_ur: کمپنی کی رجسٹریشن
+    group: business
+    keywords: [company registration, register a company, register company, incorporate, incorporation, single member company, llp, کمپنی رجسٹریشن]
+    bodies: [fed-secp]
+
+  - id: intellectual-property
+    title: Trademarks, patents and copyright
+    title_ur: ٹریڈ مارک، پیٹنٹ اور کاپی رائٹ
+    group: business
+    keywords: [trademark, trade mark, patent, copyright, design registration, ٹریڈ مارک, پیٹنٹ]
+    bodies: [fed-ipo]
+
+  - id: post
+    title: Post, parcels and money orders
+    title_ur: ڈاک، پارسل اور منی آرڈر
+    group: business
+    keywords: [post office, parcel, money order, registered letter, ums, urgent mail, daak, ڈاک, پارسل, منی آرڈر]
+    bodies: [fed-pakistan-post]
+
+  - id: statistics
+    title: Census and official statistics
+    title_ur: مردم شماری اور سرکاری اعداد و شمار
+    group: business
+    keywords: [census, statistics, inflation, cpi, population, mardam shumari, مردم شماری]
+    bodies: [fed-pbs]
+
+  # ── elections ──────────────────────────────────────────────────────────────
+  - id: voting
+    title: Voting, voter registration and polling stations
+    title_ur: ووٹ، ووٹر رجسٹریشن اور پولنگ اسٹیشن
+    group: elections
+    keywords: [vote, voting, voter, voter registration, voter list, polling station, "8300", vote kahan, ووٹ, ووٹر, پولنگ اسٹیشن]
+    bodies: [fed-ecp]

@@ -26,6 +26,7 @@ import {
   type Graph,
   type Relative,
   type ElectionCheck,
+  type ServiceTopic,
   type LegalRef,
   type Origin,
   type RelationType,
@@ -81,6 +82,7 @@ export function compile(dataDir: string): CompileResult {
   const relations: (Relation & { _file: string })[] = [];
   const relatives: WithFile<Relative>[] = [];
   const electionChecks: WithFile<ElectionCheck>[] = [];
+  const services: WithFile<ServiceTopic>[] = [];
   const fieldAdmin: { block: NonNullable<DataFile["field_administration"]>[number]; file: string }[] = [];
   const seatBlocks: { block: NonNullable<DataFile["legislature_seats"]>[number]; file: string }[] = [];
   const annotations: { a: NonNullable<DataFile["annotations"]>[number]; file: string }[] = [];
@@ -123,6 +125,7 @@ export function compile(dataDir: string): CompileResult {
     d.relations?.forEach((x) => relations.push({ ...x, _file: file }));
     d.relatives?.forEach((x) => relatives.push({ ...x, _file: file }));
     d.election_checks?.forEach((x) => electionChecks.push({ ...x, _file: file }));
+    d.services?.forEach((x) => services.push({ ...x, _file: file }));
     d.field_administration?.forEach((block) => fieldAdmin.push({ block, file }));
     d.legislature_seats?.forEach((block) => seatBlocks.push({ block, file }));
     d.annotations?.forEach((a) => annotations.push({ a, file }));
@@ -487,6 +490,20 @@ export function compile(dataDir: string): CompileResult {
     expect(r.to, [...actor, "person", "jurisdiction", "law"], ctx);
     r.legal_basis?.forEach((lb) => expect(lb.law, ["law"], ctx));
   }
+  // Service topics (data/services.yaml) point only to public bodies in the graph.
+  {
+    const seen = new Set<string>();
+    for (const s of services) {
+      const ctx = `${s._file} service ${s.id}`;
+      if (seen.has(s.id)) errors.push(`${ctx}: duplicate service id`);
+      seen.add(s.id);
+      for (const b of s.bodies) {
+        expect(b, ["organization"], ctx);
+        const o = organizations.find((x) => x.id === b);
+        if (o?.kind === "political_party") errors.push(`${ctx}: "${b}" is a political party, not a public body`);
+      }
+    }
+  }
   // Family ties (docs/EDITORIAL_POLICY.md): only between people who both hold or held a public or
   // party office, and stated by an official source or by two independent outlets.
   {
@@ -707,6 +724,7 @@ export function compile(dataDir: string): CompileResult {
     verification,
     relatives,
     election_checks: electionChecks,
+    services,
     pm_terms: people
       .flatMap((p) => p.roles.filter((r) => r.position === "fed-prime-minister" && r.since).map((r) => ({ person: p.id, since: r.since!, until: r.until, status: r.status })))
       .sort((a, b) => a.since.localeCompare(b.since)),

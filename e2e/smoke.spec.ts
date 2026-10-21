@@ -17,6 +17,11 @@ const ROUTES: [string, string][] = [
   ["verification", "#/verification"],
   ["accountability", "#/accountability"],
   ["search", "#/search?q=minister"],
+  ["ask", "#/ask"],
+  ["ask: answer in Urdu", "#/ask?q=%D9%BE%D9%86%D8%AC%D8%A7%D8%A8%20%DA%A9%D8%A7%20%D9%88%D8%B2%DB%8C%D8%B1%20%D8%A7%D8%B9%D9%84%DB%8C%D9%B0%20%DA%A9%D9%88%D9%86%20%DB%81%DB%92"],
+  ["ask: service", "#/ask?q=passport%20kaise%20banwayen"],
+  ["ask: not covered", "#/ask?q=who%20is%20the%20best%20cricketer"],
+  ["public services", "#/services"],
   ["facts and figures", "#/figures"],
   ["evidence list", "#/figures/posts-by-selection/elected"],
   ["political families", "#/families"],
@@ -63,6 +68,28 @@ test("the starter map selects a unit by mouse and keyboard", async ({ page }) =>
   await page.locator('path.unit[data-unit="pk-pb"]').focus();
   await page.keyboard.press("Enter");
   await expect(page.locator('[data-panel="pk-pb"]')).toBeVisible();
+});
+
+test("a question typed in the search box opens Ask, with the CNIC removed", async ({ page }) => {
+  const problems = watch(page);
+  await page.goto("#/");
+  await page.locator("#q").fill("my cnic is 35202-1234567-1, kaise renew karun?");
+  await expect(page.locator("#suggest a").first()).toContainText("[CNIC removed]");
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/#\/ask\?q=/);
+  expect(decodeURIComponent(page.url())).not.toMatch(/\d{5}/);
+  await expect(page.locator(".answer")).toContainText("National Database and Registration Authority");
+  await expect(page.locator(".answer")).toContainText("Removed from your question");
+  expect(problems).toEqual([]);
+});
+
+test("Ask answers from its own box, and scrubs numbers from a pasted link", async ({ page }) => {
+  await page.goto("#/ask?q=passport%20AB1234567%20lost");
+  await expect(page.locator(".answer")).toContainText("Passports");
+  expect(decodeURIComponent(page.url())).not.toContain("1234567");
+  await page.locator("#ask-q").fill("CM Punjab kaun hai?");
+  await page.locator("#ask-q").press("Enter");
+  await expect(page.locator(".answer .readas")).toContainText("Chief Minister of Punjab");
 });
 
 test("search suggests and navigates", async ({ page }) => {

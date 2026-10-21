@@ -494,3 +494,67 @@ Branch `launch/family-tree`, stacked on `launch/phase-6-freshness` (PR #11). Thi
 ### Open
 
 - No family ties are recorded. Each needs an official source or two independent outlets, which needs network access.
+
+---
+
+## 2026-10-21 · Ask, and the public services directory
+
+Branch `launch/ask`, from `main` (`2aa8544`). SS asked to reverse-engineer and incorporate Ask Pakistan (pakistangov.online, by Raheel Siddiqui; announced on X). The site and the X post are blocked by this environment's network policy. The description below comes from press coverage: ProPakistani, Pakistan Observer, Daily Pakistan and Dawn, 2 October 2026.
+
+### What Ask Pakistan does, and what was taken from it
+
+| Ask Pakistan | Here |
+|---|---|
+| Questions in English, Urdu and Roman Urdu | Same. Word lists for all three, with spelling variants (`wazir-e-azam`, `wazire azam`, `وزیر اعظم`, `وزیراعظم`) |
+| Answers only from official sources, with links | Answers only from this graph's records, with their sources. Each source is marked **Official** (a government domain, or a public body's own website) or **Secondary** |
+| Says when its sources don't cover a question | Same: "The graph doesn't answer this", with the closest records and a link to search |
+| Strips CNIC and passport numbers in the browser | Same, plus phone numbers, email addresses and any other long number. Urdu digits are caught too. Numbers never reach the page, the address bar or the browser history |
+| Directory of 212 federal, provincial and regulatory websites | `#/services`: 36 service topics mapped to the responsible bodies, plus every official website in the graph (104) |
+| AI model; voice sent to Gemini | **Not taken.** §0.4 bars runtime calls to third parties, and the site is static with a strict CSP. Ask uses fixed word lists instead, so it can't make up an answer. Browser speech input was also left out, because Chrome sends the audio to Google |
+
+### What changed
+
+- **`#/ask`** (first item in the main navigation):
+  - **Question types:** who holds a post; who appoints it (with nomination, consultation, confirmation, term, removal, the chain of authority and the law); whom it answers to; what a body does; the law behind it; and where to go for a service.
+  - **What every answer shows:** how the question was read, any words it didn't recognise, the sources and the legal basis.
+  - **Election flags:** holder answers carry the person's election tags ("Not directly elected", or the Form 45 label when one is recorded).
+  - **Ambiguous roles:**
+    - "Who is the governor?" lists the choices.
+    - "Who appoints the DC?" summarises how all 168 Deputy Commissioner posts are filled, grouped by who fills them.
+- **The header search box:** type a question and Enter opens Ask. The suggestion list offers it first. Numbers are removed from searches too.
+- **`#/services`** ("Public services", in the More menu): topics grouped by area, the bodies responsible, and each body's official website or "website not yet recorded".
+- **Data:**
+  - `data/services.yaml`: 36 topics.
+  - Schema `ServiceTopic`. The build rejects unknown bodies and political parties.
+  - Documented in docs/DATA_MODEL.md.
+- **Policy:**
+  - New section "Ask and the services directory" in docs/EDITORIAL_POLICY.md.
+  - Ask Pakistan credited in About › Inspirations and on the Ask page.
+- **New code:**
+  - `src/lib/redact.ts`, `src/lib/ask.ts` (pure, no DOM)
+  - `src/views/ask.ts`
+- **No new dependencies.** No `<form>` element: the page has none, so CSP `form-action 'none'` stays.
+
+### Verified
+
+- **Unit tests:** 138 passed, including 51 new tests in `tests/ask.test.ts`:
+  - redaction of 9 kinds of number; seat codes, years and SMS short codes are kept;
+  - the same answer in English, Roman Urdu and Urdu;
+  - every titled post with a holder can be found from its own title;
+  - answers name only recorded holders;
+  - service routing, including longest-keyword-wins;
+  - official-source marking;
+  - every example question is answered.
+- **Hostile-data test:** `tests/security.test.ts` now renders Ask (with an attack payload as the question, the example questions and 120 "what does X do" answers) and the services page.
+- **Browser suite:** 54 passed (was 40). New routes: Ask (empty, Urdu answer, service, not covered) and services, at both widths with axe. Two new interaction tests:
+  - a question with a CNIC typed in the header box opens Ask, with no digits in the URL;
+  - a pasted link with a passport number is scrubbed, and Enter in the Ask box answers.
+- **Other gates:** validate, typecheck, build, build:single, check:build, audit:coverage --check and npm audit (0 vulnerabilities) all pass. No console errors. Checked by eye in light and dark at 1280px and 375px.
+
+### Open
+
+- **Urdu answer wording.** Answers are in English. The Urdu service titles in `data/services.yaml` need review by a native speaker before launch.
+- **Missing websites:**
+  - 54 of the 85 bodies named in service topics have no website recorded, including the Directorate General of Immigration and Passports, the DISCOs, SNGPL, SSGC and the provincial police. Adding them needs network access to confirm each address.
+  - The driving-licence office for Balochistan is not recorded.
+- **Ask Pakistan's 212-site list** could be compared with the graph's websites once pakistangov.online is reachable.
