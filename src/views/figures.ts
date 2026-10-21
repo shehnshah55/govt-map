@@ -1,5 +1,5 @@
 /**
- * Facts and figures (§7.14): every chart computed from the data, a government filter that
+ * Facts and figures: every chart computed from the data, a government filter that
  * scopes every chart below it, and an evidence page behind every bar.
  */
 import { barFigure, evidence, FIGURE_IDS, isGov, pmTimeline, readiness, type Gov } from "../lib/analytics.ts";

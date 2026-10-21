@@ -1,3 +1,4 @@
+import { officialSitesPanel } from "./sources.ts";
 import type { Org, Post } from "../lib/graph-index.ts";
 import type { OrgKind, RelationType } from "../schema.ts";
 import { html, type Raw } from "../ui/dom.ts";
@@ -189,6 +190,7 @@ export function orgView(ctx: Ctx, id: string): View | undefined {
             ${sectors.length ? html`<dt>Sectors</dt><dd>${sectors.map((s, i) => html`${i ? ", " : ""}<a href="#/sector/${s}">${SECTOR_LABEL[s]}</a>`)}</dd>` : ""}
           </dl>
         </div>
+        ${officialSitesPanel(ctx, o.id)}
         <div class="panel"><h3>Legal basis</h3>${legalList(ix, o.legal_basis)}</div>
         <div class="panel"><h3>Sources</h3>${sourcesList(o.sources)}</div>
         <div class="panel"><h3>Data record</h3>

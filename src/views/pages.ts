@@ -37,9 +37,9 @@ export function homeView(ctx: Ctx): View {
   );
   const body = html`
     <section class="hero">
-      <div class="eyebrow">Government of Pakistan · every level · open data</div>
+      <div class="eyebrow">Independent · civic education · open data</div>
       <h1>Who governs Pakistan, and who put them there.</h1>
-      <p class="lede">A connected map of Pakistan's federal, provincial, territorial, divisional and district government. It covers every body, the posts that lead it, the people in those posts, and the constitutional article or statute behind each link.</p>
+      <p class="lede">An open, cited map of Pakistan's federal, provincial, territorial, divisional and district government, for anyone to check who holds which office, how they got there, their record over time, the constitutional article or statute behind each body and post, and how to reach each department through its official website. Built from publicly available sources; records are dated, carry a confidence level and link to their sources. Free, independent and open to correction.</p>
       <div class="btnrow">
         <a class="btn" href="#/org/fed-pm-office">Start with the Prime Minister's Office</a>
         <a class="btn ghost" href="#/explore">Explore the whole graph</a>
@@ -410,7 +410,7 @@ export function aboutView(ctx: Ctx, single: boolean): View {
   const dateRange = [asOf[0] ?? "", asOf.at(-1) ?? ""];
   const body = html`
     <header class="pagehead"><div class="eyebrow">About and methodology</div><h1>Method, sources and policy</h1>
-      <p class="lede">An open, source-cited model of the Pakistani state, modelled on CivLab's US and San Francisco Government Graphs and on open machinery-of-government registers in other countries.</p></header>
+      <p class="lede">An open, cited map of Pakistan's government, made to make the state more transparent and accessible to citizens. It links publicly available information into one place: who holds which office, how they got there and their record over time, the law behind every body and post, and the official websites of departments. Records cite their sources, are dated and are open to correction. The project is free and independent: it is not an official government website and is not affiliated with any government body or political party.</p></header>
     <div class="layout"><div class="prose">
       <h2>What is in the graph</h2>
       <ul>
@@ -433,24 +433,25 @@ export function aboutView(ctx: Ctx, single: boolean): View {
         <li><b>Family ties</b> are recorded only between people who both hold or held a public or party office, and only when an official source or two independent outlets state them.</li>
         <li><b>Legal cases</b> are not published at present. They are held back from the site and from every download until a legal review is complete.</li>
       </ul>
+      <h2>Official websites and Find a service</h2>
+      <p>The <a href="#/sources">official websites</a> list covers federal, provincial and territorial bodies, each tied to its record in the graph and re-checked every week. <a href="#/find">Find a service</a> matches a question in English, Urdu or Roman Urdu to those websites and to the bodies responsible. It only links to official sources, never writes an answer, and runs in your browser: your question is not sent anywhere.</p>
       <h2>Corrections</h2>
       <p>Anyone, including the people named, can ask for a correction: <a href="${ctx.repo}/issues/new?template=correction.yml" target="_blank" rel="noopener noreferrer">open a correction request</a> with the page, what is wrong and a source. Requests are acknowledged within 7 days, and accepted corrections are logged publicly in the <a href="#/verification">verification log</a>. The full editorial policy is in the repository's docs/EDITORIAL_POLICY.md.</p>
       <h2>Licence and how to cite</h2>
       <p>The data is released under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">Creative Commons Attribution 4.0 (CC BY 4.0)</a>; the code is under the MIT licence. Please cite it as:</p>
       <p class="mono" style="font-size:var(--s-sm)">Pakistan Government Graph (${ix.g.meta.data_as_of}). Data released under CC BY 4.0. ${ctx.repo}</p>
       <p>Officeholder records were last checked between ${dateRange[0]} and ${dateRange[1]}; each record shows its own date.</p>
-      <h2>Inspirations</h2>
+      <h2>Independence and privacy</h2>
       <ul>
-        <li>CivLab's US Gov Graph and SF Gov Graph: entities, positions and people linked by legal relationships, with vacancy and acting tracking.</li>
-        <li>Popolo / Open Civic Data: Organization, Post, Person and Membership. The Popolo export uses this format.</li>
-        <li>GOV.UK organisations register and the Institute for Government's Whitehall Monitor: typed bodies with parent departments and change over time.</li>
-        <li>Canada's GC InfoBase, Australia's Directory of Government (AGOR) and Singapore's Government Directory: complete directories with a type and legal basis for each body.</li>
-        <li>India's Local Government Directory: stable codes for every district and local body, which suits Pakistan's own layered local government.</li>
-        <li>Open States and mySociety's TheyWorkForYou: legislators as roles in constituencies, with a full seat roster.</li>
-        <li>FAFEN's Open Parliament Pakistan: seat codes match the ECP's, so attendance and performance data can be joined.</li>
-        <li>LittleSis: people and organisations as a power network, including party membership.</li>
+        <li>The project is independent and non-partisan. It describes what bodies and offices are and how they are filled, without commentary.</li>
+        <li>Nothing is presumed or invented: facts come from public sources, and anything a source does not state is left out.</li>
+        <li>The site has no accounts, no adverts, no analytics or trackers and no third-party requests. Search runs in your browser.</li>
       </ul>
-      <p class="hint">The repository's docs/RESEARCH.md has the full comparison.</p>
+      <h2>Open standards</h2>
+      <ul>
+        <li>The Popolo export (<span class="mono">popolo.json</span>) uses the Popolo / Open Civic Data vocabulary of Organization, Post, Person and Membership, so the data can be reused by other civic-data tools.</li>
+        <li>Constituency codes match the Election Commission's (for example NA-122), so other public data about seats can be joined to them.</li>
+      </ul>
     </div>
     <aside class="rail">
       <div class="panel"><h3>Open data</h3>

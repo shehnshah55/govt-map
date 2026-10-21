@@ -12,6 +12,8 @@ import { appointmentsView, mapView, parliamentView, treeView, verificationView }
 import { figureEvidenceView, figuresView } from "./views/figures.ts";
 import { FIGURE_IDS } from "./lib/analytics.ts";
 import { familiesView, familyView } from "./views/families.ts";
+import { findView, sourcesView } from "./views/sources.ts";
+import { redirectOldPath } from "./lib/find.ts";
 import { aboutView, accountabilityView, exploreView, homeView, lawsView, searchView, sectorView, sectorsView } from "./views/pages.ts";
 
 declare const __SINGLE__: boolean;
@@ -54,7 +56,7 @@ function page(path: string): View | undefined {
     case undefined:
       return homeView(ctx);
     case "org":
-    case "departments": // CivLab-style alias: /departments/<id>
+    case "departments": // alias: /departments/<id>
       return orgView(ctx, seg[1]);
     case "post":
       return postView(ctx, seg[1]);
@@ -100,6 +102,10 @@ function page(path: string): View | undefined {
       return seg[1] ? figureEvidenceView(ctx, seg[1], seg[2], params) : figuresView(ctx, params);
     case "search":
       return searchView(ctx, (params.get("q") ?? "").slice(0, 200));
+    case "find":
+      return findView(ctx, params.get("q") ?? "");
+    case "sources":
+      return sourcesView(ctx);
     case "about":
       return aboutView(ctx, __SINGLE__);
   }
@@ -128,6 +134,15 @@ function focusedControl(): string | undefined {
 /** `moveFocus`: after a navigation the old focus is gone with the old page, so it goes to the new heading. */
 function render(path: string, moveFocus = false) {
   const control = moveFocus ? focusedControl() : undefined;
+  const moved = redirectOldPath(path);
+  if (moved) {
+    path = moved;
+    try {
+      history.replaceState(null, "", `#${path}`);
+    } catch {
+      /* sandboxed: keep state in memory */
+    }
+  }
   current = path;
   if (typeof cleanup === "function") cleanup();
   cleanup = undefined;

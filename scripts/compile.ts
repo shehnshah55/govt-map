@@ -26,6 +26,7 @@ import {
   type Graph,
   type Relative,
   type ElectionCheck,
+  type OfficialSite,
   type LegalRef,
   type Origin,
   type RelationType,
@@ -80,6 +81,7 @@ export function compile(dataDir: string): CompileResult {
   const laws: WithFile<Law>[] = [];
   const relations: (Relation & { _file: string })[] = [];
   const relatives: WithFile<Relative>[] = [];
+  const officialSites: WithFile<OfficialSite>[] = [];
   const electionChecks: WithFile<ElectionCheck>[] = [];
   const fieldAdmin: { block: NonNullable<DataFile["field_administration"]>[number]; file: string }[] = [];
   const seatBlocks: { block: NonNullable<DataFile["legislature_seats"]>[number]; file: string }[] = [];
@@ -127,6 +129,7 @@ export function compile(dataDir: string): CompileResult {
     d.legislature_seats?.forEach((block) => seatBlocks.push({ block, file }));
     d.annotations?.forEach((a) => annotations.push({ a, file }));
     d.verification?.forEach((v) => verification.push(v));
+    d.official_sites?.forEach((x) => officialSites.push({ ...x, _file: file }));
   }
 
   // ── 1b. ECP asset statements (data/assets/*.csv) ─────────────────────────
@@ -675,7 +678,24 @@ export function compile(dataDir: string): CompileResult {
         expect(x.by, actor, `${person._file} person ${person.id}.extensions.by`);
         expect(x.law, ["law"], `${person._file} person ${person.id}.extensions.law`);
       }
-  const orgsOut = organizations.map((o) => ({ ...o, _origin: resolveOrgOrigin(o.id) }));
+  // ── official websites (data/official-sites.yaml) ──────────────────────────
+  const siteIds = new Set<string>();
+  const siteUrls = new Map<string, string>();
+  for (const s of officialSites) {
+    if (siteIds.has(s.id)) errors.push(`${s._file}: duplicate official site id "${s.id}"`);
+    siteIds.add(s.id);
+    const key = s.url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/+$/, "").toLowerCase();
+    if (siteUrls.has(key)) errors.push(`${s._file}: official site ${s.id} has the same URL as ${siteUrls.get(key)}`);
+    else siteUrls.set(key, s.id);
+    expect(s.body_id, ["organization"], `${s._file} official site ${s.id}.body_id`);
+  }
+  // A body with no authored website takes the one verified, non-portal registry site tied to it (none if several).
+  const sitesByBody = new Map<string, WithFile<OfficialSite>[]>();
+  for (const s of officialSites) if (s.body_id && s.status === "verified" && !s.portal) sitesByBody.set(s.body_id, [...(sitesByBody.get(s.body_id) ?? []), s]);
+  const orgsOut = organizations.map((o) => {
+    const only = !o.website && sitesByBody.get(o.id)?.length === 1 ? sitesByBody.get(o.id)![0] : undefined;
+    return { ...o, ...(only ? { website: only.url } : {}), _origin: resolveOrgOrigin(o.id) };
+  });
   const positionsOut = positions.map((p) => {
     const sel = selectionOf(p);
     return { ...p, _origin: p.origin ?? originOf(p.appointment?.legal_basis) ?? resolveOrgOrigin(p.org), _selection: sel, _tenure: tenureOf(p, sel) };
@@ -697,6 +717,7 @@ export function compile(dataDir: string): CompileResult {
         people: people.length,
         laws: laws.length,
         edges: edges.length,
+        official_sites: officialSites.length,
       },
     },
     jurisdictions,
@@ -707,6 +728,7 @@ export function compile(dataDir: string): CompileResult {
     verification,
     relatives,
     election_checks: electionChecks,
+    official_sites: officialSites,
     pm_terms: people
       .flatMap((p) => p.roles.filter((r) => r.position === "fed-prime-minister" && r.since).map((r) => ({ person: p.id, since: r.since!, until: r.until, status: r.status })))
       .sort((a, b) => a.since.localeCompare(b.since)),

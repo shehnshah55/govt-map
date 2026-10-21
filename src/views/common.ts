@@ -254,7 +254,7 @@ export function closeDrawer() {
 }
 
 /**
- * Slide-over detail drawer (platform brief §4.1): summary of any node without leaving the graph.
+ * Slide-over detail drawer: summary of any node without leaving the graph.
  * `returnTo` gets focus back when the drawer closes (a graph canvas: the node that opened it can't
  * hold focus itself).
  */

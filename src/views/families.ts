@@ -1,5 +1,5 @@
 /**
- * Political families (§7.15): a list of family groups, a tree for each, and where members hold or
+ * Political families: a list of family groups, a tree for each, and where members hold or
  * held seats. Every tie shows its sources. Only public officeholders and party office-bearers
  * appear; the build rejects anything else (docs/EDITORIAL_POLICY.md § Family ties).
  */
