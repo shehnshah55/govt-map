@@ -71,8 +71,16 @@ const asFeature = (coords: MultiPolygon, props: Record<string, string> = {}): Fe
 
 export interface BaseMap {
   svgDefs: string;
+  /** Shapes and labels together. */
   layers: string;
+  /** Shapes only, for callers that draw their own shapes between the base and the labels. */
+  shapes: string;
+  labels: string;
   project: (lonLat: [number, number]) => [number, number];
+  /** SVG path data for extra shapes (e.g. provinces) in the same projection. */
+  draw: (coords: MultiPolygon) => string;
+  /** Projected centroid of an extra shape. */
+  centroid: (coords: MultiPolygon) => [number, number];
   notes: string[];
 }
 
@@ -105,12 +113,13 @@ export function pakistanBaseMap(W: number, H: number): BaseMap {
     </pattern>
   </defs>`;
 
-  const layers = `
+  const shapes = `
     ${neighbours.map((f) => `<path d="${path(f)}" fill="var(--surface-2)" stroke="var(--line)"/>`).join("")}
     <path d="${path(asFeature(indiaRest))}" fill="var(--surface-2)" stroke="var(--line)"/>
     <path d="${path(pak)}" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
     <path d="${path(junF)}" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/>
-    <path d="${path(jkF)}" fill="url(#disputed-hatch)" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="5 3"/>
+    <path d="${path(jkF)}" fill="url(#disputed-hatch)" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="5 3"/>`;
+  const labels = `
     ${label([77.2, 34.45], "IIOJK", { size: 14, weight: 700 })}
     ${label([77.2, 34.05], "Disputed territory", { size: 11, italic: true })}
     ${label([79.7, 35.75], "Frontier undefined", { size: 10, italic: true, anchor: "end" })}
@@ -121,8 +130,12 @@ export function pakistanBaseMap(W: number, H: number): BaseMap {
   `;
   return {
     svgDefs,
-    layers,
+    layers: shapes + labels,
+    shapes,
+    labels,
     project: p,
+    draw: (coords) => path(asFeature(coords)) ?? "",
+    centroid: (coords) => path.centroid(asFeature(coords)) as [number, number],
     notes: [
       "Drawn to the conventions of the Government of Pakistan's official political map (4 August 2020).",
       "Indian Illegally Occupied Jammu & Kashmir (IIOJK): disputed territory, final status to be decided in line with the relevant UNSC resolutions.",

@@ -4,7 +4,7 @@ An open, source-cited map of **Pakistan's government at every level**: the Feder
 
 It follows CivLab's [US Gov Graph](https://graph.civlab.org/us) (entities, positions, people and the legal relationships between them) and adapts it to how Pakistan is governed: Ministry → Division structure, 18th-Amendment devolution, advice-bound appointments, parliamentary appointment committees, civil-service postings, acting and additional-charge officials, and intergovernmental forums like the CCI and NFC.
 
-**Flagship page:** the Ministry of National Health Services, Regulations and Coordination (route `#/org/fed-min-nhsrc`), Pakistan's counterpart to the US Department of Health and Human Services. It is modelled down to DRAP, PMDC, NIH, the polio EOC, Sehat Sahulat and the Islamabad hospitals, and linked to all four provincial health departments.
+**Starting point:** the Prime Minister's Office (route `#/org/fed-pm-office`), with a clickable map of the Federation and its seven units on the home page that explains each government and links down to its bodies. **Modelled in most depth:** the Ministry of National Health Services, Regulations and Coordination (`#/org/fed-min-nhsrc`), Pakistan's counterpart to the US Department of Health and Human Services. It is modelled down to DRAP, PMDC, NIH, the polio EOC, Sehat Sahulat and the Islamabad hospitals, and linked to all four provincial health departments.
 
 ## At a glance
 

@@ -89,6 +89,47 @@ Some figures differ from the review appendix because they are measured different
 
 ---
 
+## 2026-09-26 · Home page: start from the PM's Office, with a starter map
+
+A request from SS outside the numbered phases. Branch `launch/home-pm-office-map`, stacked on `launch/phase-0-baseline`.
+
+### What changed
+
+- **Home page:**
+  - The main button now reads "Start with the Prime Minister's Office" (`#/org/fed-pm-office`), replacing the Ministry of Health button.
+  - The featured section is now the PM's Office: its description, the current Prime Minister, and the bodies that report to it, all drawn from the data.
+  - The Ministry of Health stays linked as the most detailed example.
+- **Starter map (new, under the introduction):**
+  - It shows the Federation and its seven units. You can select one by clicking the map, using the buttons above it, or with the keyboard (Tab and Enter).
+  - The panel explains the chosen unit using only existing records: its government's description and legal basis, its heads and their current holders, and counts of bodies, divisions, districts and elected seats.
+  - It links down to the government, assembly, cabinet, and divisions and districts. For the Federation it links to the PM's Office, Cabinet, National Assembly, Senate and Supreme Court.
+  - It is drawn on the official-map base, so IIOJK is shown as disputed territory, as on the Government of Pakistan's 2020 political map.
+- **Unit boundaries:** `scripts/ingest/admin-boundaries.ts` builds `src/geo/pk-units.json` (24 KB) from Natural Earth 1:10m Admin 1.
+  - It keeps Pakistan only, merges the former FATA into Khyber Pakhtunkhwa, and simplifies the shapes for an overview map.
+  - The data is fetched at ingestion time; the site makes no runtime calls.
+- `src/ui/pakistan-map.ts` now exposes shapes and labels separately, so the clickable units sit between them. The map page is unchanged.
+
+### Sources fetched this session
+
+- Natural Earth admin-1 GeoJSON, from `raw.githubusercontent.com/nvkelso/natural-earth-vector` (version 5.2.0-pre), accessed 2026-09-26. The licence is public domain, per the repository's `LICENSE.md`. naturalearthdata.com itself is blocked by the network proxy.
+- The FATA merger by the 25th Amendment (assent 31 May 2018): APP, "President signs 25th Constitutional Amendment, formally merging FATA with KP".
+
+### Verified
+
+- Chromium at 1280 px (light and dark) and at 375 px:
+  - selecting each of the 8 units by mouse opens the matching panel;
+  - pressing Enter on a focused unit works;
+  - the page doesn't scroll sideways;
+  - no page errors.
+- A full crawl of 2,640 pages and links: no broken links and no page errors.
+- New tests: one boundary per unit, provenance recorded, file under 40 KB, every panel rendered with the Federation first.
+
+### Open
+
+- Natural Earth's lines are overview-scale and don't come from the Survey of Pakistan. The map says so, and links to the full map notes.
+
+---
+
 ## 2026-09-30 · §1 answers locked
 
 Branch `launch/section-1-locked`, from `main` at `2ef5f66`.
