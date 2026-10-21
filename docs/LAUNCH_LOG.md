@@ -306,3 +306,42 @@ Branch `launch/phase-5-analytics`, stacked on `launch/phase-1-security` (PR #6).
 
 - The ranked figures need data that requires network access: past ECP election results, party histories and ECP asset statements.
 - The 4 press-sourced asset figures should be replaced by ECP statements, per §1.5.
+
+---
+
+## 2026-10-02 · Phase 2: Legal and editorial policy
+
+Branch `launch/phase-2-policy`, stacked on `launch/phase-5-analytics` (PR #7). SS set the order of the next PRs: B (policy), A (Form 45/47 groundwork), E (browser tests), C (freshness), D (family tree), done back to back.
+
+### What changed
+
+- **Licences:**
+  - `LICENSE`: MIT, © 2026 Pakistan Government Graph contributors. The repository had no licence file, although the footer said MIT.
+  - `LICENSE-DATA`: CC BY 4.0, attributed to "Pakistan Government Graph". The full text is from the SPDX licence list (npm `spdx-license-list` 6.12.0), because creativecommons.org is blocked by the network.
+  - The licence is now stated in `graph.json` and the Popolo export metadata, the README, CONTRIBUTING, the About page and the footer.
+- **`docs/EDITORIAL_POLICY.md`** covers:
+  - scope and sources;
+  - legal cases (hidden), declared assets (ECP only) and family ties;
+  - elections, including SS's "not legally elected" and "Not directly elected" decisions;
+  - neutral wording, corrections and right of reply, and takedown.
+- **The policy in code (`src/lib/policy.ts`):**
+  - `publicGraph()` writes the public graph and every export. With `PUBLISH.legalCases = false` (§1.4), it removes `legal_cases` and every verification entry tagged `topic: legal_cases`. The build fails if a case would still be published.
+  - **Declared assets** must cite an ECP publication (`ASSET_SOURCE_HOSTS`). This is enforced in the schema and in the CSV importer.
+  - **The 4 press-sourced asset figures were removed** from `data/people.yaml`: Zardari, Shehbaz Sharif, Maryam Nawaz and Bilawal Bhutto Zardari, from The News and The National. Removing them adds no facts.
+  - **Family ties:** new `relatives` records. Both people must hold or have held an office, and the tie needs an official (`.gov.pk`) source or two different outlets. These rules are enforced at build time. No ties are recorded yet.
+- **In the product:**
+  - About is now "Method, sources and policy". It adds sources, what is and isn't recorded, corrections (a link to the Correction request form, acknowledged within 7 days), licence and how to cite, and the date range of the data.
+  - The footer on every page says the data is compiled from public sources and may contain errors, that each record shows its verification date, and links to "Report a correction".
+- **Docs:** `docs/DATA_MODEL.md` documents the asset rule, hidden legal cases, `relatives` and the verification `topic`. Coverage was regenerated: 168 citations, down from 172 because of the removed asset sources.
+
+### Verified
+
+- **Gates:** all pass: `validate`, `test` (66, including 8 new policy tests), `typecheck`, `build`, `build:single`, `check:build`, `audit:coverage -- --check`.
+- **Legal cases are absent from the published output.** No case title or `legal_cases` key appears in `public/data/graph.json`, any export, the site bundle or the single file, and a test checks this. Person pages no longer show a cases section.
+- **Chromium,** on the production build and the single file: no CSP violations, no console errors, no third-party requests.
+
+### Open
+
+- **The legal cases are still in the repository's `data/people.yaml`.** If the repository is made public with them there, they are public, whatever the build does. Before going public, SS needs to choose: move them to a private location, or keep them after the lawyer review.
+- The existing cases cite press reports. The policy requires a court order, judgment or court website before any case is published, so they need re-sourcing first.
+- The plan's original §4.2 line said the project makes "no claims about the fairness of any election". The policy replaces it with SS's Form 45/47 label decision. Both the label and the policy are part of the lawyer review (§10).

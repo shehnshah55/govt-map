@@ -45,6 +45,7 @@ export function toCsvExports(g: Graph): Record<string, string> {
 export function toPopolo(g: Graph) {
   const postOrg = new Map(g.positions.map((p) => [p.id, p.org]));
   return {
+    meta: { name: g.meta.name, generated: g.meta.generated, data_as_of: g.meta.data_as_of, licence: g.meta.licence },
     organizations: g.organizations.map((o) => ({
       id: o.id,
       name: o.name,

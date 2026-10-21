@@ -14,6 +14,7 @@ import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import { parse } from "yaml";
 import { isSafeUrl } from "../src/lib/safe-url.ts";
+import { ASSET_SOURCE_HOSTS, isAssetSource } from "../src/lib/policy.ts";
 import {
   DataFile,
   Jurisdiction,
@@ -23,6 +24,7 @@ import {
   Position,
   Relation,
   type Graph,
+  type Relative,
   type LegalRef,
   type Origin,
   type RelationType,
@@ -76,6 +78,7 @@ export function compile(dataDir: string): CompileResult {
   const people: WithFile<Person>[] = [];
   const laws: WithFile<Law>[] = [];
   const relations: (Relation & { _file: string })[] = [];
+  const relatives: WithFile<Relative>[] = [];
   const fieldAdmin: { block: NonNullable<DataFile["field_administration"]>[number]; file: string }[] = [];
   const seatBlocks: { block: NonNullable<DataFile["legislature_seats"]>[number]; file: string }[] = [];
   const annotations: { a: NonNullable<DataFile["annotations"]>[number]; file: string }[] = [];
@@ -116,6 +119,7 @@ export function compile(dataDir: string): CompileResult {
     d.people?.forEach((x) => people.push({ ...x, _file: file }));
     d.laws?.forEach((x) => laws.push({ ...x, _file: file }));
     d.relations?.forEach((x) => relations.push({ ...x, _file: file }));
+    d.relatives?.forEach((x) => relatives.push({ ...x, _file: file }));
     d.field_administration?.forEach((block) => fieldAdmin.push({ block, file }));
     d.legislature_seats?.forEach((block) => seatBlocks.push({ block, file }));
     d.annotations?.forEach((a) => annotations.push({ a, file }));
@@ -393,6 +397,10 @@ export function compile(dataDir: string): CompileResult {
         errors.push(`${file}: row for ${pid} needs a numeric assets_pkr and an https source_url`);
         continue;
       }
+      if (!isAssetSource(url)) {
+        errors.push(`${file}: row for ${pid} must cite an ECP publication (${ASSET_SOURCE_HOSTS.join(", ")}); see docs/EDITORIAL_POLICY.md`);
+        continue;
+      }
       (person.declared_assets ??= []).push({
         amount_pkr: Number(assets),
         liabilities_pkr: liabilities ? Number(liabilities) : undefined,
@@ -476,6 +484,38 @@ export function compile(dataDir: string): CompileResult {
     expect(r.to, [...actor, "person", "jurisdiction", "law"], ctx);
     r.legal_basis?.forEach((lb) => expect(lb.law, ["law"], ctx));
   }
+  // Family ties (docs/EDITORIAL_POLICY.md): only between people who both hold or held a public or
+  // party office, and stated by an official source or by two independent outlets.
+  {
+    const byId = new Map(people.map((p) => [p.id, p]));
+    const official = (url?: string) => {
+      try {
+        return new URL(url ?? "").hostname.endsWith(".gov.pk");
+      } catch {
+        return false;
+      }
+    };
+    const host = (url?: string) => {
+      try {
+        return new URL(url ?? "").hostname.replace(/^www\./, "");
+      } catch {
+        return "";
+      }
+    };
+    for (const r of relatives) {
+      const ctx = `${r._file} relatives ${r.from} -${r.relation}-> ${r.to}`;
+      if (r.from === r.to) errors.push(`${ctx}: a person can't be their own relative`);
+      for (const id of [r.from, r.to]) {
+        const p = byId.get(id);
+        if (!p) errors.push(`${ctx}: unknown person "${id}"`);
+        else if (!p.roles.length) errors.push(`${ctx}: "${id}" holds no public or party office; relatives without a public role are not recorded`);
+      }
+      const hosts = new Set(r.sources.map((x) => host(x.url)).filter(Boolean));
+      if (!r.sources.some((x) => official(x.url)) && hosts.size < 2)
+        errors.push(`${ctx}: needs an official (.gov.pk) source or two sources from different outlets`);
+    }
+  }
+
   // Two people currently holding the same single-seat post is almost always a stale record.
   const currentHolders = new Map<string, string[]>();
   for (const person of people)
@@ -635,6 +675,7 @@ export function compile(dataDir: string): CompileResult {
     people,
     laws,
     verification,
+    relatives,
     pm_terms: people
       .flatMap((p) => p.roles.filter((r) => r.position === "fed-prime-minister" && r.since).map((r) => ({ person: p.id, since: r.since!, until: r.until, status: r.status })))
       .sort((a, b) => a.since.localeCompare(b.since)),

@@ -12,6 +12,7 @@
  */
 import { z } from "zod";
 import { isSafeUrl, SAFE_URL_MESSAGE } from "./lib/safe-url.ts";
+import { ASSET_SOURCE_HOSTS, isAssetSource } from "./lib/policy.ts";
 
 /** Every URL field: https only (see src/lib/safe-url.ts). Plain z.string().url() would accept javascript: and data: URLs. */
 export const SafeUrl = z.string().refine(isSafeUrl, { message: SAFE_URL_MESSAGE });
@@ -307,7 +308,17 @@ export const Person = z.object({
     .optional(),
   /** Assets declared to the ECP (nomination papers or annual statements) — not independently audited net worth. */
   declared_assets: z
-    .array(z.object({ amount_pkr: z.number(), liabilities_pkr: z.number().optional(), as_of: z.string(), basis: z.string(), source: Source, notes: z.string().optional() }))
+    .array(
+      z.object({
+        amount_pkr: z.number(),
+        liabilities_pkr: z.number().optional(),
+        as_of: z.string(),
+        basis: z.string(),
+        // §1.5: ECP publications only
+        source: Source.refine((src) => isAssetSource(src.url), { message: `declared assets must cite an ECP publication (${ASSET_SOURCE_HOSTS.join(", ")})` }),
+        notes: z.string().optional(),
+      }),
+    )
     .optional(),
   as_of: z.string(),
   confidence: Confidence.default("medium"),
@@ -347,6 +358,18 @@ export const Relation = z.object({
   description: z.string().optional(),
   legal_basis: z.array(LegalRef).optional(),
   confidence: Confidence.default("high"),
+});
+
+/**
+ * A family tie between two people who both hold or held a public office or party office
+ * (docs/EDITORIAL_POLICY.md). Stored once per pair, from the older generation where it applies.
+ */
+export const Relative = z.object({
+  from: z.string(),
+  to: z.string(),
+  relation: z.enum(["parent", "spouse", "sibling", "grandparent", "uncle_or_aunt", "cousin", "in_law"]),
+  sources: z.array(Source).min(1),
+  notes: z.string().optional(),
 });
 
 export const Law = z.object({
@@ -431,6 +454,7 @@ export const DataFile = z.object({
   positions: z.array(Position).optional(),
   people: z.array(Person).optional(),
   relations: z.array(Relation).optional(),
+  relatives: z.array(Relative).optional(),
   laws: z.array(Law).optional(),
   field_administration: z.array(FieldAdministration).optional(),
   legislature_seats: z.array(LegislatureSeats).optional(),
@@ -443,6 +467,8 @@ export const DataFile = z.object({
         status: z.enum(["verified", "corrected", "conflict", "unverified"]),
         finding: z.string().optional(),
         origin: z.string().optional(), // where the claim came from (e.g. the uploaded spreadsheet)
+        /** Set when the entry is about content the policy may hide (src/lib/policy.ts); hidden content's checks are hidden with it. */
+        topic: z.enum(["legal_cases", "declared_assets", "relatives"]).optional(),
         checked: z.string(),
         sources: z.array(Source),
       }),
@@ -472,6 +498,7 @@ export type Organization = z.infer<typeof Organization>;
 export type Position = z.infer<typeof Position>;
 export type Person = z.infer<typeof Person>;
 export type Relation = z.infer<typeof Relation>;
+export type Relative = z.infer<typeof Relative>;
 export type RelationType = z.infer<typeof RelationType>;
 export type Law = z.infer<typeof Law>;
 export type Jurisdiction = z.infer<typeof Jurisdiction>;
@@ -492,6 +519,8 @@ export interface Graph {
     generated: string;
     data_as_of: string;
     counts: Record<string, number>;
+    /** Added to the published graph by publicGraph() (src/lib/policy.ts). */
+    licence?: { data: { id: string; name: string; url: string }; code: { id: string; name: string }; attribution: string };
   };
   jurisdictions: (Jurisdiction & { _file: string })[];
   organizations: (Organization & { _file: string; _origin: Origin })[];
@@ -501,6 +530,8 @@ export interface Graph {
   verification: NonNullable<DataFile["verification"]>;
   /** Heads of the federal government by date (for "filed under which government"). */
   pm_terms: { person: string; since: string; until?: string; status: string }[];
+  /** Family ties between officeholders (published only within the rules of docs/EDITORIAL_POLICY.md). */
+  relatives: (Relative & { _file: string })[];
   /** All edges: authored relations plus those derived from parents, appointments and roles. */
   edges: (Relation & { derived: boolean })[];
 }

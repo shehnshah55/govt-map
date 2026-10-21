@@ -102,20 +102,20 @@ Laws cited range from 1924 to 2026.
 
 ## Sources
 
-172 source citations on authored records, people and the verification log (127 distinct URLs). Law text URLs are counted under Laws. Levels follow `docs/LAUNCH_PLAN.md` §0.2.
+168 source citations on authored records, people and the verification log (127 distinct URLs). Law text URLs are counted under Laws. Levels follow `docs/LAUNCH_PLAN.md` §0.2.
 
-Citations with an `accessed` date (required by §0.2.4): 0 / 172 (0%).
+Citations with an `accessed` date (required by §0.2.4): 0 / 168 (0%).
 
 ### By level
 
 | Level | Citations |
 |---|---:|
-| 1 · Official (law, gazette, government and official body sites) | 47 / 172 (27%) |
-| 2 · State media (APP, Radio Pakistan, PTV) | 13 / 172 (8%) |
-| 3 · Independent press | 106 / 172 (62%) |
-| Reference works (not a source under §0.2) | 2 / 172 (1%) |
-| Wikipedia (not permitted as a source) | 4 / 172 (2%) |
-| Unclassified | 0 / 172 (0%) |
+| 1 · Official (law, gazette, government and official body sites) | 47 / 168 (28%) |
+| 2 · State media (APP, Radio Pakistan, PTV) | 13 / 168 (8%) |
+| 3 · Independent press | 102 / 168 (61%) |
+| Reference works (not a source under §0.2) | 2 / 168 (1%) |
+| Wikipedia (not permitted as a source) | 4 / 168 (2%) |
+| Unclassified | 0 / 168 (0%) |
 
 ### By domain
 
@@ -127,7 +127,7 @@ Citations with an `accessed` date (required by §0.2.4): 0 / 172 (0%).
 | brecorder.com | 3 | 10 |
 | radio.gov.pk | 2 | 9 |
 | na.gov.pk | 1 | 8 |
-| thenews.com.pk | 3 | 8 |
+| thenews.com.pk | 3 | 5 |
 | app.com.pk | 2 | 4 |
 | arabnews.com | 3 | 4 |
 | en.wikipedia.org | wikipedia | 4 |
@@ -149,7 +149,6 @@ Citations with an `accessed` date (required by §0.2.4): 0 / 172 (0%).
 | pap.gov.pk | 1 | 2 |
 | sbp.org.pk | 1 | 2 |
 | supremecourt.gov.pk | 1 | 2 |
-| thenationalnews.com | 3 | 2 |
 | aljazeera.com | 3 | 1 |
 | balochistan.gov.pk | 1 | 1 |
 | cm.sindh.gov.pk | 1 | 1 |
@@ -166,4 +165,5 @@ Citations with an `accessed` date (required by §0.2.4): 0 / 172 (0%).
 | president.gov.pk | 1 | 1 |
 | punjab.gov.pk | 1 | 1 |
 | sindh.gov.pk | 1 | 1 |
+| thenationalnews.com | 3 | 1 |
 | thenews.pk | 3 | 1 |

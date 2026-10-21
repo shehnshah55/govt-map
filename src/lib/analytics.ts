@@ -8,6 +8,7 @@
  * instead of ranking an incomplete set (§7.14 rule 4).
  */
 import type { GraphIndex, Human, Org, Post } from "./graph-index.ts";
+import { isAssetSource } from "./policy.ts";
 import { ORIGIN_LABEL, SECTOR_LABEL, SELECTION_LABEL } from "../ui/labels.ts";
 import { TIERS, TIER_LABEL } from "../views/tiers.ts";
 
@@ -273,19 +274,12 @@ export interface Readiness {
 /** Share of a house's seats that must have a same-year ECP statement before assets are ranked. */
 export const ASSET_THRESHOLD = 0.9;
 
-const isEcp = (url: string | undefined) => {
-  try {
-    const host = new URL(url ?? "").hostname;
-    return host === "ecp.gov.pk" || host.endsWith(".ecp.gov.pk");
-  } catch {
-    return false;
-  }
-};
+
 
 /** Statements that may be used in asset figures: ECP publications only (§1.5), annual statements only. */
 export function ecpStatements(ix: GraphIndex) {
   return ix.g.people.flatMap((p) =>
-    (p.declared_assets ?? []).filter((a) => isEcp(a.source.url) && /annual/i.test(a.basis)).map((a) => ({ person: p, ...a })),
+    (p.declared_assets ?? []).filter((a) => isAssetSource(a.source.url) && /annual/i.test(a.basis)).map((a) => ({ person: p, ...a })),
   );
 }
 

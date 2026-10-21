@@ -8,9 +8,12 @@ All data is plain YAML in `data/`. Every page on the site links to the file that
 2. **Date officeholders.** Update `as_of` when you confirm a holding. When someone leaves a post, set `until` on their role. Don't delete it; past holders are part of the record.
 3. **Mark uncertainty.** Use `confidence: medium` or `low` when you can't cite a primary source.
 4. **Use acting / additional charge.** If an officer holds a post on additional charge, record `status: additional_charge`.
-5. **Keep IDs stable.** Never rename an `id`. To record a renamed or merged body, add the new one and link it with `successor_of`, then set `abolished` on the old one.
+5. **Follow the editorial policy** ([docs/EDITORIAL_POLICY.md](docs/EDITORIAL_POLICY.md)). Never cite Wikipedia or another encyclopedia. Record people only in their public roles. Declared assets must cite the ECP. Family ties need an official source or two independent outlets, and both people must hold a public or party office. The build rejects records that break these rules.
+6. **Keep IDs stable.** Never rename an `id`. To record a renamed or merged body, add the new one and link it with `successor_of`, then set `abolished` on the old one.
 
 To record an MNA or MPA, add a role with the seat ID, e.g. `{ position: seat-na-122, since: "2024-02-29" }`. Seat IDs follow the ECP constituency codes (`seat-pp-159`, `seat-ps-77`, `seat-pk-70`, `seat-pb-10`).
+
+By contributing data you agree that it is released under CC BY 4.0 ([LICENSE-DATA](LICENSE-DATA)); code contributions are under the MIT licence ([LICENSE](LICENSE)).
 
 ## Workflow
 
