@@ -1707,3 +1707,9 @@ table.tl tr.tl-missing .tl-track { background: none; }
 .career div { display: grid; gap: 2px; }
 .career dt { font-size: var(--s-xs); color: var(--muted); }
 .career dd { margin: 0; font-weight: 600; }
+
+/* Form 45 / Form 47 evidence (src/views/election-labels.ts) */
+.tag.strong { font-weight: 600; }
+.form45 { border-color: color-mix(in srgb, var(--bad) 45%, var(--line)); display: grid; gap: 10px; }
+.form45 h2 { font-size: var(--s-lg); margin: 0; }
+.form45 p { margin: 0; }

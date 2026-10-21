@@ -1,0 +1,23 @@
+# Seats checked against the ECP's own Form 45 (polling-station results) and Form 47 (provisional
+# consolidated result). See docs/EDITORIAL_POLICY.md § Elections and docs/DATA_MODEL.md.
+#
+# Rules, enforced by the build:
+#   - form45.sources and form47.source must be ECP publications (ecp.gov.pk);
+#   - party or observer compilations go in found_via only: they locate a seat, they never prove it;
+#   - status "differs" needs a Form 45 leader other than the declared winner, with more votes,
+#     counted from the Form 45s of every polling station in the constituency.
+#
+# Example (not real data):
+#   - seat: seat-na-000
+#     election: "2024-02-08"
+#     person: some-person-id
+#     form47: { winner: { name: "…", party: party-x, votes: 0 }, source: { title: "ECP Form 47, NA-000", url: "https://www.ecp.gov.pk/…", accessed: "…" } }
+#     form45:
+#       leader: { name: "…", party: party-y, votes: 0 }
+#       declared_winner: { name: "…", party: party-x, votes: 0 }
+#       polling_stations: 0
+#       of_polling_stations: 0
+#       sources: [{ title: "ECP Form 45s, NA-000", url: "https://www.ecp.gov.pk/…", accessed: "…" }]
+#     status: differs
+#     checked: "…"
+election_checks: []

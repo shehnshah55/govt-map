@@ -345,3 +345,40 @@ Branch `launch/phase-2-policy`, stacked on `launch/phase-5-analytics` (PR #7). S
 - **The legal cases are still in the repository's `data/people.yaml`.** If the repository is made public with them there, they are public, whatever the build does. Before going public, SS needs to choose: move them to a private location, or keep them after the lawyer review.
 - The existing cases cite press reports. The policy requires a court order, judgment or court website before any case is published, so they need re-sourcing first.
 - The plan's original §4.2 line said the project makes "no claims about the fairness of any election". The policy replaces it with SS's Form 45/47 label decision. Both the label and the policy are part of the lawyer review (§10).
+
+---
+
+## 2026-10-02 · Form 45/47 groundwork and "Not directly elected"
+
+Branch `launch/form45-labels`, stacked on `launch/phase-2-policy` (PR #8). Task A in SS's order.
+
+### What changed
+
+- **Form 45 / Form 47 checks:** new `election_checks` records (`data/elections/form45-checks.yaml`, empty for now) and a schema for them. The build enforces the policy:
+  - both result documents must be ECP publications;
+  - party or observer compilations go only in `found_via`, so they locate a seat but never prove it;
+  - `differs` needs a Form 45 leader other than the declared winner, with more votes, counted from **every** polling station's Form 45;
+  - `matches` is rejected if the figures disagree;
+  - the person must hold the seat.
+- **"Not legally elected" label:** shown on the person's page (header label and an evidence panel) and on the seat's page. Next to it are the Form 45 totals, the Form 47 result, the number of polling stations counted, and links to the ECP documents. It applies only while the person still holds the seat. It is published while `PUBLISH.form45Labels` is true, following SS's "live from launch with attribution" decision.
+- **"Not directly elected" tag:** derived only where the data makes it certain (`src/lib/elections.ts`):
+  - **Seats voters don't fill directly:** a Senate seat or a reserved seat. No one can sit in two houses (Art. 223), so these members hold no directly elected seat.
+  - **A sourced `non_member` record** for a minister, adviser or special assistant.
+
+  A "How chosen" section lists each office and how it was filled. Ministers whose seat simply isn't recorded are **not** tagged: missing data is not evidence. 9 people are tagged now, all of them senators.
+
+### Verified
+
+- **Gates:** all pass. `test` now runs 74 tests; 8 are new election tests:
+  - every senator is tagged, and no one with a directly elected seat is;
+  - ministers without a recorded seat are not tagged, and a sourced `non_member` record adds the tag;
+  - a synthetic check renders the label with every figure and both ECP links, on the person and seat pages;
+  - `matches` shows no label;
+  - checks with a non-ECP source, a partial count, unsupporting figures, the wrong person or an indirect seat are rejected;
+  - names from documents are escaped.
+- **Chromium:** a synthetic check, used only for a screenshot and not committed, renders the evidence panel. A senator's page shows the tag and "How chosen". No console errors.
+
+### Open (needs network)
+
+- Fetch the ECP's Form 45 and Form 47 PDFs for the seats of directly elected officeholders in the data, starting with about 25 current ones, and record the checks.
+- Add `non_member` records for ministers, advisers and special assistants from Cabinet Division notifications.

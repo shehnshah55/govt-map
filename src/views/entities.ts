@@ -33,6 +33,8 @@ import {
 } from "./common.ts";
 import { safeHref } from "../lib/safe-url.ts";
 import { careerSummary } from "../lib/analytics.ts";
+import { checksForSeat } from "../lib/elections.ts";
+import { electionSections, electionTags, form45Panel } from "./election-labels.ts";
 import type { Human } from "../lib/graph-index.ts";
 
 /** Career records as far as the data goes (§7.14). Each figure says what it is based on. */
@@ -276,6 +278,7 @@ export function postView(ctx: Ctx, id: string): View | undefined {
     </header>
     <div class="layout">
       <div class="stack">
+        ${checksForSeat(ix, id).filter((c) => c.status === "differs").map((c) => form45Panel(ix, c))}
         <section><h2>Held by</h2>
           ${
             via.length
@@ -406,10 +409,11 @@ export function personView(ctx: Ctx, id: string): View | undefined {
         const p = ix.post.get(r.position)!;
         const area = p.area ? ix.place.get(p.area) : undefined;
         return html`<a class="tag sel-${p._selection}" href="#/post/${p.id}">${area?.kind === "constituency" ? area.name : p.title}</a><a class="tag tenure" href="#/org/${p.org}">${ix.shortLabel(p.org)}</a>${area ? html`<a class="tag law" href="#/place/${area.parent ?? area.id}">${ix.place.get(area.parent ?? "")?.name ?? area.name}</a>` : ""}`;
-      })}</div>
+      })}${electionTags(ix, person)}</div>
     </header>
     <div class="layout">
       <div class="stack">
+        ${electionSections(ix, person)}
         <section><h2>Current posts</h2>
           ${current.length ? html`<div class="posts">${current.map((r) => postRow(ix, ix.post.get(r.position)!, { showOrg: true }))}</div>` : html`<p class="hint">No current post recorded.</p>`}
         </section>
