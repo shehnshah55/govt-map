@@ -10,7 +10,7 @@
   --accent: #0a5c3a;
   --accent-ink: #ffffff;
   --accent-soft: #e2efe7;
-  --power: #b86d17;
+  --power: #995a13;
   --power-soft: #f7ead9;
   --b-executive: #2f6f4f;
   --b-legislative: #3f5ba9;
@@ -19,10 +19,10 @@
   --b-military: #66662a;
   --b-local: #9a5b1e;
   --b-political: #8a4b9e;
-  --ok: #2e7d4f;
-  --warn: #a8690c;
+  --ok: #2c774b;
+  --warn: #945c0b;
   --bad: #b3372c;
-  --unknown: #7d8a82;
+  --unknown: #616c65;
   /* charts: bars in the accent; de-emphasised marks in a gray that keeps 3:1 on the surface */
   --chart-muted: #7f8c85;
   --focus: #1f6feb;
@@ -32,7 +32,7 @@
   --k-green: #006633;
   --k-slate: #4a6572;
   --k-burgundy: #800020;
-  --k-gold: #8a6d0b;
+  --k-gold: #80650a;
   --k-gold-fill: #d4af37;
   --k-olive: #55602a;
   --k-purple: #6f3f8c;
@@ -1210,7 +1210,9 @@ select {
   padding: 1px 7px;
   border-radius: 3px;
   border: 1px solid currentColor;
-  white-space: nowrap;
+  /* a tag is laid out as one box and moves to the next line; only a tag wider than the column wraps inside */
+  max-width: 100%;
+  overflow-wrap: anywhere;
   text-decoration: none;
   line-height: 1.5;
 }
@@ -1453,7 +1455,8 @@ a .hemi-seat {
 .chip-btn:hover {
   border-color: var(--accent);
 }
-.chip-btn[aria-pressed="true"] {
+.chip-btn[aria-pressed="true"],
+.chip-btn[aria-current="page"] {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--accent-ink);
@@ -1657,6 +1660,7 @@ table.bars tr:hover .bar { filter: brightness(1.12); }
 .filters { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 0 16px; }
 .filters .hint { margin-right: 4px; }
 .filters a.chip-btn { text-decoration: none; }
+.tree .open-link { font-size: var(--s-sm); }
 
 /* PM timeline */
 table.tl { width: 100%; border-collapse: collapse; table-layout: fixed; }
