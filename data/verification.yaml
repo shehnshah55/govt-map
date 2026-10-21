@@ -266,3 +266,99 @@ verification:
       - { title: "Business Recorder — SBP governor vows focus on stability (Aug 2026)", url: "https://www.brecorder.com/news/40434815/sbp-governor-vows-focus-on-stability-reforms-and-export-growth" }
       - { title: "Provincial Assembly of Balochistan — Sitting Chief Minister", url: "https://www.pabalochistan.gov.pk/current-members?role=chief-minister" }
       - { title: "Chief Minister Sindh — Profile", url: "https://cm.sindh.gov.pk/cm-profile" }
+
+  # ── Sourcing sweep (October 2026): current roles checked against official and press sources ──
+  - claim: "Current Senate seats of Ishaq Dar, Muhammad Aurangzeb, Mohsin Naqvi, Azam Nazeer Tarar, Aimal Wali Khan, Raja Nasir Abbas, Yousuf Raza Gilani, Syedaal Khan and Rubina Khalid"
+    origin: sourcing sweep
+    status: corrected
+    finding: "Each is listed on the Senate's member profiles. Oath dates of 9 April 2024 replace the month-only 2024-04 where the profile gives them. Rubina Khalid's profile gives her oath as 24 July 2025 (Khyber Pakhtunkhwa women's seat), not April 2024, so her since date is corrected. Yousuf Raza Gilani's since date of 2 April 2024 is the election date; his profile gives the oath as 9 April 2024. Azam Nazeer Tarar's profile gives the tenure as 2024–2030 without an oath day, so his date stays 2024-04."
+    records: [ishaq-dar, muhammad-aurangzeb, mohsin-naqvi, azam-nazeer-tarar, aimal-wali-khan, raja-nasir-abbas, yousuf-raza-gilani, syedaal-khan-nasar, rubina-khalid, fed-senator]
+    checked: "2026-10-21"
+    sources:
+      - { title: "Senate of Pakistan — member profile: Rubina Khalid", url: "https://senate.gov.pk/en/profile.php?uid=1065&catid=261&subcatid=2&cattitle=Members%20Senate" }
+      - { title: "Senate of Pakistan — member profile: Mohammad Ishaq Dar", url: "https://senate.gov.pk/en/profile.php?uid=953&catid=261&subcatid=2&cattitle=Members%20Senate" }
+  - claim: "Ishaq Dar has been Leader of the House in the Senate since March 2024"
+    origin: sourcing sweep
+    status: corrected
+    finding: The Senate Secretariat notification reported by The Nation appointed him Leader of the House with effect from 9 April 2024.
+    records: [ishaq-dar, fed-senate-leader-of-house]
+    checked: "2026-10-21"
+    sources: [{ title: "The Nation — Dar appointed Leader of the House in Senate", url: "https://www.nation.com.pk/09-Apr-2024/dar-appointed-leader-of-house-in-senate" }]
+  - claim: "National Assembly seats held since 29 February 2024 (NA-10, 11, 19, 56, 64, 71, 76, 117, 120, 123, 127, 130, 194, 265, 266)"
+    origin: sourcing sweep
+    status: corrected
+    finding: "Each member's National Assembly profile lists the constituency and an oath date of 29 February 2024. Maulana Fazl-ur-Rehman was recorded under the generic fed-mna post; his profile shows NA-265 (Pishin), so the role now points to seat-na-265."
+    records: [fazl-ur-rehman, seat-na-265, shehbaz-sharif, khawaja-asif, ahsan-iqbal, attaullah-tarar, hanif-abbasi, abdul-aleem-khan, amir-muqam, chaudhry-salik-hussain, ayaz-sadiq, nawaz-sharif, bilawal-bhutto-zardari, gohar-ali-khan, asad-qaiser, mahmood-khan-achakzai]
+    checked: "2026-10-21"
+    sources:
+      - { title: "National Assembly of Pakistan — member profile: Maulana Fazl-ur-Rehman", url: "https://na.gov.pk/en/profile.php?uid=1880" }
+      - { title: "National Assembly of Pakistan — all members", url: "https://na.gov.pk/en/all-members.php" }
+  - claim: "Federal ministers' portfolios and start dates"
+    origin: sourcing sweep
+    status: corrected
+    finding: "Portfolios match the National Assembly's list of Federal Ministers. The cabinet took oath on 11 March 2024 (Dawn). Three start dates were wrong: Awais Leghari got the Energy (Power) portfolio on 17 March 2024 (Business Recorder; the Power Division says he assumed charge on 18 March); Rana Tanveer Hussain got National Food Security as an additional portfolio on 3 April 2024 (The News); Amir Muqam got Kashmir Affairs and Gilgit-Baltistan on 29 March 2024 per the Cabinet Division's federal cabinet list FC-220524. That PDF could not be fetched from here; the date was read from a search-engine copy and should be rechecked against the PDF."
+    records: [awais-leghari, rana-tanveer-hussain, amir-muqam, jam-kamal-khan, khawaja-asif, hanif-abbasi, khalid-maqbool-siddiqui, chaudhry-salik-hussain, junaid-anwar-chaudhry, ishaq-dar]
+    checked: "2026-10-21"
+    sources:
+      - { title: "National Assembly of Pakistan — Federal Ministers", url: "https://na.gov.pk/en/fmins_list.php" }
+      - { title: "Dawn — 19-member federal cabinet takes oath (11 Mar 2024)", url: "https://www.dawn.com/news/1820748" }
+      - { title: "Business Recorder — Leghari given power portfolio", url: "https://www.brecorder.com/news/40294055" }
+      - { title: "The News — Shehbaz gives additional portfolios to five ministers", url: "https://www.thenews.com.pk/print/1175497-shehbaz-gives-additional-portfolios-to-five-ministers" }
+  - claim: "Sahibzada Hamid Raza is chairman of the Sunni Ittehad Council"
+    origin: sourcing sweep
+    status: corrected
+    finding: "The ECP notified his son Sahibzada Hassan Raza as Central Chairman on 3 August 2026 (Business Recorder), so Hamid Raza's role is closed on that date. Hassan Raza is not added as a person in this change."
+    records: [hamid-raza, party-sic-head]
+    checked: "2026-10-21"
+    sources: [{ title: "Business Recorder — ECP notification on SIC chairmanship", url: "https://www.brecorder.com/news/40433516" }]
+  - claim: "Asif Ali Zardari heads the PPP Parliamentarians"
+    origin: sourcing sweep
+    status: corrected
+    finding: "The Nation reported in May 2024 that he resigned as PPPP president after becoming President and informed the ECP; the role is closed at 2024-05. The report is sources-based, so the exact day is not recorded. No source was found for his current PPP co-chairmanship; that role is marked low confidence with needs_source."
+    records: [asif-ali-zardari, party-pppp-head, party-ppp-co-chairman]
+    checked: "2026-10-21"
+    sources: [{ title: "The Nation — Asif Zardari resigns as PPPP chairman", url: "https://www.nation.com.pk/03-May-2024/asif-zardari-resigns-as-pppp-chairman" }]
+  - claim: "Party heads (PML-N, JI, ANP, JUI-F, PML-Q, PPP, NP, PkMAP, MWM) and Maryam Nawaz as PML-N senior vice president"
+    origin: sourcing sweep
+    status: verified
+    finding: "Each office is supported by a press report of the election or ECP notification (Dawn, The News, Business Recorder). Hafiz Naeem ur Rehman took oath as JI amir on 18 April 2024. The ECP's party-office list could not be reached from here, so these stay medium confidence. Bilawal's 2007 start date is not covered by the 2025 re-election report. No reachable source was found for Abdul Aleem Khan as IPP president or Akhtar Mengal as BNP-M president; both are marked needs_source."
+    records: [nawaz-sharif, hafiz-naeem-ur-rehman, aimal-wali-khan, fazl-ur-rehman, shujaat-hussain, bilawal-bhutto-zardari, abdul-malik-baloch, mahmood-khan-achakzai, raja-nasir-abbas, maryam-nawaz, abdul-aleem-khan, akhtar-mengal]
+    checked: "2026-10-21"
+    sources:
+      - { title: "Dawn — Nawaz Sharif elected PML-N president", url: "https://www.dawn.com/news/1836218" }
+      - { title: "Dawn — Bilawal, Shujaat re-elected", url: "https://www.dawn.com/news/1903873" }
+  - claim: "Sindh cabinet portfolios (Nasir Hussain Shah, Saeed Ghani, Jam Khan Shoro, Sharjeel Inam Memon)"
+    origin: sourcing sweep
+    status: corrected
+    finding: "The 26 September 2025 reshuffle (Dawn, 27 Sep 2025) moved Local Government and Housing from Saeed Ghani to Nasir Hussain Shah, who gave up Planning and Development to Jam Khan Shoro and kept Energy; Saeed Ghani took Labour. The Provincial Assembly's cabinet page matches. Sharjeel Inam Memon holds Information now, but in March 2024 he held Transport and Excise (Dawn, 12 Mar 2024), so the unsupported 2024-03 start for Information is removed. Jam Khan Shoro's Food portfolio ended before the reshuffle on an unconfirmed date; it is closed at 2025-09 as an upper bound and marked needs_source."
+    records: [nasir-hussain-shah, saeed-ghani, jam-khan-shoro, sharjeel-inam-memon]
+    checked: "2026-10-21"
+    sources:
+      - { title: "Provincial Assembly of Sindh — Cabinet", url: "https://www.pas.gov.pk/members/cabinet" }
+      - { title: "Dawn — Sindh cabinet reshuffle", url: "https://www.dawn.com/news/1944881" }
+      - { title: "Dawn — Sindh ministers get portfolios (Mar 2024)", url: "https://www.dawn.com/news/1821025" }
+  - claim: "Emergency and governor's rule in Khyber Pakhtunkhwa (October 2026)"
+    origin: sourcing sweep
+    status: unverified
+    finding: "Dawn reports a proclamation of emergency and governor's rule under Articles 232 and 234 on 11 October 2026 and an 11-member advisory council under Governor Kundi replacing the ousted provincial administration. The KP portal lists Advisers to the Governor from 15 October 2026. The Chief Minister and ministers' roles are left open because it is not yet confirmed how the proclamation affects their offices; this needs an editorial decision."
+    records: [sohail-afridi, kp-chief-minister, meena-khan-afridi, aftab-alam-afridi, fakhr-e-jehan, riaz-khan-kp, arshad-ayub-khan]
+    checked: "2026-10-21"
+    sources:
+      - { title: "Dawn — Governor's rule imposed in KP", url: "https://www.dawn.com/news/2036352" }
+      - { title: "Dawn — Advisory council replaces KP administration", url: "https://www.dawn.com/news/2036502" }
+  - claim: "Other officeholders' start and end dates (Attorney General, Punjab Chief Secretary, Balochistan Speaker, Peshawar mayor, Establishment Secretary, Leader of the Opposition)"
+    origin: sourcing sweep
+    status: corrected
+    finding: "Mansoor Usman Awan was appointed Attorney General on 27 March 2023 (Dawn; Office of the AG profile). Zahid Akhtar Zaman became Punjab Chief Secretary on 24 January 2023, not December 2022 (The Nation). The Balochistan Assembly lists Abdul Khaliq Achakzai as Speaker from 29 February 2024. The Peshawar mayor's four-year tenure ended on 15 March 2026 (The News). Nabeel Awan was posted Establishment Secretary on 10 September 2025 (24 News). The National Assembly's list gives Omar Ayub Khan as Leader of the Opposition from 2 April 2024 to 5 August 2025."
+    records: [mansoor-usman-awan, zahid-akhtar-zaman, abdul-khaliq-achakzai, zubair-ali, nabeel-awan, omar-ayub-khan]
+    checked: "2026-10-21"
+    sources:
+      - { title: "Dawn — Mansoor Usman Awan appointed AGP", url: "https://www.dawn.com/news/1744502" }
+      - { title: "National Assembly — Leaders of the Opposition", url: "https://na.gov.pk/en/print_list.php?type=oppleaders" }
+  - claim: "Prime ministers' terms"
+    origin: sourcing sweep
+    status: conflict
+    finding: "The National Assembly's list of Prime Ministers matches our dates for Abbasi, Nasir-ul-Mulk, Imran Khan and Nawaz Sharif's 1997 and 2013 terms. It splits Nawaz Sharif's first term into 6 Nov 1990 – 18 Apr 1993 and 26 May 1993 – 8 Jul 1993 (the dismissal and Supreme Court restoration), whereas our record has one term to 18 Jul 1993; that role is left unsourced pending review. The list ends Kakar's caretaker term on 3 March 2024 (the day Shehbaz Sharif was elected); our record keeps 4 March 2024, the day the new Prime Minister took oath."
+    records: [nawaz-sharif, anwaar-ul-haq-kakar, fed-prime-minister]
+    checked: "2026-10-21"
+    sources: [{ title: "National Assembly of Pakistan — list of Prime Ministers", url: "https://na.gov.pk/en/print_list.php?type=primeministers" }]
