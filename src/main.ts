@@ -25,12 +25,14 @@ let current = "/";
 const ctx: Ctx = { ix, repo: REPO, go: navigate };
 
 /** Pages that show classification labels get the key to them under the page heading. */
-const LABELLED = new Set(["org", "departments", "post", "person", "place", "officials", "directory", "appointments", "accountability", "elected", "sector"]);
+const LABELLED = new Set(["org", "departments", "post", "person", "place", "law", "laws", "tree", "map", "officials", "directory", "appointments", "accountability", "elected", "sector"]);
 
 function route(path: string): View | undefined {
   const view = page(path);
-  const first = path.split("?")[0].split("/").filter(Boolean)[0];
-  if (!view || !LABELLED.has(first ?? "")) return view;
+  const segs = path.split("?")[0].split("/").filter(Boolean);
+  // the figures page has none, but its evidence lists (#/figures/<figure>/<bar>) do
+  const labelled = LABELLED.has(segs[0] ?? "") || (segs[0] === "figures" && segs.length >= 3);
+  if (!view || !labelled) return view;
   // safe: both parts are already-rendered markup (escaped by html``); this only places the key after the page header
   const at = view.body.html.indexOf("</header>");
   const body = at < 0 ? view.body.html + labelKey().html : view.body.html.slice(0, at + 9) + labelKey().html + view.body.html.slice(at + 9);
@@ -40,7 +42,14 @@ function route(path: string): View | undefined {
 function page(path: string): View | undefined {
   const [p, query = ""] = path.split("?");
   const params = new URLSearchParams(query);
-  const seg = p.split("/").filter(Boolean).map(decodeURIComponent);
+  // a stray "%" in a link would make decodeURIComponent throw half-way through a render
+  const seg = p.split("/").filter(Boolean).map((s) => {
+    try {
+      return decodeURIComponent(s);
+    } catch {
+      return s;
+    }
+  });
   switch (seg[0]) {
     case undefined:
       return homeView(ctx);
@@ -99,14 +108,26 @@ function page(path: string): View | undefined {
 
 /** Puts keyboard and screen-reader focus on the page's heading, so a new page is announced. */
 function focusHeading() {
-  const h1 = app.querySelector<HTMLElement>("h1");
-  if (!h1) return;
-  h1.tabIndex = -1;
-  h1.focus({ preventScroll: true });
+  const target = app.querySelector<HTMLElement>("h1") ?? app;
+  target.tabIndex = -1;
+  target.focus({ preventScroll: true });
+}
+
+/** A selector for the focused control, so a filter that redraws its own page can keep focus on it. */
+function focusedControl(): string | undefined {
+  const el = document.activeElement as HTMLElement | null;
+  if (!el || !app.contains(el)) return undefined;
+  if (el.id) return `#${CSS.escape(el.id)}`;
+  for (const attr of ["data-href", "data-tab", "data-unit"]) {
+    const v = el.getAttribute(attr);
+    if (v !== null) return `[${attr}="${CSS.escape(v)}"]`;
+  }
+  return undefined;
 }
 
 /** `moveFocus`: after a navigation the old focus is gone with the old page, so it goes to the new heading. */
 function render(path: string, moveFocus = false) {
+  const control = moveFocus ? focusedControl() : undefined;
   current = path;
   if (typeof cleanup === "function") cleanup();
   cleanup = undefined;
@@ -125,8 +146,11 @@ function render(path: string, moveFocus = false) {
   document.querySelectorAll<HTMLDetailsElement>(".nav details").forEach((d) => (d.open = false));
   window.scrollTo(0, 0);
   cleanup = view.mount?.(app) ?? undefined;
-  // a view that focuses something itself (a search field, a chart it opens at) keeps it
-  if (moveFocus && !app.contains(document.activeElement)) focusHeading();
+  if (!moveFocus || app.contains(document.activeElement)) return; // a view that focused something itself keeps it
+  // a control that redrew its own page (the Explore filters) keeps focus; otherwise the new page's heading takes it
+  const same = control ? app.querySelector<HTMLElement>(control) : null;
+  if (same) same.focus();
+  else focusHeading();
 }
 
 /** Hash routing with an in-memory fallback for sandboxed frames that block history writes. */
@@ -154,9 +178,24 @@ document.addEventListener("click", (e) => {
   e.preventDefault();
   navigate(href.slice(1));
 });
-window.addEventListener("popstate", () => render(location.hash.slice(1) || "/", true));
-window.addEventListener("hashchange", () => {
+/** The route in the address bar. "#app" is the skip link's target, not a route: it means the page already shown. */
+function hashRoute() {
   const p = location.hash.slice(1) || "/";
+  return p === "app" ? current : p;
+}
+window.addEventListener("popstate", () => render(hashRoute(), true));
+window.addEventListener("hashchange", () => {
+  if (location.hash === "#app") {
+    // reached without the click handler (e.g. typed): stay on the page and go to its content
+    try {
+      history.replaceState(null, "", `#${current}`);
+    } catch {
+      /* sandboxed */
+    }
+    focusHeading();
+    return;
+  }
+  const p = hashRoute();
   if (p !== current) render(p, true);
 });
 
@@ -168,7 +207,8 @@ let sel = -1;
 function setOpen(open: boolean) {
   box.hidden = !open;
   input.setAttribute("aria-expanded", String(open));
-  if (!open) input.removeAttribute("aria-activedescendant");
+  // a closed list has no highlighted option: Enter then searches for what was typed
+  if (!open) select(-1);
 }
 function select(i: number) {
   sel = i;
@@ -192,14 +232,21 @@ input.addEventListener("keydown", (e) => {
   const items = [...box.querySelectorAll<HTMLAnchorElement>("a")];
   if (e.key === "ArrowDown" || e.key === "ArrowUp") {
     e.preventDefault();
+    if (box.hidden) {
+      if (input.value) showSuggestions();
+      return;
+    }
     select(Math.max(-1, Math.min(items.length - 1, sel + (e.key === "ArrowDown" ? 1 : -1))));
   } else if (e.key === "Enter") {
     e.preventDefault();
+    if (sel < 0 && !input.value.trim()) return;
     const target = items[sel]?.getAttribute("href") ?? `#/search?q=${encodeURIComponent(input.value)}`;
     setOpen(false);
     input.blur();
     navigate(target.slice(1));
-  } else if (e.key === "Escape") {
+  } else if (e.key === "Escape" && !box.hidden) {
+    // the first Escape closes the list and keeps the text; a second one clears the field as usual
+    e.preventDefault();
     setOpen(false);
   }
 });
@@ -237,4 +284,12 @@ toggle.addEventListener("click", () => {
   render(current); // graph colours are read from CSS tokens at mount
 });
 
-render(location.hash.slice(1) || "/");
+if (location.hash === "#app") {
+  // a skip link opened in a new tab
+  try {
+    history.replaceState(null, "", "#/");
+  } catch {
+    /* sandboxed */
+  }
+}
+render(hashRoute());

@@ -745,6 +745,17 @@ h2 .count {
   color: var(--muted);
   font-size: var(--s-sm);
 }
+.canvas[data-failed] {
+  display: grid;
+  place-items: center;
+}
+.canvas[data-failed]::after {
+  content: "The graph could not load. Reload the page to try again.";
+  color: var(--muted);
+  font-size: var(--s-sm);
+  padding: 0 16px;
+  text-align: center;
+}
 .legend {
   display: flex;
   flex-wrap: wrap;
@@ -1303,6 +1314,8 @@ a.tag:hover {
 }
 .hemi-legend h3 {
   margin: 0 0 6px;
+  font-family: var(--f-body);
+  font-weight: 600;
   font-size: var(--s-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1734,11 +1747,11 @@ table.tl tr.tl-missing .tl-track { background: none; }
   .brand small { display: none; }
 }
 
-/* Touch targets (WCAG 2.5.8): links stacked in lists, definition lists and table cells get at
-   least 24px between lines, and tag-style links are at least 24px tall. */
-.plain li,
-dd,
-td { line-height: 1.85; }
+/* Touch targets (WCAG 2.5.8): links in lists, definition lists and table cells are at least 24px
+   tall, so stacked links don't crowd each other; plain text keeps its line height. */
+td a,
+dd a,
+.plain li a { display: inline-block; min-height: 24px; line-height: 24px; }
 a.tag { min-height: 24px; }
 
 /* Skip link (index.html): hidden until focused */

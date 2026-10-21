@@ -7,7 +7,7 @@ import { families, familyOf, generations, RELATION_PHRASE, seatsOf, tiesOf, type
 import type { GraphIndex, Human } from "../lib/graph-index.ts";
 import { safeHref } from "../lib/safe-url.ts";
 import { html, type Raw } from "../ui/dom.ts";
-import { link, partyLink, type Ctx, type View } from "./common.ts";
+import { link, loadOnDemand, partyLink, type Ctx, type View } from "./common.ts";
 
 const POLICY = "Ties are recorded only between people who both hold or held a public or party office, and only when an official source or two independent outlets state them. Minors and relatives without a public role are never recorded.";
 
@@ -90,9 +90,9 @@ export function familyView(ctx: Ctx, personId: string): View | undefined {
     let gone = false;
     let cy: { destroy: () => void } | undefined;
     // Cytoscape loads only for this page (see graphPanel() in ./common.ts)
-    void import("../ui/family-tree.ts").then(({ mountFamilyTree }) => {
-      if (gone) return;
-      cy = mountFamilyTree(el, nodes, f.ties, {
+    void loadOnDemand(el, () => import("../ui/family-tree.ts")).then((m) => {
+      if (!m || gone) return;
+      cy = m.mountFamilyTree(el, nodes, f.ties, {
         openPerson: (id) => ctx.go(`/person/${id}`),
         showTie: (t) => {
           // built with DOM methods: names and titles come from data

@@ -55,8 +55,12 @@ export function figuresView(ctx: Ctx, params: URLSearchParams, focus?: string): 
   const mount = (root: HTMLElement) => {
     const fig = focus ? root.querySelector<HTMLElement>(`#fig-${CSS.escape(focus)}`) : null;
     if (!fig) return;
+    // a redraw of the same page (the theme toggle) leaves focus where it is, outside the page
+    const held = document.activeElement;
+    if (held && held !== document.body && held.isConnected) return;
     fig.tabIndex = -1;
-    fig.scrollIntoView({ block: "start" });
+    const header = document.querySelector(".topbar")?.getBoundingClientRect().height ?? 0;
+    window.scrollTo(0, fig.getBoundingClientRect().top + window.scrollY - header - 12);
     fig.focus({ preventScroll: true });
   };
   return { title: "Facts and figures", body, mount };
