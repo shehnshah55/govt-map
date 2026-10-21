@@ -142,9 +142,9 @@ export function hemicycle(ix: GraphIndex, chamberId: string): Raw {
   return html`<div class="hemi-wrap">
     ${raw(svg) /* safe: names and tooltips pass through esc(); hrefs are ids (schema: [a-z0-9-]) and escaped; fills are #rrggbb (schema) or CSS vars; the rest is numbers */}
     <div class="hemi-legend">
-      <div><h4>Treasury benches · ${totals("treasury")}</h4><ul>${comp.parties.filter((p) => p.side === "treasury").map(legendRow)}</ul></div>
-      <div><h4>Opposition · ${totals("opposition")}</h4><ul>${comp.parties.filter((p) => p.side === "opposition").map(legendRow)}</ul></div>
-      ${totals("other") ? html`<div><h4>Other or vacant · ${totals("other")}</h4><ul>${comp.parties.filter((p) => p.side === "other").map(legendRow)}</ul></div>` : ""}
+      <div><h3>Treasury benches · ${totals("treasury")}</h3><ul>${comp.parties.filter((p) => p.side === "treasury").map(legendRow)}</ul></div>
+      <div><h3>Opposition · ${totals("opposition")}</h3><ul>${comp.parties.filter((p) => p.side === "opposition").map(legendRow)}</ul></div>
+      ${totals("other") ? html`<div><h3>Other or vacant · ${totals("other")}</h3><ul>${comp.parties.filter((p) => p.side === "other").map(legendRow)}</ul></div>` : ""}
       <div><h4>Office-holders in this House (ringed)</h4><ul>${officeHolders.map(
         (n) => html`<li><i style="background:${color(n.party)}"></i><a href="#/person/${n.occ.person.id}">${n.occ.person.name}</a> <span class="hint">${label(n.party)}${n.occ.seat ? ` · ${n.occ.seat}` : ""} · ${n.occ.offices.join("; ")}</span></li>`,
       )}</ul></div>

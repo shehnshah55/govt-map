@@ -15,7 +15,8 @@ import {
   tenureLabel,
 } from "../ui/labels.ts";
 import type { Holding, Human, Org } from "../lib/graph-index.ts";
-import { mountGraph, type LayoutName, type Lens, type VEdge, type VNode } from "../ui/graph-view.ts";
+import type { LayoutName, Lens, VEdge, VNode } from "../ui/graph-view.ts";
+import type { Core } from "cytoscape";
 import { safeHref } from "../lib/safe-url.ts";
 
 export interface View {
@@ -251,6 +252,8 @@ export function openDrawer(ctx: Ctx, id: string) {
   } else {
     inner = html`<div class="eyebrow">${kind}</div><h2>${ix.label(id)}</h2>`;
   }
+  // where focus returns when the drawer closes
+  const opener = document.activeElement as HTMLElement | null;
   const el = document.createElement("aside");
   el.className = "drawer";
   el.setAttribute("role", "dialog");
@@ -259,6 +262,7 @@ export function openDrawer(ctx: Ctx, id: string) {
   const close = () => {
     el.remove();
     document.removeEventListener("keydown", onKey);
+    if (opener?.isConnected && !document.activeElement?.closest("#app a")) opener.focus();
   };
   const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
   el.querySelector(".close")!.addEventListener("click", close);
@@ -315,26 +319,63 @@ export function graphPanel(ctx: Ctx, id: string, tabs: GraphTab[], opts: { tall?
     if (!panel) return;
     const canvas = panel.querySelector<HTMLElement>(".canvas")!;
     const lensSel = panel.querySelector<HTMLSelectElement>("[data-lens]")!;
-    let cy: ReturnType<typeof mountGraph> | undefined;
+    let cy: Core | undefined;
+    let gone = false;
     let current = tabs[0].key;
-    const show = (key: string) => {
+    const show = async (key: string) => {
       current = key;
       const tab = tabs.find((t) => t.key === key) ?? tabs[0];
       const lens = lensSel.value as Lens;
       panel.querySelectorAll<HTMLButtonElement>("[data-tab]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.tab === tab.key)));
       panel.querySelectorAll<HTMLElement>("[data-legend]").forEach((l) => (l.hidden = l.dataset.legend !== lens));
+      // Cytoscape and the layout are the heaviest part of a page, so they load only when the graph is needed
+      const { mountGraph } = await import("../ui/graph-canvas.ts");
+      if (gone || current !== tab.key) return;
       cy?.destroy();
+      canvas.removeAttribute("data-loading");
       cy = mountGraph(canvas, tab.data(), { layout: tab.layout, lens, classify, onOpen: (nid) => openDrawer(ctx, nid) });
     };
-    panel.querySelectorAll<HTMLButtonElement>("[data-tab]").forEach((b) => b.addEventListener("click", () => show(b.dataset.tab!)));
-    lensSel.addEventListener("change", () => show(current));
-    show(tabs[0].key);
+    panel.querySelectorAll<HTMLButtonElement>("[data-tab]").forEach((b) => b.addEventListener("click", () => void show(b.dataset.tab!)));
+    lensSel.addEventListener("change", () => void show(current));
+    // draw when the graph scrolls near the screen, not on page load
+    canvas.setAttribute("data-loading", "");
+    const near = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        near.disconnect();
+        void show(current);
+      },
+      { rootMargin: "300px" },
+    );
+    near.observe(canvas);
     return () => {
+      gone = true;
+      near.disconnect();
       cy?.destroy();
       document.querySelector(".drawer")?.remove();
     };
   };
   return { body, mount };
+}
+
+/**
+ * What the labels mean, shown on the page. The labels also carry the same text as a tooltip
+ * (title), but tooltips reach neither touch screens nor keyboards.
+ */
+export function labelKey(): Raw {
+  const origins = Object.keys(ORIGIN_HELP) as (keyof typeof ORIGIN_HELP)[];
+  const selections = Object.keys(SELECTION_HELP) as (keyof typeof SELECTION_HELP)[];
+  return html`<details class="labelkey"><summary>What the labels mean</summary>
+    <div class="labelkey-grid">
+      <div><p class="labelkey-h">What created the body or post</p><dl>${origins.map((k) => html`<dt><span class="tag org-${k}">${ORIGIN_LABEL[k]}</span></dt><dd>${ORIGIN_HELP[k]}</dd>`)}</dl></div>
+      <div><p class="labelkey-h">How the post is filled</p><dl>${selections.map((k) => html`<dt><span class="tag sel-${k}">${SELECTION_LABEL[k]}</span></dt><dd>${SELECTION_HELP[k]}</dd>`)}</dl></div>
+      <div><p class="labelkey-h">How sure the record is</p><dl>
+        <dt><span class="hint">No label</span></dt><dd>${CONFIDENCE_NOTE.high}</dd>
+        <dt><span class="chip conf-medium">Verify</span></dt><dd>${CONFIDENCE_NOTE.medium}</dd>
+        <dt><span class="chip conf-low">Provisional</span></dt><dd>${CONFIDENCE_NOTE.low}</dd>
+      </dl><p class="hint">A post's tenure, such as "Coterminous" or "Until age 65", is explained on the post's own page.</p></div>
+    </div>
+  </details>`;
 }
 
 /** Who headed the federal government on a date (YYYY or YYYY-MM or YYYY-MM-DD). */

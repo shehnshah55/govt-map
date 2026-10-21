@@ -17,6 +17,7 @@ const ROUTES: [string, string][] = [
   ["verification", "#/verification"],
   ["accountability", "#/accountability"],
   ["search", "#/search?q=minister"],
+  ["sectors", "#/sectors"],
   ["facts and figures", "#/figures"],
   ["evidence list", "#/figures/posts-by-selection/elected"],
   ["political families", "#/families"],
@@ -63,6 +64,64 @@ test("the starter map selects a unit by mouse and keyboard", async ({ page }) =>
   await page.locator('path.unit[data-unit="pk-pb"]').focus();
   await page.keyboard.press("Enter");
   await expect(page.locator('[data-panel="pk-pb"]')).toBeVisible();
+});
+
+test("keyboard: the skip link reaches the content, and a new page's heading takes focus", async ({ page }) => {
+  await page.goto("#/");
+  await expect(page.locator("#app h1")).toBeVisible();
+  await page.keyboard.press("Tab");
+  await expect(page.locator(".skip-link")).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("#app h1")).toBeFocused();
+  await expect(page).toHaveURL(/#\/$/);
+  await page.locator(".btnrow a[href='#/org/fed-pm-office']").first().click();
+  await expect(page.locator("#app h1")).toHaveText(/Prime Minister/);
+  await expect(page.locator("#app h1")).toBeFocused();
+});
+
+test("the search box is a combobox that tracks the highlighted option", async ({ page }) => {
+  await page.goto("#/");
+  const q = page.locator("#q");
+  await q.fill("prime");
+  await expect(q).toHaveAttribute("aria-expanded", "true");
+  await page.keyboard.press("ArrowDown");
+  await expect(q).toHaveAttribute("aria-activedescendant", "suggest-0");
+  await expect(page.locator("#suggest-0")).toHaveAttribute("aria-selected", "true");
+  await page.keyboard.press("Escape");
+  await expect(q).toHaveAttribute("aria-expanded", "false");
+});
+
+test("the home page's figure tiles open the chart they name", async ({ page }) => {
+  await page.goto("#/");
+  for (const fig of ["posts-by-selection", "bodies-by-government"]) {
+    await page.goto("#/");
+    await page.locator(`a.kpi[href='#/figures/${fig}']`).click();
+    await expect(page.locator(`#fig-${fig}`)).toBeFocused();
+  }
+});
+
+test("graphs load only when they come into view", async ({ page }) => {
+  await page.goto("#/org/fed-min-nhsrc");
+  await expect(page.locator("#app h1")).toBeVisible();
+  const canvas = page.locator(".graphpanel .canvas").first();
+  await canvas.scrollIntoViewIfNeeded();
+  await expect(canvas.locator("canvas").first()).toBeAttached();
+  await expect(canvas).not.toHaveAttribute("data-loading", "");
+});
+
+test.describe("dark mode and the narrowest phones", () => {
+  test.use({ colorScheme: "dark" });
+  for (const route of ["#/", "#/sectors", "#/org/fed-min-nhsrc", "#/person/shehbaz-sharif", "#/officials", "#/parliament"]) {
+    test(`${route} passes axe in dark mode and fits 320px`, async ({ page }) => {
+      await page.goto(route);
+      await expect(page.locator("#app h1").first()).toBeVisible();
+      const axe = await new AxeBuilder({ page }).analyze();
+      expect(axe.violations.filter((v) => v.impact === "serious" || v.impact === "critical").map((v) => `${v.id} ${v.nodes[0]?.target.join(" ")}`)).toEqual([]);
+      await page.setViewportSize({ width: 320, height: 800 });
+      const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+      expect(overflow, "horizontal overflow at 320px").toBeLessThanOrEqual(0);
+    });
+  }
 });
 
 test("search suggests and navigates", async ({ page }) => {

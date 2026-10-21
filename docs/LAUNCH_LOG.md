@@ -494,3 +494,88 @@ Branch `launch/family-tree`, stacked on `launch/phase-6-freshness` (PR #11). Thi
 ### Open
 
 - No family ties are recorded. Each needs an official source or two independent outlets, which needs network access.
+
+---
+
+## 2026-10-21 · Audit: security, accessibility, correctness, comprehension, load speed
+
+Branch `launch/audit`, from `main` (`2aa8544`). SS asked for a deep dive on all five. The fixes for the Ask page itself are on `launch/ask` (PR #19).
+
+### Load speed
+
+Measured over gzip, as GitHub Pages serves it, on a phone profile (Slow 4G: 1.6 Mbps, 150 ms; CPU slowed 4×).
+
+| Home page | Before | After |
+|---|---|---|
+| Downloaded | 1,003 KB | 614 KB |
+| Script (gzipped) | 628 KB | 246 KB |
+| Content visible | 8.6 s | 4.5 s |
+| Main-thread blocking | 3.2 s | 0.7 s |
+
+- **The world atlas left the bundle.** The full Natural Earth atlas (224 KB gzipped) shipped to draw Pakistan and four neighbours, and the outline was cut on every visit. `scripts/build-basemap.ts` now cuts it once into `src/geo/basemap.json` (9.8 KB gzipped). `tests/basemap.test.ts` fails if the file drifts. The maps differ from before by anti-aliasing only (0.5% of pixels). The atlas and polygon libraries are now dev dependencies.
+- **Cytoscape loads only when a graph scrolls into view** (`src/ui/graph-canvas.ts`, loaded on demand). It was 138 KB gzipped, plus a force layout of about 370 ms on desktop that ran on every page load.
+- **The graph data is parsed with `JSON.parse`** instead of being evaluated as a JavaScript object literal.
+- **Fonts declare a `unicode-range`**, so a page downloads only the faces whose characters it shows.
+
+### Accessibility
+
+Swept with axe (WCAG 2.2 AA plus best practice) on 25 routes, in light and dark, at 1280px and 320px:
+
+| Finding | Fix |
+|---|---|
+| Every page scrolled sideways at 320px (the site name) | Smaller name on narrow screens |
+| Sectors heat map below 4.5:1 contrast in both themes (CI never visited the page) | Shade capped at 50% |
+| Touch targets under 24px (WCAG 2.5.8) | 24px between stacked links; tag-style links 24px tall |
+| Heading order on Parliament and Map | Fixed |
+
+All findings are now zero. Checked by hand:
+
+- **Skip link:** there was none; added.
+- **Focus after navigation:** it was lost with the old page; it now goes to the new page's heading, so screen readers announce it.
+- **Search box:** wired as a combobox (`aria-expanded`, `aria-activedescendant`).
+- **Graph drawer:** returns focus when it closes.
+
+Reduced motion and Urdu text direction were already handled.
+
+### Correctness
+
+- **Link crawl:** every internal link on every page, 3,401 routes.
+  - The home page's "Government bodies" and "Posts" tiles led to "Not found". They now open the figures page at that chart.
+  - Nothing else was broken, and no page threw an error.
+- **Fuzzing Ask:** 7,610 questions found three bugs, fixed on `launch/ask`:
+  - "the law behind" a person gave no text;
+  - the closest-match fallback searched on two-letter words;
+  - a passport number run into a word was not redacted.
+
+### Security
+
+- **No new sinks.** The `innerHTML` and `raw()` sinks are unchanged since Phase 1 and covered by the hostile-data test. Workflows are pinned with least privilege. `npm audit` reports 0. No secrets were committed this month, and there are no contact details in the public tree.
+- **One denial-of-service bug found and fixed** (on `launch/ask`): the redaction's email pattern was quadratic. A crafted `#/search?q=` link of 100,000 characters froze the tab for 10 s.
+  - It is now linear: 1 ms for the same input.
+  - Queries are capped at 200 characters for search and 2,000 for redaction.
+- **Still open: everything in the repository is public now that the repo is.** That includes `data/people.yaml` with held-back legal cases and their hold reasons, and the planning docs. The build filters what the site shows; it can't filter the repository.
+
+### Ease of comprehension
+
+- **Reading level (Flesch–Kincaid grade):** home 12.5, body pages 15.9, sectors 13.3, About 11.6. Ask scores 6.7 and Facts and figures 6.2. GOV.UK aims for about 9.
+  - Not rewritten here, because #18 rewrites the same copy.
+  - The worst cases are long lists of clauses in ledes, and terms like "coterminous", "at pleasure", "ex officio" and "Rules of Business".
+- **Label meanings were hover-only.** 41 explanations were tooltips only, which touch screens and keyboards never show. A **"What the labels mean"** key now sits under the heading on every page that shows labels. It is built from the same text as the tooltips.
+
+### Verified
+
+- Unit tests: 88 passed, including the base-map drift test.
+- Browser tests: 62 passed. New tests cover:
+  - the skip link and heading focus;
+  - the combobox;
+  - the figure tiles;
+  - graphs loading on scroll;
+  - dark-mode axe and 320px reflow on six pages;
+  - the sectors page.
+- All other gates pass. The single-file build opened from disk draws its graphs on scroll.
+
+### Open
+
+- **Plain-language rewrite** of the home page, body pages and sectors page, once #18 has landed.
+- **Source Serif 4** is a 120 KB variable font with every weight. A static 600-weight subset would save about 90 KB, but needs a new package.
+- **The graph data** (2.4 MB raw, 156 KB gzipped) could drop about a third by leaving out derived edges and `_file`. That changes the published format, so it is left for a decision.

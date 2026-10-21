@@ -5,7 +5,7 @@
  * territory of Jammu and Kashmir is shown as on the Government of Pakistan's political map.
  * Every explanation comes from the data: the unit's government body, its heads and its counts.
  */
-import type { MultiPolygon } from "polygon-clipping";
+import type { MultiPolygon } from "../ui/pakistan-map.ts";
 import units from "../geo/pk-units.json";
 import { esc, html, raw, type Raw } from "../ui/dom.ts";
 import { pakistanBaseMap } from "../ui/pakistan-map.ts";

@@ -11,7 +11,8 @@ import { TIERS, TIER_LABEL } from "./tiers.ts";
 const q = (gov: Gov) => (gov === "all" ? "" : `?gov=${gov}`);
 export const evidenceHref = (figure: string, key: string, gov: Gov = "all") => `#/figures/${figure}/${encodeURIComponent(key)}${q(gov)}`;
 
-export function figuresView(ctx: Ctx, params: URLSearchParams): View {
+/** The figures page; `focus` (a figure id, from #/figures/<figure>) scrolls to that chart. */
+export function figuresView(ctx: Ctx, params: URLSearchParams, focus?: string): View {
   const { ix } = ctx;
   const g = params.get("gov");
   const gov: Gov = isGov(g) ? g : "all";
@@ -51,7 +52,14 @@ export function figuresView(ctx: Ctx, params: URLSearchParams): View {
         <div class="ready-grid">${readiness(ix).map(readinessCard)}</div>
       </section>
     </div>`;
-  return { title: "Facts and figures", body };
+  const mount = (root: HTMLElement) => {
+    const fig = focus ? root.querySelector<HTMLElement>(`#fig-${CSS.escape(focus)}`) : null;
+    if (!fig) return;
+    fig.tabIndex = -1;
+    fig.scrollIntoView({ block: "start" });
+    fig.focus({ preventScroll: true });
+  };
+  return { title: "Facts and figures", body, mount };
 }
 
 export function figureEvidenceView(ctx: Ctx, figure: string, key: string, params: URLSearchParams): View | undefined {

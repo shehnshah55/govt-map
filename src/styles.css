@@ -735,6 +735,16 @@ h2 .count {
 .canvas.tall {
   height: min(72vh, 760px);
 }
+/* until the graph code has loaded (graphPanel() in src/views/common.ts) */
+.canvas[data-loading] {
+  display: grid;
+  place-items: center;
+}
+.canvas[data-loading]::after {
+  content: "Loading graph…";
+  color: var(--muted);
+  font-size: var(--s-sm);
+}
 .legend {
   display: flex;
   flex-wrap: wrap;
@@ -1291,7 +1301,7 @@ a.tag:hover {
   gap: 14px;
   margin-top: 10px;
 }
-.hemi-legend h4 {
+.hemi-legend h3 {
   margin: 0 0 6px;
   font-size: var(--s-xs);
   letter-spacing: 0.08em;
@@ -1717,3 +1727,43 @@ table.tl tr.tl-missing .tl-track { background: none; }
 .form45 { border-color: color-mix(in srgb, var(--bad) 45%, var(--line)); display: grid; gap: 10px; }
 .form45 h2 { font-size: var(--s-lg); margin: 0; }
 .form45 p { margin: 0; }
+
+/* Small screens: the full site name is wider than a 320px screen (WCAG 1.4.10 reflow) */
+@media (max-width: 400px) {
+  .brand { font-size: var(--s-md); }
+  .brand small { display: none; }
+}
+
+/* Touch targets (WCAG 2.5.8): links stacked in lists, definition lists and table cells get at
+   least 24px between lines, and tag-style links are at least 24px tall. */
+.plain li,
+dd,
+td { line-height: 1.85; }
+a.tag { min-height: 24px; }
+
+/* Skip link (index.html): hidden until focused */
+.skip-link {
+  position: absolute;
+  left: 8px;
+  top: -60px;
+  z-index: 100;
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+.skip-link:focus { top: 8px; }
+/* headings receive focus only from script, after navigation or the skip link */
+h1[tabindex="-1"]:focus { outline: none; }
+/* the chart a #/figures/<figure> link opens at */
+.chart[tabindex="-1"]:focus { outline: 2px solid var(--accent); outline-offset: 6px; border-radius: 2px; }
+
+/* "What the labels mean" (labelKey() in src/views/common.ts) */
+.labelkey { margin: -12px 0 24px; max-width: 1100px; font-size: var(--s-sm); }
+.labelkey summary { cursor: pointer; color: var(--accent); font-weight: 600; width: max-content; max-width: 100%; padding: 4px 0; }
+.labelkey-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px 28px; margin-top: 10px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.labelkey-h { font-weight: 600; margin: 0 0 8px; }
+.labelkey dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 10px; margin: 0; align-items: baseline; }
+.labelkey dd { margin: 0; color: var(--ink-2); line-height: 1.5; }
