@@ -362,3 +362,20 @@ verification:
     records: [nawaz-sharif, anwaar-ul-haq-kakar, fed-prime-minister]
     checked: "2026-10-21"
     sources: [{ title: "National Assembly of Pakistan — list of Prime Ministers", url: "https://na.gov.pk/en/print_list.php?type=primeministers" }]
+  - claim: "Law titles and years (law records without a link to their text)"
+    origin: sourcing sweep
+    status: corrected
+    finding: "Each law now links to its official text: Pakistan Code for federal law, the Senate's register of Acts (Gazette copies) for constitutional and other amending Acts, and the KP Code, Sindh Laws (Gazette), Balochistan Assembly and Balochistan Code sites for provincial law. Titles and years were corrected to match those texts. The Nineteenth Amendment is titled the Constitution (Nineteenth Amendment) Act, 2010 (Act I of 2011). The 2026 NAB amendment is the National Accountability (Amendment) Act, 2026. The nursing council law is the Pakistan Nursing and Midwifery Council Act, 2026; no 2023 Act appears on Pakistan Code. The Pakistan Engineering Council Act is dated 1975, not 1976. The National Institute of Health Ordinance, 1980 was repealed by the National Institute of Health (Re-organization) Act, 2021 (w.e.f. 29 July 2021), so the record now points to the 2021 Act. The ICT real-estate law is the Islamabad Real Estate (Regulation and Development) Act, 2020. The merchant shipping law is the Pakistan Merchant Shipping Ordinance, 2001. The mines law reads '(Federal Control)'. The KP Code titles the food law the Khyber Pakhtunkhwa Food Safety Authority Act, 2014; it establishes the Food Safety and Halal Food Authority. The Sehat Card law is the Khyber Pakhtunkhwa Universal Health Coverage Act, 2022. The Sindh Gazette lists the Sindh Healthcare Commission Act as Act VII of 2014 (20 March 2014), not 2013. The Balochistan Code lists the Balochistan ombudsman law as an Ordinance of 2001, not an Act."
+    records: [amendment-19, nab-amendment-2026, pnmc-act-2023, pec-act-1976, nih-ordinance-1980, ict-rera-act-2020, merchant-shipping-ordinance-2001, mines-oilfields-act-1948, kp-food-authority-act-2014, sehat-card-kp-act-2022, sindh-healthcare-commission-act-2013, balochistan-ombudsman-act-2001]
+    checked: "2026-10-21"
+    sources:
+      - { title: "Senate of Pakistan — Acts", url: "https://senate.gov.pk/en/acts.php" }
+      - { title: "Pakistan Code — National Institute of Health (Re-organization) Act, 2021", url: "https://pakistancode.gov.pk/english/UY2FqaJw1-apaUY2Fqa-apaUY2NpaZ1n-sg-jjjjjjjjjjjjj" }
+      - { title: "Sindh Laws — Gazette, Acts of 2014", url: "https://sindhlaws.gov.pk/GazetteDetail.aspx?X=ACT&Year=2014" }
+  - claim: "Laws still without a reachable official text"
+    origin: sourcing sweep
+    status: unverified
+    finding: "No reachable official text was found for 18 instruments, which are marked needs_source and low confidence: the Punjab laws (the Punjab Code and Punjab Assembly sites could not be reached from here), the Punjab, Sindh and KP Rules of Business, the Sindh Electric Power Regulatory Authority Act, 2021, the AJK Interim Constitution, 1974, the 2013 Cabinet Division notification creating the Ministry of National Health Services, and the Constitution (Amendment) Order, 1980. The SECP page for the Insurance Ordinance, 2000 refuses automated requests; it was confirmed through a search-engine copy of the page."
+    records: [punjab-healthcare-commission-act-2010, punjab-rules-of-business-2011, sindh-rules-of-business-1986, kp-rules-of-business-1985, punjab-lg-act-2022, punjab-food-authority-act-2011, punjab-epa-1997, punjab-ppra-act-2009, punjab-rti-act-2013, punjab-service-tribunals-act-1974, punjab-hec-act-2014, sepra-act-2021, pera-act-2024, punjab-lra-act-2017, punjab-ombudsman-act-1997, ajk-interim-constitution-1974, nhsrc-notification-2013, constitution-amendment-order-1980, insurance-ordinance-2000]
+    checked: "2026-10-21"
+    sources: []
