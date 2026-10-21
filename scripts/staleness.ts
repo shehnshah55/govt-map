@@ -35,7 +35,7 @@ export function citedUrls(g: Graph): Map<string, Set<string>> {
     if (Array.isArray(x)) return x.forEach((v) => walk(v, id));
     if (!x || typeof x !== "object") return;
     for (const [k, v] of Object.entries(x)) {
-      if (k === "url" || k === "website") add(v, id);
+      if (k === "url" || k === "website" || k === "source_url") add(v, id);
       else walk(v, id);
     }
   };

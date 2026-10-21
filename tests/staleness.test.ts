@@ -29,6 +29,7 @@ describe("freshness report", () => {
     for (const c of shown) {
       for (const s of c.sources) expect(urls).toContain(s.url);
       expect(urls).toContain(c.status_source!.url);
+      for (const e of c.timeline ?? []) expect(urls).toContain(e.source_url);
     }
   });
 

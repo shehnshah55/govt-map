@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 import { compile } from "../scripts/compile.ts";
 import { toCsvExports, toPopolo } from "../scripts/exports.ts";
-import { caseProblems, isAssetSource, isEncyclopediaUrl, LICENCE, PUBLISH, publicGraph, publishedCaseProblems } from "../src/lib/policy.ts";
+import { caseProblems, timelineProblems, isAssetSource, isEncyclopediaUrl, LICENCE, PUBLISH, publicGraph, publishedCaseProblems } from "../src/lib/policy.ts";
 import { Person } from "../src/schema.ts";
 
 const DATA = new URL("../data", import.meta.url).pathname;
@@ -45,13 +45,39 @@ describe("what the public build contains", () => {
     const base = { title: "T", filed: "2020", status: "pending" as const, sources: [{ title: "s", url: "https://www.dawn.com/news/1" }], publish: true };
     const g = (c: object) => ({ ...full, people: [{ ...full.people[0], legal_cases: [c] }] }) as typeof full;
     expect(publishedCaseProblems(g(base)).join()).toMatch(/no charge.*no status_as_of date.*no status_source URL/);
-    expect(publishedCaseProblems(g({ ...base, charges: "c", status_as_of: "2024-01", status_source: { title: "s", url: "https://www.dawn.com/news/1" } }))).toEqual([]);
-    expect(publishedCaseProblems(g({ ...base, charges: "c", status_as_of: "2024-01", status_source: { title: "w", url: "https://en.wikipedia.org/wiki/X" } }))[0]).toMatch(/encyclopedia/);
+    const tl = [{ date: "2024-01", type: "other" as const, description: "d", source_url: "https://www.dawn.com/news/1", source_type: "news" as const }];
+    expect(publishedCaseProblems(g({ ...base, charges: "c", status_as_of: "2024-01", status_source: { title: "s", url: "https://www.dawn.com/news/1" }, timeline: tl }))).toEqual([]);
+    expect(publishedCaseProblems(g({ ...base, charges: "c", status_as_of: "2024-01", status_source: { title: "w", url: "https://en.wikipedia.org/wiki/X" }, timeline: tl }))[0]).toMatch(/encyclopedia/);
     // not marked publish: true → not gated, and not published
     expect(publishedCaseProblems(g({ ...base, publish: false }))).toEqual([]);
     expect(publicGraph(g({ ...base, publish: false })).people[0].legal_cases).toBeUndefined();
     // marked publish: true but failing the gate → still never published
     expect(publicGraph(g(base)).people[0].legal_cases).toBeUndefined();
+  });
+
+  it("requires every published case to have a dated, typed, sourced timeline in order", () => {
+    for (const c of published.people.flatMap((p) => p.legal_cases ?? [])) {
+      expect(c.timeline?.length, c.title).toBeGreaterThan(0);
+      expect(timelineProblems(c.timeline), c.title).toEqual([]);
+    }
+    const ev = { date: "2020-01-02", type: "verdict" as const, description: "d", source_url: "https://www.dawn.com/news/1", source_type: "news" as const };
+    expect(timelineProblems(undefined)).toEqual(["no timeline"]);
+    expect(timelineProblems([ev])).toEqual([]);
+    expect(timelineProblems([{ ...ev, date: "" }]).join()).toMatch(/date/);
+    expect(timelineProblems([{ ...ev, date: "2020" }]).join()).toMatch(/not YYYY-MM/);
+    expect(timelineProblems([{ ...ev, type: undefined as unknown as "verdict" }]).join()).toMatch(/no type/);
+    expect(timelineProblems([{ ...ev, source_url: undefined }]).join()).toMatch(/no source_url/);
+    expect(timelineProblems([{ ...ev, source_url: "https://en.wikipedia.org/wiki/X" }]).join()).toMatch(/encyclopedia/);
+    // out of order fails; a month-only date sits with any day in that month
+    expect(timelineProblems([ev, { ...ev, date: "2019-12-31" }]).join()).toMatch(/out of order/);
+    expect(timelineProblems([{ ...ev, date: "2020-01" }, ev, { ...ev, date: "2020-01" }])).toEqual([]);
+    // and the build gate fails on any of these for a case marked publish: true
+    const base = { title: "T", filed: "2020", status: "pending" as const, charges: "c", status_as_of: "2024-01", status_source: { title: "s", url: "https://www.dawn.com/news/1" }, sources: [{ title: "s", url: "https://www.dawn.com/news/1" }], publish: true };
+    const g = (c: object) => ({ ...full, people: [{ ...full.people[0], legal_cases: [c] }] }) as typeof full;
+    expect(publishedCaseProblems(g({ ...base, timeline: [ev] }))).toEqual([]);
+    expect(publishedCaseProblems(g({ ...base, timeline: [ev, { ...ev, date: "2019-05" }] })).join()).toMatch(/out of order/);
+    expect(publishedCaseProblems(g({ ...base, timeline: [{ ...ev, source_url: "" }] })).join()).toMatch(/no source_url/);
+    expect(publishedCaseProblems(g(base)).join()).toMatch(/no timeline/);
   });
 
   it("keeps the verification entry about legal cases, which now covers only published cases", () => {

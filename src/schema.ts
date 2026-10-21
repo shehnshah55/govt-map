@@ -314,6 +314,23 @@ export const Person = z.object({
         publish: z.boolean().optional(),
         /** Why a case is held back (kept in data/ only, never published). */
         hold_reason: z.string().optional(),
+        /**
+         * Dated history of the case, oldest first: filing, charges, verdict, suspension or bail, appeals,
+         * stays. Each event carries its own source, labelled by kind (court record > official > news).
+         */
+        timeline: z
+          .array(
+            z.object({
+              date: z.string(), // YYYY-MM-DD if known, else YYYY-MM
+              type: z.enum(["fir", "reference_filed", "charges_framed", "verdict", "sentence_suspended", "appeal_filed", "appeal_decided", "stay", "review", "other"]),
+              court: z.string().optional(), // court or authority
+              description: z.string(), // one neutral line
+              source_url: z.string().optional(),
+              source_type: z.enum(["court_record", "official", "news"]).optional(),
+              source_title: z.string().optional(),
+            }),
+          )
+          .optional(),
         status: z.enum(["pending", "convicted", "convicted_on_appeal", "acquitted", "quashed", "withdrawn", "stayed", "pardoned"]),
         verdict_date: z.string().optional(),
         sentence: z.string().optional(),

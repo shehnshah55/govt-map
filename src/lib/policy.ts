@@ -89,6 +89,33 @@ export function caseProblems(c: LegalCase): string[] {
   else if (isEncyclopediaUrl(c.status_source?.url)) out.push("status_source is an encyclopedia");
   if (!c.sources?.length || !c.sources.every((s) => isHttpUrl(s.url))) out.push("a source without a URL");
   if (c.sources?.some((s) => isEncyclopediaUrl(s.url))) out.push("an encyclopedia source");
+  out.push(...timelineProblems(c.timeline));
+  return out;
+}
+
+const EVENT_DATE = /^\d{4}-\d{2}(-\d{2})?$/;
+
+/** Dates of different precision compare on their common prefix, so 2023-10 sits with any day in October. */
+const dateBefore = (a: string, b: string) => {
+  const n = Math.min(a.length, b.length);
+  return a.slice(0, n) > b.slice(0, n);
+};
+
+/** What a case's timeline lacks to be published: at least one event, each dated, typed and sourced, in order. */
+export function timelineProblems(timeline: LegalCase["timeline"]): string[] {
+  if (!timeline?.length) return ["no timeline"];
+  const out: string[] = [];
+  timeline.forEach((e, i) => {
+    const at = `timeline[${i}]`;
+    if (!e.date || !EVENT_DATE.test(e.date)) out.push(`${at}: date "${e.date ?? ""}" is not YYYY-MM or YYYY-MM-DD`);
+    if (!e.type) out.push(`${at}: no type`);
+    if (!e.description?.trim()) out.push(`${at}: no description`);
+    if (!isHttpUrl(e.source_url)) out.push(`${at}: no source_url`);
+    else if (isEncyclopediaUrl(e.source_url)) out.push(`${at}: source_url is an encyclopedia`);
+    if (!e.source_type) out.push(`${at}: no source_type`);
+    const prev = timeline[i - 1];
+    if (prev?.date && e.date && dateBefore(prev.date, e.date)) out.push(`${at}: ${e.date} is out of order (after ${prev.date})`);
+  });
   return out;
 }
 

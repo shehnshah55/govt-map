@@ -355,6 +355,20 @@ const CASE_STATUS: Record<string, [string, string]> = {
   pardoned: ["Pardoned", "flag-info"],
 };
 
+const SOURCE_KIND: Record<string, string> = { court_record: "Court record", official: "Official", news: "News report" };
+
+/** The case's dated history as a compact list, oldest first, each event with its own labelled source. */
+function caseTimeline(timeline: NonNullable<Human["legal_cases"]>[number]["timeline"]): Raw | string {
+  if (!timeline?.length) return "";
+  return html`<ol class="case-timeline" aria-label="Case timeline">${timeline.map(
+    (e) => html`<li><span class="num">${e.date}</span>${e.court ? html` · <span class="hint">${e.court}</span>` : ""}<div>${e.description}${
+      e.source_url
+        ? html` <a class="case-src" href="${safeHref(e.source_url)}" title="${e.source_title ?? ""}" target="_blank" rel="noopener noreferrer">${SOURCE_KIND[e.source_type ?? "news"]}</a>`
+        : ""
+    }</div></li>`,
+  )}</ol>`;
+}
+
 export function casesTable(ix: GraphIndex, rows: { person: Human; c: NonNullable<Human["legal_cases"]>[number] }[], showPerson: boolean): Raw {
   const ext = (s: { title: string; url?: string }) => html`<a href="${safeHref(s.url)}" target="_blank" rel="noopener noreferrer">${s.title}</a>`;
   return html`<div class="tablewrap"><table class="cases"><thead><tr>${showPerson ? html`<th>Person</th>` : ""}<th>Case and charge</th><th>Outcome</th><th>Filed</th><th>Sentence, fine, custody</th><th>Sources</th></tr></thead><tbody>${rows.map(({ person, c }) => {
@@ -364,7 +378,7 @@ export function casesTable(ix: GraphIndex, rows: { person: Human; c: NonNullable
       ${showPerson ? html`<td>${link(ix, person.id)}${person.party ? html`<div class="hint">${partyLink(ix, person.party)}</div>` : ""}</td>` : ""}
       <td><b>${c.title}</b>${c.charges ? html`<div class="case-charge"><span class="hint">Charge:</span> ${c.charges}</div>` : ""}${c.court ? html`<div class="hint">${c.court}</div>` : ""}${
         ALLEGATION_STATUSES.includes(c.status) ? html`<div class="hint case-allegation">Allegations are not findings of guilt.</div>` : ""
-      }</td>
+      }${caseTimeline(c.timeline)}</td>
       <td class="case-outcome"><span class="tag ${cls}">${label}</span>${c.status_as_of ? html`<div class="hint num">as of ${c.status_as_of}</div>` : ""}${c.outcome ? html`<div class="hint">${c.outcome}</div>` : ""}${
         c.status_source ? html`<div class="hint">Outcome source: ${ext(c.status_source)}</div>` : ""
       }</td>

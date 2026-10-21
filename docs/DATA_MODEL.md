@@ -127,11 +127,12 @@ Criminal and accountability proceedings against a person, recorded only from rep
 | `status_source` | to publish | `{title, url}` of the source that states the current status |
 | `publish` | to publish | `true` to publish; anything else keeps the case in `data/` only |
 | `hold_reason` | no | Why a case is held back. Never published |
+| `timeline` | to publish | Dated events, oldest first: `{date, type, court, description, source_url, source_type, source_title}`. `date` is `YYYY-MM-DD` or `YYYY-MM`; `type` is `fir`, `reference_filed`, `charges_framed`, `verdict`, `sentence_suspended`, `appeal_filed`, `appeal_decided`, `stay`, `review` or `other`; `source_type` is `court_record`, `official` or `news` |
 | `sources` | yes, at least one | `{title, url, accessed}` for each source |
 
 The UI shows the government in office when the case was filed: `filed` is matched against the Prime Minister's terms (`pm_terms`, derived from `fed-prime-minister` roles). The current status is shown alongside the charge, so acquittals, quashed and withdrawn cases are as visible as the original charge.
 
-**Published when cited.** `publicGraph()` in `src/lib/policy.ts` publishes only cases marked `publish: true` that pass `caseProblems()`: a charge, a status, a `status_as_of` date, a `status_source` URL and cited source URLs. The build fails if a case marked `publish: true` lacks any of them, and `publish`/`hold_reason` are stripped from the output. Held-back cases stay in `data/` (see `docs/EDITORIAL_POLICY.md`).
+**Published when cited.** `publicGraph()` in `src/lib/policy.ts` publishes only cases marked `publish: true` that pass `caseProblems()`: a charge, a status, a `status_as_of` date, a `status_source` URL, cited source URLs and a timeline whose every event is dated, typed and sourced, in date order. The build fails if a case marked `publish: true` lacks any of them, and `publish`/`hold_reason` are stripped from the output. Held-back cases stay in `data/` (see `docs/EDITORIAL_POLICY.md`).
 
 ## Family ties (`relatives`)
 

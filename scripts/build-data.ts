@@ -20,7 +20,7 @@ if (!PUBLISH.legalCases && graph.people.some((p) => p.legal_cases)) throw new Er
 const caseGate = [...publishedCaseProblems(full), ...publishedCaseProblems(graph)];
 if (caseGate.length) {
   for (const e of new Set(caseGate)) console.error(`error: policy: ${e}`);
-  throw new Error("policy: a legal case marked publish: true lacks a charge, an outcome, an as-of date or a source URL");
+  throw new Error("policy: a legal case marked publish: true lacks a charge, an outcome, an as-of date, a source URL or a dated, sourced, ordered timeline");
 }
 if (graph.people.some((p) => p.legal_cases?.some((c) => "publish" in c || "hold_reason" in c))) throw new Error("policy: internal legal-case flags must not be published");
 for (const w of warnings) console.warn(`warning: ${w}`);
