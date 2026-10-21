@@ -155,12 +155,15 @@ verification:
   - claim: "Criminal and accountability cases of current officeholders"
     topic: legal_cases
     status: verified
-    finding: "Recorded from court outcomes reported by Dawn, Express Tribune and Al Jazeera. Nawaz Sharif was acquitted in Avenfield (29 Nov 2023) and Al-Azizia (12 Dec 2023). Maryam Nawaz was acquitted in Avenfield (Sept 2022). Shehbaz Sharif was acquitted in the FIA money-laundering case (Oct 2022). Omar Ayub was convicted in the 9 May case (31 Jul 2025, 10 years). Proceedings against Asif Zardari are stayed under presidential immunity (2024). Coverage is partial: other officeholders' cases are not yet researched."
-    records: [nawaz-sharif, maryam-nawaz, shehbaz-sharif, omar-ayub-khan, asif-ali-zardari]
-    checked: "2026-09-25"
+    finding: "Each published case was re-checked on 20 October 2026 against the source it cites, and its outcome is shown as of the date that source states it. Nawaz Sharif was acquitted on appeal by the Islamabad High Court in the Avenfield reference (29 Nov 2023) and the Al-Azizia reference (12 Dec 2023). Maryam Nawaz was acquitted on appeal in the Avenfield reference (29 Sep 2022). Shehbaz Sharif was acquitted by the Special Court (Central), Lahore in the FIA money-laundering case (12 Oct 2022). Omar Ayub was convicted by the Anti-Terrorism Court, Faisalabad in the 9 May 2023 riots case and sentenced to 10 years (31 Jul 2025); no appeal decision is recorded. Each published case has a dated timeline in which every event cites its own source, labelled court record, official or news; the Islamabad High Court orders in Nawaz Sharif's Avenfield appeal (Crl. Appeal 121/2018) are cited from the court's website. One further case record is held back: no court order is published and news reports conflict on which references the May 2024 presidential-immunity stay covers. Coverage is partial: other officeholders' cases are not yet researched."
+    records: [nawaz-sharif, maryam-nawaz, shehbaz-sharif, omar-ayub-khan]
+    checked: "2026-10-20"
     sources:
-      - { title: "Dawn — IHC acquits Nawaz Sharif in Avenfield reference", url: "https://www.dawn.com/news/1793562" }
-      - { title: "Dawn — Zardari granted immunity from criminal proceedings", url: "https://www.dawn.com/news/1832858" }
+      - { title: "Dawn — IHC acquits Nawaz Sharif in Avenfield reference (29 Nov 2023)", url: "https://www.dawn.com/news/1793562" }
+      - { title: "Dawn — Nawaz secures acquittal in Al-Azizia case (12 Dec 2023)", url: "https://www.dawn.com/news/1797271" }
+      - { title: "Dawn — IHC sets aside Maryam and Capt Safdar's 2018 conviction in Avenfield case (29 Sep 2022)", url: "https://www.dawn.com/news/1712573" }
+      - { title: "Al Jazeera — Pakistani court acquits PM, son in money laundering case (12 Oct 2022)", url: "https://www.aljazeera.com/news/2022/10/12/pakistani-court-acquits-pm-son-in-money-laundering-case" }
+      - { title: "Dawn — Faisalabad ATC sentences Omar Ayub, Shibli Faraz and other PTI leaders to 10 years (31 Jul 2025)", url: "https://www.dawn.com/news/1927802" }
   - claim: "Career histories: previous elected, appointed, military, judicial and party offices"
     status: verified
     finding: "Shehbaz Sharif was Punjab CM 1997–99, 2008–13 and 2013–18, and PML-N President 2018–24. Asim Munir was DG MI 2017–18, DG ISI 2018–19, Corps Commander Gujranwala 2019–21 and QMG 2021–22. Ishaq Dar was Finance Minister four times (1998–99, 2008, 2013–17, 2022–23). Khawaja Asif was Foreign Minister 2017–18. Ahsan Iqbal was Interior Minister 2017–18. Yahya Afridi was PHC Chief Justice 2016–18 and an SC judge 2018–24. Gilani was NA Speaker 1993–97 and PM 2008–12. Other entries (Nawaz Sharif's earlier terms, Zardari's first presidency, Bilawal as Foreign Minister, Murad Ali Shah's earlier terms, Mohsin Naqvi as caretaker CM, Mustafa Kamal as Karachi's nazim) are well documented but were not re-checked in this pass."

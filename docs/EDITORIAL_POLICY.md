@@ -2,7 +2,7 @@
 
 The Pakistan Government Graph records how the Pakistani state is organised and who holds public office. This policy says what the project records, what it leaves out, and how it handles sources, sensitive content and corrections. Parts of it are enforced in code. Those parts name the file that enforces them.
 
-The policy and the sensitive content it covers are reviewed by a Pakistani lawyer before the project is made public (docs/LAUNCH_PLAN.md §4.4 and §10), with the Prevention of Electronic Crimes Act 2016 (as amended in 2025) and defamation law in mind.
+The policy and the sensitive content it covers are reviewed by a Pakistani lawyer before the project is made public, with the Prevention of Electronic Crimes Act 2016 (as amended in 2025) and defamation law in mind.
 
 ## Scope
 
@@ -23,14 +23,17 @@ Who holds a post needs one official source, or two independent press sources tha
 
 ## Legal cases
 
-**Not published at present.** Legal cases are hidden from the public site, `graph.json` and every export until the lawyer review is complete (decision of 30 September 2026; `PUBLISH.legalCases` in `src/lib/policy.ts`).
+**Published when grounded, cited and traceable** (decision of SS, 20 October 2026, replacing the hold of 30 September 2026). No fiction, presumption or unverified reports.
 
-If they are published later, these rules apply:
-
-- Only proceedings evidenced by a court order or judgment, or by a court's own cause list or website, are recorded. Allegations that never reached a court are not.
-- The **current** status is always shown, and acquittals, quashed cases, withdrawals and stays are shown as prominently as the charge.
-- Wording is neutral: "charged under…", "acquitted on…".
-- Every record is re-checked at least every 90 days, or shown as stale.
+- **Opt in, case by case.** A case reaches the site, `graph.json` and the exports only when it is marked `publish: true` in `data/`. Any case whose source is missing, unreachable or does not support every detail stays in `data/` with `publish: false` and a `hold_reason`, and is not published.
+- **Source hierarchy: court records > official > news.** First, the court's own record: judgments and orders on the Supreme Court, Islamabad, Lahore, Sindh or Peshawar High Court websites, cause lists, or a law-report citation (PLD and the like) where it is freely available. Second, official sources: NAB or FIA press releases, ECP notifications, the Gazette. Third, established outlets (Dawn, APP, Business Recorder, Al Jazeera, Reuters and the like) reporting the court's decision, used only where no primary record is published, and labelled as news. Encyclopedias are never a source. Every detail shown (charge, court, dates, sentence, custody) must be stated by a cited source; anything a source does not state is left out rather than guessed. Official documents are linked, never rehosted in the repository.
+- **Timeline.** Each published case carries a dated timeline, oldest first: FIR or reference filing, charges framed, verdict and sentence, appeals, suspensions and bail where material, stays, appellate judgments and the latest status. Every event has a date (exact if known, otherwise year and month), a type, the court or authority, one neutral line and its own source, labelled on the page as **Court record**, **Official** or **News report**. An event that cannot be sourced is left out.
+- **FIRs and privacy.** FIR copies are never linked or quoted where they expose complainants, witnesses or minors. An FIR is cited by its number and police station as reported, with the source that reports it.
+- **Outcome beside the charge.** Each published case shows its current outcome (`pending`, `convicted`, `acquitted`, `stayed`, `quashed`, `withdrawn`, …) next to the charge, with the date that outcome is stated as of (`status_as_of`) and a link to the source for that outcome (`status_source`). If the outcome cannot be sourced, the case is held back rather than show a charge without its outcome.
+- **Neutral wording.** Charges are worded as allegations ("as alleged by NAB", "charged under…", "acquitted on…"), and pages say that allegations are not findings of guilt. Acquittals, stays, withdrawals and quashed cases are shown as prominently as the charge.
+- **Enforced at build time.** `publishedCaseProblems()` in `src/lib/policy.ts` fails the build if any case marked `publish: true` lacks a charge, a status, a `status_as_of` date, a `status_source` URL or a cited source URL, or if any timeline event lacks a date, type or source URL, or the events are out of date order.
+- **Freshness.** Published case sources are link-checked weekly with every other cited URL, and each case is re-checked when its person's record is.
+- **Corrections.** Anyone, including the people named, can [open an issue](https://github.com/shehnshah55/govt-map/issues/new?template=correction.yml) with a source. A case whose outcome changes, or whose source turns out not to support it, is corrected or set back to `publish: false`.
 
 ## Declared assets
 
@@ -56,6 +59,12 @@ If they are published later, these rules apply:
 ## Neutral wording
 
 Descriptions say what a body, law or office does, not whether it is good. They don't use adjectives about people.
+
+## Official websites and Find a service
+
+- `data/official-sites.yaml` lists the official websites of public bodies. An entry must be on a government domain (`.gov.pk`, `.gop.pk`, `.gos.pk`, `.gob.pk`, `.gok.pk`, `.gkp.pk`) or on a host listed in `OFFICIAL_ORG_HOSTS` with the reason it is that body's own site. This is enforced (`isOfficialSiteUrl` in `src/lib/policy.ts`). Private companies, aggregators and unofficial mirrors are never listed.
+- Each entry records when it was last checked and its result: `verified`, `cert_issue` (the site loads but its TLS certificate chain is incomplete) or `unreachable_from_ci` (an automated check could not load it, often because the site blocks networks outside Pakistan). Unreachable sites are flagged, not dropped, until someone confirms them by hand. The weekly freshness report re-checks every URL.
+- **Find a service** (`#/find`; old `#/ask` links redirect there) only points to official websites and to records in the graph. It never writes an answer, gives advice or quotes fees, and it runs entirely in the browser: questions are not sent anywhere.
 
 ## Corrections and right of reply
 

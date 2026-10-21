@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 import { compile } from "../scripts/compile.ts";
 import { toCsvExports, toPopolo } from "../scripts/exports.ts";
-import { isAssetSource, isEncyclopediaUrl, LICENCE, PUBLISH, publicGraph } from "../src/lib/policy.ts";
+import { caseProblems, timelineProblems, isAssetSource, isEncyclopediaUrl, LICENCE, PUBLISH, publicGraph, publishedCaseProblems } from "../src/lib/policy.ts";
 import { Person } from "../src/schema.ts";
 
 const DATA = new URL("../data", import.meta.url).pathname;
@@ -12,26 +12,79 @@ const { graph: full } = compile(DATA);
 const published = publicGraph(full);
 
 describe("what the public build contains", () => {
-  it("has no legal cases anywhere while they are hidden (§1.4)", () => {
-    expect(PUBLISH.legalCases).toBe(false);
-    // the source data does contain them, so this test would notice if hiding stopped working
-    expect(full.people.some((p) => p.legal_cases?.length)).toBe(true);
-    const titles = full.people.flatMap((p) => p.legal_cases ?? []).map((c) => c.title);
+  it("publishes only cited legal cases marked publish: true, and none of the held-back ones", () => {
+    expect(PUBLISH.legalCases).toBe(true);
+    const all = full.people.flatMap((p) => p.legal_cases ?? []);
+    const held = all.filter((c) => c.publish !== true);
+    const shown = published.people.flatMap((p) => p.legal_cases ?? []);
+    expect(held.length).toBeGreaterThan(0);
+    expect(shown.length).toBe(all.length - held.length);
     const outputs = {
       "graph.json": JSON.stringify(published),
       "popolo.json": JSON.stringify(toPopolo(published)),
       ...toCsvExports(published),
     };
     for (const [name, text] of Object.entries(outputs)) {
-      expect(text, name).not.toContain("legal_cases");
-      for (const t of titles) expect(text, `${name}: ${t}`).not.toContain(t);
+      for (const c of held) if (c.hold_reason) expect(text, `${name}: ${c.title}`).not.toContain(c.hold_reason);
+      expect(text, name).not.toContain('"publish"');
+      expect(text, name).not.toContain("hold_reason");
     }
   });
 
-  it("drops verification entries about hidden content", () => {
-    expect(full.verification.some((v) => v.topic === "legal_cases")).toBe(true);
-    expect(published.verification.some((v) => v.topic === "legal_cases")).toBe(false);
-    expect(published.verification.length).toBeGreaterThan(0);
+  it("shows every published case's charge, outcome, as-of date and outcome source", () => {
+    expect(publishedCaseProblems(full)).toEqual([]);
+    for (const c of published.people.flatMap((p) => p.legal_cases ?? [])) {
+      expect(caseProblems(c), c.title).toEqual([]);
+      expect(c.charges).toBeTruthy();
+      expect(c.status_as_of).toMatch(/^\d{4}(-\d{2}(-\d{2})?)?$/);
+      expect(c.status_source?.url).toMatch(/^https:\/\//);
+    }
+  });
+
+  it("fails the gate for a case marked publish: true without a charge, outcome date or outcome source", () => {
+    const base = { title: "T", filed: "2020", status: "pending" as const, sources: [{ title: "s", url: "https://www.dawn.com/news/1" }], publish: true };
+    const g = (c: object) => ({ ...full, people: [{ ...full.people[0], legal_cases: [c] }] }) as typeof full;
+    expect(publishedCaseProblems(g(base)).join()).toMatch(/no charge.*no status_as_of date.*no status_source URL/);
+    const tl = [{ date: "2024-01", type: "other" as const, description: "d", source_url: "https://www.dawn.com/news/1", source_type: "news" as const }];
+    expect(publishedCaseProblems(g({ ...base, charges: "c", status_as_of: "2024-01", status_source: { title: "s", url: "https://www.dawn.com/news/1" }, timeline: tl }))).toEqual([]);
+    expect(publishedCaseProblems(g({ ...base, charges: "c", status_as_of: "2024-01", status_source: { title: "w", url: "https://en.wikipedia.org/wiki/X" }, timeline: tl }))[0]).toMatch(/encyclopedia/);
+    // not marked publish: true → not gated, and not published
+    expect(publishedCaseProblems(g({ ...base, publish: false }))).toEqual([]);
+    expect(publicGraph(g({ ...base, publish: false })).people[0].legal_cases).toBeUndefined();
+    // marked publish: true but failing the gate → still never published
+    expect(publicGraph(g(base)).people[0].legal_cases).toBeUndefined();
+  });
+
+  it("requires every published case to have a dated, typed, sourced timeline in order", () => {
+    for (const c of published.people.flatMap((p) => p.legal_cases ?? [])) {
+      expect(c.timeline?.length, c.title).toBeGreaterThan(0);
+      expect(timelineProblems(c.timeline), c.title).toEqual([]);
+    }
+    const ev = { date: "2020-01-02", type: "verdict" as const, description: "d", source_url: "https://www.dawn.com/news/1", source_type: "news" as const };
+    expect(timelineProblems(undefined)).toEqual(["no timeline"]);
+    expect(timelineProblems([ev])).toEqual([]);
+    expect(timelineProblems([{ ...ev, date: "" }]).join()).toMatch(/date/);
+    expect(timelineProblems([{ ...ev, date: "2020" }]).join()).toMatch(/not YYYY-MM/);
+    expect(timelineProblems([{ ...ev, type: undefined as unknown as "verdict" }]).join()).toMatch(/no type/);
+    expect(timelineProblems([{ ...ev, source_url: undefined }]).join()).toMatch(/no source_url/);
+    expect(timelineProblems([{ ...ev, source_url: "https://en.wikipedia.org/wiki/X" }]).join()).toMatch(/encyclopedia/);
+    // out of order fails; a month-only date sits with any day in that month
+    expect(timelineProblems([ev, { ...ev, date: "2019-12-31" }]).join()).toMatch(/out of order/);
+    expect(timelineProblems([{ ...ev, date: "2020-01" }, ev, { ...ev, date: "2020-01" }])).toEqual([]);
+    // and the build gate fails on any of these for a case marked publish: true
+    const base = { title: "T", filed: "2020", status: "pending" as const, charges: "c", status_as_of: "2024-01", status_source: { title: "s", url: "https://www.dawn.com/news/1" }, sources: [{ title: "s", url: "https://www.dawn.com/news/1" }], publish: true };
+    const g = (c: object) => ({ ...full, people: [{ ...full.people[0], legal_cases: [c] }] }) as typeof full;
+    expect(publishedCaseProblems(g({ ...base, timeline: [ev] }))).toEqual([]);
+    expect(publishedCaseProblems(g({ ...base, timeline: [ev, { ...ev, date: "2019-05" }] })).join()).toMatch(/out of order/);
+    expect(publishedCaseProblems(g({ ...base, timeline: [{ ...ev, source_url: "" }] })).join()).toMatch(/no source_url/);
+    expect(publishedCaseProblems(g(base)).join()).toMatch(/no timeline/);
+  });
+
+  it("keeps the verification entry about legal cases, which now covers only published cases", () => {
+    const v = published.verification.find((x) => x.topic === "legal_cases");
+    expect(v).toBeDefined();
+    const shownPeople = new Set(published.people.filter((p) => p.legal_cases?.length).map((p) => p.id));
+    for (const r of v!.records ?? []) expect(shownPeople.has(r), r).toBe(true);
   });
 
   it("states the data licence in graph.json and the Popolo export", () => {

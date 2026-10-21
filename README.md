@@ -1,10 +1,20 @@
 # Pakistan Government Graph
 
-An open, source-cited map of **Pakistan's government at every level**: the Federation, Parliament and superior courts; ministries and their Divisions; regulators and state enterprises; the four provinces, Islamabad, Gilgit-Baltistan and AJK; and every division and district with its Commissioner and Deputy Commissioner. It records the posts that lead each body, the people in them, and the constitutional article or statute behind every link.
+An open, cited map of **Pakistan's government at every level**, for anyone to check who holds which office, how they got there and their record over time, the law behind every body and post, and how to reach each department through its official website. It is built from publicly available sources, and it is free, independent and open to correction.
 
-It follows CivLab's [US Gov Graph](https://graph.civlab.org/us) (entities, positions, people and the legal relationships between them) and adapts it to how Pakistan is governed: Ministry → Division structure, 18th-Amendment devolution, advice-bound appointments, parliamentary appointment committees, civil-service postings, acting and additional-charge officials, and intergovernmental forums like the CCI and NFC.
+It covers the Federation, Parliament and superior courts; ministries and their Divisions; regulators and state enterprises; the four provinces, Islamabad, Gilgit-Baltistan and AJK; and every division and district with its Commissioner and Deputy Commissioner. It records the posts that lead each body, the people in them, and the constitutional article or statute behind every link.
 
-**Starting point:** the Prime Minister's Office (route `#/org/fed-pm-office`), with a clickable map of the Federation and its seven units on the home page that explains each government and links down to its bodies. **Modelled in most depth:** the Ministry of National Health Services, Regulations and Coordination (`#/org/fed-min-nhsrc`), Pakistan's counterpart to the US Department of Health and Human Services. It is modelled down to DRAP, PMDC, NIH, the polio EOC, Sehat Sahulat and the Islamabad hospitals, and linked to all four provincial health departments.
+Its data model is built around how Pakistan is governed: the Ministry → Division structure, 18th-Amendment devolution, advice-bound appointments, parliamentary appointment committees, civil-service postings, acting and additional-charge officials, and intergovernmental forums like the CCI and NFC.
+
+**Principles**
+
+- **Publicly available sources only.** Official records come first (the Constitution, statutes, the Gazette, ECP results and notifications, and the websites of the bodies themselves), then state media and reputable newspapers for dates and context. Encyclopedias are never cited.
+- **Cited and traceable.** Records link to the sources they came from, carry the date they were last checked, and show a confidence level. Nothing is presumed or invented; anything a source does not state is left out. Not every record cites a source yet: the share that does is published in [docs/COVERAGE.md](docs/COVERAGE.md), and records still being checked are marked *Verify* or *Provisional*.
+- **Neutral.** Records describe what a body or office is and how it is filled, not whether it is good.
+- **Correctable in public.** Anyone, including the people named, can request a correction through GitHub Issues, and every check and correction is logged in the public verification log.
+- **Independent and private.** Not an official government website and not affiliated with any government body or party. No accounts, no adverts, no analytics or trackers, and no third-party requests.
+
+**Starting point:** the Prime Minister's Office (route `#/org/fed-pm-office`), with a clickable map of the Federation and its seven units on the home page that explains each government and links down to its bodies. **Modelled in most depth:** the Ministry of National Health Services, Regulations and Coordination (`#/org/fed-min-nhsrc`). It is modelled down to DRAP, PMDC, NIH, the polio EOC, Sehat Sahulat and the Islamabad hospitals, and linked to all four provincial health departments.
 
 ## At a glance
 
@@ -26,7 +36,7 @@ Full breakdown: [docs/COVERAGE.md](docs/COVERAGE.md).
 
 ## Features
 
-- **Department pages** (like CivLab's department pages): leadership with holders and how they were appointed; the **chain of authority** traced back to voters or the Constitution; sub-bodies grouped by type; an interactive structure or connections graph; typed relationships; legal basis; sources; a confidence rating for each record.
+- **Department pages**: leadership with holders and how they were appointed; the **chain of authority** traced back to voters or the Constitution; sub-bodies grouped by type; an interactive structure or connections graph; typed relationships; legal basis; sources; a confidence rating for each record.
 - **Directory by type**: ministries and departments, regulators, agencies and enterprises, courts and tribunals, legislatures, independent bodies, security, local government and parties. Every government is shown side by side, with each body's head and legal basis.
 - **Elected officials**: every legislature's seats and recorded members by party, every office filled by election, and a seat roster searchable by constituency code (e.g. `NA-122`).
 - **Officials register**: appointed and elected officeholders with how they were chosen, since when, and how current the record is.
@@ -35,7 +45,7 @@ Full breakdown: [docs/COVERAGE.md](docs/COVERAGE.md).
 - **Parliament in session**: seating charts of the National Assembly and Senate, with treasury benches vs opposition by party and named members ringed with their constituency and offices.
 - **Who appoints whom**: the Army chief, judges, regulators, the CEC, governors, secretaries and others, with appointer, binding advice, nomination, confirmation, tenure and extension rules.
 - **Holdovers, extensions and backgrounds**: officials holding over after their term, extended or repeat terms, retired or serving generals, judges and bureaucrats in civilian posts, concurrent offices, and declared assets with sources.
-- **Tree, map, drawer**: a collapsible tree of the state, headquarters by city, and a detail drawer when clicking graph nodes, as the platform brief specifies (see docs/BRIEF_ALIGNMENT.md).
+- **Tree, map, drawer**: a collapsible tree of the state, headquarters by city, and a detail drawer when clicking graph nodes.
 - **Verification log**: every fact check, correction and open conflict, with sources.
 - **Power map**: who appoints, elects, nominates or confirms each office, per government.
 - **Sectors × governments matrix**: after devolution, see which government runs what (e.g. *Health in every government*).
@@ -65,8 +75,9 @@ scripts/build-data.ts writes public/data/graph.json and exports
 src/schema.ts         the data model (zod)
 src/lib/              graph index and queries
 src/views/, src/ui/   the web app (TypeScript, Cytoscape.js)
-docs/RESEARCH.md      CivLab and other government-graph models, and Pakistan-specific design
+docs/DESIGN.md        Pakistan-specific design choices and open standards
 docs/DATA_MODEL.md    schema, conventions, integrity rules
+docs/EDITORIAL_POLICY.md  sources, sensitive content, corrections
 ```
 
 ## Data status
