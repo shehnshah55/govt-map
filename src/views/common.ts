@@ -15,7 +15,8 @@ import {
   tenureLabel,
 } from "../ui/labels.ts";
 import type { Holding, Human, Org } from "../lib/graph-index.ts";
-import { mountGraph, type LayoutName, type Lens, type VEdge, type VNode } from "../ui/graph-view.ts";
+import type { LayoutName, Lens, VEdge, VNode } from "../ui/graph-view.ts";
+import type { Core } from "cytoscape";
 import { safeHref } from "../lib/safe-url.ts";
 import { ALLEGATION_STATUSES } from "../lib/policy.ts";
 
@@ -235,10 +236,39 @@ export interface GraphTab {
   layout: LayoutName;
 }
 
-/** Slide-over detail drawer: summary of any node without leaving the graph. */
-export function openDrawer(ctx: Ctx, id: string) {
+/**
+ * Loads a module on demand (the graph code), marking `el` as loading meanwhile. If the load fails
+ * (a redeploy renamed the file, or the connection dropped) `el` says so instead of loading forever;
+ * a failed module stays failed until the page is reloaded, so the message asks for that.
+ */
+export async function loadOnDemand<T>(el: HTMLElement, load: () => Promise<T>): Promise<T | undefined> {
+  el.removeAttribute("data-failed");
+  el.setAttribute("data-loading", "");
+  try {
+    return await load();
+  } catch {
+    el.setAttribute("data-failed", "");
+    return undefined;
+  } finally {
+    el.removeAttribute("data-loading");
+  }
+}
+
+let closeOpenDrawer: (() => void) | undefined;
+
+/** Closes the detail drawer, if one is open (also when its page is torn down). */
+export function closeDrawer() {
+  closeOpenDrawer?.();
+}
+
+/**
+ * Slide-over detail drawer: summary of any node without leaving the graph.
+ * `returnTo` gets focus back when the drawer closes (a graph canvas: the node that opened it can't
+ * hold focus itself).
+ */
+export function openDrawer(ctx: Ctx, id: string, returnTo?: HTMLElement) {
   const { ix } = ctx;
-  document.querySelector(".drawer")?.remove();
+  closeDrawer();
   const kind = ix.kindOf(id);
   if (!kind) return;
   let inner: Raw;
@@ -267,7 +297,10 @@ export function openDrawer(ctx: Ctx, id: string) {
   const close = () => {
     el.remove();
     document.removeEventListener("keydown", onKey);
+    if (closeOpenDrawer === close) closeOpenDrawer = undefined;
+    if (returnTo?.isConnected) returnTo.focus({ preventScroll: true });
   };
+  closeOpenDrawer = close;
   const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
   el.querySelector(".close")!.addEventListener("click", close);
   el.addEventListener("click", (e) => (e.target as Element).closest("a") && close());
@@ -323,26 +356,59 @@ export function graphPanel(ctx: Ctx, id: string, tabs: GraphTab[], opts: { tall?
     if (!panel) return;
     const canvas = panel.querySelector<HTMLElement>(".canvas")!;
     const lensSel = panel.querySelector<HTMLSelectElement>("[data-lens]")!;
-    let cy: ReturnType<typeof mountGraph> | undefined;
+    let cy: Core | undefined;
+    let gone = false;
     let current = tabs[0].key;
-    const show = (key: string) => {
+    // the drawer hands focus back to the canvas when it closes
+    canvas.tabIndex = -1;
+    const show = async (key: string) => {
+      // drawn now (by a tab or lens control, or by scrolling into view): the observer's job is done
+      near.disconnect();
       current = key;
       const tab = tabs.find((t) => t.key === key) ?? tabs[0];
       const lens = lensSel.value as Lens;
       panel.querySelectorAll<HTMLButtonElement>("[data-tab]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.tab === tab.key)));
       panel.querySelectorAll<HTMLElement>("[data-legend]").forEach((l) => (l.hidden = l.dataset.legend !== lens));
+      // Cytoscape and the layout are the heaviest part of a page, so they load only when the graph is needed
+      const m = await loadOnDemand(canvas, () => import("../ui/graph-canvas.ts"));
+      if (!m || gone || current !== tab.key) return;
       cy?.destroy();
-      cy = mountGraph(canvas, tab.data(), { layout: tab.layout, lens, classify, onOpen: (nid) => openDrawer(ctx, nid) });
+      cy = m.mountGraph(canvas, tab.data(), { layout: tab.layout, lens, classify, onOpen: (nid) => openDrawer(ctx, nid, canvas) });
     };
-    panel.querySelectorAll<HTMLButtonElement>("[data-tab]").forEach((b) => b.addEventListener("click", () => show(b.dataset.tab!)));
-    lensSel.addEventListener("change", () => show(current));
-    show(tabs[0].key);
+    // draw when the graph scrolls near the screen, not on page load
+    const near = new IntersectionObserver((entries) => entries.some((e) => e.isIntersecting) && void show(current), { rootMargin: "300px" });
+    panel.querySelectorAll<HTMLButtonElement>("[data-tab]").forEach((b) => b.addEventListener("click", () => void show(b.dataset.tab!)));
+    lensSel.addEventListener("change", () => void show(current));
+    canvas.setAttribute("data-loading", "");
+    near.observe(canvas);
     return () => {
+      gone = true;
+      near.disconnect();
       cy?.destroy();
-      document.querySelector(".drawer")?.remove();
+      closeDrawer();
     };
   };
   return { body, mount };
+}
+
+/**
+ * What the labels mean, shown on the page. The labels also carry the same text as a tooltip
+ * (title), but tooltips reach neither touch screens nor keyboards.
+ */
+export function labelKey(): Raw {
+  const origins = Object.keys(ORIGIN_HELP) as (keyof typeof ORIGIN_HELP)[];
+  const selections = Object.keys(SELECTION_HELP) as (keyof typeof SELECTION_HELP)[];
+  return html`<details class="labelkey"><summary>What the labels mean</summary>
+    <div class="labelkey-grid">
+      <div><p class="labelkey-h">What created the body or post</p><dl>${origins.map((k) => html`<dt><span class="tag org-${k}">${ORIGIN_LABEL[k]}</span></dt><dd>${ORIGIN_HELP[k]}</dd>`)}</dl></div>
+      <div><p class="labelkey-h">How the post is filled</p><dl>${selections.map((k) => html`<dt><span class="tag sel-${k}">${SELECTION_LABEL[k]}</span></dt><dd>${SELECTION_HELP[k]}</dd>`)}</dl></div>
+      <div><p class="labelkey-h">How sure the record is</p><dl>
+        <dt><span class="hint">No label</span></dt><dd>${CONFIDENCE_NOTE.high}</dd>
+        <dt><span class="chip conf-medium">Verify</span></dt><dd>${CONFIDENCE_NOTE.medium}</dd>
+        <dt><span class="chip conf-low">Provisional</span></dt><dd>${CONFIDENCE_NOTE.low}</dd>
+      </dl><p class="hint">A post's tenure, such as "Coterminous" or "Until age 65", is explained on the post's own page.</p></div>
+    </div>
+  </details>`;
 }
 
 /** Who headed the federal government on a date (YYYY or YYYY-MM or YYYY-MM-DD). */

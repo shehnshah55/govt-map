@@ -11,7 +11,8 @@ import { TIERS, TIER_LABEL } from "./tiers.ts";
 const q = (gov: Gov) => (gov === "all" ? "" : `?gov=${gov}`);
 export const evidenceHref = (figure: string, key: string, gov: Gov = "all") => `#/figures/${figure}/${encodeURIComponent(key)}${q(gov)}`;
 
-export function figuresView(ctx: Ctx, params: URLSearchParams): View {
+/** The figures page; `focus` (a figure id, from #/figures/<figure>) scrolls to that chart. */
+export function figuresView(ctx: Ctx, params: URLSearchParams, focus?: string): View {
   const { ix } = ctx;
   const g = params.get("gov");
   const gov: Gov = isGov(g) ? g : "all";
@@ -51,7 +52,18 @@ export function figuresView(ctx: Ctx, params: URLSearchParams): View {
         <div class="ready-grid">${readiness(ix).map(readinessCard)}</div>
       </section>
     </div>`;
-  return { title: "Facts and figures", body };
+  const mount = (root: HTMLElement) => {
+    const fig = focus ? root.querySelector<HTMLElement>(`#fig-${CSS.escape(focus)}`) : null;
+    if (!fig) return;
+    // a redraw of the same page (the theme toggle) leaves focus where it is, outside the page
+    const held = document.activeElement;
+    if (held && held !== document.body && held.isConnected) return;
+    fig.tabIndex = -1;
+    const header = document.querySelector(".topbar")?.getBoundingClientRect().height ?? 0;
+    window.scrollTo(0, fig.getBoundingClientRect().top + window.scrollY - header - 12);
+    fig.focus({ preventScroll: true });
+  };
+  return { title: "Facts and figures", body, mount };
 }
 
 export function figureEvidenceView(ctx: Ctx, figure: string, key: string, params: URLSearchParams): View | undefined {

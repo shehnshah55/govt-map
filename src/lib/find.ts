@@ -29,9 +29,9 @@ export function foldRoman(word: string): string {
     .replace(/ee/g, "i")
     .replace(/oo/g, "u")
     .replace(/q/g, "k")
-    .replace(/(?<=[bcdfghjklmnpqrstvwxyz])a(?=[bcdfghjklmnpqrstvwxyz])/g, "") // drop short medial vowels: shanakhti → shnkhti
+    .replace(/([bcdfghjklmnpqrstvwxyz])a(?=[bcdfghjklmnpqrstvwxyz])/g, "$1") // drop short medial vowels: shanakhti → shnkhti
     .replace(/([a-z])\1+/g, "$1")
-    .replace(/(?<=.)h$/, "");
+    .replace(/(.)h$/, "$1");
 }
 
 const STOP = new Set(

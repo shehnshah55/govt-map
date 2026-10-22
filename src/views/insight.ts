@@ -165,7 +165,7 @@ export function mapView(ctx: Ctx): View {
       <p class="lede">Headquarters of federal, provincial and territorial bodies by city. District field offices are left out. Bodies without a recorded headquarters are placed in their government's capital.</p></header>
     <div class="layout">
       <div class="panel mapbox">${raw(svg) /* safe: city names come from the fixed CITIES table and pass through esc(); the base map is constant; the rest is numbers */}<ul class="plain hint" style="margin-top:10px">${base.notes.map((n) => html`<li>${n}</li>`)}</ul></div>
-      <aside class="rail">${cities.map(
+      <aside class="rail" aria-labelledby="by-city"><h2 id="by-city" class="visually-hidden">Bodies by city</h2>${cities.map(
         ([city, list]) => html`<div class="panel"><h3>${city} · ${list.length}</h3><ul class="plain">${list
           .filter((o) => !o.parent || ix.org.get(o.parent)?.kind === "state" || ["regulator", "court", "constitutional_body", "armed_service", "military_hq", "legislature", "chamber"].includes(o.kind))
           .slice(0, 12)

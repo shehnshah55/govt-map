@@ -8,52 +8,16 @@
  *  - the Sir Creek boundary on the eastern bank.
  * Country outlines come from Natural Earth (1:50m). The disputed region is cut from the
  * Natural Earth India polygon along the southern boundary of the former princely state
- * of Jammu & Kashmir; the Junagadh outline is schematic.
+ * of Jammu & Kashmir; the Junagadh outline is schematic. The cutting is done at build time
+ * (scripts/build-basemap.ts → src/geo/basemap.json).
  */
 import { geoArea, geoMercator, geoPath } from "d3-geo";
-import { feature } from "topojson-client";
-import polygonClipping, { type MultiPolygon, type Polygon } from "polygon-clipping";
-import type { Topology, GeometryCollection } from "topojson-specification";
-import type { Feature, FeatureCollection, Geometry } from "geojson";
-import world from "world-atlas/countries-50m.json";
+import type { Feature, FeatureCollection } from "geojson";
+// outlines cut at build time by scripts/build-basemap.ts, so the browser needs no world atlas
+import outlines from "../geo/basemap.json";
 
-/** Approximate southern boundary of the former princely state of Jammu & Kashmir (lon, lat), closed to the north. */
-const JK_NORTH_OF: [number, number][] = [
-  [73.6, 32.0],
-  [75.35, 32.27],
-  [75.75, 32.27],
-  [76.1, 32.5],
-  [76.5, 32.8],
-  [77.1, 32.95],
-  [77.8, 32.72],
-  [78.3, 32.55],
-  [78.9, 32.4],
-  [79.6, 32.45],
-  [80.6, 32.2],
-  [81.5, 32.2],
-  [81.5, 37.5],
-  [73.6, 37.5],
-  [73.6, 32.0],
-];
-
-/** Schematic outline of the former states of Junagadh and Manavadar (Kathiawar). */
-const JUNAGADH: [number, number][] = [
-  [69.95, 21.25],
-  [70.2, 21.72],
-  [70.65, 21.78],
-  [71.02, 21.45],
-  [71.05, 21.0],
-  [70.75, 20.72],
-  [70.3, 20.78],
-  [69.95, 21.25],
-];
-
-function geometry(f: Feature): MultiPolygon {
-  const g = f.geometry as Geometry;
-  if (g.type === "Polygon") return [g.coordinates as Polygon];
-  if (g.type === "MultiPolygon") return g.coordinates as MultiPolygon;
-  return [];
-}
+/** [lon, lat] rings, as GeoJSON MultiPolygon coordinates. */
+export type MultiPolygon = number[][][][];
 
 /** d3-geo expects spherical (clockwise) winding; flip any polygon it would read as covering the rest of the globe. */
 function rewind(coords: MultiPolygon): MultiPolygon {
@@ -84,23 +48,29 @@ export interface BaseMap {
   notes: string[];
 }
 
+const made = new Map<string, BaseMap>();
+
+/** The base map for a W × H viewport. The same size always gives the same map, so it is made once. */
 export function pakistanBaseMap(W: number, H: number): BaseMap {
-  const topo = world as unknown as Topology<{ countries: GeometryCollection }>;
-  const countries = feature(topo, topo.objects.countries) as unknown as FeatureCollection;
-  const byId = (id: string) => countries.features.find((f) => String(f.id) === id)!;
-  const pak = byId("586");
-  const india = byId("356");
-  const box: Polygon = [JK_NORTH_OF];
-  const jk = polygonClipping.intersection(geometry(india), [box]);
-  const indiaRest = polygonClipping.difference(geometry(india), [box], [[JUNAGADH]]);
-  const jkF = asFeature(jk);
-  const junF = asFeature([[JUNAGADH]]);
+  const key = `${W}x${H}`;
+  const hit = made.get(key);
+  if (hit) return hit;
+  const map = makeBaseMap(W, H);
+  made.set(key, map);
+  return map;
+}
+
+function makeBaseMap(W: number, H: number): BaseMap {
+  const pak = asFeature(outlines.pakistan);
+  const jkF = asFeature(outlines.jk);
+  const junF = asFeature(outlines.junagadh);
+  const indiaRest = outlines.india;
   const focus: FeatureCollection = { type: "FeatureCollection", features: [pak, jkF, junF] };
   const proj = geoMercator().fitExtent([[24, 24], [W - 24, H - 24]], focus);
   const path = geoPath(proj);
   const p = (lonLat: [number, number]) => proj(lonLat) as [number, number];
 
-  const neighbours = ["004", "364", "156"].map(byId).filter(Boolean);
+  const neighbours = outlines.neighbours.map((n) => asFeature(n));
   const label = (lonLat: [number, number], text: string, opts: { size?: number; anchor?: string; weight?: number; italic?: boolean } = {}) => {
     const [x, y] = p(lonLat);
     return `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="${opts.size ?? 12}" text-anchor="${opts.anchor ?? "middle"}" font-weight="${opts.weight ?? 500}" ${opts.italic ? 'font-style="italic"' : ""} fill="var(--ink-2)" font-family="IBM Plex Sans, sans-serif" paint-order="stroke" stroke="var(--surface)" stroke-width="3">${text}</text>`;

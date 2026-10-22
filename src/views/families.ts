@@ -7,8 +7,7 @@ import { families, familyOf, generations, RELATION_PHRASE, seatsOf, tiesOf, type
 import type { GraphIndex, Human } from "../lib/graph-index.ts";
 import { safeHref } from "../lib/safe-url.ts";
 import { html, type Raw } from "../ui/dom.ts";
-import { mountFamilyTree } from "../ui/family-tree.ts";
-import { link, partyLink, type Ctx, type View } from "./common.ts";
+import { link, loadOnDemand, partyLink, type Ctx, type View } from "./common.ts";
 
 const POLICY = "Ties are recorded only between people who both hold or held a public or party office, and only when an official source or two independent outlets state them. Minors and relatives without a public role are never recorded.";
 
@@ -88,23 +87,32 @@ export function familyView(ctx: Ctx, personId: string): View | undefined {
       row: place.get(m.id)?.row ?? 0,
       col: place.get(m.id)?.col ?? 0,
     }));
-    const cy = mountFamilyTree(el, nodes, f.ties, {
-      openPerson: (id) => ctx.go(`/person/${id}`),
-      showTie: (t) => {
-        // built with DOM methods: names and titles come from data
-        detail.replaceChildren(document.createTextNode(`${ix.label(t.from)} is the ${RELATION_PHRASE[t.relation][0]} ${ix.label(t.to)}. Sources: `));
-        t.sources.forEach((s, i) => {
-          if (i) detail.append(", ");
-          const a = document.createElement("a");
-          a.textContent = s.title;
-          a.href = safeHref(s.url);
-          a.target = "_blank";
-          a.rel = "noopener noreferrer";
-          detail.append(a);
-        });
-      },
+    let gone = false;
+    let cy: { destroy: () => void } | undefined;
+    // Cytoscape loads only for this page (see graphPanel() in ./common.ts)
+    void loadOnDemand(el, () => import("../ui/family-tree.ts")).then((m) => {
+      if (!m || gone) return;
+      cy = m.mountFamilyTree(el, nodes, f.ties, {
+        openPerson: (id) => ctx.go(`/person/${id}`),
+        showTie: (t) => {
+          // built with DOM methods: names and titles come from data
+          detail.replaceChildren(document.createTextNode(`${ix.label(t.from)} is the ${RELATION_PHRASE[t.relation][0]} ${ix.label(t.to)}. Sources: `));
+          t.sources.forEach((s, i) => {
+            if (i) detail.append(", ");
+            const a = document.createElement("a");
+            a.textContent = s.title;
+            a.href = safeHref(s.url);
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+            detail.append(a);
+          });
+        },
+      });
     });
-    return () => cy.destroy();
+    return () => {
+      gone = true;
+      cy?.destroy();
+    };
   };
   return { title: `${focus.name} and family`, body, mount };
 }

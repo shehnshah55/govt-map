@@ -204,7 +204,8 @@ export function sectorsView(ctx: Ctx): View {
         <tbody>${sectors.map(
           (s) => html`<tr><td><a href="#/sector/${s}">${SECTOR_LABEL[s]}</a></td>${TIERS.map((t) => {
             const n = count(s, t);
-            const a = n ? 0.1 + (0.75 * n) / max : 0;
+            // shade from 8% to 50%: above that the text drops below 4.5:1 contrast in dark mode
+            const a = n ? 0.08 + (0.42 * n) / max : 0;
             return html`<td class="n">${n ? html`<a href="#/sector/${s}" style="background:color-mix(in srgb, var(--accent) ${Math.round(a * 100)}%, transparent)">${n}</a>` : html`<span class="hint">·</span>`}</td>`;
           })}</tr>`,
         )}</tbody>
