@@ -9,9 +9,11 @@
  * when the data changes.
  */
 import { readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { compile } from "./compile.ts";
 import { GraphIndex, type Post } from "../src/lib/graph-index.ts";
+import { checkServiceIndex } from "./service-index-check.ts";
 
 const root = new URL("..", import.meta.url);
 const COVERAGE = fileURLToPath(new URL("docs/COVERAGE.md", root));
@@ -207,6 +209,36 @@ export function audit(dataDir = fileURLToPath(new URL("data", root))) {
   const uniqueUrls = new Set(cites).size;
   const jurCount = (k: string) => g.jurisdictions.filter((j) => j.kind === k).length;
 
+  // ── service index (data/service-index/) ──
+  const svc = checkServiceIndex(join(dataDir, "service-index"), g.official_sites, new Set(g.organizations.map((o) => o.id)));
+  const svcBySite = new Map<string, number>();
+  for (const it of svc.items) svcBySite.set(it.site_id, (svcBySite.get(it.site_id) ?? 0) + 1);
+  const svcKinds = ["form", "fee", "procedure", "contact", "notification", "other"] as const;
+  const svcDates = svc.items.map((i) => i.fetched_at.slice(0, 10)).sort();
+  const reachable = g.official_sites.filter((s) => s.status !== "unreachable_from_ci" && s.body_id);
+  const withItems = g.official_sites.filter((s) => svcBySite.has(s.id));
+  const svcMd = `## Service index
+
+${num(svc.items.length)} official pages and documents in \`data/service-index/\` (${(svc.bytes / 1048576).toFixed(2)} MB before compression; the build gate checks the gzipped size), from ${num(withItems.length)} of the ${num(g.official_sites.length)} registry websites${svcDates.length ? `, fetched between ${svcDates[0]} and ${svcDates.at(-1)}` : ""}. ${num(reachable.length)} websites are reachable from outside Pakistan and tied to a body; the rest need a crawl from a Pakistani network (docs/SERVICE_INDEX.md).
+
+${table(["Kind", "Items"], svcKinds.map((k) => [k, frac(svc.items.filter((i) => i.kind === k).length, svc.items.length)]))}
+
+${table(["Type", "Items"], (["html", "pdf", "doc"] as const).map((t) => [t, frac(svc.items.filter((i) => i.type === t).length, svc.items.length)]))}
+
+${table(["Language", "Items"], (["en", "ur", "mixed"] as const).map((t) => [t, frac(svc.items.filter((i) => i.language === t).length, svc.items.length)]))}
+
+### By government
+
+${table(["Government", "Websites with items", "Items"], [...new Set(g.official_sites.map((s) => s.level))].map((lv) => {
+    const mine = g.official_sites.filter((s) => s.level === lv);
+    return [lv, `${num(mine.filter((s) => svcBySite.has(s.id)).length)} of ${num(mine.length)}`, num(mine.reduce((n, s) => n + (svcBySite.get(s.id) ?? 0), 0))];
+  }))}
+
+### Reachable websites with no items yet
+
+${reachable.filter((s) => !svcBySite.has(s.id)).map((s) => s.id).sort().join(", ") || "None."}
+`;
+
   // ── COVERAGE.md ──
   const md = `# Data coverage
 
@@ -288,7 +320,8 @@ ${table(["Level", "Citations"], (Object.keys(LEVEL_LABEL) as SourceLevel[]).map(
 ### By domain
 
 ${table(["Domain", "Level", "Citations"], [...byDomain].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([d, n]) => [d, sourceLevel(d), num(n)]))}
-`;
+
+${svcMd}`;
 
   // ── README "At a glance" block ──
   const regulators = orgsAuth.filter((o) => o.kind === "regulator").length;
@@ -304,6 +337,7 @@ ${table(["Domain", "Level", "Citations"], [...byDomain].sort((a, b) => b[1] - a[
 | People | ${num(g.people.length)}; ${frac(rolesSourced, currentRoles.length)} of current roles cite a source |
 | Laws | ${num(g.laws.length)}; ${num(lawsUrl)} link to their text, ${num(lawsSummary)} have a summary |
 | Connections | ${num(g.edges.length)} typed edges |
+| Service index | ${num(svc.items.length)} forms, fees, procedures and contact pages from ${num(withItems.length)} official websites (Find a service) |
 | Data date range | Laws from ${lawYears[0]} to ${lawYears.at(-1)}; officeholder records last checked between ${asOfs[0]} and ${asOfs.at(-1)} |
 
 Full breakdown: [docs/COVERAGE.md](docs/COVERAGE.md).

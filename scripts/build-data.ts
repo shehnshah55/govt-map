@@ -6,6 +6,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { compile } from "./compile.ts";
+import { checkServiceIndex } from "./service-index-check.ts";
 import { toCsvExports, toPopolo } from "./exports.ts";
 import { PUBLISH, publicGraph, publishedCaseProblems } from "../src/lib/policy.ts";
 
@@ -29,6 +30,14 @@ if (errors.length) {
   console.error(`\n${errors.length} error(s). Fix the data files above.`);
   process.exit(1);
 }
+// service index (data/service-index/): schema, hosts in the registry, bodies in the graph, no personal data
+const services = checkServiceIndex(join(root, "data", "service-index"), full.official_sites, new Set(full.organizations.map((o) => o.id)));
+if (services.errors.length) {
+  for (const e of services.errors.slice(0, 50)) console.error(`error: service index: ${e}`);
+  console.error(`\n${services.errors.length} service index error(s). Re-run the crawl or fix data/service-index/.`);
+  process.exit(1);
+}
+console.log(`ok: service index: ${services.items.length} items in ${services.files} files, ${(services.bytes / 1048576).toFixed(2)} MB (${(services.gzipBytes / 1048576).toFixed(2)} MB gzipped)`);
 const c = graph.meta.counts;
 console.log(
   `ok: ${c.organizations} organizations, ${c.positions} positions, ${c.people} people, ` +

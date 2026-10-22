@@ -14,7 +14,8 @@ import { barFigure, FIGURE_IDS } from "../src/lib/analytics.ts";
 import { figureEvidenceView, figuresView } from "../src/views/figures.ts";
 import { TIERS } from "../src/views/tiers.ts";
 import { aboutView, accountabilityView, exploreView, homeView, lawsView, searchView, sectorView, sectorsView } from "../src/views/pages.ts";
-import { findView, sourcesView } from "../src/views/sources.ts";
+import { findView, serviceResults, sourcesView } from "../src/views/sources.ts";
+import type { ServiceItem } from "../src/schema.ts";
 
 const DATA = new URL("../data", import.meta.url).pathname;
 
@@ -123,6 +124,10 @@ describe("escaping", () => {
     ["find a service (empty)", () => findView(ctx, "")],
     ["find a service (hostile query)", () => findView(ctx, `CNIC${PAYLOAD}`)],
     ["find a service (matching sites)", () => findView(ctx, "CNIC passport police bill")],
+    ["find a service (hostile service results)", () => {
+      const it = { id: "0123456789ab", url: `javascript:alert(1)`, title: `Form${PAYLOAD}`, site_id: `x${PAYLOAD}`, body_id: `nope${PAYLOAD}`, kind: "form", type: "pdf", language: "ur", fetched_at: `2026-10-21T00:00:00Z`, http_status: 200, content_hash: "0".repeat(64), excerpt: `Fee${PAYLOAD}`, size: 2048, pages: 2 } as ServiceItem;
+      return { title: "x", body: serviceResults(ctx, [{ item: it, score: 1 }], 1) };
+    }],
     ["directory", () => directoryView(ctx, undefined)],
     ["officials", () => officialsView(ctx, undefined)],
     ...["all", ...TIERS].map((g) => [`figures ${g}`, () => figuresView(ctx, new URLSearchParams({ gov: g }))] as [string, () => View | undefined]),

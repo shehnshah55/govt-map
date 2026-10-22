@@ -128,7 +128,7 @@ Criminal and accountability proceedings against a person, recorded only from rep
 | `publish` | to publish | `true` to publish; anything else keeps the case in `data/` only |
 | `hold_reason` | no | Why a case is held back. Never published |
 | `timeline` | to publish | Dated events, oldest first: `{date, type, court, description, source_url, source_type, source_title}`. `date` is `YYYY-MM-DD` or `YYYY-MM`; `type` is `fir`, `reference_filed`, `charges_framed`, `verdict`, `sentence_suspended`, `appeal_filed`, `appeal_decided`, `stay`, `review` or `other`; `source_type` is `court_record`, `official` or `news` |
-| `sources` | yes, at least one | `{title, url, accessed}` for each source |
+| `sources` | yes, at least one | `{title, url, accessed, archive_url, fetched_via}` for each source (archive fields as in *Citations* below) |
 
 The UI shows the government in office when the case was filed: `filed` is matched against the Prime Minister's terms (`pm_terms`, derived from `fed-prime-minister` roles). The current status is shown alongside the charge, so acquittals, quashed and withdrawn cases are as visible as the original charge.
 
@@ -175,3 +175,15 @@ A minister whose seat is simply not recorded is **not** tagged. The person's pag
 ## Verification log (`data/verification.yaml`)
 
 Each entry records `{claim, records[], status: verified|corrected|conflict|unverified, finding, origin, topic, checked, sources[]}`. `topic` (`legal_cases`, `declared_assets` or `relatives`) marks entries about content the policy can hide; an entry whose topic is hidden is left out of the public build too. It is shown in the app's Verification page. Claims from outside datasets, such as the uploaded spreadsheet, carry `origin`.
+
+## Citations read from an archived copy
+
+Every citation (`Source`: role, body and verification sources, legal case sources) and every law can carry two optional fields:
+
+| Field | Meaning |
+|---|---|
+| `url` | Always the official page. Never an archive host (rejected by the schema). |
+| `fetched_via` | `direct` (loaded live from the official host), `alternate_host` (the official host does not load from outside Pakistan, so the same text was read live on another official host, which is then the `url`) or `archive` (read from a web archive snapshot). |
+| `archive_url` | The Wayback Machine or archive.today snapshot the fact was read from. Required when `fetched_via` is `archive`. |
+
+Registry entries in `data/official-sites.yaml` take the same `fetched_via` and `archive_url`, and the status `verified_via_archive` requires both. A body with no authored website takes its registry site's URL whether the site was `verified` live or `verified_via_archive`.

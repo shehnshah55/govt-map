@@ -195,6 +195,10 @@ organizations:
     jurisdiction: pk
     parent: fed-national-assembly
     sectors: [finance, revenue]
+    sources:
+      - title: "National Assembly of Pakistan: Standing Committee on Finance and Revenue"
+        url: "https://na.gov.pk/en/cmen.php?comm=MTQ="
+        accessed: "2026-10-21"
 
   - id: fed-senate-sc-finance
     name: Senate Standing Committee on Finance and Revenue
@@ -410,6 +414,8 @@ organizations:
     parent: fed-nec
     description: Approves public-sector development projects above the threshold of the Central Development Working Party (CDWP).
     sectors: [planning]
+    needs_source: true
+    confidence: low
 
   - id: fed-nfc
     name: National Finance Commission
@@ -429,6 +435,8 @@ organizations:
     jurisdiction: pk
     description: Principal civil-military forum on national security, chaired by the Prime Minister with key federal ministers and the service chiefs. The National Security Division serves as its secretariat.
     sectors: [defence, interior, foreign]
+    needs_source: true
+    confidence: low
 
   - id: fed-sifc
     name: Special Investment Facilitation Council
@@ -439,6 +447,7 @@ organizations:
     description: Civil-military "single window" for large foreign investment in agriculture, mining, IT, energy and defence production, created in 2023. Apex committee chaired by the Prime Minister with Chief Ministers and the Army Chief.
     confidence: medium
     sectors: [commerce, planning]
+    website: "https://sifc.gov.pk/"
 
   # ── Armed forces ───────────────────────────────────────────────────────────
   - id: fed-armed-forces
@@ -458,8 +467,9 @@ organizations:
     jurisdiction: pk
     parent: fed-armed-forces
     description: Tri-service coordination headquarters in Rawalpindi. Previously headed by the Chairman Joint Chiefs of Staff Committee (CJCSC); under the 27th Amendment the higher command was reorganised around a Chief of Defence Forces.
-    confidence: medium
+    confidence: low
     sectors: [defence]
+    needs_source: true
 
   - id: fed-army
     name: Pakistan Army
@@ -508,6 +518,8 @@ organizations:
     parent: fed-armed-forces
     description: Principal military intelligence agency. Its Director-General, a serving Lieutenant-General, is appointed by the Prime Minister.
     sectors: [defence, interior]
+    needs_source: true
+    confidence: low
 
   - id: fed-ib
     name: Intelligence Bureau
@@ -518,6 +530,8 @@ organizations:
     parent: fed-pm-office
     description: Civilian intelligence agency reporting to the Prime Minister.
     sectors: [interior]
+    needs_source: true
+    confidence: low
 
 positions:
   # Head of state & executive

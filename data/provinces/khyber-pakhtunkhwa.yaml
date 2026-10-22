@@ -74,6 +74,9 @@ organizations:
   - accountability
   - finance
   jurisdiction: pk-kp
+  confidence: low
+  sources:
+    - { title: "Provincial Assembly of Khyber Pakhtunkhwa — Public Accounts Committee (2024)", url: "https://www.pakp.gov.pk/committee/public-accounts-committee-2024/", accessed: "2026-10-21", fetched_via: direct }
 - id: kp-assembly-sc-health
   name: Standing Committee on Health, Provincial Assembly of Khyber Pakhtunkhwa
   kind: committee
@@ -82,6 +85,9 @@ organizations:
   sectors:
   - health
   jurisdiction: pk-kp
+  confidence: low
+  sources:
+    - { title: "Provincial Assembly of Khyber Pakhtunkhwa — Standing Committee No. 12 on Health Department (2024)", url: "https://www.pakp.gov.pk/committee/no-12-on-health-department-2024/", accessed: "2026-10-21", fetched_via: direct }
 - id: kp-high-court
   name: Peshawar High Court
   short_name: PHC
@@ -152,6 +158,8 @@ organizations:
   - finance
   - local_government
   jurisdiction: pk-kp
+  needs_source: true
+  confidence: low
 - id: kp-sgad
   name: Establishment and Administration Department, Khyber Pakhtunkhwa
   short_name: E&AD
@@ -222,6 +230,7 @@ organizations:
   - accountability
   confidence: medium
   jurisdiction: pk-kp
+  legal_basis: [{ law: wp-ace-ordinance-1961 }]
 - id: kp-pdma
   name: Provincial Disaster Management Authority, Khyber Pakhtunkhwa
   short_name: PDMA
@@ -268,6 +277,8 @@ organizations:
   - health
   description: Provincial arm of the Polio Eradication Initiative, coordinated by the National EOC.
   jurisdiction: pk-kp
+  needs_source: true
+  confidence: low
 - id: kp-healthcare-commission
   name: Khyber Pakhtunkhwa Health Care Commission
   short_name: KP HCC
@@ -303,6 +314,8 @@ organizations:
   - health
   description: Field wing of the health department; District Health Officers / CEOs of District Health Authorities report through it.
   jurisdiction: pk-kp
+  needs_source: true
+  confidence: low
 - id: kp-sehat-card
   name: Sehat Card Plus (Social Health Protection Initiative)
   kind: programme

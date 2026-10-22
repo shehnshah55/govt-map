@@ -62,6 +62,9 @@ organizations:
     kind: department
     parent: gb-government
     sectors: [finance]
+    website: https://gbfinance.gov.pk/
+    sources:
+      - { title: "Government of Gilgit-Baltistan — official portal, link to the Finance Department", url: "https://gilgitbaltistan.gov.pk/", accessed: "2026-10-21", fetched_via: direct }
   - id: gb-home
     name: Home and Prisons Department, Gilgit-Baltistan
     kind: department
