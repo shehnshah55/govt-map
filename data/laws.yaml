@@ -308,8 +308,8 @@ laws:
     kind: act
     year: 2010
     jurisdiction: pk-pb
-    confidence: low
-    needs_source: true
+    url: https://os.phc.org.pk/act.aspx
+    fetched_via: alternate_host
   - id: sindh-healthcare-commission-act-2013
     title: "Sindh Healthcare Commission Act, 2014"
     kind: act
@@ -350,8 +350,10 @@ laws:
     kind: rules
     year: 2011
     jurisdiction: pk-pb
-    confidence: low
-    needs_source: true
+    url: "https://alw.punjab.gov.pk/system/files/punjab-government-rules-of-business-2011.pdf"
+    archive_url: "https://web.archive.org/web/20240529175929/https://alw.punjab.gov.pk/system/files/punjab-government-rules-of-business-2011.pdf"
+    fetched_via: archive
+    summary: "Made by the Government of the Punjab under Article 139 of the Constitution; notified by the Services and General Administration Department (Cabinet Wing), No. SO(Cab-I)2-3/2011, dated 11 March 2011."
   - id: sindh-rules-of-business-1986
     title: Sindh Government Rules of Business, 1986
     kind: rules
@@ -375,8 +377,9 @@ laws:
     kind: act
     year: 2022
     jurisdiction: pk-pb
-    needs_source: true
-    confidence: low
+    url: https://lgcd.punjab.gov.pk/system/files/PLGA_2022_GAZETTE_dated_16.11.2022_1.pdf
+    fetched_via: alternate_host
+    summary: "The Local Government and Community Development Department's governing-laws page also lists the Punjab Local Government Act 2025."
   - id: sindh-lg-act-2013
     title: Sindh Local Government Act, 2013
     kind: act
@@ -458,30 +461,30 @@ laws:
   - { id: harassment-act-2010, title: "Protection against Harassment of Women at the Workplace Act, 2010", kind: act, year: 2010, jurisdiction: pk, url: "https://pakistancode.gov.pk/english/UY2FqaJw1-apaUY2Fqa-apaUY2Fsap0%3D-sg-jjjjjjjjjjjjj" }
 
   # ── Provincial regulators ──────────────────────────────────────────────────
-  - { id: punjab-epa-1997, title: "Punjab Environmental Protection Act, 1997 (as amended 2012)", kind: act, year: 1997, jurisdiction: pk-pb, needs_source: true, confidence: low }
+  - { id: punjab-epa-1997, title: "Punjab Environmental Protection Act, 1997 (as amended up to 2017)", kind: act, year: 1997, jurisdiction: pk-pb, url: "https://epd.punjab.gov.pk/system/files/Punjab%20Environmental%20Protection%20Act%201997%20with%20all%20amendements_0.pdf", fetched_via: alternate_host }
   - { id: sindh-epa-2014, title: "Sindh Environmental Protection Act, 2014", kind: act, year: 2014, jurisdiction: pk-sd, url: "https://sindhlaws.gov.pk/GazetteDownload.aspx?PubID=PUB-14-000230" }
   - { id: kp-epa-2014, title: "Khyber Pakhtunkhwa Environmental Protection Act, 2014", kind: act, year: 2014, jurisdiction: pk-kp, url: "https://kpcode.kp.gov.pk/homepage/lawDetails/1478" }
   - { id: balochistan-epa-2012, title: "Balochistan Environmental Protection Act, 2012", kind: act, year: 2012, jurisdiction: pk-ba, url: "https://balochistancode.gob.pk/Document.aspx?wise=opendoc&docid=927&docc=878" }
-  - { id: punjab-ppra-act-2009, title: "Punjab Procurement Regulatory Authority Act, 2009", kind: act, year: 2009, jurisdiction: pk-pb, needs_source: true, confidence: low }
+  - { id: punjab-ppra-act-2009, title: "Punjab Procurement Regulatory Authority Act, 2009", kind: act, year: 2009, jurisdiction: pk-pb, url: "https://ppra.punjab.gov.pk/system/files/The%20Punjab%20Procurement%20Regulatory%20Authority%20Act%202009%20%28Amended%20upto%2009.01.2023%29.pdf", fetched_via: alternate_host }
   - { id: sindh-ppra-act-2009, title: "Sindh Public Procurement Act, 2009", kind: act, year: 2009, jurisdiction: pk-sd, url: "https://sindhlaws.gov.pk/GazetteDownload.aspx?PubID=PUB-22-000016" }
   - { id: kp-ppra-act-2012, title: "Khyber Pakhtunkhwa Public Procurement Regulatory Authority Act, 2012", kind: act, year: 2012, jurisdiction: pk-kp, url: "https://kpcode.kp.gov.pk/homepage/lawDetails/589" }
   - { id: balochistan-ppra-act-2009, title: "Balochistan Public Procurement Regulatory Authority Act, 2009", kind: act, year: 2009, jurisdiction: pk-ba, url: "https://pabalochistan.gov.pk/storage/4029/2019-11-15_16_06_31_c5fcd.pdf" }
-  - { id: punjab-rti-act-2013, title: "Punjab Transparency and Right to Information Act, 2013", kind: act, year: 2013, jurisdiction: pk-pb, needs_source: true, confidence: low }
+  - { id: punjab-rti-act-2013, title: "Punjab Transparency and Right to Information Act, 2013", kind: act, year: 2013, jurisdiction: pk-pb, url: "https://www.pap.gov.pk/en/about-secretariat/rti/rti-act-2013", archive_url: "https://web.archive.org/web/20250607073903/https://www.pap.gov.pk/en/about-secretariat/rti/rti-act-2013", fetched_via: archive }
   - { id: sindh-rti-act-2016, title: "Sindh Transparency and Right to Information Act, 2016", kind: act, year: 2016, jurisdiction: pk-sd, url: "https://sindhlaws.gov.pk/GazetteDownload.aspx?PubID=PUB-17-000026" }
   - { id: kp-rti-act-2013, title: "Khyber Pakhtunkhwa Right to Information Act, 2013", kind: act, year: 2013, jurisdiction: pk-kp, url: "https://kpcode.kp.gov.pk/homepage/lawDetails/590" }
   - { id: balochistan-rti-act-2021, title: "Balochistan Right to Information Act, 2021", kind: act, year: 2021, jurisdiction: pk-ba, confidence: medium, url: "https://pabalochistan.gov.pk/storage/4201/2021-03-29_13_06_13_d8817.pdf" }
-  - { id: punjab-service-tribunals-act-1974, title: "Punjab Service Tribunals Act, 1974", kind: act, year: 1974, jurisdiction: pk-pb, needs_source: true, confidence: low }
+  - { id: punjab-service-tribunals-act-1974, title: "Punjab Service Tribunals Act, 1974 (Act IX of 1974)", kind: act, year: 1974, jurisdiction: pk-pb, url: "https://punjablaws.gov.pk/laws/296.html", archive_url: "https://web.archive.org/web/20250328053531/http://punjablaws.gov.pk/laws/296.html", fetched_via: archive }
   - { id: sindh-service-tribunals-act-1973, title: "Sindh Service Tribunals Act, 1973", kind: act, year: 1973, jurisdiction: pk-sd, url: "https://sindhlaws.gov.pk/GazetteDownload.aspx?PubID=PUB-13-000619" }
   - { id: kp-service-tribunal-act-1974, title: "Khyber Pakhtunkhwa Service Tribunal Act, 1974", kind: act, year: 1974, jurisdiction: pk-kp, url: "https://kpcode.kp.gov.pk/homepage/lawDetails/1596" }
   - { id: balochistan-service-tribunals-act-1974, title: "Balochistan Service Tribunals Act, 1974", kind: act, year: 1974, jurisdiction: pk-ba, url: "https://pabalochistan.gov.pk/storage/4148/2019-12-13_15_09_31_d2edb.pdf" }
-  - { id: punjab-hec-act-2014, title: "Punjab Higher Education Commission Act, 2014", kind: act, year: 2014, jurisdiction: pk-pb, needs_source: true, confidence: low }
+  - { id: punjab-hec-act-2014, title: "Punjab Higher Education Commission Act, 2014 (Act I of 2015)", kind: act, year: 2014, jurisdiction: pk-pb, url: "https://punjablaws.gov.pk/laws/2584.html", archive_url: "https://web.archive.org/web/20250621192635/http://punjablaws.gov.pk/laws/2584.html", fetched_via: archive }
   - { id: sindh-hec-act-2013, title: "Sindh Higher Education Commission Act, 2013", kind: act, year: 2013, jurisdiction: pk-sd, url: "https://sindhlaws.gov.pk/GazetteDownload.aspx?PubID=PUB-23-000105" }
   - { id: sindh-building-control-ordinance-1979, title: "Sindh Building Control Ordinance, 1979", kind: ordinance, year: 1979, jurisdiction: pk-sd, url: "https://sindhlaws.gov.pk/GazetteDownload.aspx?PubID=PUB-22-000006" }
-  - { id: sepra-act-2021, title: "Sindh Electric Power Regulatory Authority Act, 2021", kind: act, year: 2021, jurisdiction: pk-sd, confidence: low, needs_source: true }
+  - { id: sepra-act-2023, title: "Sindh Regulation of Electric Power Services Act, 2023 (Sindh Act XVII of 2023)", kind: act, year: 2023, jurisdiction: pk-sd, url: "https://sepra.gos.pk/assets/acts/Sepra%20Act.pdf", fetched_via: alternate_host, summary: "Establishes the Sindh Electric Power Regulatory Authority (SEPRA) under section 3." }
   - { id: kp-psra-act-2017, title: "Khyber Pakhtunkhwa Private Schools Regulatory Authority Act, 2017", kind: act, year: 2017, jurisdiction: pk-kp, url: "https://kpcode.kp.gov.pk/homepage/lawDetails/1359" }
-  - { id: pera-act-2024, title: "Punjab Enforcement and Regulatory Authority Act, 2024", kind: act, year: 2024, jurisdiction: pk-pb, confidence: low, needs_source: true }
+  - { id: pera-act-2024, title: "Punjab Enforcement and Regulation Act, 2024 (Act XI of 2024)", kind: act, year: 2024, jurisdiction: pk-pb, url: "https://punjablaws.gov.pk/laws/2893.html", archive_url: "https://web.archive.org/web/20250402115732/http://punjablaws.gov.pk/laws/2893.html", fetched_via: archive, summary: "Chapter II (section 3) establishes the Punjab Enforcement and Regulatory Authority." }
   - { id: balochistan-food-authority-act-2014, title: "Balochistan Food Authority Act, 2014", kind: act, year: 2014, jurisdiction: pk-ba, confidence: medium, url: "https://pabalochistan.gov.pk/storage/3994/2018-10-23-14_46_22act062014.pdf" }
-  - { id: punjab-lra-act-2017, title: "Punjab Land Records Authority Act, 2017", kind: act, year: 2017, jurisdiction: pk-pb, needs_source: true, confidence: low }
+  - { id: punjab-lra-act-2017, title: "Punjab Land Records Authority Act, 2017", kind: act, year: 2017, jurisdiction: pk-pb, url: "https://pra-borpunjab.gov.pk/PRABORAdmin/uploads/editor_files/the_punjab_land_records_authority_act_2017_ucrjn.pdf", fetched_via: alternate_host }
   - { id: cantonments-act-1924, title: "Cantonments Act, 1924", kind: act, year: 1924, jurisdiction: pk, url: "https://pakistancode.gov.pk/english/UY2FqaJw1-apaUY2Fqa-ap2Z-sg-jjjjjjjjjjjjj", summary: "Governs cantonment boards, the elected local governments of military cantonments, administered through the Military Lands and Cantonments Department." }
   - { id: mines-oilfields-act-1948, title: "Regulation of Mines and Oil Fields and Mineral Development (Federal Control) Act, 1948", kind: act, year: 1948, jurisdiction: pk, url: "https://pakistancode.gov.pk/english/UY2FqaJw1-apaUY2Fqa-ap%2BUag%3D%3D-sg-jjjjjjjjjjjjj", summary: "Parent law for the Pakistan Petroleum (Exploration and Production) Rules, under which petroleum concessions are granted." }
   - { id: animal-quarantine-ordinance-1979, title: "Pakistan Animal Quarantine (Import and Export of Animals and Animal Products) Ordinance, 1979", kind: ordinance, year: 1979, jurisdiction: pk, url: "https://pakistancode.gov.pk/english/UY2FqaJw1-apaUY2Fqa-cpeW-sg-jjjjjjjjjjjjj" }
@@ -508,7 +511,7 @@ laws:
   - { id: basi-act-2023, title: "Pakistan Air Safety Investigation Act, 2023", kind: act, year: 2023, jurisdiction: pk, url: "https://pakistancode.gov.pk/english/UY2FqaJw1-apaUY2Fqa-apaUY2Npa5pnaQ%3D%3D-sg-jjjjjjjjjjjjj" }
   - { id: hec-amendment-2021, title: "Higher Education Commission (Amendment) Act, 2021", kind: act, year: 2021, jurisdiction: pk, confidence: medium, url: "https://senate.gov.pk/uploads/documents/1638774644_326.pdf" }
   - { id: ljcp-ordinance-1979, title: "Law and Justice Commission of Pakistan Ordinance, 1979", kind: ordinance, year: 1979, jurisdiction: pk, url: "https://pakistancode.gov.pk/english/UY2FqaJw1-apaUY2Fqa-apaUY2Npa5Zp-sg-jjjjjjjjjjjjj" }
-  - { id: punjab-ombudsman-act-1997, title: "Punjab Office of the Ombudsman Act, 1997", kind: act, year: 1997, jurisdiction: pk-pb, needs_source: true, confidence: low }
+  - { id: punjab-ombudsman-act-1997, title: "Punjab Office of the Ombudsman Act, 1997 (Pb. Act X of 1997)", kind: act, year: 1997, jurisdiction: pk-pb, url: "https://punjablaws.gov.pk/laws/402.html", archive_url: "https://web.archive.org/web/20251116190512/http://punjablaws.gov.pk/laws/402.html", fetched_via: archive }
   - { id: sindh-ombudsman-act-1991, title: "Establishment of the Office of Ombudsman for the Province of Sindh Act, 1991", kind: act, year: 1991, jurisdiction: pk-sd, confidence: medium, url: "https://sindhlaws.gov.pk/GazetteDownload.aspx?PubID=PUB-13-000184" }
   - { id: kp-ombudsman-act-2010, title: "Khyber Pakhtunkhwa Provincial Ombudsman Act, 2010", kind: act, year: 2010, jurisdiction: pk-kp, confidence: medium, url: "https://kpcode.kp.gov.pk/homepage/lawDetails/1264" }
   - { id: balochistan-ombudsman-act-2001, title: "Balochistan Ombudsman Ordinance, 2001", kind: ordinance, year: 2001, jurisdiction: pk-ba, confidence: low, url: "https://balochistancode.gob.pk/Document.aspx?wise=opendoc&docid=1363&docc=1303" }

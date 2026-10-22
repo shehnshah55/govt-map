@@ -86,6 +86,8 @@ organizations:
   sectors:
   - health
   jurisdiction: pk-sd
+  sources:
+    - { title: "Provincial Assembly of Sindh — Committee System: 12. Standing Committee on Primary Health (BHU, HRC and Vertical Programmes) and Secondary Health (Rest of Health)", url: "https://www.pas.gov.pk/committee-system", accessed: "2026-10-21", fetched_via: direct }
 - id: sd-high-court
   name: Sindh High Court
   short_name: SHC
@@ -731,7 +733,7 @@ organizations:
   kind: regulator
   parent: sd-energy
   legal_basis:
-  - law: sepra-act-2021
+  - law: sepra-act-2023
   sectors:
   - energy
   confidence: medium

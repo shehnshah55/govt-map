@@ -528,3 +528,17 @@ verification:
       - { title: "The Nation — Mayor Sukkur (5 Apr 2026)", url: "https://www.nation.com.pk/05-Apr-2026/zulfikar-ali-bhutto-s-legacy-lives-mayor-sukkur" }
       - { title: "Radio Pakistan — PM felicitates Lt Gen (R) Muhammad Saeed", url: "https://www.radio.gov.pk/04-08-2025/pm-felicitates-muhammad-saeed-on-his-appointment-as-chairman-wapda" }
       - { title: "ProPakistani — Lt Gen Inam Haider Malik (NDMA), Aug 2026", url: "https://propakistani.pk/2026/08/16/lt-gen-inam-haider-malik-assures-support-to-govt-in-azad-kashmir-gilgit-and-kp/" }
+  - claim: "SEPRA was set up by the Sindh Electric Power Regulatory Authority Act, 2021"
+    status: corrected
+    finding: "The act on SEPRA's own site is the Sindh Regulation of Electric Power Services Act, 2023 (Sindh Act XVII of 2023); section 3 establishes the Authority. The law record was renamed sepra-act-2023 and the Sindh legal basis updated."
+    records: [sepra-act-2023]
+    checked: "2026-10-21"
+    sources:
+      - { title: "SEPRA — Sindh Regulation of Electric Power Services Act, 2023", url: "https://sepra.gos.pk/assets/acts/Sepra%20Act.pdf", fetched_via: alternate_host }
+  - claim: "Punjab Enforcement and Regulatory Authority Act, 2024"
+    status: corrected
+    finding: "The act is titled the Punjab Enforcement and Regulation Act 2024 (Act XI of 2024); the Punjab Enforcement and Regulatory Authority is the body it establishes (Chapter II, section 3). Read from a Wayback Machine copy of Punjab Laws Online, which does not load from outside Pakistan."
+    records: [pera-act-2024]
+    checked: "2026-10-21"
+    sources:
+      - { title: "Punjab Laws Online — The Punjab Enforcement and Regulation Act 2024", url: "https://punjablaws.gov.pk/laws/2893.html", archive_url: "https://web.archive.org/web/20250402115732/http://punjablaws.gov.pk/laws/2893.html", fetched_via: archive }
