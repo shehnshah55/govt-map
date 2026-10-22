@@ -150,6 +150,22 @@ export function canonicalUrl(u: string): string | undefined {
   }
 }
 
+/**
+ * The key two links to the same page share: the canonical URL, with the path folded to lower case
+ * on ASP.NET pages (.aspx, .asp, .ashx), which IIS serves case-insensitively. Used to keep one entry
+ * per page in the service index.
+ */
+export function dedupeKey(u: string): string {
+  const c = canonicalUrl(u) ?? u;
+  try {
+    const url = new URL(c);
+    if (/\.(aspx|asp|ashx)$/i.test(url.pathname)) url.pathname = url.pathname.toLowerCase();
+    return url.toString();
+  } catch {
+    return c;
+  }
+}
+
 const SKIP_EXT = /\.(jpe?g|png|gif|webp|svg|ico|bmp|tiff?|mp[34]|m4a|wav|avi|mov|wmv|flv|webm|zip|rar|7z|gz|tar|exe|apk|msi|dmg|iso|css|js|json|xml|rss|atom|woff2?|ttf|eot|xlsx?|pptx?|csv)$/i;
 const SKIP_PATH = /\/(wp-admin|wp-login|wp-json|login|signin|sign-in|register|cart|checkout|logout|feed|search|cgi-bin|gallery|photo|video|media-gallery|tag|author|calendar|print)(\/|$|\?)/i;
 /** Sign-in and account pages, wherever they sit in the URL (Joomla's com_users, ASP.NET ReturnUrl …). */

@@ -29,7 +29,7 @@ Its data model is built around how Pakistan is governed: the Ministry → Divisi
 | People | 134; 168 / 171 (98%) of current roles cite a source |
 | Laws | 188; 186 link to their text, 50 have a summary |
 | Connections | 6,071 typed edges |
-| Service index | 4,967 forms, fees, procedures and contact pages from 156 official websites (Find a service) |
+| Service index | 4,966 forms, fees, procedures and contact pages from 156 official websites (Find a service) |
 | Data date range | Laws from 1886 to 2026; officeholder records last checked between 2025-06 and 2026-09 |
 
 Full breakdown: [docs/COVERAGE.md](docs/COVERAGE.md).

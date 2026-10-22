@@ -7,7 +7,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { gzipSync } from "node:zlib";
 import { ServiceIndexChunk, type OfficialSite, type ServiceItem } from "../src/schema.ts";
-import { bareHost, excerptIsClean, LISTS_PEOPLE } from "./crawl-lib.ts";
+import { bareHost, dedupeKey, excerptIsClean, LISTS_PEOPLE } from "./crawl-lib.ts";
 
 /** Shipped size budget for all chunks together, gzipped. */
 export const MAX_GZIP_BYTES = 5 * 1024 * 1024;
@@ -53,8 +53,9 @@ export function checkServiceIndex(dir: string, sites: readonly OfficialSite[], o
       }
       if (!registryHosts.has(hostOf(it.url))) out.errors.push(`${where}: host ${hostOf(it.url)} is not in the registry`);
       if (!orgIds.has(it.body_id)) out.errors.push(`${where}: body_id ${it.body_id} is not a body in the graph`);
-      if (seen.has(it.url)) out.errors.push(`${where}: duplicate of ${seen.get(it.url)} (${it.url})`);
-      seen.set(it.url, where);
+      const key = dedupeKey(it.url);
+      if (seen.has(key)) out.errors.push(`${where}: duplicate of ${seen.get(key)} (${it.url})`);
+      seen.set(key, where);
       if (it.excerpt && !excerptIsClean(it.excerpt)) out.errors.push(`${where}: excerpt carries a CNIC, mobile number or personal email`);
       if (!excerptIsClean(it.title)) out.errors.push(`${where}: title carries a CNIC, mobile number or personal email`);
       if (LISTS_PEOPLE.test(it.title)) out.errors.push(`${where}: looks like a list of individuals ("${it.title}")`);

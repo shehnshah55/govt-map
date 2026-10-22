@@ -2,6 +2,7 @@ import { createServer, type Server } from "node:http";
 import type { AddressInfo } from "node:net";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
+  dedupeKey,
   canonicalUrl,
   classify,
   detectLanguage,
@@ -210,5 +211,13 @@ describe("archive mode (sites that do not load from outside Pakistan)", () => {
     expect(ServiceItem.safeParse({ ...base, url: "https://www.nadra.gov.pk/fees/", fetched_via: "archive", archive_url: snap }).success).toBe(true);
     expect(ServiceItem.safeParse({ ...base, url: snap }).success).toBe(false);
     expect(ServiceItem.safeParse({ ...base, url: "https://www.nadra.gov.pk/fees/", archive_url: snap }).success).toBe(false);
+  });
+});
+
+describe("dedupeKey", () => {
+  it("treats ASP.NET paths that differ only in case as one page, and keeps other paths case-sensitive", () => {
+    expect(dedupeKey("https://x.gos.pk/Demo_Registries/RegisterCNIC.aspx")).toBe(dedupeKey("https://x.gos.pk/demo_Registries/RegisterCNIC.aspx"));
+    expect(dedupeKey("https://x.gov.pk/Forms/A.pdf")).not.toBe(dedupeKey("https://x.gov.pk/forms/a.pdf"));
+    expect(dedupeKey("https://X.gov.pk/a#top")).toBe(dedupeKey("https://x.gov.pk/a"));
   });
 });

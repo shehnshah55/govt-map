@@ -4,7 +4,8 @@ import { rankRecords, rankSites } from "../lib/find.ts";
 import { safeHref } from "../lib/safe-url.ts";
 import { loadServiceItems, ServiceIndex, type ServiceHit } from "../lib/service-search.ts";
 import { html, type Raw } from "../ui/dom.ts";
-import { hrefFor, link, type Ctx, type View } from "./common.ts";
+import { appointmentSentence, chain, hrefFor, legalList, link, relationRows, type Ctx, type View } from "./common.ts";
+import { accountability, parseQuestion, resolveSubject, type Question, type Resolved } from "../lib/who-appoints.ts";
 import { wireFilters } from "./entities.ts";
 
 export const LEVEL_LABEL: Record<SiteLevel, string> = {
@@ -152,13 +153,16 @@ function getServiceIndex(ctx: Ctx): Promise<ServiceIndex> {
   return serviceIndex;
 }
 
-const EXAMPLES = ["How do I renew my CNIC?", "Passport fee", "Domicile certificate", "FBR NTN registration", "NTN tax filer", "BISP Kafaalat", "shanakhti card banwane ka tareeqa", "بجلی کا بل", "phone blocked PTA", "vehicle registration Lahore"];
+const EXAMPLES = ["How do I renew my CNIC?", "Passport fee", "Domicile certificate", "FBR NTN registration", "NTN tax filer", "BISP Kafaalat", "shanakhti card banwane ka tareeqa", "بجلی کا بل", "phone blocked PTA", "vehicle registration Lahore", "Who appoints the Chief Election Commissioner?", "Whom does NEPRA answer to?"];
 
 export function findView(ctx: Ctx, q: string): View {
   const { ix } = ctx;
   const query = q.trim();
   const siteHits = query ? rankSites(sites(ctx), query, ix) : [];
   const records = query ? rankRecords(ix, query) : [];
+  const question = query ? parseQuestion(query) : undefined;
+  const resolved = question ? resolveSubject(ix, question) : undefined;
+  const redacted = /\[(?:CNIC|phone number|number|passport number|email) removed\]/.test(query);
   const body = html`
     <header class="pagehead"><div class="eyebrow">Find a service</div><h1>${query ? html`Where to go for “${query}”` : "Find a government service"}</h1>
       <p class="lede">Type a question in English, اردو or Roman Urdu. You get links to the official websites, to forms, fees and procedures on them, and to the bodies responsible: never an answer written by us.</p></header>
@@ -166,7 +170,8 @@ export function findView(ctx: Ctx, q: string): View {
     ${
       !query
         ? html`<section><h2>Try</h2><div class="sectors">${EXAMPLES.map((e) => html`<a href="#/find?q=${encodeURIComponent(e)}" dir="auto">${e}</a>`)}</div></section>`
-        : html`
+        : html`${redacted ? html`<p class="hint" role="status">Personal numbers and email addresses are removed from questions before they reach the address bar or your browser history. You don't need them to find a service.</p>` : ""}
+      ${question ? recordedAnswer(ctx, question, resolved) : ""}
       <section><h2>Official websites</h2>${
         siteHits.length
           ? html`<div class="rels">${siteHits.map(
@@ -213,4 +218,34 @@ export function findView(ctx: Ctx, q: string): View {
       };
     },
   };
+}
+
+/** "Who appoints X" and "whom does X answer to", read only from relationships recorded in the graph. */
+function recordedAnswer(ctx: Ctx, q: Question, r: Resolved | undefined): Raw {
+  const { ix } = ctx;
+  const heading = q.kind === "appointer" ? "Who appoints" : "Whom it answers to";
+  if (!r) return html`<section><h2>${heading}</h2><p class="hint">No post or body in the graph matched “${q.subject}”.</p></section>`;
+  const others = r.others.length
+    ? html`<p class="hint">Not this one? ${r.others.map((id, i) => html`${i ? " · " : ""}${link(ix, id)}`)}</p>`
+    : "";
+  const readAs = html`<p class="hint">Read as ${link(ix, r.id)}. From the relationships recorded in the graph; the legal basis links to each law.</p>`;
+  if (q.kind === "appointer") {
+    const post = ix.post.get(r.id);
+    const body = post
+      ? html`<p>${appointmentSentence(ix, post)}.</p>${chain(ix, post.id)}${
+          post.appointment?.removal ? html`<p><b>Removal:</b> ${post.appointment.removal}</p>` : ""
+        }${post.appointment?.term ? html`<p><b>Term:</b> ${post.appointment.term}</p>` : ""}<h3>Legal basis</h3>${legalList(ix, post.appointment?.legal_basis)}`
+      : html`<p class="hint">No appointment is recorded for this body's head yet.</p>`;
+    return html`<section class="recorded"><h2>${heading}</h2>${readAs}${body}${others}</section>`;
+  }
+  const a = accountability(ix, r.id);
+  const rows = [relationRows(ix, a.out, "out"), relationRows(ix, a.in, "in")];
+  const any = a.out.length || a.in.length || a.parent || a.post?.appointment;
+  return html`<section class="recorded"><h2>${heading}</h2>${readAs}${
+    any
+      ? html`<div class="rels">${rows}${a.parent ? html`<div class="rel"><div class="verb">part of</div><div>${link(ix, a.parent)}</div></div>` : ""}</div>${
+          a.post?.appointment ? html`<p>${appointmentSentence(ix, a.post)}.</p>${a.post.appointment.removal ? html`<p><b>Removal:</b> ${a.post.appointment.removal}</p>` : ""}` : ""
+        }${a.org && a.org !== r.id ? html`<p class="hint">Relations shown include those of ${link(ix, a.org)}, the body this post belongs to.</p>` : ""}`
+      : html`<p class="hint">No accountability relationship is recorded for this yet.</p>`
+  }${others}</section>`;
 }
