@@ -1813,7 +1813,7 @@ official_sites:
     status: verified
     checked: "2026-10-21"
   - id: kpra-kp
-    name: "Khyber Pakhtunkhwa Revenue Authority"
+    name: "KPRA Taxpayer Facilitation Portal"
     url: https://kpra.kp.gov.pk/
     level: kp
     category: tax_business
