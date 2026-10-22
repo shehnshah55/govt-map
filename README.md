@@ -27,7 +27,7 @@ Its data model is built around how Pakistan is governed: the Ministry → Divisi
 | Legislative seats with a named member | 26 / 1,267 (2%) |
 | Jurisdictions | 4 provinces, ICT, GB, AJK, 38 divisions, 167 districts, 928 constituencies |
 | People | 134; 168 / 171 (98%) of current roles cite a source |
-| Laws | 188; 174 link to their text, 46 have a summary |
+| Laws | 188; 186 link to their text, 50 have a summary |
 | Connections | 6,071 typed edges |
 | Data date range | Laws from 1886 to 2026; officeholder records last checked between 2025-06 and 2026-09 |
 
