@@ -11,7 +11,7 @@
  */
 import { z } from "zod";
 import { isSafeUrl, SAFE_URL_MESSAGE } from "./lib/safe-url.ts";
-import { ASSET_SOURCE_HOSTS, isAssetSource, isEcpSource, isOfficialSiteUrl } from "./lib/policy.ts";
+import { ASSET_SOURCE_HOSTS, isArchiveUrl, isAssetSource, isEcpSource, isOfficialSiteUrl } from "./lib/policy.ts";
 
 /** Every URL field: https only (see src/lib/safe-url.ts). Plain z.string().url() would accept javascript: and data: URLs. */
 export const SafeUrl = z.string().refine(isSafeUrl, { message: SAFE_URL_MESSAGE });
@@ -686,8 +686,17 @@ export const ServiceItem = z
     size: z.number().int().positive().optional(),
     /** Page count, for PDFs. */
     pages: z.number().int().positive().optional(),
+    /**
+     * Set when the official host does not load from outside Pakistan and the page was read from a web
+     * archive snapshot instead: `url` stays the official page, `archive_url` is the snapshot and
+     * `fetched_at` is when the snapshot was taken.
+     */
+    fetched_via: z.literal("archive").optional(),
+    archive_url: SafeUrl.refine((u) => isArchiveUrl(u), { message: "archive_url must be a web archive snapshot" }).optional(),
   })
-  .strict();
+  .strict()
+  .refine((i) => !isArchiveUrl(i.url), { message: "url must be the official page, not an archive copy" })
+  .refine((i) => (i.fetched_via === "archive") === !!i.archive_url, { message: "fetched_via: archive and archive_url go together" });
 
 export const ServiceIndexChunk = z
   .object({

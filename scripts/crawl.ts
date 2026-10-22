@@ -11,6 +11,7 @@
  *   npx tsx scripts/crawl.ts                      verified and cert_issue sites
  *   npx tsx scripts/crawl.ts --sites fbr,dgip     only these registry ids
  *   npx tsx scripts/crawl.ts --include-unreachable  also sites our checker could not load (run from Pakistan)
+ *   npx tsx scripts/crawl.ts --via-archive --sites nadra,pta   read these sites from Wayback Machine snapshots
  *   options: --max-requests 120 --max-depth 3 --concurrency 10 --seeds urls.txt --seed-report out.json --dry
  *
  * Sites whose crawl fails keep the items they had, so a partial run (for example from a network
@@ -67,6 +68,9 @@ export interface Fetched {
   contentType: string;
   body?: Buffer;
   error?: string;
+  /** Archive mode: the snapshot the bytes came from, and when it was taken. */
+  archiveUrl?: string;
+  archivedAt?: Date;
 }
 
 function rawGet(url: string, opts: { insecure: boolean; maxBytes: number; timeoutMs: number; accept: string }): Promise<Fetched & { location?: string }> {
@@ -153,6 +157,107 @@ export function siteFetcher(limiter: HostLimiter, home: string, insecure: boolea
   return self;
 }
 
+// ── archive mode ─────────────────────────────────────────────────────────
+//
+// Many official hosts refuse connections from outside Pakistan. In archive mode (--via-archive) a
+// site is read from its Wayback Machine snapshots instead: the raw archived bytes (`id_`), never a
+// live request to the site. Items still link to the official URL; the snapshot is kept alongside in
+// archive_url (docs/SERVICE_INDEX.md § Archive mode). The site's own archived robots.txt is obeyed,
+// and requests to the archive are spaced out (one every ARCHIVE_DELAY_MS) across all sites.
+
+export const WAYBACK = "https://web.archive.org";
+export const ARCHIVE_HOST = "web.archive.org";
+export const ARCHIVE_DELAY_MS = 1500;
+/** Snapshots older than this are not used: an old copy is not evidence of what the site offers now. */
+export const ARCHIVE_MIN_TIMESTAMP = "20241001000000";
+
+/** Parses a Wayback snapshot URL into its timestamp and the original URL. */
+export function parseWayback(u: string): { ts: string; original: string } | undefined {
+  const m = u.match(/^https?:\/\/web\.archive\.org\/web\/(\d{14})(?:[a-z]{2}_)?\/(.+)$/);
+  if (!m) return undefined;
+  let original = m[2];
+  if (!/^https?:\/\//i.test(original)) original = original.replace(/^(https?):\/+/i, "$1://");
+  return { ts: m[1], original };
+}
+
+const waybackTime = (ts: string) => new Date(`${ts.slice(0, 4)}-${ts.slice(4, 6)}-${ts.slice(6, 8)}T${ts.slice(8, 10)}:${ts.slice(10, 12)}:${ts.slice(12, 14)}Z`);
+
+/** The official address of an archived original: the registry's scheme (https) on the same host, without :80/:443. */
+export function officialFromArchived(original: string, home: string): string | undefined {
+  try {
+    const o = new URL(original);
+    const h = new URL(home);
+    if (bareHost(o.hostname) !== bareHost(h.hostname)) return undefined;
+    o.protocol = h.protocol;
+    o.port = "";
+    return o.toString();
+  } catch {
+    return undefined;
+  }
+}
+
+/** A fetcher that reads a site's pages from the Wayback Machine (raw snapshots, closest to now). */
+export function archiveFetcher(limiter: HostLimiter, home: string, robots: () => Robots | undefined): SiteFetcher {
+  const self: SiteFetcher = {
+    requests: 0,
+    async get(url, kind) {
+      const r = robots();
+      const target = new URL(url);
+      if (kind !== "robots" && r && !r.allows(target.pathname + target.search)) return { status: 0, url, contentType: "", error: "disallowed by robots.txt" };
+      const now = new Date().toISOString().replace(/\D/g, "").slice(0, 14);
+      let current = `${WAYBACK}/web/${now}id_/${url}`; // the archive redirects to the snapshot closest to now
+      for (let hop = 0; hop < 6; hop++) {
+        await limiter.wait(ARCHIVE_HOST, ARCHIVE_DELAY_MS);
+        self.requests++;
+        const maxBytes = kind === "pdf" ? 15e6 : kind === "doc" ? 10e6 : kind === "sitemap" ? 8e6 : kind === "robots" ? 5e5 : 3e6;
+        const res = await rawGet(current, { insecure: false, maxBytes, timeoutMs: 60_000, accept: "*/*" });
+        if (res.status === 429) return { status: 0, url, contentType: "", error: "archive rate limit" };
+        if (res.location) {
+          const next = new URL(res.location, current).toString();
+          const snap = parseWayback(next);
+          if (!snap || !officialFromArchived(snap.original, home)) return { status: 0, url, contentType: "", error: "archived redirect leaves the site" };
+          current = next.replace(/\/web\/(\d{14})\//, "/web/$1id_/");
+          continue;
+        }
+        const snap = hop > 0 ? parseWayback(current) : undefined;
+        if (!snap) {
+          // the first request asks for the closest snapshot; the archive answers with a redirect, or
+          // serves it straight away and names it in Content-Location / Link headers we do not parse
+          return { status: res.status === 200 ? 0 : res.status, url, contentType: "", error: res.status === 200 ? "archive did not name the snapshot" : res.error ?? `not archived (${res.status})` };
+        }
+        if (snap.ts < ARCHIVE_MIN_TIMESTAMP) return { status: 404, url, contentType: "", error: `newest snapshot is from ${snap.ts.slice(0, 8)}` };
+        const official = officialFromArchived(snap.original, home) ?? url;
+        return { ...res, url: official, archiveUrl: `${WAYBACK}/web/${snap.ts}/${snap.original}`, archivedAt: waybackTime(snap.ts) };
+      }
+      return { status: 0, url, contentType: "", error: "too many redirects" };
+    },
+  };
+  return self;
+}
+
+/** Archived pages of a host (Wayback CDX index): unique URLs with a 200 capture since ARCHIVE_MIN_TIMESTAMP. */
+export async function archivedUrls(limiter: HostLimiter, home: string, limit = 3000): Promise<string[]> {
+  const host = bareHost(new URL(home).hostname);
+  const out = new Set<string>();
+  for (const h of [host, `www.${host}`]) {
+    await limiter.wait(ARCHIVE_HOST, ARCHIVE_DELAY_MS);
+    const q = `${WAYBACK}/cdx/search/cdx?url=${encodeURIComponent(`${h}/*`)}&output=json&fl=original,mimetype&filter=statuscode:200&collapse=urlkey&from=${ARCHIVE_MIN_TIMESTAMP.slice(0, 8)}&limit=${limit}`;
+    const r = await rawGet(q, { insecure: false, maxBytes: 2e7, timeoutMs: 120_000, accept: "application/json" });
+    if (r.status !== 200 || !r.body) continue;
+    try {
+      const rows = JSON.parse(r.body.toString("utf8")) as string[][];
+      for (const [original, mime] of rows.slice(1)) {
+        if (!/html|pdf|msword|officedocument/.test(mime ?? "")) continue;
+        const o = officialFromArchived(original, home);
+        if (o) out.add(o);
+      }
+    } catch {
+      // an empty or truncated index answer: fall back to links found on the pages
+    }
+  }
+  return [...out];
+}
+
 // ── PDFs ──────────────────────────────────────────────────────────────────
 
 async function readPdf(buf: Buffer): Promise<{ pages?: number; title?: string; text: string }> {
@@ -194,6 +299,8 @@ export interface CrawlOptions {
   siteTimeoutMs: number;
   seeds: string[];
   now: () => Date;
+  /** Read the site from web archive snapshots instead of the live host. */
+  viaArchive?: boolean;
 }
 
 const sha = (alg: "sha1" | "sha256", data: string | Buffer) => createHash(alg).update(data).digest("hex");
@@ -215,7 +322,7 @@ export async function crawlSite(site: OfficialSite, limiter: HostLimiter, opts: 
   const deadline = Date.now() + opts.siteTimeoutMs;
   let robots: Robots | undefined;
   let delayMs = 1000;
-  const f = siteFetcher(limiter, home, site.status === "cert_issue", () => delayMs, () => robots);
+  const f = opts.viaArchive ? archiveFetcher(limiter, home, () => robots) : siteFetcher(limiter, home, site.status === "cert_issue", () => delayMs, () => robots);
 
   // robots.txt first, from the homepage's origin
   const origin = new URL(home).origin;
@@ -259,6 +366,9 @@ export async function crawlSite(site: OfficialSite, limiter: HostLimiter, opts: 
   push(home, 0);
   for (const s of opts.seeds) push(s, 1, "", true);
 
+  // archive mode: the archive's own index of the site's pages stands in for its sitemaps
+  if (opts.viaArchive) for (const u of (await archivedUrls(limiter, home)).sort((a, b) => scoreLink(b) - scoreLink(a)).slice(0, 3000)) push(u, 1);
+
   // sitemaps: listed in robots.txt, else /sitemap.xml
   const maps = (robots.sitemaps.length ? robots.sitemaps : [`${origin}/sitemap.xml`]).filter((m) => {
     try {
@@ -267,7 +377,7 @@ export async function crawlSite(site: OfficialSite, limiter: HostLimiter, opts: 
       return false;
     }
   });
-  const mapQueue = maps.slice(0, 3);
+  const mapQueue = opts.viaArchive ? [] : maps.slice(0, 3);
   for (let i = 0; i < mapQueue.length && i < 5; i++) {
     const r = await f.get(mapQueue[i], "sitemap");
     if (r.status !== 200 || !r.body) continue;
@@ -307,7 +417,8 @@ export async function crawlSite(site: OfficialSite, limiter: HostLimiter, opts: 
     const finalUrl = canonicalUrl(r.url) ?? r.url;
     if (r.contentType.includes("pdf") || r.body.subarray(0, 5).toString("latin1") === "%PDF-") type = "pdf";
     else if (type === "html" && !/html|xml/.test(r.contentType) && r.contentType) continue;
-    const fetched_at = iso(opts.now());
+    const fetched_at = iso(r.archivedAt ?? opts.now());
+    const via = r.archiveUrl ? { fetched_via: "archive" as const, archive_url: r.archiveUrl } : {};
     const content_hash = sha("sha256", r.body);
 
     if (type === "html") {
@@ -324,7 +435,7 @@ export async function crawlSite(site: OfficialSite, limiter: HostLimiter, opts: 
       if (!citizen && !e.seed) continue;
       if (LISTS_PEOPLE.test(`${title} ${finalUrl}`) || personalDataReason(text)) continue;
       const excerpt = pickExcerpt([metaDescription(html), ...paragraphs(html)]);
-      add({ url: finalUrl, title: title.slice(0, 300), kind, type, language: detectLanguage(`${title} ${excerpt ?? ""} ${text.slice(0, 3000)}`), fetched_at, http_status: r.status, content_hash, ...(excerpt ? { excerpt } : {}) });
+      add({ url: finalUrl, title: title.slice(0, 300), kind, type, language: detectLanguage(`${title} ${excerpt ?? ""} ${text.slice(0, 3000)}`), fetched_at, http_status: r.status, content_hash, ...(excerpt ? { excerpt } : {}), ...via });
     } else if (type === "pdf") {
       result.pdfs++;
       const pdf = await readPdf(r.body).catch(() => ({ text: "", pages: undefined, title: undefined }));
@@ -334,13 +445,13 @@ export async function crawlSite(site: OfficialSite, limiter: HostLimiter, opts: 
       if (!title || LISTS_PEOPLE.test(`${title} ${anchor}`)) continue;
       const { kind } = classify(finalUrl, title, anchor);
       const excerpt = pickExcerpt([lines.join(" ")]);
-      add({ url: finalUrl, title: title.slice(0, 300), kind, type, language: detectLanguage(`${title} ${pdf.text.slice(0, 3000)}`), fetched_at, http_status: r.status, content_hash, size: r.body.length, ...(pdf.pages ? { pages: pdf.pages } : {}), ...(excerpt && excerptIsClean(excerpt) ? { excerpt } : {}) });
+      add({ url: finalUrl, title: title.slice(0, 300), kind, type, language: detectLanguage(`${title} ${pdf.text.slice(0, 3000)}`), fetched_at, http_status: r.status, content_hash, size: r.body.length, ...(pdf.pages ? { pages: pdf.pages } : {}), ...(excerpt && excerptIsClean(excerpt) ? { excerpt } : {}), ...via });
     } else {
       result.docs++;
       const title = anchor && !GENERIC_ANCHOR.test(anchor) && anchor.length >= 4 ? anchor : fileName(finalUrl);
       if (!title) continue;
       const { kind } = classify(finalUrl, title, anchor);
-      add({ url: finalUrl, title: title.slice(0, 300), kind, type: "doc", language: detectLanguage(title), fetched_at, http_status: r.status, content_hash, size: r.body.length });
+      add({ url: finalUrl, title: title.slice(0, 300), kind, type: "doc", language: detectLanguage(title), fetched_at, http_status: r.status, content_hash, size: r.body.length, ...via });
     }
   }
   result.items = dropSiteBoilerplate(result.items);
@@ -408,7 +519,8 @@ async function main() {
   };
   const num = (k: string, d: number) => Number(arg(k) ?? d);
   const only = arg("sites")?.split(",");
-  const includeUnreachable = args.includes("--include-unreachable");
+  const viaArchive = args.includes("--via-archive");
+  const includeUnreachable = args.includes("--include-unreachable") || viaArchive;
   const registry = loadRegistry();
   const levelOf = new Map(registry.map((s) => [s.id, s.level]));
   if (args.includes("--prune")) {
@@ -463,6 +575,7 @@ async function main() {
     siteTimeoutMs: num("site-minutes", 12) * 60_000,
     seeds: seedsFor(s),
     now: () => new Date(),
+    viaArchive,
   });
   const limiter = new HostLimiter();
   const dry = args.includes("--dry");

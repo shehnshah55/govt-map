@@ -125,8 +125,12 @@ export function serviceResults(ctx: Ctx, hits: readonly ServiceHit[], total: num
     const host = hostOf(it.url).split("/")[0];
     return html`<li class="rel" data-kind="${it.kind}"><div class="verb">${KIND_LABEL[it.kind]}${it.type === "pdf" ? " · PDF" : it.type === "doc" ? " · Word" : ""}</div><div>
       <a href="${href}" target="_blank" rel="noopener noreferrer" dir="auto"${it.language === "ur" ? html` lang="ur"` : ""}><b>${it.title}</b></a>
-      <div class="hint">${department(ctx, it)} · <span class="mono">${host}</span> · checked <span class="num">${it.fetched_at.slice(0, 10)}</span>${it.pages ? ` · ${it.pages} page${it.pages === 1 ? "" : "s"}` : ""}${it.size && it.type !== "html" ? ` · ${sizeLabel(it.size)}` : ""}</div>
-      ${it.excerpt ? html`<div class="desc" dir="auto">“${it.excerpt}”</div>` : ""}</div></li>`;
+      <div class="hint">${department(ctx, it)} · <span class="mono">${host}</span> · ${it.archive_url ? "archived" : "checked"} <span class="num">${it.fetched_at.slice(0, 10)}</span>${it.pages ? ` · ${it.pages} page${it.pages === 1 ? "" : "s"}` : ""}${it.size && it.type !== "html" ? ` · ${sizeLabel(it.size)}` : ""}</div>
+      ${it.excerpt ? html`<div class="desc" dir="auto">“${it.excerpt}”</div>` : ""}${
+        it.archive_url
+          ? html`<div class="hint">Read from a <a href="${safeHref(it.archive_url)}" target="_blank" rel="noopener noreferrer">web archive copy</a> taken on <span class="num">${it.fetched_at.slice(0, 10)}</span>: the official site does not load from outside Pakistan. Always confirm on the official page.</div>`
+          : ""
+      }</div></li>`;
   })}</ol>`;
 }
 

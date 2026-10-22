@@ -188,3 +188,27 @@ describe("notices addressed to a named person", () => {
     expect(LISTS_PEOPLE.test("Domicile certificate procedure")).toBe(false);
   });
 });
+
+describe("archive mode (sites that do not load from outside Pakistan)", () => {
+  it("parses Wayback snapshot URLs", async () => {
+    const { parseWayback } = await import("../scripts/crawl.ts");
+    expect(parseWayback("https://web.archive.org/web/20261017104654id_/https://www.nadra.gov.pk/")).toEqual({ ts: "20261017104654", original: "https://www.nadra.gov.pk/" });
+    expect(parseWayback("https://web.archive.org/web/20250714115630/http://fesco.com.pk/a?b=1")).toEqual({ ts: "20250714115630", original: "http://fesco.com.pk/a?b=1" });
+    expect(parseWayback("https://example.com/web/1/x")).toBeUndefined();
+  });
+
+  it("maps archived originals back to the official https address on the same host only", async () => {
+    const { officialFromArchived } = await import("../scripts/crawl.ts");
+    expect(officialFromArchived("http://www.weboc.gov.pk:80/x.pdf", "https://weboc.gov.pk/")).toBe("https://www.weboc.gov.pk/x.pdf");
+    expect(officialFromArchived("https://elsewhere.com/x", "https://weboc.gov.pk/")).toBeUndefined();
+  });
+
+  it("archived items keep the official url and carry the snapshot", async () => {
+    const { ServiceItem } = await import("../src/schema.ts");
+    const base = { id: "0123456789ab", title: "CNIC fee", site_id: "nadra", body_id: "fed-nadra", kind: "fee", type: "html", language: "en", fetched_at: "2026-10-17T10:46:54Z", http_status: 200, content_hash: "a".repeat(64) };
+    const snap = "https://web.archive.org/web/20261017104654/https://www.nadra.gov.pk/fees/";
+    expect(ServiceItem.safeParse({ ...base, url: "https://www.nadra.gov.pk/fees/", fetched_via: "archive", archive_url: snap }).success).toBe(true);
+    expect(ServiceItem.safeParse({ ...base, url: snap }).success).toBe(false);
+    expect(ServiceItem.safeParse({ ...base, url: "https://www.nadra.gov.pk/fees/", archive_url: snap }).success).toBe(false);
+  });
+});
