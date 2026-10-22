@@ -87,6 +87,23 @@ export const ALLEGATION_STATUSES: readonly string[] = ["pending", "stayed", "wit
  * charge, its outcome (status) with the date that outcome is stated as of and the source for it, and
  * at least one cited source; none of them may be an encyclopedia.
  */
+/**
+ * A link or title that looks like a copy of an FIR (a scan, photo or PDF of the report itself) rather
+ * than a court record, an official release or a news report about it. FIR copies carry the names and
+ * addresses of complainants and witnesses, so they are never linked (docs/EDITORIAL_POLICY.md, FIRs
+ * and privacy): an FIR is cited by its number and police station as reported.
+ */
+const FIR_COPY = [
+  /\bfir[\s_-]*(?:copy|copies|scan|scanned|image|photo|pdf)\b/i,
+  /\b(?:copy|scan|scanned|photo|image)[\s_-]*(?:of[\s_-]*)?(?:the[\s_-]*)?fir\b/i,
+  /\bfirst[\s_-]*information[\s_-]*report[\s_-]*(?:copy|scan)\b/i,
+  // a document or image file whose name says FIR: fir.pdf, FIR_123-2023.jpg, scanned-fir-no-45.png
+  /(?:^|[/_.-])fir(?:[\s_.-][^/?#]*)?\.(?:pdf|jpe?g|png|gif|webp|tiff?)(?:[?#]|$)/i,
+];
+export function looksLikeFirCopy(...texts: (string | undefined)[]): boolean {
+  return texts.some((t) => !!t && FIR_COPY.some((re) => re.test(t.replace(/%20/g, " "))));
+}
+
 export function caseProblems(c: LegalCase): string[] {
   const out: string[] = [];
   if (!c.charges?.trim()) out.push("no charge");
@@ -97,6 +114,7 @@ export function caseProblems(c: LegalCase): string[] {
   else if (isEncyclopediaUrl(c.status_source?.url)) out.push("status_source is an encyclopedia");
   if (!c.sources?.length || !c.sources.every((s) => isHttpUrl(s.url))) out.push("a source without a URL");
   if (c.sources?.some((s) => isEncyclopediaUrl(s.url))) out.push("an encyclopedia source");
+  if (looksLikeFirCopy(c.status_source?.url, c.status_source?.title) || c.sources?.some((s) => looksLikeFirCopy(s.url, s.title, s.archive_url))) out.push("a source that looks like an FIR copy");
   out.push(...timelineProblems(c.timeline));
   return out;
 }
@@ -120,6 +138,7 @@ export function timelineProblems(timeline: LegalCase["timeline"]): string[] {
     if (!e.description?.trim()) out.push(`${at}: no description`);
     if (!isHttpUrl(e.source_url)) out.push(`${at}: no source_url`);
     else if (isEncyclopediaUrl(e.source_url)) out.push(`${at}: source_url is an encyclopedia`);
+    if (looksLikeFirCopy(e.source_url, e.source_title)) out.push(`${at}: source looks like an FIR copy; cite the FIR by number and police station instead`);
     if (!e.source_type) out.push(`${at}: no source_type`);
     const prev = timeline[i - 1];
     if (prev?.date && e.date && dateBefore(prev.date, e.date)) out.push(`${at}: ${e.date} is out of order (after ${prev.date})`);

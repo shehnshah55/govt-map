@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 import { compile } from "../scripts/compile.ts";
 import { toCsvExports, toPopolo } from "../scripts/exports.ts";
-import { caseProblems, timelineProblems, isAssetSource, isEncyclopediaUrl, LICENCE, PUBLISH, publicGraph, publishedCaseProblems } from "../src/lib/policy.ts";
+import { caseProblems, timelineProblems, isAssetSource, isEncyclopediaUrl, looksLikeFirCopy, LICENCE, PUBLISH, publicGraph, publishedCaseProblems } from "../src/lib/policy.ts";
 import { Person } from "../src/schema.ts";
 
 const DATA = new URL("../data", import.meta.url).pathname;
@@ -160,5 +160,45 @@ describe("family ties", () => {
     const yaml = `people:\n  - { id: private-relative, name: Private Relative, roles: [], as_of: "2026-09" }\n${tie(people[0], "private-relative", `{ title: "Official", url: "https://www.na.gov.pk/x" }`)}`;
     expect(run(yaml).some((e) => e.includes("holds no public or party office"))).toBe(true);
     expect(run(tie(people[0], "nobody-by-this-id", `{ title: "Official", url: "https://www.na.gov.pk/x" }`)).some((e) => e.includes("unknown person"))).toBe(true);
+  });
+});
+
+describe("FIR copies are never linked (EDITORIAL_POLICY: FIRs and privacy)", () => {
+  it("recognises links and titles of FIR scans, photos and PDFs", () => {
+    for (const t of [
+      "https://example.gov.pk/uploads/FIR-copy-123.pdf",
+      "https://x.pk/docs/fir.pdf",
+      "https://x.pk/docs/FIR_45_2023.jpg",
+      "https://x.pk/scanned-fir-no-45.png",
+      "https://x.pk/files/FIR%20No%2012.pdf",
+      "Copy of the FIR",
+      "Scanned FIR",
+      "FIR copy obtained by Dawn",
+      "First Information Report copy",
+    ])
+      expect(looksLikeFirCopy(t), t).toBe(true);
+  });
+
+  it("allows reports about an FIR, court records and ordinary documents", () => {
+    for (const t of [
+      "https://www.dawn.com/news/1700000/fir-registered-against-pti-leaders",
+      "FIR registered at Civil Lines police station",
+      "https://www.supremecourt.gov.pk/downloads_judgements/c.p._1_2023.pdf",
+      "https://x.gov.pk/firearms-licence.pdf",
+      "https://x.gov.pk/affirmation.pdf",
+      "https://x.gov.pk/fir-procedure",
+    ])
+      expect(looksLikeFirCopy(t), t).toBe(false);
+  });
+
+  it("fails the gate for a timeline event or case source that links an FIR copy", () => {
+    const ev = { date: "2020-01-02", type: "fir" as const, description: "d", source_url: "https://x.pk/uploads/fir-copy.pdf", source_type: "news" as const };
+    expect(timelineProblems([ev]).join()).toMatch(/FIR copy/);
+    expect(timelineProblems([{ ...ev, source_url: "https://www.dawn.com/news/1", source_title: "Scanned FIR" }]).join()).toMatch(/FIR copy/);
+    expect(timelineProblems([{ ...ev, source_url: "https://www.dawn.com/news/1", source_title: "FIR lodged" }])).toEqual([]);
+  });
+
+  it("no published case links one", () => {
+    for (const c of publicGraph(full).people.flatMap((p) => p.legal_cases ?? [])) expect(caseProblems(c), c.title).toEqual([]);
   });
 });
