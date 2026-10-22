@@ -170,34 +170,34 @@ Citations with an `accessed` date: 13 / 179 (7%).
 
 ## Service index
 
-4,584 official pages and documents in `data/service-index/` (2.15 MB before compression; the build gate checks the gzipped size), from 126 of the 224 registry websites, fetched between 2026-10-21 and 2026-10-21. 140 websites are reachable from outside Pakistan and tied to a body; the rest need a crawl from a Pakistani network (docs/SERVICE_INDEX.md).
+4,606 official pages and documents in `data/service-index/` (2.16 MB before compression; the build gate checks the gzipped size), from 127 of the 224 registry websites, fetched between 2026-10-21 and 2026-10-22. 140 websites are reachable from outside Pakistan and tied to a body; the rest need a crawl from a Pakistani network (docs/SERVICE_INDEX.md).
 
 | Kind | Items |
 |---|---:|
-| form | 466 / 4,584 (10%) |
-| fee | 180 / 4,584 (4%) |
-| procedure | 710 / 4,584 (15%) |
-| contact | 265 / 4,584 (6%) |
-| notification | 1,560 / 4,584 (34%) |
-| other | 1,403 / 4,584 (31%) |
+| form | 469 / 4,606 (10%) |
+| fee | 180 / 4,606 (4%) |
+| procedure | 712 / 4,606 (15%) |
+| contact | 265 / 4,606 (6%) |
+| notification | 1,574 / 4,606 (34%) |
+| other | 1,406 / 4,606 (31%) |
 
 | Type | Items |
 |---|---:|
-| html | 2,663 / 4,584 (58%) |
-| pdf | 1,822 / 4,584 (40%) |
-| doc | 99 / 4,584 (2%) |
+| html | 2,667 / 4,606 (58%) |
+| pdf | 1,838 / 4,606 (40%) |
+| doc | 101 / 4,606 (2%) |
 
 | Language | Items |
 |---|---:|
-| en | 4,488 / 4,584 (98%) |
-| ur | 57 / 4,584 (1%) |
-| mixed | 39 / 4,584 (<1%) |
+| en | 4,510 / 4,606 (98%) |
+| ur | 57 / 4,606 (1%) |
+| mixed | 39 / 4,606 (<1%) |
 
 ### By government
 
 | Government | Websites with items | Items |
 |---|---:|---:|
-| federal | 76 of 121 | 2,929 |
+| federal | 77 of 121 | 2,951 |
 | ict | 5 of 8 | 178 |
 | punjab | 5 of 28 | 201 |
 | sindh | 13 of 21 | 427 |
