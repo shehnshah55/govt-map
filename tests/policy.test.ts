@@ -98,7 +98,7 @@ describe("what the public build contains", () => {
     expect(full.people.filter((p) => p.legal_cases?.length).length).toBeGreaterThan(0);
   });
 
-  it("strips Wikipedia and Britannica citations from the published graph (§0.2.2)", () => {
+  it("strips Wikipedia and Britannica citations from the published graph (EDITORIAL_POLICY: Sources, rule 4)", () => {
     expect(isEncyclopediaUrl("https://en.wikipedia.org/wiki/Pakistan")).toBe(true);
     expect(isEncyclopediaUrl("https://www.britannica.com/place/Pakistan")).toBe(true);
     expect(isEncyclopediaUrl("https://www.dawn.com/news/1")).toBe(false);
@@ -116,7 +116,7 @@ describe("what the public build contains", () => {
   });
 });
 
-describe("declared assets (§1.5: ECP only)", () => {
+describe("declared assets (ECP only)", () => {
   const person = (url: string) => ({
     id: "x",
     name: "X",

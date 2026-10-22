@@ -40,7 +40,7 @@ import { electionSections, electionTags, form45Panel } from "./election-labels.t
 import { familySection } from "./families.ts";
 import type { Human } from "../lib/graph-index.ts";
 
-/** Career records as far as the data goes (§7.14). Each figure says what it is based on. */
+/** Career records as far as the data goes. Each figure says what it is based on. */
 function careerFacts(ctx: Ctx, person: Human) {
   const { ix } = ctx;
   const c = careerSummary(ix, person);

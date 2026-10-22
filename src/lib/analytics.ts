@@ -5,7 +5,7 @@
  * Each bar chart is a grouping of record ids, so the same function gives both the count and the
  * evidence behind it (#/figures/<figure>/<key>). Figures that need data the project doesn't have
  * yet (past election results, party histories, ECP asset statements) report what is missing
- * instead of ranking an incomplete set (§7.14 rule 4).
+ * instead of ranking an incomplete set.
  */
 import type { GraphIndex, Human, Org, Post } from "./graph-index.ts";
 import { isAssetSource } from "./policy.ts";
@@ -255,7 +255,7 @@ export function pmTimeline(ix: GraphIndex) {
   return { terms, start: terms[0]?.since, end, gaps };
 }
 
-// ── Figures that wait for data (§7.14 career records and declared assets) ─────
+// ── Figures that wait for data (career records and declared assets) ─────
 
 export interface Readiness {
   id: string;
@@ -276,7 +276,7 @@ export const ASSET_THRESHOLD = 0.9;
 
 
 
-/** Statements that may be used in asset figures: ECP publications only (§1.5), annual statements only. */
+/** Statements that may be used in asset figures: ECP publications only (docs/EDITORIAL_POLICY.md, Declared assets), annual statements only. */
 export function ecpStatements(ix: GraphIndex) {
   return ix.g.people.flatMap((p) =>
     (p.declared_assets ?? []).filter((a) => isAssetSource(a.source.url) && /annual/i.test(a.basis)).map((a) => ({ person: p, ...a })),

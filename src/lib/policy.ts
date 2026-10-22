@@ -15,7 +15,7 @@ export const PUBLISH = {
    * everything else stays in data/ (docs/EDITORIAL_POLICY.md).
    */
   legalCases: true,
-  /** SS, 2 October 2026: "not legally elected" labels are live from launch, always with their evidence. Part of the lawyer review (§10). */
+  /** SS, 2 October 2026: "not legally elected" labels are live from launch, always with their evidence. Part of the lawyer review. */
   form45Labels: true,
 } as const;
 
@@ -27,7 +27,7 @@ export const LICENCE = {
   attribution: PUBLISHER,
 } as const;
 
-/** §1.5: declared assets come only from ECP publications. Add a Gazette host here once one is confirmed to publish the statements. */
+/** Declared assets come only from ECP publications (docs/EDITORIAL_POLICY.md, Declared assets). Add a Gazette host here once one is confirmed to publish the statements. */
 export const ASSET_SOURCE_HOSTS: readonly string[] = ["ecp.gov.pk"];
 
 const onHost = (url: string | undefined, hosts: readonly string[]) => {
@@ -52,7 +52,7 @@ export const isArchiveUrl = (url: string | undefined): boolean => onHost(url, AR
 /** Election result documents (Form 45, Form 47) come only from the ECP. */
 export const isEcpSource = (url: string | undefined): boolean => onHost(url, ["ecp.gov.pk"]);
 
-/** §0.2.2: encyclopedias must not ship as citations. Authored YAML may still hold them until replaced. */
+/** Encyclopedias must not ship as citations (docs/EDITORIAL_POLICY.md, Sources, rule 4). Authored YAML may still hold them until replaced. */
 const ENCYCLOPEDIA_HOST = /wikipedia\.org|britannica\.com/i;
 
 export function isEncyclopediaUrl(url: string | undefined): boolean {
@@ -168,7 +168,7 @@ export function publicGraph(g: Graph): Graph {
         }
       }
       if (person.declared_assets) {
-        // Encyclopedia URLs cannot be asset sources (§1.5 + §0.2.2); drop the figure if its only citation is one.
+        // Encyclopedia URLs cannot be asset sources (EDITORIAL_POLICY: Declared assets; Sources, rule 4); drop the figure if its only citation is one.
         const assets = person.declared_assets
           .map((a) => {
             const source = keepSource(a.source);

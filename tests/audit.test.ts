@@ -10,7 +10,7 @@ describe("coverage audit", () => {
     expect(audit().md).toMatch(/\*\*Reference date: \d{4}-\d{2}-\d{2}\*\*/);
   });
 
-  it("classifies sources by the §0.2 hierarchy", () => {
+  it("classifies sources by the EDITORIAL_POLICY source hierarchy", () => {
     expect(sourceLevel("www.ecp.gov.pk")).toBe("1");
     expect(sourceLevel("pakistancode.gov.pk")).toBe("1");
     expect(sourceLevel("sbp.org.pk")).toBe("1");

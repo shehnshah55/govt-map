@@ -230,7 +230,7 @@ for (const [q, host] of [
   test(`find a service searches official pages: ${q}`, async ({ page }) => {
     const problems = watch(page);
     const offsite: string[] = [];
-    page.on("request", (r) => new URL(r.url()).host !== "localhost:4173" && offsite.push(r.url()));
+    page.on("request", (r) => new URL(r.url()).host !== `localhost:${process.env.E2E_PORT ?? 4173}` && offsite.push(r.url()));
     await page.goto(`#/find?q=${encodeURIComponent(q)}`);
     const results = page.locator("#service-results li");
     await expect(results.first()).toBeVisible();

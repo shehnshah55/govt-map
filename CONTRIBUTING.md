@@ -21,7 +21,7 @@ By contributing data you agree that it is released under CC BY 4.0 ([LICENSE-DAT
 npm install
 npm run validate   # schema + referential integrity
 npm test           # data and query tests
-npm run build && npm run test:e2e   # browser and accessibility tests (set CHROME_PATH to a local Chrome or Chromium)
+npm run build && npm run test:e2e   # browser and accessibility tests (set CHROME_PATH to a local Chrome or Chromium; E2E_PORT if 4173 is taken)
 npm run dev        # local site at http://localhost:5173
 ```
 
