@@ -7,6 +7,8 @@
 # status is the result of the last check (GET, following redirects, retried once):
 #   verified             the homepage loaded
 #   cert_issue           it loads, but the server sends an incomplete TLS certificate chain
+#   verified_via_archive it did not load from outside Pakistan, but a Wayback Machine snapshot of the
+#                        official homepage taken since October 2024 shows the site (archive_url)
 #   unreachable_from_ci  an automated check could not load it (often: blocks networks outside
 #                        Pakistan). Kept, not dropped, until checked by hand.
 # The weekly freshness workflow re-checks every URL here.
@@ -45,9 +47,11 @@ official_sites:
     level: federal
     category: government
     body_id: fed-agp
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20261017023052/https://agp.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2026-10-17 shows the official homepage (page title “AUDITOR-GENERAL OF PAKISTAN”)"
   - id: bisp
     name: "Benazir Income Support Programme"
     url: https://bisp.gov.pk/
@@ -162,9 +166,11 @@ official_sites:
     category: government
     body_id: fed-ecp
     services: ["vote", "voter registration", "vote ka pata", "8300", "polling station", "electoral roll", "ووٹ", "انتخابات", "election", "elections"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "HTTP 500 when checked"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20260228073903/https://ecp.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (HTTP 500); the Wayback Machine snapshot taken 2026-02-28 shows the official homepage (page title “Election Commission of Pakistan”)"
   - id: eobi
     name: "Employees' Old-Age Benefits Institution"
     url: https://eobi.gov.pk/
@@ -172,18 +178,22 @@ official_sites:
     category: social_protection
     body_id: fed-eobi
     services: ["EOBI", "old-age pension", "pension", "پنشن", "budhapa pension"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20261017144617/http://www.eobi.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2026-10-17 shows the official homepage (page title “EOBI”)"
   - id: establishment
     name: "Establishment Division"
     url: https://establishment.gov.pk/
     level: federal
     category: government
     body_id: fed-establishment-division
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "HTTP 500 when checked"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20260227122907/https://establishment.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (HTTP 500); the Wayback Machine snapshot taken 2026-02-27 shows the official homepage (page title “Establishment Division”)"
   - id: fesco
     name: "Faisalabad Electric Supply Company"
     url: https://fesco.com.pk/
@@ -191,19 +201,22 @@ official_sites:
     category: utilities
     body_id: fed-discos
     services: ["FESCO bill", "electricity bill Faisalabad", "new connection"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20250714115630/https://fesco.com.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2025-07-14 shows the official homepage (page title “Home | FESCO”)"
   - id: fbise
     name: "Federal Board of Intermediate & Secondary Education"
-    url: https://fbise.edu.pk/
+    url: https://www.fbise.edu.pk/
     level: federal
     category: jobs_education
     body_id: fed-fbise
     services: ["matric", "intermediate", "FBISE result", "certificate verification", "board result"]
-    status: unreachable_from_ci
+    status: verified
     checked: "2026-10-21"
-    notes: "HTTP 403 when checked"
+    fetched_via: direct
+    notes: "https://www.fbise.edu.pk/ loaded directly on 2026-10-21; the bare host fbise.edu.pk returns HTTP 403"
   - id: fbr
     name: "Federal Board of Revenue"
     name_ur: "فیڈرل بورڈ آف ریونیو"
@@ -239,8 +252,11 @@ official_sites:
     category: jobs_education
     body_id: fed-fpsc
     services: ["CSS", "CSS exam", "federal jobs", "FPSC jobs", "سی ایس ایس", "government job", "sarkari naukri", "سرکاری نوکری"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20261013002352/https://fpsc.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (Not reachable); the Wayback Machine snapshot taken 2026-10-13 shows the official homepage"
   - id: federalshariatcourt
     name: "Federal Shariat Court"
     name_ur: "وفاقی شرعی عدالت"
@@ -267,9 +283,11 @@ official_sites:
     category: utilities
     body_id: fed-discos
     services: ["GEPCO bill", "electricity bill Gujranwala", "new connection"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20251009173347/https://gepco.com.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2025-10-09 shows the official homepage (page title “GEPCO”)"
   - id: hsa
     name: "Health Services Academy"
     url: https://www.hsa.edu.pk/
@@ -285,9 +303,11 @@ official_sites:
     category: jobs_education
     body_id: fed-hec
     services: ["degree attestation", "degree verification", "HEC attestation", "equivalence", "scholarship", "ڈگری تصدیق", "degree ki tasdeeq"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20261007051649/https://www.hec.gov.pk/english/Pages/default.aspx
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2026-10-07 shows the official homepage (page title “English Home”)"
   - id: hesco
     name: "Hyderabad Electric Supply Company"
     url: https://hesco.gov.pk/
@@ -295,9 +315,11 @@ official_sites:
     category: utilities
     body_id: fed-discos
     services: ["HESCO bill", "electricity bill Hyderabad", "new connection"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20250404165029/http://www.hesco.gov.pk/index2.asp
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2025-04-04 shows the official homepage (page title “Hyderabad Electric Supply Company :: HESCO”)"
   - id: ipo
     name: "Intellectual Property Organization of Pakistan"
     url: https://www.ipo.gov.pk/
@@ -348,9 +370,11 @@ official_sites:
     level: federal
     category: government
     body_id: fed-min-commerce
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "HTTP 403 when checked"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20260404085725/https://www.commerce.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (HTTP 403); the Wayback Machine snapshot taken 2026-04-04 shows the official homepage (page title “Ministry of Commerce | Government of Pakistan”)"
   - id: communications
     name: "Ministry of Communications"
     url: https://communications.gov.pk/
@@ -466,9 +490,11 @@ official_sites:
     level: federal
     category: government
     body_id: fed-min-interior
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "HTTP 404 when checked"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20250309235535/https://www.interior.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (HTTP 404); the Wayback Machine snapshot taken 2025-03-09 shows the official homepage (page title “Home - Ministry of Interior”)"
   - id: moitt
     name: "Ministry of IT & Telecommunication"
     url: https://moitt.gov.pk/
@@ -597,9 +623,10 @@ official_sites:
     category: legislature
     body_id: fed-national-assembly
     services: ["National Assembly", "MNA", "قومی اسمبلی"]
-    status: unreachable_from_ci
+    status: verified
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: direct
+    notes: "Loaded directly from a network outside Pakistan on 2026-10-21; earlier automated checks saw TLS resets, so it may be intermittent"
   - id: nacta
     name: "National Counter Terrorism Authority"
     url: https://www.nacta.gov.pk/
@@ -615,9 +642,11 @@ official_sites:
     category: identity_travel
     body_id: fed-nadra
     services: ["CNIC", "ID card", "identity card", "shanakhti card", "شناختی کارڈ", "NICOP", "B-Form", "form B", "bay form", "ب فارم", "family registration certificate", "FRC", "POC", "smart card"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "HTTP 403 when checked"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20261017104654/https://www.nadra.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (HTTP 403); the Wayback Machine snapshot taken 2026-10-17 shows the official homepage (page title “NADRA”)"
   - id: ndma
     name: "National Disaster Management Authority"
     url: https://ndma.gov.pk/
@@ -658,9 +687,11 @@ official_sites:
     category: government
     body_id: fed-nha
     services: ["highway toll", "M-tag", "motorway toll"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "HTTP 403 when checked"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20261015220733/https://nha.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (HTTP 403); the Wayback Machine snapshot taken 2026-10-15 shows the official homepage (page title “NHA”)"
   - id: nhmp
     name: "National Highways & Motorway Police"
     url: https://nhmp.gov.pk/
@@ -714,9 +745,11 @@ official_sites:
     level: federal
     category: government
     body_id: fed-air-force
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20250718044021/https://paf.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2025-07-18 shows the official homepage (page title “Pakistan AirForce”)"
   - id: pakistanarmy
     name: "Pakistan Army"
     url: https://www.pakistanarmy.gov.pk/
@@ -760,9 +793,10 @@ official_sites:
     level: federal
     category: law_justice
     services: ["federal laws", "act", "ordinance", "قانون"]
-    status: unreachable_from_ci
+    status: verified
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: direct
+    notes: "Loaded directly from a network outside Pakistan on 2026-10-21; earlier automated checks saw TLS resets, so it may be intermittent"
   - id: pemra
     name: "Pakistan Electronic Media Regulatory Authority"
     url: https://pemra.gov.pk/
@@ -816,9 +850,11 @@ official_sites:
     level: federal
     category: government
     body_id: fed-navy
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "HTTP 403 when checked"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20251104000129/https://www.paknavy.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (HTTP 403); the Wayback Machine snapshot taken 2025-11-04 shows the official homepage (page title “PAKISTAN NAVY”)"
   - id: pnra
     name: "Pakistan Nuclear Regulatory Authority"
     url: https://pnra.org/
@@ -863,9 +899,11 @@ official_sites:
     category: regulators
     body_id: fed-pta
     services: ["PTA", "mobile registration", "phone registration", "PTA tax", "SIM", "complaint against telecom", "پی ٹی اے"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20261009052820/https://www.pta.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2026-10-09 shows the official homepage (page title “Home”)"
   - id: pakistantradeportal
     name: "Pakistan Trade Portal"
     url: https://pakistantradeportal.gov.pk/
@@ -893,9 +931,11 @@ official_sites:
     body_id: fed-power-division
     services: ["electricity bill", "bijli ka bill", "بجلی کا بل", "duplicate bill", "bill check"]
     portal: true
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20250717094239/https://bill.pitc.com.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2025-07-17 shows the official homepage (page title “PITC Web Bill Service”)"
   - id: pass
     name: "Poverty Alleviation & Social Safety Division"
     url: https://pass.gov.pk/
@@ -943,9 +983,11 @@ official_sites:
     body_id: fed-pta
     services: ["IMEI", "phone blocked", "mobile blocked", "PTA approved", "device registration", "DIRBS", "phone check"]
     portal: true
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20250523073959/http://dirbs.pta.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2025-05-23 shows the official homepage (page title “DVS | About Dirbs”)"
   - id: ppra
     name: "Public Procurement Regulatory Authority"
     url: https://ppra.gov.pk/
@@ -962,9 +1004,11 @@ official_sites:
     category: utilities
     body_id: fed-discos
     services: ["QESCO bill", "electricity bill Quetta", "new connection"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20250405000701/http://www.qesco.com.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2025-04-05 shows the official homepage (page title “Home”)"
   - id: radio
     name: "Radio Pakistan"
     url: https://radio.gov.pk/
@@ -979,9 +1023,11 @@ official_sites:
     category: government
     body_id: fed-secp
     services: ["company registration", "register a company", "SECP", "کمپنی رجسٹریشن", "eServices company"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "HTTP 403 when checked"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20261009005928/https://www.secp.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (HTTP 403); the Wayback Machine snapshot taken 2026-10-09 shows the official homepage (page title “Securities & Exchange Commission of Pakistan (SECP)”)"
   - id: sehatsahulat
     name: "Sehat Sahulat Programme (Prime Minister's National Health Programme)"
     url: https://sehatsahulat.gov.pk/
@@ -1046,9 +1092,11 @@ official_sites:
     category: utilities
     body_id: fed-discos
     services: ["SEPCO bill", "electricity bill Sukkur", "new connection"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20250714000339/https://sepco.com.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2025-07-14 shows the official homepage (page title “SEPCO | Home”)"
   - id: supremecourt
     name: "Supreme Court of Pakistan"
     name_ur: "عدالتِ عظمیٰ پاکستان"
@@ -1057,9 +1105,11 @@ official_sites:
     category: law_justice
     body_id: fed-supreme-court
     services: ["case status", "cause list", "Supreme Court judgment"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "HTTP 403 when checked"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20261006133202/https://www.supremecourt.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (HTTP 403); the Wayback Machine snapshot taken 2026-10-06 shows the official homepage (page title “Supreme Court of Pakistan – Supreme Court of Pakistan”)"
   - id: tdap
     name: "Trade Development Authority of Pakistan"
     url: https://tdap.gov.pk/
@@ -1076,9 +1126,11 @@ official_sites:
     category: utilities
     body_id: fed-discos
     services: ["TESCO bill", "electricity bill tribal areas"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20250323173708/http://tesco.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2025-03-23 shows the official homepage (page title “TESCO”)"
   - id: mohtasib
     name: "Wafaqi Mohtasib (Federal Ombudsman)"
     url: https://mohtasib.gov.pk/
@@ -1143,9 +1195,11 @@ official_sites:
     category: jobs_education
     body_id: fed-fde
     services: ["Islamabad schools", "school admission Islamabad"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "HTTP 403 when checked"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20260419025307/http://fde.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (HTTP 403); the Wayback Machine snapshot taken 2026-04-19 shows the official homepage"
   - id: ictadministration
     name: "Islamabad Capital Territory Administration"
     url: https://ictadministration.gov.pk/
@@ -1207,9 +1261,11 @@ official_sites:
     level: punjab
     category: government
     body_id: pb-cm-office
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20250213062352/http://www.cmpunjab.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2025-02-13 shows the official homepage (page title “Chief Minister's Secretariat”)"
   - id: ekhidmatmarkaz-punjab
     name: "e-Khidmat Markaz Punjab"
     url: https://ekhidmatmarkaz.punjab.gov.pk/
@@ -1235,18 +1291,22 @@ official_sites:
     level: punjab
     category: government
     body_id: pb-government
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20260518102721/https://www.punjab.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2026-05-18 shows the official homepage (page title “Welcome to Punjab Portal | Punjab Portal”)"
   - id: labour-punjab
     name: "Labour & Human Resource Department, Punjab"
     url: https://labour.punjab.gov.pk/
     level: punjab
     category: social_protection
     body_id: pb-labour
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20250403053657/https://labour.punjab.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2025-04-03 shows the official homepage (page title “Welcome to Labour & Human Resource Department | Labour & Human Resource Department”)"
   - id: lda
     name: "Lahore Development Authority"
     url: https://lda.gop.pk/
@@ -1262,17 +1322,22 @@ official_sites:
     category: law_justice
     body_id: pb-high-court
     services: ["case status", "cause list Lahore"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20260928025508/https://lhc.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (Not reachable); the Wayback Machine snapshot taken 2026-09-28 shows the official homepage (page title “Lahore High Court”)"
   - id: pshealthpunjab
     name: "Primary & Secondary Healthcare Department, Punjab"
     url: https://pshealthpunjab.gov.pk/
     level: punjab
     category: health
     body_id: pb-primary-secondary-healthcare
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20261005122319/https://pshealthpunjab.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2026-10-05 shows the official homepage (page title “Health and Population Department”)"
   - id: pap
     name: "Provincial Assembly of the Punjab"
     url: https://pap.gov.pk/
@@ -1280,9 +1345,11 @@ official_sites:
     category: legislature
     body_id: pb-assembly
     services: ["Punjab Assembly", "MPA Punjab"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20250903203923/https://www.pap.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2025-09-03 shows the official homepage (page title “Home | Punjab Assembly”)"
   - id: pdma-punjab
     name: "Provincial Disaster Management Authority, Punjab"
     url: https://pdma.gop.pk/
@@ -1314,9 +1381,11 @@ official_sites:
     level: punjab
     category: social_protection
     services: ["social security card", "PESSI", "workers hospital"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20250403114007/https://pessi.punjab.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2025-04-03 shows the official homepage (page title “Welcome to Punjab Employees Social Security Institution | Punjab Employees Social Security Institution”)"
   - id: pfa
     name: "Punjab Food Authority"
     url: https://pfa.gop.pk/
@@ -1358,9 +1427,11 @@ official_sites:
     level: punjab
     category: law_justice
     services: ["Punjab laws", "قانون"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20251005191238/http://punjablaws.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2025-10-05 shows the official homepage (page title “Welcome to Punjab Laws Online”)"
   - id: punjabpolice
     name: "Punjab Police"
     url: https://punjabpolice.gov.pk/
@@ -1397,17 +1468,21 @@ official_sites:
     level: punjab
     category: police_safety
     services: ["e-challan", "traffic challan", "Safe City", "challan Lahore"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "timed out when checked"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20260301152541/https://psca.gop.pk/
+    notes: "Did not load from outside Pakistan when checked (Timed out); the Wayback Machine snapshot taken 2026-03-01 shows the official homepage (page title “Home - Punjab Safe Cities Authority”)"
   - id: pspa-punjab
     name: "Punjab Social Protection Authority"
     url: https://pspa.punjab.gov.pk/
     level: punjab
     category: social_protection
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20250506082617/https://pspa.punjab.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2025-05-06 shows the official homepage (page title “Welcome to PSPA | PSPA”)"
   - id: tevta
     name: "Punjab Technical Education & Vocational Training Authority"
     url: https://tevta.gop.pk/
@@ -1423,28 +1498,34 @@ official_sites:
     category: jobs_education
     body_id: pb-school-education
     services: ["school admission Punjab", "teacher transfer"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "HTTP 403 when checked"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20250920141105/https://schools.punjab.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (HTTP 403); the Wayback Machine snapshot taken 2025-09-20 shows the official homepage (page title “Welcome to Schools | Schools”)"
   - id: health-punjab
     name: "Specialized Healthcare & Medical Education Department, Punjab"
     url: https://health.punjab.gov.pk/
     level: punjab
     category: health
     body_id: pb-specialized-healthcare
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20260215171733/https://health.punjab.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2026-02-15 shows the official homepage (page title “Home | Specialized Healthcare & Medical Education Department”)"
   - id: wasa-punjab
     name: "WASA Lahore"
     url: https://wasa.punjab.gov.pk/
     level: punjab
     category: utilities
     services: ["water bill Lahore", "paani ka bill", "پانی کا بل", "sewerage complaint"]
-    status: unreachable_from_ci
-    checked: "2026-10-21"
-    notes: "HTTP 403 when checked"
   # ── Sindh ─────────────────────────────────────────────────────────────────
+    status: verified_via_archive
+    checked: "2026-10-21"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20250523102150/https://wasa.punjab.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (HTTP 403); the Wayback Machine snapshot taken 2025-05-23 shows the official homepage (page title “WASA, Lahore”)"
   - id: excise
     name: "Excise, Taxation & Narcotics Control Department, Sindh"
     url: https://excise.gos.pk/
@@ -1452,9 +1533,11 @@ official_sites:
     category: tax_business
     body_id: sd-excise-taxation
     services: ["vehicle registration", "token tax", "car registration", "property tax", "گاڑی رجسٹریشن", "number plate"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "HTTP 403 when checked"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20261017081236/https://www.excise.gos.pk/
+    notes: "Did not load from outside Pakistan when checked (HTTP 403); the Wayback Machine snapshot taken 2026-10-17 shows the official homepage (page title “Excise, Taxation & Narcotics Control Department”)"
   - id: finance-sindh
     name: "Finance Department, Sindh"
     url: https://finance.gos.pk/
@@ -1580,9 +1663,10 @@ official_sites:
     level: sindh
     category: law_justice
     services: ["Sindh laws"]
-    status: unreachable_from_ci
+    status: verified
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: direct
+    notes: "Loaded directly from a network outside Pakistan on 2026-10-21; earlier automated checks saw TLS resets, so it may be intermittent"
   - id: sindhpolice
     name: "Sindh Police"
     url: https://sindhpolice.gov.pk/
@@ -1590,9 +1674,11 @@ official_sites:
     category: police_safety
     body_id: sd-police
     services: ["FIR", "police complaint", "character certificate", "police verification", "15", "ایف آئی آر", "پولیس"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "HTTP 403 when checked"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20260611154329/https://www.sindhpolice.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (HTTP 403); the Wayback Machine snapshot taken 2026-06-11 shows the official homepage (page title “Sindh Police | Proud To Serve”)"
   - id: spsc
     name: "Sindh Public Service Commission"
     url: https://spsc.gos.pk/
@@ -1732,9 +1818,11 @@ official_sites:
     level: kp
     category: tax_business
     body_id: kp-revenue-authority
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20251225001506/https://kpra.kp.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2025-12-25 shows the official homepage (page title “KPRA - Taxpayer Facilitation Portal”)"
   - id: ecitizen-kp
     name: "KP e-Citizen Portal"
     url: https://ecitizen.kp.gov.pk/
@@ -1820,9 +1908,11 @@ official_sites:
     category: law_justice
     body_id: ba-high-court
     services: ["case status", "cause list Quetta"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "HTTP 403 when checked"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20261017055511/https://bhc.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (HTTP 403); the Wayback Machine snapshot taken 2026-10-17 shows the official homepage"
   - id: balochistanpolice
     name: "Balochistan Police"
     url: https://balochistanpolice.gov.pk/
@@ -1849,9 +1939,11 @@ official_sites:
     category: tax_business
     body_id: ba-revenue-authority
     services: ["sales tax on services", "BRA"]
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "TLS handshake reset when checked (likely blocks non-Pakistani networks)"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20260210150910/https://bra.gob.pk/
+    notes: "Did not load from outside Pakistan when checked (TLS handshake reset); the Wayback Machine snapshot taken 2026-02-10 shows the official homepage (page title “BRA - Taxpayer Facilitation Portal”)"
   - id: balochistan-zameen
     name: "Balochistan Zameen (Land Records)"
     url: https://balochistan-zameen.gob.pk/
@@ -1956,9 +2048,11 @@ official_sites:
     level: ajk
     category: government
     body_id: ajk-government
-    status: unreachable_from_ci
+    status: verified_via_archive
     checked: "2026-10-21"
-    notes: "HTTP 403 when checked"
+    fetched_via: archive
+    archive_url: https://web.archive.org/web/20260513015452/https://ajk.gov.pk/
+    notes: "Did not load from outside Pakistan when checked (HTTP 403); the Wayback Machine snapshot taken 2026-05-13 shows the official homepage (page title “Government of the State of Azad Jammu & Kashmir – Official Portal”)"
   - id: healthajk
     name: "Health Department, Azad Jammu & Kashmir"
     url: https://healthajk.gok.pk/
@@ -1976,6 +2070,16 @@ official_sites:
     status: cert_issue
     checked: "2026-10-21"
     notes: "TLS certificate chain incomplete when checked (loads with verification off)"
+  - id: pndajk
+    name: "Planning and Development Department, Azad Jammu and Kashmir"
+    url: https://pndajk.gov.pk/
+    level: ajk
+    category: government
+    body_id: ajk-pnd
+    services: ["ADP AJK", "annual development programme", "development projects AJK"]
+    status: verified
+    fetched_via: direct
+    checked: "2026-10-21"
   - id: ajkpm
     name: "Prime Minister of Azad Jammu & Kashmir"
     url: https://ajkpm.gok.pk/
@@ -2036,3 +2140,22 @@ official_sites:
     body_id: gb-government
     status: verified
     checked: "2026-10-21"
+  - id: gbhome
+    name: "Home and Prisons Department, Gilgit-Baltistan"
+    url: https://gbhome.gov.pk/
+    level: gb
+    category: government
+    body_id: gb-home
+    services: ["arms licence", "border pass", "prisons", "home department GB"]
+    status: verified
+    fetched_via: direct
+    checked: "2026-10-21"
+  - id: gbfinance
+    name: "Finance Department, Gilgit-Baltistan"
+    url: https://gbfinance.gov.pk/
+    level: gb
+    category: government
+    body_id: gb-finance
+    status: unreachable_from_ci
+    checked: "2026-10-21"
+    notes: "Serves a Cloudflare browser challenge to automated checks (not bypassed). Linked as \"Finance Department\" from gilgitbaltistan.gov.pk."
