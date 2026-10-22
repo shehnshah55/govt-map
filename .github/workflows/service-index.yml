@@ -1,0 +1,67 @@
+# Weekly re-crawl of the service index (docs/SERVICE_INDEX.md). Crawls the official websites in
+# data/official-sites.yaml politely (robots.txt, 1 request/s per host) and opens one pull request
+# with the changes, for a person to review. It never merges anything.
+#
+# Many .gov.pk hosts refuse connections from outside Pakistan, so this run covers only what a
+# GitHub runner can reach. Sites it cannot reach keep the items an earlier run (for example one
+# from a Pakistani network, see the docs) found.
+name: Service index
+on:
+  schedule:
+    - cron: "41 4 * * 2" # Tuesdays 04:41 UTC
+  workflow_dispatch:
+permissions: {}
+concurrency:
+  group: service-index
+  cancel-in-progress: false
+jobs:
+  recrawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    permissions:
+      contents: write # push the update branch
+      pull-requests: write # open or update the one pull request
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+      - name: Crawl
+        run: npx tsx scripts/crawl.ts --concurrency 16 --summary crawl-summary.json
+      - name: The index still passes the build gate
+        run: npm run validate
+      - name: Open or update the pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- data/service-index; then echo "no changes"; exit 0; fi
+          branch=bot/service-index-refresh
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$branch"
+          git add data/service-index
+          git commit -m "Service index: weekly re-crawl"
+          git push --force-with-lease origin "$branch"
+          {
+            echo "Weekly re-crawl of the service index (docs/SERVICE_INDEX.md)."
+            echo
+            echo '```'
+            git diff --stat origin/main -- data/service-index
+            echo '```'
+            echo
+            echo "Crawl summary:"
+            echo '```json'
+            node -e "console.log(JSON.stringify(require('./crawl-summary.json').summary, null, 2))"
+            echo '```'
+            echo
+            echo "Sites a runner outside Pakistan cannot reach keep their earlier items. Check a few changed links by hand before merging."
+          } > pr-body.md
+          if gh pr view "$branch" --json state -q .state 2>/dev/null | grep -q OPEN; then
+            gh pr edit "$branch" --body-file pr-body.md
+          else
+            gh pr create --base main --head "$branch" --title "Service index: weekly re-crawl" --body-file pr-body.md
+          fi

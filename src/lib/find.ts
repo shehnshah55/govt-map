@@ -39,7 +39,7 @@ const STOP = new Set(
     // English
     "how", "do", "does", "i", "can", "get", "my", "me", "the", "a", "an", "to", "for", "of", "what", "is", "are", "and", "in", "on", "where", "who", "which", "apply", "online", "make", "about", "it", "with", "from", "need", "want",
     // Roman Urdu
-    "kaise", "kese", "kesay", "kaisay", "kya", "kia", "hai", "hain", "ka", "ki", "ke", "ko", "se", "mein", "main", "mai", "me", "banwana", "banwane", "banwanay", "banana", "banane", "tareeqa", "tarika", "tariqa", "kahan", "kab", "liye", "lye", "karna", "karne", "karain", "krna", "mujhe", "mera", "meri", "apna", "apni", "chahiye", "kon", "kaun", "kitni", "kitna",
+    "kaise", "kese", "kesay", "kaisay", "kya", "kia", "hai", "hain", "ka", "ki", "ke", "ko", "se", "mein", "main", "mai", "me", "banwana", "banwane", "banwanay", "banwaye", "banwayen", "banwain", "banwaen", "banwao", "hasil", "karwana", "karwaye", "karwayen", "milega", "milta", "sakta", "sakte", "sakti", "banana", "banane", "tareeqa", "tarika", "tariqa", "kahan", "kab", "liye", "lye", "karna", "karne", "karain", "krna", "mujhe", "mera", "meri", "apna", "apni", "chahiye", "kon", "kaun", "kitni", "kitna",
     // Urdu
     "کیا", "ہے", "ہیں", "کا", "کی", "کے", "کو", "سے", "میں", "کیسے", "کہاں", "کب", "لیے", "لئے", "طریقہ", "بنوانا", "بنوانے", "کرنا", "مجھے", "میرا", "میری", "اپنا", "کتنی", "کتنا", "کون",
   ].map((w) => normalise(w)),

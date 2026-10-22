@@ -1718,6 +1718,17 @@ table.tl tr.tl-missing .tl-track { background: none; }
 .form45 h2 { font-size: var(--s-lg); margin: 0; }
 .form45 p { margin: 0; }
 
+/* ── Find a service: page results ───────────────────────── */
+ol.rels.services {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.services .rel a,
+.services .rel .desc {
+  overflow-wrap: anywhere;
+}
+
 /* Legal case timelines: compact, chronological, each event with its labelled source */
 .case-timeline {
   margin: 8px 0 0;

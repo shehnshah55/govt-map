@@ -207,3 +207,45 @@ Citations with an `accessed` date: 37 / 445 (8%).
 | surveyofpakistan.gov.pk | 1 | 1 |
 | tcp.gov.pk | 1 | 1 |
 | thenationalnews.com | 3 | 1 |
+
+## Service index
+
+4,967 official pages and documents in `data/service-index/` (2.37 MB before compression; the build gate checks the gzipped size), from 156 of the 227 registry websites, fetched between 2024-10-04 and 2026-10-22. 182 websites are reachable from outside Pakistan and tied to a body; the rest need a crawl from a Pakistani network (docs/SERVICE_INDEX.md).
+
+| Kind | Items |
+|---|---:|
+| form | 496 / 4,967 (10%) |
+| fee | 197 / 4,967 (4%) |
+| procedure | 818 / 4,967 (16%) |
+| contact | 319 / 4,967 (6%) |
+| notification | 1,675 / 4,967 (34%) |
+| other | 1,462 / 4,967 (29%) |
+
+| Type | Items |
+|---|---:|
+| html | 2,929 / 4,967 (59%) |
+| pdf | 1,937 / 4,967 (39%) |
+| doc | 101 / 4,967 (2%) |
+
+| Language | Items |
+|---|---:|
+| en | 4,866 / 4,967 (98%) |
+| ur | 60 / 4,967 (1%) |
+| mixed | 41 / 4,967 (<1%) |
+
+### By government
+
+| Government | Websites with items | Items |
+|---|---:|---:|
+| federal | 94 of 121 | 3,175 |
+| ict | 6 of 8 | 203 |
+| punjab | 10 of 28 | 252 |
+| sindh | 15 of 21 | 460 |
+| kp | 13 of 19 | 545 |
+| balochistan | 9 of 15 | 241 |
+| ajk | 5 of 8 | 58 |
+| gb | 4 of 7 | 33 |
+
+### Reachable websites with no items yet
+
+agp, ajkpm, cabinet, cmpunjab, commerce, ecp, establishment, exciseportal-balochistan, fbise, finance-balochistan, gbhome, health-punjab, hec, hesco, hsa, ihc, ipo, kp, lhc, most, phc, phrc, pmo, pndajk, punjab-zameen, sbca

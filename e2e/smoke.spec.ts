@@ -102,3 +102,28 @@ test("old #/ask links open Find a service", async ({ page }) => {
   await expect(page.locator("#app .eyebrow").first()).toHaveText("Find a service");
   expect(new URL(page.url()).hash).toBe("#/find?q=passport");
 });
+
+for (const [q, host] of [
+  ["passport fee", "dgip.gov.pk"],
+  ["domicile", ""],
+] as const) {
+  test(`find a service searches official pages: ${q}`, async ({ page }) => {
+    const problems = watch(page);
+    const offsite: string[] = [];
+    page.on("request", (r) => new URL(r.url()).host !== "localhost:4173" && offsite.push(r.url()));
+    await page.goto(`#/find?q=${encodeURIComponent(q)}`);
+    const results = page.locator("#service-results li");
+    await expect(results.first()).toBeVisible();
+    const first = results.first().locator("a[target=_blank]").first();
+    const href = (await first.getAttribute("href"))!;
+    expect(href.startsWith("https://")).toBe(true);
+    if (host) expect(new URL(href).hostname.replace(/^www\./, "")).toBe(host);
+    await expect(results.first()).toContainText("checked");
+    const text = (await results.allTextContents()).join(" ").toLowerCase();
+    expect(text).toContain(q.split(" ")[0]);
+    // the index ships with the site: nothing is fetched from another host
+    await page.waitForLoadState("networkidle");
+    expect(problems).toEqual([]);
+    expect(offsite).toEqual([]);
+  });
+}
