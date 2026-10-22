@@ -136,9 +136,16 @@ export function legalList(ix: GraphIndex, refs: LegalRef[] | undefined): Raw {
   return html`<ul class="lawlist">${refs.map((r) => html`<li>${legalRef(ix, r)}</li>`)}</ul>`;
 }
 
+/** " (read from an archived copy)" link after a citation whose official page was read from a web archive snapshot. */
+export function archiveNote(s: { archive_url?: string }): Raw {
+  return s.archive_url
+    ? html` <span class="hint">(<a href="${safeHref(s.archive_url)}" target="_blank" rel="noopener noreferrer" title="The official page did not load from our checker, so it was read from this web archive snapshot">archived copy</a>)</span>`
+    : html``;
+}
+
 export function sourcesList(sources: Source[] | undefined): Raw {
   if (!sources?.length) return html`<p class="hint">Structure from the cited legal instruments.</p>`;
-  return html`<ul class="plain">${sources.map((s) => html`<li>${s.url ? html`<a href="${safeHref(s.url)}" target="_blank" rel="noopener noreferrer">${s.title}</a>` : s.title}</li>`)}</ul>`;
+  return html`<ul class="plain">${sources.map((s) => html`<li>${s.url ? html`<a href="${safeHref(s.url)}" target="_blank" rel="noopener noreferrer">${s.title}</a>` : s.title}${archiveNote(s)}</li>`)}</ul>`;
 }
 
 export function editLink(ctx: Ctx, file: string) {
@@ -370,7 +377,7 @@ function caseTimeline(timeline: NonNullable<Human["legal_cases"]>[number]["timel
 }
 
 export function casesTable(ix: GraphIndex, rows: { person: Human; c: NonNullable<Human["legal_cases"]>[number] }[], showPerson: boolean): Raw {
-  const ext = (s: { title: string; url?: string }) => html`<a href="${safeHref(s.url)}" target="_blank" rel="noopener noreferrer">${s.title}</a>`;
+  const ext = (s: { title: string; url?: string; archive_url?: string }) => html`<a href="${safeHref(s.url)}" target="_blank" rel="noopener noreferrer">${s.title}</a>${archiveNote(s)}`;
   return html`<div class="tablewrap"><table class="cases"><thead><tr>${showPerson ? html`<th>Person</th>` : ""}<th>Case and charge</th><th>Outcome</th><th>Filed</th><th>Sentence, fine, custody</th><th>Sources</th></tr></thead><tbody>${rows.map(({ person, c }) => {
     const gov = governmentAt(ix, c.filed);
     const [label, cls] = CASE_STATUS[c.status];

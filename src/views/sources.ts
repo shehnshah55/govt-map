@@ -39,18 +39,22 @@ const STATUS_LABEL: Record<SiteStatus, string> = {
   verified: "Checked",
   cert_issue: "Certificate problem",
   unreachable_from_ci: "Not reachable by our checker",
+  verified_via_archive: "Checked via archive",
 };
 const STATUS_HELP: Record<SiteStatus, string> = {
   verified: "The homepage loaded when last checked.",
   cert_issue: "The site loads, but its security certificate is incomplete, so some browsers may warn.",
   unreachable_from_ci: "Our automated check could not load it. It may block automated checks or connections from outside Pakistan.",
+  verified_via_archive:
+    "The site blocks our checker (it may block connections from outside Pakistan), so the official homepage was confirmed from a recent web archive snapshot instead.",
 };
 
 const hostOf = (url: string) => url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
 
 function statusChip(s: OfficialSite): Raw {
-  const cls = s.status === "verified" ? "st-filled" : s.status === "cert_issue" ? "st-acting" : "st-unknown";
-  return html`<span class="chip ${cls}" title="${STATUS_HELP[s.status]} Last checked ${s.checked}.">${STATUS_LABEL[s.status]}</span>`;
+  const cls = s.status === "verified" ? "st-filled" : s.status === "cert_issue" || s.status === "verified_via_archive" ? "st-acting" : "st-unknown";
+  const chip = html`<span class="chip ${cls}" title="${STATUS_HELP[s.status]} Last checked ${s.checked}.">${STATUS_LABEL[s.status]}</span>`;
+  return s.archive_url ? html`${chip} <a class="hint" href="${safeHref(s.archive_url)}" target="_blank" rel="noopener noreferrer">snapshot</a>` : chip;
 }
 
 function siteLink(s: OfficialSite): Raw {
@@ -63,10 +67,11 @@ export function sourcesView(ctx: Ctx): View {
   const { ix } = ctx;
   const all = [...sites(ctx)].sort((a, b) => Object.keys(LEVEL_LABEL).indexOf(a.level) - Object.keys(LEVEL_LABEL).indexOf(b.level) || a.name.localeCompare(b.name));
   const checked = all.filter((s) => s.status === "verified").length;
+  const viaArchive = all.filter((s) => s.status === "verified_via_archive").length;
   const body = html`
     <header class="pagehead"><div class="eyebrow">Official websites</div><h1>Official government websites</h1>
       <p class="lede">The official websites of federal, provincial and territorial bodies, each linked to the body it belongs to. Only government domains and the official domains of statutory bodies are listed.</p>
-      <p class="hint">${all.length} websites · ${checked} loaded when last checked. Fees, forms and deadlines change: always confirm on the official site. <a href="${ctx.repo}/issues/new?template=correction.yml" target="_blank" rel="noopener noreferrer">Report a wrong or missing website</a>.</p></header>
+      <p class="hint">${all.length} websites · ${checked} loaded when last checked${viaArchive ? html`, ${viaArchive} confirmed from a web archive snapshot` : ""}. Fees, forms and deadlines change: always confirm on the official site. <a href="${ctx.repo}/issues/new?template=correction.yml" target="_blank" rel="noopener noreferrer">Report a wrong or missing website</a>.</p></header>
     <div class="toolbar filters">
       <input type="search" data-filter="sites" placeholder="Filter by name, website or service" aria-label="Filter official websites" />
       <label>Government <select data-filter="sites" data-facet="level" id="sites-level"><option value="">All</option>${Object.entries(LEVEL_LABEL).map(([k, v]) => html`<option value="${k}">${v}</option>`)}</select></label>

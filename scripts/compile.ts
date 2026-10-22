@@ -689,9 +689,10 @@ export function compile(dataDir: string): CompileResult {
     else siteUrls.set(key, s.id);
     expect(s.body_id, ["organization"], `${s._file} official site ${s.id}.body_id`);
   }
-  // A body with no authored website takes the one verified, non-portal registry site tied to it (none if several).
+  // A body with no authored website takes the one verified (live, or from a recent archive snapshot
+  // of the official homepage), non-portal registry site tied to it (none if several).
   const sitesByBody = new Map<string, WithFile<OfficialSite>[]>();
-  for (const s of officialSites) if (s.body_id && s.status === "verified" && !s.portal) sitesByBody.set(s.body_id, [...(sitesByBody.get(s.body_id) ?? []), s]);
+  for (const s of officialSites) if (s.body_id && (s.status === "verified" || s.status === "verified_via_archive") && !s.portal) sitesByBody.set(s.body_id, [...(sitesByBody.get(s.body_id) ?? []), s]);
   const orgsOut = organizations.map((o) => {
     const only = !o.website && sitesByBody.get(o.id)?.length === 1 ? sitesByBody.get(o.id)![0] : undefined;
     return { ...o, ...(only ? { website: only.url } : {}), _origin: resolveOrgOrigin(o.id) };
