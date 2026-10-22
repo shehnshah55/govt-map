@@ -4,7 +4,7 @@
 
 ## Sources (data changes)
 
-Every new or changed fact needs a source fetched for this change (docs/LAUNCH_PLAN.md §0.2).
+Every new or changed fact needs a source fetched for this change (docs/EDITORIAL_POLICY.md, Sources).
 
 - [ ] No fact is from memory. Anything I couldn't source is left empty and listed below as "unverified, needs source".
 - [ ] Each source is the highest level available: official records first (Constitution, Pakistan Code, Gazette, ECP, Assembly and Senate sites, court sites, official body sites), then state media reporting a notification, then reputable press. **No Wikipedia** (or other encyclopedias) as a source.

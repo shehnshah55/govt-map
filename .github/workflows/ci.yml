@@ -30,7 +30,7 @@ jobs:
       - name: Coverage report is up to date
         run: npm run audit:coverage -- --check
   browser:
-    # Browser smoke tests (docs/LAUNCH_PLAN.md §9.3): every page type at 1280 and 375 px, with no
+    # Browser smoke tests (e2e/smoke.spec.ts): every page type at 1280 and 375 px, with no
     # console errors, failed requests or sideways scrolling, and no serious or critical axe findings.
     runs-on: ubuntu-latest
     steps:

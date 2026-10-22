@@ -373,7 +373,7 @@ export const Person = z.object({
         liabilities_pkr: z.number().optional(),
         as_of: z.string(),
         basis: z.string(),
-        // §1.5: ECP publications only
+        // ECP publications only (docs/EDITORIAL_POLICY.md, Declared assets)
         source: Source.refine((src) => isAssetSource(src.url), { message: `declared assets must cite an ECP publication (${ASSET_SOURCE_HOSTS.join(", ")})` }),
         notes: z.string().optional(),
       }),

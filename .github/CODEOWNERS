@@ -1,5 +1,6 @@
-# Every change needs review from the project owner. Branch protection must require code-owner
-# review for this to take effect (repository Settings, see docs/LAUNCH_PLAN.md §10).
+# The project owner reviews every change. This is advisory: branch protection on main requires a
+# pull request and passing CI, but not code-owner approval (a sole owner cannot approve their own
+# pull requests).
 *                    @shehnshah55
 
 # Called out so they stay owner-reviewed even if the default rule above changes.

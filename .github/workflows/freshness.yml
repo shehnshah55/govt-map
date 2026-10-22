@@ -1,4 +1,4 @@
-# Weekly freshness check (docs/LAUNCH_PLAN.md §8). Lists officeholder records not re-checked for
+# Weekly freshness check (docs/MONITORING.md). Lists officeholder records not re-checked for
 # 90 days, legal cases due for re-check, and broken source, law and official-website links
 # (data/official-sites.yaml), in one issue:
 # "Records needing re-verification". It never edits data.
