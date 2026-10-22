@@ -247,3 +247,28 @@ for (const [q, host] of [
     expect(offsite).toEqual([]);
   });
 }
+
+test("Find a service strips a CNIC and a phone number from the address bar and the title", async ({ page }) => {
+  await page.goto(`#/find?q=${encodeURIComponent("renew CNIC 35202-1234567-1 call 0300-1234567")}`);
+  await expect(page.locator("#app h1").first()).toContainText("[CNIC removed]");
+  const url = decodeURIComponent(page.url());
+  expect(url).not.toContain("1234567");
+  expect(url).toContain("[CNIC removed]");
+  expect(await page.title()).not.toContain("1234567");
+  // typed into the box: removed before it reaches the history
+  await page.locator("#find-q").fill("passport AB1234567 lost");
+  await page.locator("#find-go").click();
+  await expect(page.locator("#app h1").first()).toContainText("[passport number removed]");
+  expect(decodeURIComponent(page.url())).not.toContain("AB1234567");
+});
+
+test("Find a service answers who appoints a post from the recorded relationships", async ({ page }) => {
+  const problems = watch(page);
+  await page.goto(`#/find?q=${encodeURIComponent("Who appoints the Chief Justice of Pakistan?")}`);
+  const answer = page.locator("section.recorded");
+  await expect(answer.locator("h2")).toHaveText("Who appoints");
+  await expect(answer).toContainText("President");
+  await page.goto(`#/find?q=${encodeURIComponent("Whom does the Federal Cabinet answer to?")}`);
+  await expect(page.locator("section.recorded")).toContainText("National Assembly");
+  expect(problems).toEqual([]);
+});

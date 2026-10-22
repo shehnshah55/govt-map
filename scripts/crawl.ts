@@ -52,6 +52,7 @@ import {
   USER_AGENT,
   type LinkType,
   type Robots,
+  dedupeKey,
 } from "./crawl-lib.ts";
 
 const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
@@ -392,7 +393,7 @@ export async function crawlSite(site: OfficialSite, limiter: HostLimiter, opts: 
   const add = (item: Omit<ServiceItem, "id" | "site_id" | "body_id">) => {
     if (!item.url.startsWith("https://")) return; // only https links are published
     if (!linkType(item.url) || !excerptIsClean(item.title)) return; // sign-in pages; titles with a phone number or CNIC
-    if (result.items.some((i) => i.url === item.url)) return;
+    if (result.items.some((i) => dedupeKey(i.url) === dedupeKey(item.url))) return;
     if (byHash.has(item.content_hash) || result.items.length >= opts.maxItems) return;
     byHash.add(item.content_hash);
     result.items.push({ id: sha("sha1", item.url).slice(0, 12), site_id: site.id, body_id: site.body_id!, ...item });
@@ -540,8 +541,8 @@ async function main() {
       return it;
     };
     const after = dropSiteBoilerplate(before.filter((i) => canonicalUrl(i.url) === i.url)).map(tidy).filter((i) => {
-      const ok = levelOf.has(i.site_id) && !!linkType(i.url) && excerptIsClean(i.title) && !LISTS_PEOPLE.test(i.title) && (!i.excerpt || excerptIsClean(i.excerpt)) && !seenUrls.has(i.url);
-      seenUrls.add(i.url);
+      const ok = levelOf.has(i.site_id) && !!linkType(i.url) && excerptIsClean(i.title) && !LISTS_PEOPLE.test(i.title) && (!i.excerpt || excerptIsClean(i.excerpt)) && !seenUrls.has(dedupeKey(i.url));
+      seenUrls.add(dedupeKey(i.url));
       return ok;
     });
     writeIndex(after, (id) => levelOf.get(id)!);
