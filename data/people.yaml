@@ -411,7 +411,7 @@ people:
     party: party-pmln
     roles:
       - { position: party-pmln-senior-vp, since: "2023-01", confidence: medium, source: { title: "Dawn — Maryam Nawaz made PML-N senior vice president (Jan 2023)", url: "https://www.dawn.com/news/1729728" } }
-      - { position: seat-pp-159, since: "2024-02-23", source: { title: "Provincial Assembly of the Punjab — Cabinet (archived 2026; official page https://pap.gov.pk/about_assembly/cabinet/en)", url: "https://web.archive.org/web/2026/https://pap.gov.pk/about_assembly/cabinet/en" } }
+      - { position: seat-pp-159, since: "2024-02-23", source: { title: "Provincial Assembly of the Punjab — Cabinet", url: "https://pap.gov.pk/about_assembly/cabinet/en", archive_url: "https://web.archive.org/web/2026/https://pap.gov.pk/about_assembly/cabinet/en", fetched_via: archive } }
       - { position: pb-chief-minister, since: "2024-02-26", source: { title: Government of the Punjab, url: "https://punjab.gov.pk" } }
     legal_cases:
       - { title: "Avenfield reference (London flats)", filed: "2017-09", filed_by: fed-nab, court: "Accountability court, Islamabad (trial); Islamabad High Court (appeal)", charges: "Abetment, as alleged by NAB in the Avenfield properties reference; the trial court found her \"instrumental in concealment of the properties of her father\"", status: acquitted, verdict_date: "2022-09-29", sentence: "7 years for abetment and 1 year for non-cooperation with NAB (6 July 2018), set aside", custody: "Sentence suspended and released on bail by the Islamabad High Court in September 2018", outcome: "Acquitted by the Islamabad High Court on appeal; the July 2018 judgment was set aside", status_as_of: "2022-09-29", status_source: { title: "Dawn — IHC sets aside Maryam and Capt Safdar's 2018 conviction in Avenfield case (29 Sep 2022)", url: "https://www.dawn.com/news/1712573", accessed: "2026-10-20" }, publish: true, sources: [{ title: "Dawn — IHC sets aside Maryam and Capt Safdar's 2018 conviction in Avenfield case (29 Sep 2022)", url: "https://www.dawn.com/news/1712573", accessed: "2026-10-20" }, { title: "Dawn — IHC acquits Nawaz Sharif in Avenfield reference (29 Nov 2023)", url: "https://www.dawn.com/news/1793562", accessed: "2026-10-20" }], timeline: [
@@ -880,9 +880,9 @@ people:
     name: Marriyum Aurangzeb
     party: party-pmln
     roles:
-      - { position: pb-pnd-minister, since: "2024-03-06", source: { title: "Provincial Assembly of the Punjab — Cabinet (archived 2026; official page https://pap.gov.pk/about_assembly/cabinet/en)", url: "https://web.archive.org/web/2026/https://pap.gov.pk/about_assembly/cabinet/en" } }
-      - { position: pb-environment-minister, since: "2024-03-06", source: { title: "Provincial Assembly of the Punjab — Cabinet (archived 2026; official page https://pap.gov.pk/about_assembly/cabinet/en)", url: "https://web.archive.org/web/2026/https://pap.gov.pk/about_assembly/cabinet/en" } }
-      - { position: pb-forest-minister, since: "2024-03-06", source: { title: "Provincial Assembly of the Punjab — Cabinet (archived 2026; official page https://pap.gov.pk/about_assembly/cabinet/en)", url: "https://web.archive.org/web/2026/https://pap.gov.pk/about_assembly/cabinet/en" } }
+      - { position: pb-pnd-minister, since: "2024-03-06", source: { title: "Provincial Assembly of the Punjab — Cabinet", url: "https://pap.gov.pk/about_assembly/cabinet/en", archive_url: "https://web.archive.org/web/2026/https://pap.gov.pk/about_assembly/cabinet/en", fetched_via: archive } }
+      - { position: pb-environment-minister, since: "2024-03-06", source: { title: "Provincial Assembly of the Punjab — Cabinet", url: "https://pap.gov.pk/about_assembly/cabinet/en", archive_url: "https://web.archive.org/web/2026/https://pap.gov.pk/about_assembly/cabinet/en", fetched_via: archive } }
+      - { position: pb-forest-minister, since: "2024-03-06", source: { title: "Provincial Assembly of the Punjab — Cabinet", url: "https://pap.gov.pk/about_assembly/cabinet/en", archive_url: "https://web.archive.org/web/2026/https://pap.gov.pk/about_assembly/cabinet/en", fetched_via: archive } }
     as_of: "2026-06"
     confidence: medium
     notes: Senior Minister of Punjab.
@@ -890,7 +890,7 @@ people:
     name: Khawaja Salman Rafique
     party: party-pmln
     roles:
-      - { position: pb-specialized-healthcare-minister, since: "2024-03-06", source: { title: "Provincial Assembly of the Punjab — Cabinet (archived 2026; official page https://pap.gov.pk/about_assembly/cabinet/en)", url: "https://web.archive.org/web/2026/https://pap.gov.pk/about_assembly/cabinet/en" } }
+      - { position: pb-specialized-healthcare-minister, since: "2024-03-06", source: { title: "Provincial Assembly of the Punjab — Cabinet", url: "https://pap.gov.pk/about_assembly/cabinet/en", archive_url: "https://web.archive.org/web/2026/https://pap.gov.pk/about_assembly/cabinet/en", fetched_via: archive } }
     as_of: "2026-06"
     confidence: medium
   - id: khawaja-imran-nazir
@@ -904,15 +904,15 @@ people:
     name: Rana Sikandar Hayat
     party: party-pmln
     roles:
-      - { position: pb-school-education-minister, since: "2024-03-06", source: { title: "Provincial Assembly of the Punjab — Cabinet (archived 2026; official page https://pap.gov.pk/about_assembly/cabinet/en)", url: "https://web.archive.org/web/2026/https://pap.gov.pk/about_assembly/cabinet/en" } }
+      - { position: pb-school-education-minister, since: "2024-03-06", source: { title: "Provincial Assembly of the Punjab — Cabinet", url: "https://pap.gov.pk/about_assembly/cabinet/en", archive_url: "https://web.archive.org/web/2026/https://pap.gov.pk/about_assembly/cabinet/en", fetched_via: archive } }
     as_of: "2026-06"
     confidence: medium
   - id: shafay-hussain
     name: Chaudhry Shafay Hussain
     party: party-pmlq
     roles:
-      - { position: pb-industries-minister, since: "2024-03-06", source: { title: "Provincial Assembly of the Punjab — Cabinet (archived 2026; official page https://pap.gov.pk/about_assembly/cabinet/en)", url: "https://web.archive.org/web/2026/https://pap.gov.pk/about_assembly/cabinet/en" } }
-      - { position: pb-auqaf-minister, since: "2025-01-14", source: { title: "Provincial Assembly of the Punjab — Cabinet (archived 2026; official page https://pap.gov.pk/about_assembly/cabinet/en)", url: "https://web.archive.org/web/2026/https://pap.gov.pk/about_assembly/cabinet/en" } }
+      - { position: pb-industries-minister, since: "2024-03-06", source: { title: "Provincial Assembly of the Punjab — Cabinet", url: "https://pap.gov.pk/about_assembly/cabinet/en", archive_url: "https://web.archive.org/web/2026/https://pap.gov.pk/about_assembly/cabinet/en", fetched_via: archive } }
+      - { position: pb-auqaf-minister, since: "2025-01-14", source: { title: "Provincial Assembly of the Punjab — Cabinet", url: "https://pap.gov.pk/about_assembly/cabinet/en", archive_url: "https://web.archive.org/web/2026/https://pap.gov.pk/about_assembly/cabinet/en", fetched_via: archive } }
     as_of: "2026-06"
     confidence: medium
   - id: sharjeel-inam-memon

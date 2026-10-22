@@ -74,8 +74,9 @@ organizations:
   - accountability
   - finance
   jurisdiction: pk-ba
-  needs_source: true
   confidence: low
+  sources:
+    - { title: "Provincial Assembly of Balochistan — Public Accounts Committee: members (tenure 2024-2029)", url: "https://pabalochistan.gov.pk/standing-committee/16/tenure/12", accessed: "2026-10-21", fetched_via: direct }
 - id: ba-assembly-sc-health
   name: Standing Committee on Health, Provincial Assembly of Balochistan
   kind: committee
@@ -84,8 +85,9 @@ organizations:
   sectors:
   - health
   jurisdiction: pk-ba
-  needs_source: true
   confidence: low
+  sources:
+    - { title: "Provincial Assembly of Balochistan — Standing Committee on Health & Population Welfare: members (tenure 2024-2029)", url: "https://pabalochistan.gov.pk/standing-committee/7/tenure/12", accessed: "2026-10-21", fetched_via: direct }
 - id: ba-high-court
   name: Balochistan High Court
   short_name: BHC

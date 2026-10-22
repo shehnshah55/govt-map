@@ -74,8 +74,9 @@ organizations:
   - accountability
   - finance
   jurisdiction: pk-kp
-  needs_source: true
   confidence: low
+  sources:
+    - { title: "Provincial Assembly of Khyber Pakhtunkhwa — Public Accounts Committee (2024)", url: "https://www.pakp.gov.pk/committee/public-accounts-committee-2024/", accessed: "2026-10-21", fetched_via: direct }
 - id: kp-assembly-sc-health
   name: Standing Committee on Health, Provincial Assembly of Khyber Pakhtunkhwa
   kind: committee
@@ -84,8 +85,9 @@ organizations:
   sectors:
   - health
   jurisdiction: pk-kp
-  needs_source: true
   confidence: low
+  sources:
+    - { title: "Provincial Assembly of Khyber Pakhtunkhwa — Standing Committee No. 12 on Health Department (2024)", url: "https://www.pakp.gov.pk/committee/no-12-on-health-department-2024/", accessed: "2026-10-21", fetched_via: direct }
 - id: kp-high-court
   name: Peshawar High Court
   short_name: PHC
