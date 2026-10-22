@@ -76,6 +76,26 @@ test("search suggests and navigates", async ({ page }) => {
   await expect(page).toHaveURL(/#\/(post|org|person)\//);
 });
 
+test("published legal cases show the outcome beside the charge, dated and cited; held-back cases do not appear", async ({ page }) => {
+  await page.goto("#/person/nawaz-sharif");
+  const row = page.locator("table.cases tbody tr", { hasText: "Avenfield reference (London flats)" });
+  await expect(row).toBeVisible();
+  await expect(row.locator(".case-charge")).toContainText("as alleged by NAB");
+  await expect(row.locator(".case-outcome .tag")).toHaveText("Acquitted");
+  await expect(row.locator(".case-outcome")).toContainText("as of 2023-11-29");
+  await expect(row.locator('.case-outcome a[href="https://www.dawn.com/news/1793562"]')).toBeVisible();
+  await expect(row.locator(".case-allegation")).toHaveText("Allegations are not findings of guilt.");
+  const events = row.locator("ol.case-timeline li");
+  await expect(events).toHaveCount(7);
+  await expect(events.first()).toContainText("2017-10-19");
+  await expect(events.last()).toContainText("2023-11-29");
+  await expect(events.last().locator("a.case-src")).toHaveText("Court record");
+  await expect(events.first().locator("a.case-src")).toHaveText("News report");
+  await page.goto("#/person/asif-ali-zardari");
+  await expect(page.locator("#app h1").first()).toBeVisible();
+  await expect(page.getByText("Criminal and accountability cases")).toHaveCount(0);
+});
+
 test("old #/ask links open Find a service", async ({ page }) => {
   await page.goto("#/ask?q=passport");
   await expect(page.locator("#app h1").first()).toContainText("passport");

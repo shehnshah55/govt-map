@@ -35,7 +35,7 @@ export function citedUrls(g: Graph): Map<string, Set<string>> {
     if (Array.isArray(x)) return x.forEach((v) => walk(v, id));
     if (!x || typeof x !== "object") return;
     for (const [k, v] of Object.entries(x)) {
-      if (k === "url" || k === "website") add(v, id);
+      if (k === "url" || k === "website" || k === "source_url") add(v, id);
       else walk(v, id);
     }
   };
@@ -77,7 +77,9 @@ export function report(full: Graph, today: string, links: { broken: BrokenLink[]
     .filter((p) => p.roles.some((r) => !r.until) && ageDays(p.as_of, today) > STALE_DAYS)
     .sort((a, b) => a.as_of.localeCompare(b.as_of) || a.id.localeCompare(b.id));
   // legal cases have no check date of their own: they are due when their person's record is
-  const casesDue = full.people.filter((p) => p.legal_cases?.length && ageDays(p.as_of, today) > STALE_DAYS).reduce((n, p) => n + p.legal_cases!.length, 0);
+  // only published cases are listed (the issue is public); held-back cases stay in data/
+  const dueCases = g.people.filter((p) => p.legal_cases?.length && ageDays(p.as_of, today) > STALE_DAYS).flatMap((p) => p.legal_cases!.map((c) => ({ p, c })));
+  const casesDue = dueCases.length;
   const urls = new Map([...citedUrls(g)].map(([u, ids]) => [norm(u), ids]));
   // Registry sites already known to fail from CI runners (data/official-sites.yaml `status`) are marked, not hidden.
   const siteStatus = new Map((g.official_sites ?? []).map((s) => [norm(s.url), s.status]));
@@ -100,7 +102,13 @@ export function report(full: Graph, today: string, links: { broken: BrokenLink[]
     "",
     PUBLISH.legalCases
       ? casesDue
-        ? "See the people above with legal cases: each case's current status must be re-checked against the court record."
+        ? [
+            "Each case's current status must be re-checked against the court record or a fresh source.",
+            "",
+            "| Person | Case | Status | As of |",
+            "|---|---|---|---|",
+            ...dueCases.map(({ p, c }) => `| ${p.name} (\`${p.id}\`) | ${cell(c.title)} | ${c.status} | ${c.status_as_of ?? ""} |`),
+          ].join("\n")
         : "None."
       : `${casesDue} case records belong to people not re-checked for ${STALE_DAYS} days. Legal cases are not published at present, so they are not listed here; check them in \`data/people.yaml\`.`,
     "",

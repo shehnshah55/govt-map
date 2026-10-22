@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 import { compile } from "./compile.ts";
 import { checkServiceIndex } from "./service-index-check.ts";
 import { toCsvExports, toPopolo } from "./exports.ts";
-import { PUBLISH, publicGraph } from "../src/lib/policy.ts";
+import { PUBLISH, publicGraph, publishedCaseProblems } from "../src/lib/policy.ts";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const checkOnly = process.argv.includes("--check");
@@ -17,6 +17,13 @@ const { graph: full, errors, warnings } = compile(join(root, "data"));
 // the published graph: fields hidden by the editorial policy are removed before anything is written
 const graph = publicGraph(full);
 if (!PUBLISH.legalCases && graph.people.some((p) => p.legal_cases)) throw new Error("policy: legal cases must not be published");
+// a case marked for publishing must show its charge, outcome, the date of that outcome and a source for it
+const caseGate = [...publishedCaseProblems(full), ...publishedCaseProblems(graph)];
+if (caseGate.length) {
+  for (const e of new Set(caseGate)) console.error(`error: policy: ${e}`);
+  throw new Error("policy: a legal case marked publish: true lacks a charge, an outcome, an as-of date, a source URL or a dated, sourced, ordered timeline");
+}
+if (graph.people.some((p) => p.legal_cases?.some((c) => "publish" in c || "hold_reason" in c))) throw new Error("policy: internal legal-case flags must not be published");
 for (const w of warnings) console.warn(`warning: ${w}`);
 if (errors.length) {
   for (const e of errors) console.error(`error: ${e}`);

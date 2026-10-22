@@ -1728,3 +1728,17 @@ ol.rels.services {
 .services .rel .desc {
   overflow-wrap: anywhere;
 }
+
+/* Legal case timelines: compact, chronological, each event with its labelled source */
+.case-timeline {
+  margin: 8px 0 0;
+  padding-left: 1.1em;
+  font-size: var(--s-sm);
+  max-width: 46ch;
+}
+.case-timeline li {
+  margin: 0 0 4px;
+}
+.case-timeline .case-src {
+  white-space: nowrap;
+}
