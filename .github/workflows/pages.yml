@@ -1,8 +1,12 @@
-# Publishes the site to GitHub Pages. Enable Pages (Settings → Pages → Source: GitHub Actions) first.
+# Publishes the site to GitHub Pages (Settings → Pages → Source: GitHub Actions).
+# It runs only after CI has passed on a push to main, and builds exactly the commit CI checked,
+# so a red main is never published. A manual run (workflow_dispatch) deploys main as it is.
 name: Deploy site
 on:
   workflow_dispatch:
-  push:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
     branches: [main]
 # Nothing at workflow level; each job asks for only what it needs.
 permissions: {}
@@ -11,6 +15,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   deploy:
+    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
     runs-on: ubuntu-latest
     permissions:
       contents: read # check out the code
@@ -22,6 +27,8 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          # the commit CI passed (workflow_run), or main for a manual run
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
