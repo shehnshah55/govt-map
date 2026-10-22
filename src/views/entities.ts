@@ -31,6 +31,7 @@ import {
   CASES_NOTE,
   type Ctx,
   type View,
+  archiveNote,
 } from "./common.ts";
 import { safeHref } from "../lib/safe-url.ts";
 import { careerSummary } from "../lib/analytics.ts";
@@ -617,7 +618,7 @@ export function lawView(ctx: Ctx, id: string): View | undefined {
             <dt>Type</dt><dd>${law.kind}</dd>
             ${law.year ? html`<dt>Year</dt><dd class="num">${law.year}</dd>` : ""}
             <dt>Jurisdiction</dt><dd>${link(ix, law.jurisdiction)}</dd>
-            ${law.url ? html`<dt>Text</dt><dd><a href="${safeHref(law.url)}" target="_blank" rel="noopener noreferrer">Official text</a></dd>` : html`<dt>Text</dt><dd><a href="https://pakistancode.gov.pk" target="_blank" rel="noopener noreferrer">Search Pakistan Code</a></dd>`}
+            ${law.url ? html`<dt>Text</dt><dd><a href="${safeHref(law.url)}" target="_blank" rel="noopener noreferrer">Official text</a>${archiveNote(law)}</dd>` : html`<dt>Text</dt><dd><a href="https://pakistancode.gov.pk" target="_blank" rel="noopener noreferrer">Search Pakistan Code</a></dd>`}
             <dt>File</dt><dd>${editLink(ctx, law._file)}</dd>
           </dl>
         </div>

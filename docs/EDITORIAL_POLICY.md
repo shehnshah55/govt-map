@@ -19,6 +19,15 @@ Every fact must come from a source that was actually consulted, and the source i
 3. **Then reputable independent press:** Dawn, The Express Tribune, The News, Business Recorder, Geo, Aaj. These are used mainly for dates and context.
 4. **Encyclopedias, including Wikipedia, are never a source.** They may be used only to find an official source, which is then cited instead.
 
+### Archived copies and other routes to official pages
+
+Many official sites refuse connections from outside Pakistan. Being outside Pakistan is not a reason to leave a fact unsourced, so a page that will not load is read another way, and the citation still names the official page:
+
+- **Another official host first.** The same document on another official site (the department's own site instead of the provincial law portal, `www.` instead of the bare domain) is cited as `url` with `fetched_via: alternate_host`.
+- **Then a web archive snapshot.** If no official host loads, the fact may be read from a Wayback Machine (or archive.today) snapshot of the official page. The citation's `url` is still the official page; the snapshot goes in `archive_url`, with `fetched_via: archive`. An archive host is never a citation's `url`: the build rejects it (`isArchiveUrl` in `src/lib/policy.ts`). The site shows an "archived copy" link next to such citations.
+- Only what the snapshot itself says is recorded, and a snapshot is evidence only of what the page said on the day it was taken. Registry homepages are confirmed only from snapshots taken since October 2024.
+- Routes that are not used: proxies or VPNs of unknown provenance, anything that needs someone else's credentials, and any way around a CAPTCHA or browser challenge (Cloudflare, Turnstile). A site behind such a challenge stays `unreachable_from_ci`.
+
 Who holds a post needs one official source, or two independent press sources that agree. Each record's confidence level reflects this: *high* only for an official source. Every source carries the date it was consulted, and every person record the date it was last checked. When sources disagree, the disagreement is logged in the public verification log rather than settled silently.
 
 ## Legal cases
@@ -63,7 +72,7 @@ Descriptions say what a body, law or office does, not whether it is good. They d
 ## Official websites and Find a service
 
 - `data/official-sites.yaml` lists the official websites of public bodies. An entry must be on a government domain (`.gov.pk`, `.gop.pk`, `.gos.pk`, `.gob.pk`, `.gok.pk`, `.gkp.pk`) or on a host listed in `OFFICIAL_ORG_HOSTS` with the reason it is that body's own site. This is enforced (`isOfficialSiteUrl` in `src/lib/policy.ts`). Private companies, aggregators and unofficial mirrors are never listed.
-- Each entry records when it was last checked and its result: `verified`, `cert_issue` (the site loads but its TLS certificate chain is incomplete) or `unreachable_from_ci` (an automated check could not load it, often because the site blocks networks outside Pakistan). Unreachable sites are flagged, not dropped, until someone confirms them by hand. The weekly freshness report re-checks every URL.
+- Each entry records when it was last checked and its result: `verified`, `cert_issue` (the site loads but its TLS certificate chain is incomplete), `verified_via_archive` (the site does not load from outside Pakistan, but a Wayback Machine snapshot of its official homepage taken since October 2024 shows the body's own site; `archive_url` holds the snapshot) or `unreachable_from_ci` (no route could load it, or the snapshots are too old or show a block page). `fetched_via` records how the check reached the site. Unreachable sites are flagged, not dropped. The weekly freshness report re-checks every URL.
 - **Find a service** (`#/find`; old `#/ask` links redirect there) only points to official websites, to pages and documents on them, and to records in the graph. It never writes an answer or gives advice, and it runs entirely in the browser: questions are not sent anywhere.
 - The **service index** (`data/service-index/`, [docs/SERVICE_INDEX.md](SERVICE_INDEX.md)) lists citizen-facing pages and documents (forms, fees, procedures, contacts, notifications) found on the registry's official websites. Every item links to the official page, which is the source of record, and shows the date we last fetched it. Its only text is the page's own title and a short excerpt (at most 300 characters) copied verbatim from that page: never a summary, paraphrase or answer of ours. A fee or deadline in an excerpt is what the page said on that date; people are told to confirm on the official site.
 - The service index never holds personal data. Pages that list individuals (merit lists, results, seniority or beneficiary lists) or that show a CNIC or several mobile numbers are not indexed, and excerpts may not contain a mobile number, a CNIC or a personal email address. The build fails if one does.
