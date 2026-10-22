@@ -25,13 +25,17 @@ organizations:
     kind: other
     parent: fed-min-nhsrc
     description: Technical wing headed by the Director General (Health); leads health policy, planning, disease-control programmes and coordination with provinces and development partners.
+    needs_source: true
+    confidence: low
   - id: fed-nhsrc-population-wing
     name: Population Programme Wing
     kind: other
     parent: fed-min-nhsrc
     sectors: [health, population]
     description: Federal coordination of population welfare after devolution (the Ministry of Population Welfare was devolved in 2011); reporting on FP2030 and CCI decisions on population (2018 Council of Common Interests recommendations).
-    confidence: medium
+    confidence: low
+    sources:
+      - { title: "Ministry of NHSR&C — Year Book 2018-19, ch. 24: Population Programme Wing (PPW)", url: "https://www.nhsrc.gov.pk/SiteImage/Misc/files/Year%20Book%202018-19(3).pdf", accessed: "2026-10-21", fetched_via: direct }
   - id: fed-nhsrc-hpsiu
     name: Health Planning, System Strengthening and Information Analysis Unit
     short_name: HPSIU
@@ -39,13 +43,16 @@ organizations:
     parent: fed-min-nhsrc
     description: Planning and health-information unit supporting national health strategy, UHC benefit-package design and the District Health Information System.
     confidence: low
+    sources:
+      - { title: "Ministry of NHSR&C — Year Book 2018-19, ch. 19: Health Planning Systems Strengthening and Information Analysis Unit (HPSIU)", url: "https://www.nhsrc.gov.pk/SiteImage/Misc/files/Year%20Book%202018-19(3).pdf", accessed: "2026-10-21", fetched_via: direct }
   - id: fed-imhpf
     name: Inter-Ministerial Health and Population Forum
     short_name: IMHPF
     kind: intergovernmental_forum
     parent: fed-min-nhsrc
     description: Forum chaired by the Federal Health Minister with the provincial and area health and population ministers, used to agree national health policy, the National Health Vision and joint positions after devolution.
-    confidence: medium
+    confidence: low
+    needs_source: true
 
   # ── Regulators and statutory councils ──────────────────────────────────────
   - id: fed-drap
@@ -85,13 +92,18 @@ organizations:
     kind: committee
     parent: fed-drap
     description: Recommends maximum retail prices of drugs to the Federal Government under the Drug Pricing Policy.
+    confidence: low
+    sources:
+      - { title: "Ministry of NHSR&C — Year Book 2018-19, ch. 2 (DRAP): Drugs Pricing Committee constituted vide S.R.O. 707(I)/2013", url: "https://www.nhsrc.gov.pk/SiteImage/Misc/files/Year%20Book%202018-19(3).pdf", accessed: "2026-10-21", fetched_via: direct }
   - id: fed-central-drugs-lab
     name: Central Drugs Laboratory, Karachi
     kind: research_institute
     parent: fed-drap
     jurisdiction: pk-sd
     description: National quality-control laboratory for testing of drugs.
-    confidence: medium
+    confidence: low
+    sources:
+      - { title: "Ministry of NHSR&C — Year Book 2018-19: Central Drug Laboratory, DRAP, Sindhi Muslim Housing Society, Karachi", url: "https://www.nhsrc.gov.pk/SiteImage/Misc/files/Year%20Book%202018-19(3).pdf", accessed: "2026-10-21", fetched_via: direct }
 
   - id: fed-pmdc
     name: Pakistan Medical and Dental Council
@@ -161,7 +173,10 @@ organizations:
     kind: programme
     parent: fed-nih
     description: Integrated disease surveillance and response, public health laboratories and the national IHR (2005) focal point.
-    confidence: medium
+    sources:
+      - title: "National Institutes of Health, Islamabad (Center for Disease Control)"
+        url: "https://www.nih.org.pk/"
+        accessed: "2026-10-21"
   - id: fed-hsa
     name: Health Services Academy
     short_name: HSA
@@ -185,7 +200,9 @@ organizations:
     kind: committee
     parent: fed-phrc
     description: Reviews national-level research involving human subjects.
-    confidence: medium
+    confidence: low
+    sources:
+      - { title: "Ministry of NHSR&C — Year Book 2018-19, ch. 4 (PHRC): PHRC is the secretariat for the National Bioethics Committee", url: "https://www.nhsrc.gov.pk/SiteImage/Misc/files/Year%20Book%202018-19(3).pdf", accessed: "2026-10-21", fetched_via: direct }
   - id: fed-nips
     name: National Institute of Population Studies
     short_name: NIPS
@@ -194,6 +211,7 @@ organizations:
     sectors: [health, population]
     description: Conducts the Pakistan Demographic and Health Survey (PDHS) and population research.
     confidence: medium
+    website: "https://nips.org.pk/"
 
   # ── National programmes ────────────────────────────────────────────────────
   - id: fed-epi
@@ -215,24 +233,36 @@ organizations:
     kind: programme
     parent: fed-min-nhsrc
     description: Principal recipient/manager of Global Fund grants; hosts the national TB, HIV/AIDS and malaria control programmes.
+    website: "https://www.cmu.gov.pk/"
   - id: fed-nacp
     name: National AIDS Control Programme
     kind: programme
     parent: fed-cmu
+    confidence: low
+    sources:
+      - { title: "Ministry of NHSR&C — Year Book 2018-19, ch. 22: National AIDS Control Programme (NACP)", url: "https://www.nhsrc.gov.pk/SiteImage/Misc/files/Year%20Book%202018-19(3).pdf", accessed: "2026-10-21", fetched_via: direct }
   - id: fed-ntp
     name: National TB Control Programme
     kind: programme
     parent: fed-cmu
+    confidence: low
+    sources:
+      - { title: "Ministry of NHSR&C — Year Book 2018-19, ch. 23: National Tuberculosis Control Programme (NTP)", url: "https://www.nhsrc.gov.pk/SiteImage/Misc/files/Year%20Book%202018-19(3).pdf", accessed: "2026-10-21", fetched_via: direct }
   - id: fed-malaria-directorate
     name: Directorate of Malaria Control
     kind: programme
     parent: fed-cmu
+    confidence: low
+    sources:
+      - { title: "Ministry of NHSR&C — Year Book 2018-19, ch. 13: Directorate of Malaria Control (DMC)", url: "https://www.nhsrc.gov.pk/SiteImage/Misc/files/Year%20Book%202018-19(3).pdf", accessed: "2026-10-21", fetched_via: direct }
   - id: fed-nutrition-wing
     name: Nutrition Wing
     kind: programme
     parent: fed-min-nhsrc
     description: National nutrition coordination (Scaling Up Nutrition focal point).
-    confidence: medium
+    confidence: low
+    sources:
+      - { title: "Ministry of NHSR&C — Year Book 2018-19: Nutrition Wing, Ministry of Health", url: "https://www.nhsrc.gov.pk/SiteImage/Misc/files/Year%20Book%202018-19(3).pdf", accessed: "2026-10-21", fetched_via: direct }
   - id: fed-sehat-sahulat
     name: Sehat Sahulat Programme (Prime Minister's National Health Programme)
     short_name: SSP
@@ -247,14 +277,17 @@ organizations:
     kind: attached_department
     parent: fed-min-nhsrc
     description: Port, airport and land-border health (formerly the Directorate of Central Health Establishments); implements International Health Regulations points of entry.
-    confidence: medium
+    confidence: low
+    needs_source: true
   - id: fed-nheprn
     name: National Health Emergency Preparedness and Response Network
     short_name: NHEPRN
     kind: programme
     parent: fed-min-nhsrc
     sectors: [health, disaster]
-    confidence: medium
+    confidence: low
+    sources:
+      - { title: "Ministry of NHSR&C — Year Book 2018-19, ch. 16: National Health Emergency Preparedness & Response Network (NHEPRN)", url: "https://www.nhsrc.gov.pk/SiteImage/Misc/files/Year%20Book%202018-19(3).pdf", accessed: "2026-10-21", fetched_via: direct }
 
   # ── Islamabad hospitals ────────────────────────────────────────────────────
   - id: fed-szabmu
@@ -279,18 +312,23 @@ organizations:
     kind: hospital
     parent: fed-min-nhsrc
     jurisdiction: pk-ict
+    website: https://fgpc.gov.pk/
   - id: fed-nirm
     name: National Institute of Rehabilitation Medicine
     short_name: NIRM
     kind: hospital
     parent: fed-min-nhsrc
     jurisdiction: pk-ict
+    confidence: low
+    sources:
+      - { title: "Ministry of NHSR&C — Year Book 2018-19, ch. 32: National Institute of Rehabilitation Medicine", url: "https://www.nhsrc.gov.pk/SiteImage/Misc/files/Year%20Book%202018-19(3).pdf", accessed: "2026-10-21", fetched_via: direct }
   - id: fed-fgh
     name: Federal General Hospital, Chak Shahzad
     kind: hospital
     parent: fed-min-nhsrc
     jurisdiction: pk-ict
     confidence: medium
+    website: https://fgh.gov.pk/
 
   # ── Parliamentary oversight ────────────────────────────────────────────────
   - id: fed-na-sc-health
@@ -298,11 +336,18 @@ organizations:
     kind: committee
     branch: legislative
     parent: fed-national-assembly
+    confidence: low
+    sources:
+      - { title: "National Assembly of Pakistan — Committee Reports: Report of the Standing Committee on National Health Services, Regulations and Coordination on the ICT Compulsory Thalassemia Screening Bill, 2025", url: "https://na.gov.pk/en/committee-reports.php", accessed: "2026-10-21", fetched_via: direct }
   - id: fed-senate-sc-health
     name: Senate Standing Committee on National Health Services, Regulations and Coordination
     kind: committee
     branch: legislative
     parent: fed-senate
+    sources:
+      - title: "Senate of Pakistan: Standing Committee on National Health Services, Regulations and Coordination"
+        url: "https://senate.gov.pk/com/index.php?id=MzI1"
+        accessed: "2026-10-21"
 
 positions:
   - id: fed-min-nhsrc-minister

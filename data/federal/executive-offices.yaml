@@ -7,7 +7,7 @@ defaults:
     jurisdiction: pk
 
 organizations:
-  - { id: fed-pcb, name: Pakistan Cricket Board, short_name: PCB, kind: autonomous_body, parent: fed-min-ipc, sectors: [culture], description: "Governing body for cricket; the Prime Minister is Patron-in-Chief and nominates the Chairman.", confidence: medium }
+  - { id: fed-pcb, name: Pakistan Cricket Board, short_name: PCB, kind: autonomous_body, parent: fed-min-ipc, sectors: [culture], needs_source: true, description: "Governing body for cricket; the Prime Minister is Patron-in-Chief and nominates the Chairman.", confidence: low}
   - { id: fed-nsc-command, name: National Strategic Command, kind: military_hq, branch: military, parent: fed-jshq, legal_basis: [{ law: amendment-27 }], sectors: [defence], confidence: medium, description: "Command of the strategic (nuclear-capable) forces created by the 27th Amendment alongside the Chief of Defence Forces." }
 
 positions:

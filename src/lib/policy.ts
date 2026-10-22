@@ -41,6 +41,14 @@ const onHost = (url: string | undefined, hosts: readonly string[]) => {
 
 export const isAssetSource = (url: string | undefined): boolean => onHost(url, ASSET_SOURCE_HOSTS);
 
+/**
+ * Web archives. A fact read from an archived copy is still cited by the official page: `url` is the
+ * official URL and `archive_url` the snapshot it was read from, with `fetched_via: archive`.
+ * An archive host is never a citation's `url` (docs/EDITORIAL_POLICY.md § Archived copies).
+ */
+export const ARCHIVE_HOSTS: readonly string[] = ["web.archive.org", "archive.org", "archive.ph", "archive.today", "archive.is"];
+export const isArchiveUrl = (url: string | undefined): boolean => onHost(url, ARCHIVE_HOSTS);
+
 /** Election result documents (Form 45, Form 47) come only from the ECP. */
 export const isEcpSource = (url: string | undefined): boolean => onHost(url, ["ecp.gov.pk"]);
 

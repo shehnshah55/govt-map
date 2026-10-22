@@ -11,7 +11,7 @@
  */
 import { z } from "zod";
 import { isSafeUrl, SAFE_URL_MESSAGE } from "./lib/safe-url.ts";
-import { ASSET_SOURCE_HOSTS, isAssetSource, isEcpSource, isOfficialSiteUrl } from "./lib/policy.ts";
+import { ASSET_SOURCE_HOSTS, isArchiveUrl, isAssetSource, isEcpSource, isOfficialSiteUrl } from "./lib/policy.ts";
 
 /** Every URL field: https only (see src/lib/safe-url.ts). Plain z.string().url() would accept javascript: and data: URLs. */
 export const SafeUrl = z.string().refine(isSafeUrl, { message: SAFE_URL_MESSAGE });
@@ -105,11 +105,30 @@ export const Sector = z.enum([
   "governance",
 ]);
 
-export const Source = z.object({
-  title: z.string(),
-  url: SafeUrl.optional(),
-  accessed: z.string().optional(),
-});
+/**
+ * How the cited page was read: `direct` (loaded live from the official host), `alternate_host` (the
+ * usual official host does not load from outside Pakistan, so the same text was read live on another
+ * official host or address, e.g. the department's own site or www vs bare domain, which is then the
+ * url) or `archive` (read from a web archive snapshot of the official page).
+ */
+export const FetchedVia = z.enum(["direct", "alternate_host", "archive"]);
+/** A web archive snapshot (ARCHIVE_HOSTS in src/lib/policy.ts). Never used as a citation's own url. */
+export const ArchiveUrl = SafeUrl.refine((u) => isArchiveUrl(u), { message: "archive_url must be a web archive snapshot (ARCHIVE_HOSTS in src/lib/policy.ts)" });
+/** The official URL of a citation: never an archive copy (put that in archive_url). */
+const OfficialCitationUrl = SafeUrl.refine((u) => !isArchiveUrl(u), { message: "url must be the official page; put an archive snapshot in archive_url with fetched_via: archive" });
+const archiveNeedsBoth = (s: { url?: string; archive_url?: string; fetched_via?: string }) => s.fetched_via !== "archive" || (!!s.url && !!s.archive_url);
+const ARCHIVE_NEEDS_BOTH = { message: "fetched_via: archive needs both url (the official page) and archive_url (the snapshot it was read from)" };
+
+export const Source = z
+  .object({
+    title: z.string(),
+    url: OfficialCitationUrl.optional(),
+    accessed: z.string().optional(),
+    /** Snapshot the fact was read from when the official page itself could not be loaded. */
+    archive_url: ArchiveUrl.optional(),
+    fetched_via: FetchedVia.optional(),
+  })
+  .refine(archiveNeedsBoth, ARCHIVE_NEEDS_BOTH);
 
 export const LegalRef = z.object({
   law: z.string(), // law id
@@ -175,6 +194,8 @@ export const Organization = z.object({
   tags: z.array(z.string()).optional(),
   sources: z.array(Source).optional(),
   confidence: Confidence.default("high"),
+  /** True when no reachable source for the body's existence or legal basis has been found yet. */
+  needs_source: z.boolean().optional(),
   notes: z.string().optional(),
   /** Headquarters city (for the geographic view). */
   hq: z.string().optional(),
@@ -273,6 +294,10 @@ export const Person = z.object({
         .array(z.object({ granted: z.string().optional(), to: z.string().optional(), by: z.string().optional(), law: z.string().optional(), notes: z.string().optional() }))
         .optional(),
       source: Source.optional(),
+      /** Confidence in this role's facts when it differs from the person's (e.g. "low" while unsourced). */
+      confidence: Confidence.optional(),
+      /** True when no reachable source supporting this role has been found yet. */
+      needs_source: z.boolean().optional(),
     }),
   ),
   /**
@@ -356,6 +381,8 @@ export const Person = z.object({
     .optional(),
   as_of: z.string(),
   confidence: Confidence.default("medium"),
+  /** True when no reachable source supporting this person's record has been found yet. */
+  needs_source: z.boolean().optional(),
   notes: z.string().optional(),
 });
 
@@ -438,7 +465,8 @@ export const ElectionCheck = z.object({
   notes: z.string().optional(),
 });
 
-export const Law = z.object({
+export const Law = z
+  .object({
   id: z.string().regex(/^[a-z0-9-]+$/),
   title: z.string(),
   short: z.string().optional(),
@@ -447,10 +475,16 @@ export const Law = z.object({
   creates: z.enum(["constitutional", "statutory", "executive"]).optional(),
   year: z.number().optional(),
   jurisdiction: z.string(),
-  url: SafeUrl.optional(),
+  url: OfficialCitationUrl.optional(),
+  /** Snapshot the text was read from when the official host could not be loaded (see Source). */
+  archive_url: ArchiveUrl.optional(),
+  fetched_via: FetchedVia.optional(),
   summary: z.string().optional(),
   confidence: Confidence.default("high"),
-});
+  /** True when no official text of the instrument has been found yet. */
+  needs_source: z.boolean().optional(),
+  })
+  .refine(archiveNeedsBoth, ARCHIVE_NEEDS_BOTH);
 
 export const JurisdictionKind = z.enum([
   "country",
@@ -525,11 +559,16 @@ export const SiteCategory = z.enum([
   "overseas",
   "statistics",
 ]);
-/** Result of the last link check: verified, served with a broken TLS certificate chain, or not reachable from a CI runner. */
-export const SiteStatus = z.enum(["verified", "cert_issue", "unreachable_from_ci"]);
+/**
+ * Result of the last link check: verified, served with a broken TLS certificate chain, not reachable
+ * from a CI runner, or (for sites that block networks outside Pakistan) confirmed from a recent web
+ * archive snapshot of the official homepage (`verified_via_archive`, with archive_url).
+ */
+export const SiteStatus = z.enum(["verified", "cert_issue", "unreachable_from_ci", "verified_via_archive"]);
 
 /** One official government website, optionally tied to a body in the graph. */
-export const OfficialSite = z.object({
+export const OfficialSite = z
+  .object({
   id: z.string().regex(/^[a-z0-9-]+$/),
   name: z.string(),
   name_ur: z.string().optional(),
@@ -545,8 +584,15 @@ export const OfficialSite = z.object({
   portal: z.boolean().optional(),
   status: SiteStatus,
   checked: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  /** How the last check reached the site (see FetchedVia). */
+  fetched_via: FetchedVia.optional(),
+  /** The snapshot used when status is verified_via_archive. */
+  archive_url: ArchiveUrl.optional(),
   notes: z.string().optional(),
-});
+  })
+  .refine((s) => s.status !== "verified_via_archive" || (!!s.archive_url && s.fetched_via === "archive"), {
+    message: "status verified_via_archive needs archive_url and fetched_via: archive",
+  });
 
 /** A single YAML data file may contain any subset of these collections. */
 export const DataFile = z.object({
