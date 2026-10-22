@@ -689,12 +689,24 @@ export function compile(dataDir: string): CompileResult {
     else siteUrls.set(key, s.id);
     expect(s.body_id, ["organization"], `${s._file} official site ${s.id}.body_id`);
   }
-  // A body with no authored website takes the one verified (live, or from a recent archive snapshot
-  // of the official homepage), non-portal registry site tied to it (none if several).
+  // A body with no authored website takes the one verified, non-portal registry site tied to it
+  // (none if several). Only when no site loaded live does one confirmed from a recent archive
+  // snapshot of the official homepage (verified_via_archive) stand in.
   const sitesByBody = new Map<string, WithFile<OfficialSite>[]>();
-  for (const s of officialSites) if (s.body_id && (s.status === "verified" || s.status === "verified_via_archive") && !s.portal) sitesByBody.set(s.body_id, [...(sitesByBody.get(s.body_id) ?? []), s]);
+  const archivedByBody = new Map<string, WithFile<OfficialSite>[]>();
+  for (const s of officialSites) {
+    if (!s.body_id || s.portal) continue;
+    const m = s.status === "verified" ? sitesByBody : s.status === "verified_via_archive" ? archivedByBody : undefined;
+    m?.set(s.body_id, [...(m.get(s.body_id) ?? []), s]);
+  }
+  const backfill = (id: string) => {
+    const live = sitesByBody.get(id) ?? [];
+    if (live.length) return live.length === 1 ? live[0] : undefined;
+    const arch = archivedByBody.get(id) ?? [];
+    return arch.length === 1 ? arch[0] : undefined;
+  };
   const orgsOut = organizations.map((o) => {
-    const only = !o.website && sitesByBody.get(o.id)?.length === 1 ? sitesByBody.get(o.id)![0] : undefined;
+    const only = !o.website ? backfill(o.id) : undefined;
     return { ...o, ...(only ? { website: only.url } : {}), _origin: resolveOrgOrigin(o.id) };
   });
   const positionsOut = positions.map((p) => {
