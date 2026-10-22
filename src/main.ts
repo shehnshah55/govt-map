@@ -14,6 +14,7 @@ import { FIGURE_IDS } from "./lib/analytics.ts";
 import { familiesView, familyView } from "./views/families.ts";
 import { findView, sourcesView } from "./views/sources.ts";
 import { redirectOldPath } from "./lib/find.ts";
+import { redactPath } from "./lib/redact.ts";
 import { aboutView, accountabilityView, exploreView, homeView, lawsView, searchView, sectorView, sectorsView } from "./views/pages.ts";
 
 declare const __SINGLE__: boolean;
@@ -134,8 +135,10 @@ function focusedControl(): string | undefined {
 /** `moveFocus`: after a navigation the old focus is gone with the old page, so it goes to the new heading. */
 function render(path: string, moveFocus = false) {
   const control = moveFocus ? focusedControl() : undefined;
-  const moved = redirectOldPath(path);
-  if (moved) {
+  // old #/ask links move to #/find, and personal numbers and emails never stay in the address bar,
+  // the history or the page title
+  const moved = redactPath(redirectOldPath(path) ?? path);
+  if (moved !== path) {
     path = moved;
     try {
       history.replaceState(null, "", `#${path}`);
@@ -170,6 +173,7 @@ function render(path: string, moveFocus = false) {
 
 /** Hash routing with an in-memory fallback for sandboxed frames that block history writes. */
 function navigate(path: string) {
+  path = redactPath(path);
   if (path === current) return;
   try {
     history.pushState(null, "", `#${path}`);
