@@ -170,40 +170,40 @@ Citations with an `accessed` date: 13 / 179 (7%).
 
 ## Service index
 
-4,606 official pages and documents in `data/service-index/` (2.16 MB before compression; the build gate checks the gzipped size), from 127 of the 224 registry websites, fetched between 2026-10-21 and 2026-10-22. 140 websites are reachable from outside Pakistan and tied to a body; the rest need a crawl from a Pakistani network (docs/SERVICE_INDEX.md).
+4,967 official pages and documents in `data/service-index/` (2.37 MB before compression; the build gate checks the gzipped size), from 156 of the 224 registry websites, fetched between 2024-10-04 and 2026-10-22. 140 websites are reachable from outside Pakistan and tied to a body; the rest need a crawl from a Pakistani network (docs/SERVICE_INDEX.md).
 
 | Kind | Items |
 |---|---:|
-| form | 469 / 4,606 (10%) |
-| fee | 180 / 4,606 (4%) |
-| procedure | 712 / 4,606 (15%) |
-| contact | 265 / 4,606 (6%) |
-| notification | 1,574 / 4,606 (34%) |
-| other | 1,406 / 4,606 (31%) |
+| form | 496 / 4,967 (10%) |
+| fee | 197 / 4,967 (4%) |
+| procedure | 818 / 4,967 (16%) |
+| contact | 319 / 4,967 (6%) |
+| notification | 1,675 / 4,967 (34%) |
+| other | 1,462 / 4,967 (29%) |
 
 | Type | Items |
 |---|---:|
-| html | 2,667 / 4,606 (58%) |
-| pdf | 1,838 / 4,606 (40%) |
-| doc | 101 / 4,606 (2%) |
+| html | 2,929 / 4,967 (59%) |
+| pdf | 1,937 / 4,967 (39%) |
+| doc | 101 / 4,967 (2%) |
 
 | Language | Items |
 |---|---:|
-| en | 4,510 / 4,606 (98%) |
-| ur | 57 / 4,606 (1%) |
-| mixed | 39 / 4,606 (<1%) |
+| en | 4,866 / 4,967 (98%) |
+| ur | 60 / 4,967 (1%) |
+| mixed | 41 / 4,967 (<1%) |
 
 ### By government
 
 | Government | Websites with items | Items |
 |---|---:|---:|
-| federal | 77 of 121 | 2,951 |
-| ict | 5 of 8 | 178 |
-| punjab | 5 of 28 | 201 |
-| sindh | 13 of 21 | 427 |
-| kp | 12 of 19 | 543 |
-| balochistan | 7 of 15 | 229 |
-| ajk | 4 of 7 | 44 |
+| federal | 94 of 121 | 3,175 |
+| ict | 6 of 8 | 203 |
+| punjab | 10 of 28 | 252 |
+| sindh | 15 of 21 | 460 |
+| kp | 13 of 19 | 545 |
+| balochistan | 9 of 15 | 241 |
+| ajk | 5 of 7 | 58 |
 | gb | 4 of 5 | 33 |
 
 ### Reachable websites with no items yet
