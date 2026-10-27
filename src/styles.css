@@ -1805,3 +1805,7 @@ ol.rels.services {
 .case-timeline .case-src {
   white-space: nowrap;
 }
+
+/* Active filters: one removable chip per filter, so a filtered table never passes for the whole list */
+.filter-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: -4px 0 12px; }
+.filter-chip span { color: var(--muted); }
