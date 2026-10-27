@@ -630,7 +630,8 @@ export function lawView(ctx: Ctx, id: string): View | undefined {
 /**
  * Connects every <input data-filter="x"> (free text) and <select data-filter="x" data-facet="f">
  * (exact facet match against the row's data-f attribute, space-separated values) to the rows of
- * <table data-rows="x">.
+ * <table data-rows="x">. Each active filter shows as a chip that removes it, and the count says
+ * how many rows of how many are shown, so a filtered table never passes for the whole list.
  */
 export function wireFilters(root: HTMLElement) {
   const groups = new Set([...root.querySelectorAll<HTMLElement>("[data-filter]")].map((el) => el.dataset.filter!));
@@ -640,6 +641,35 @@ export function wireFilters(root: HTMLElement) {
     const input = root.querySelector<HTMLInputElement>(`input[data-filter="${g}"]`);
     const selects = [...root.querySelectorAll<HTMLSelectElement>(`select[data-filter="${g}"]`)];
     const count = root.querySelector<HTMLElement>(`[data-count="${g}"]`);
+    const unfiltered = count?.textContent ?? "";
+    count?.setAttribute("aria-live", "polite");
+    const chips = document.createElement("div");
+    chips.className = "filter-chips";
+    chips.setAttribute("role", "group");
+    chips.setAttribute("aria-label", "Active filters");
+    chips.hidden = true;
+    (input ?? selects[0])?.closest(".toolbar, .filters")?.after(chips);
+
+    /** Active filters as [label, value, clear]: the search text, then each select with a value. */
+    const active = () => [
+      ...(input?.value.trim() ? [["Text", `“${input.value.trim()}”`, () => (input.value = ""), input] as const] : []),
+      ...selects
+        .filter((sel) => sel.value)
+        .map((sel) => [labelOf(sel), sel.selectedOptions[0]?.textContent?.replace(/^—\s*/, "").trim() ?? sel.value, () => (sel.value = ""), sel] as const),
+    ];
+    const chip = (label: string, onClick: () => void, aria: string) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip-btn filter-chip";
+      b.setAttribute("aria-label", aria);
+      b.textContent = label;
+      const x = document.createElement("span");
+      x.setAttribute("aria-hidden", "true");
+      x.textContent = " ×";
+      b.append(x);
+      b.addEventListener("click", onClick);
+      return b;
+    };
     const apply = () => {
       const terms = (input?.value ?? "").toLowerCase().trim().split(/\s+/).filter(Boolean);
       let shown = 0;
@@ -650,9 +680,23 @@ export function wireFilters(root: HTMLElement) {
         r.hidden = !ok;
         if (ok) shown++;
       });
-      if (count) count.textContent = `${shown} shown`;
+      const on = active();
+      if (count) count.textContent = on.length ? `${shown.toLocaleString("en-US")} of ${rows.length.toLocaleString("en-US")} shown` : unfiltered;
+      // the removed chip's control takes focus, so keyboard users are not dropped to the page top
+      chips.replaceChildren(
+        ...on.map(([label, value, clear, control]) => chip(`${label}: ${value}`, () => { clear(); apply(); control.focus(); }, `Remove filter ${label}: ${value}`)),
+        ...(on.length > 1 ? [chip("Clear all", () => { on.forEach(([, , clear]) => clear()); apply(); (input ?? selects[0])?.focus(); }, "Clear all filters")] : []),
+      );
+      chips.hidden = !on.length;
     };
     input?.addEventListener("input", apply);
     selects.forEach((sel) => sel.addEventListener("change", apply));
   }
+}
+
+/** A select's visible label without its options' text (labels wrap the select in this site). */
+function labelOf(sel: HTMLSelectElement): string {
+  const label = sel.closest("label") ?? (sel.id ? sel.ownerDocument.querySelector(`label[for="${CSS.escape(sel.id)}"]`) : null);
+  const own = label ? [...label.childNodes].filter((n) => n.nodeType === Node.TEXT_NODE).map((n) => n.textContent).join(" ").trim() : "";
+  return own || sel.getAttribute("aria-label") || "Filter";
 }

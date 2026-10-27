@@ -272,3 +272,24 @@ test("Find a service answers who appoints a post from the recorded relationships
   await expect(page.locator("section.recorded")).toContainText("National Assembly");
   expect(problems).toEqual([]);
 });
+
+test("active filters show as chips that remove them, and the count says how many of how many", async ({ page }) => {
+  await page.goto("#/directory/departments");
+  const count = page.locator('[data-count="dir"]');
+  const all = await count.textContent();
+  await page.getByLabel("Filter the directory").fill("health");
+  await page.locator("#dir-tier").selectOption("pk-pb");
+  const chips = page.getByRole("group", { name: "Active filters" });
+  await expect(chips.getByRole("button", { name: "Remove filter Text: “health”" })).toBeVisible();
+  await expect(chips.getByRole("button", { name: "Remove filter Government: Punjab" })).toBeVisible();
+  await expect(count).toHaveText(/^\d+ of \d+ shown$/);
+  // removing one chip hands focus to its control
+  await chips.getByRole("button", { name: "Remove filter Government: Punjab" }).click();
+  await expect(page.locator("#dir-tier")).toBeFocused();
+  await expect(page.locator("#dir-tier")).toHaveValue("");
+  await page.locator("#dir-tier").selectOption("pk-sd");
+  await chips.getByRole("button", { name: "Clear all filters" }).click();
+  await expect(chips).toBeHidden();
+  await expect(count).toHaveText(all!);
+  await expect(page.getByLabel("Filter the directory")).toHaveValue("");
+});
