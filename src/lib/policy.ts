@@ -52,6 +52,9 @@ export const isArchiveUrl = (url: string | undefined): boolean => onHost(url, AR
 /** Election result documents (Form 45, Form 47) come only from the ECP. */
 export const isEcpSource = (url: string | undefined): boolean => onHost(url, ["ecp.gov.pk"]);
 
+/** Census figures come only from the Pakistan Bureau of Statistics. */
+export const isPbsSource = (url: string | undefined): boolean => onHost(url, ["pbs.gov.pk"]);
+
 /** Encyclopedias must not ship as citations (docs/EDITORIAL_POLICY.md, Sources, rule 4). Authored YAML may still hold them until replaced. */
 const ENCYCLOPEDIA_HOST = /wikipedia\.org|britannica\.com/i;
 

@@ -1805,3 +1805,16 @@ ol.rels.services {
 .case-timeline .case-src {
   white-space: nowrap;
 }
+
+/* Elections and census: scatter of a census figure against a vote measure */
+.scatter-chart svg { width: 100%; height: auto; max-width: 720px; display: block; }
+.scatter-chart .grid { stroke: var(--line); stroke-width: 1; }
+.scatter-chart .tick, .scatter-chart .axis { fill: var(--muted); font-size: 11px; }
+.scatter-chart .axis { fill: var(--ink-2); font-size: 12px; }
+.scatter-chart .dot { fill: var(--accent); fill-opacity: 0.35; stroke: var(--accent); stroke-width: 1; }
+.scatter-chart a:hover .dot, .scatter-chart a:focus .dot { fill-opacity: 0.8; }
+.scatter-chart a:focus { outline: none; }
+.scatter-chart a:focus .dot { stroke: var(--ink); stroke-width: 2; }
+.scatter-chart .fit { stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.how-to-read ul { margin: 8px 0 0; padding-left: 18px; }
+.how-to-read li { margin: 4px 0; }

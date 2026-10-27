@@ -6,6 +6,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { compile } from "./compile.ts";
+import { checkResults } from "./results-check.ts";
 import { checkServiceIndex } from "./service-index-check.ts";
 import { toCsvExports, toPopolo } from "./exports.ts";
 import { PUBLISH, publicGraph, publishedCaseProblems } from "../src/lib/policy.ts";
@@ -38,6 +39,15 @@ if (services.errors.length) {
   process.exit(1);
 }
 console.log(`ok: service index: ${services.items.length} items in ${services.files} files, ${(services.bytes / 1048576).toFixed(2)} MB (${(services.gzipBytes / 1048576).toFixed(2)} MB gzipped)`);
+// election results (data/results/) and census figures (data/census/): schema, sums, ECP totals
+const results = checkResults(join(root, "data"), full);
+if (results.errors.length) {
+  for (const e of results.errors.slice(0, 50)) console.error(`error: results: ${e}`);
+  console.error(`\n${results.errors.length} results or census error(s). Fix data/results/ or data/census/.`);
+  process.exit(1);
+}
+if (results.results.length || results.census.length)
+  console.log(`ok: results: ${results.results.map((r) => `${r.election}-${r.house} (${r.results.length})`).join(", ") || "none"}; census: ${results.census.map((c) => c.census).join(", ") || "none"}`);
 const c = graph.meta.counts;
 console.log(
   `ok: ${c.organizations} organizations, ${c.positions} positions, ${c.people} people, ` +

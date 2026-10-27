@@ -272,3 +272,9 @@ test("Find a service answers who appoints a post from the recorded relationships
   await expect(page.locator("section.recorded")).toContainText("National Assembly");
   expect(problems).toEqual([]);
 });
+
+test("the elections page and its menu link exist only once ECP results are loaded", async ({ page }) => {
+  await page.goto("#/elections");
+  await expect(page.locator("#app h1")).toHaveText("Not found");
+  await expect(page.locator('.nav a[href="#/elections"]')).toHaveCount(0);
+});

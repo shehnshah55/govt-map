@@ -159,6 +159,17 @@ Minors and relatives without a public role are never recorded. Ties appear on th
 
 The build enforces the rules of the editorial policy: ECP sources only; `differs` only when the Form 45 leader is someone else with more votes, counted from the Form 45s of **every** polling station; `matches` only when the figures agree. A person with a `differs` check on a seat they still hold is labelled "not legally elected" on their page and on the seat's page, always beside the figures and links to the documents. Whether labels are published is `PUBLISH.form45Labels` in `src/lib/policy.ts`.
 
+## Results and census (`data/results/`, `data/census/`)
+
+These feed the Elections and census page (`#/elections`). The page and its menu link exist only once `data/results/` holds a file.
+
+- **`data/results/<election>-<house>.json`**: one house in one general election, e.g. `ge-2024-na.json`. Each row is a constituency's consolidated result (Form 47, or the final Form 49): `registered`, `polled`, `valid`, `rejected` and `votes` by party. `party` is a party id, or `independent` exactly as the ECP lists the candidate; a party not in `data/parties.yaml` is given by `party_name` as the ECP prints it. `districts` lists the districts the constituency covers, from the ECP delimitation notification. `not_held` marks a postponed, countermanded or annulled poll, which is listed but not counted. An optional `totals` holds the ECP's own published totals.
+- **`data/census/districts-<year>.json`**: PBS district figures (`population`, and optionally `literacy_pct` and `urban_pct`) with PBS's own definition of each figure used.
+
+Only ECP publications are accepted for results and only PBS publications for census figures (`isEcpSource` and `isPbsSource` in `src/lib/policy.ts`). `scripts/results-check.ts` fails the build unless, for every row, valid + rejected = polled, polled ≤ registered and the party votes add up to the valid votes. Each constituency must appear once, belong to the file's house, and list districts of its own province, including the district `data/legislatures.yaml` places it in. Where `totals` is given, the rows must add up to it exactly.
+
+On the page, national figures count every constituency. District figures add up only constituencies that lie in one district. One that covers several districts is never split by estimate: it is left out of the district rows and listed by name. Two elections are compared through the districts they share, because constituencies were redrawn after the 2023 census.
+
 ## How chosen: "Not directly elected"
 
 Derived, not authored (`src/lib/elections.ts`). A person is tagged when either:
