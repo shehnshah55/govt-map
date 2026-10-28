@@ -13,7 +13,7 @@ import { figureEvidenceView, figuresView } from "./views/figures.ts";
 import { FIGURE_IDS } from "./lib/analytics.ts";
 import { familiesView, familyView } from "./views/families.ts";
 import { findView, sourcesView } from "./views/sources.ts";
-import { electionsView, hasElectionData } from "./views/elections.ts";
+import { electionsView, hasElectionData, withPlaceResults } from "./views/elections.ts";
 import { redirectOldPath } from "./lib/find.ts";
 import { redactPath } from "./lib/redact.ts";
 import { aboutView, accountabilityView, exploreView, homeView, lawsView, searchView, sectorView, sectorsView } from "./views/pages.ts";
@@ -64,8 +64,10 @@ function page(path: string): View | undefined {
       return postView(ctx, seg[1]);
     case "person":
       return personView(ctx, seg[1]);
-    case "place":
-      return placeView(ctx, seg[1]);
+    case "place": {
+      const view = placeView(ctx, seg[1]);
+      return view && withPlaceResults(ctx, seg[1], view);
+    }
     case "law":
       return lawView(ctx, seg[1]);
     case "laws":

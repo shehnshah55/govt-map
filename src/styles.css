@@ -1818,3 +1818,42 @@ ol.rels.services {
 .scatter-chart .fit { stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 5 4; }
 .how-to-read ul { margin: 8px 0 0; padding-left: 18px; }
 .how-to-read li { margin: 4px 0; }
+
+/* Elections: province map shaded in five even steps; every value is also written on the map and in its table */
+.el-map .mapbox svg { width: 100%; max-width: 520px; height: auto; display: block; }
+.el-map .unit { stroke: var(--ink-2); stroke-width: 0.8; fill: var(--accent); cursor: pointer; }
+.el-map .unit.q0 { fill-opacity: 0.1; }
+.el-map .unit.q1 { fill-opacity: 0.28; }
+.el-map .unit.q2 { fill-opacity: 0.46; }
+.el-map .unit.q3 { fill-opacity: 0.64; }
+.el-map .unit.q4 { fill-opacity: 0.82; }
+.el-map .unit.none { fill: var(--surface); stroke-dasharray: 3 2; cursor: default; }
+.el-map .unit:focus { outline: none; }
+.el-map .unit:focus-visible, .el-map .unit:hover { stroke: var(--ink); stroke-width: 2; }
+.el-map .unit.on { stroke: var(--ink); stroke-width: 3; }
+.el-map .unit-value { font: 600 12px "IBM Plex Sans", sans-serif; fill: var(--ink); paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; pointer-events: none; }
+.el-map .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: var(--s-sm); color: var(--muted); margin: 6px 0 10px; }
+.el-map .legend .sw { display: inline-block; width: 14px; height: 10px; margin-right: 5px; border: 1px solid var(--ink-2); vertical-align: -1px; background: var(--accent); }
+.el-map .legend .sw.q0 { opacity: 0.1; } .el-map .legend .sw.q1 { opacity: 0.28; } .el-map .legend .sw.q2 { opacity: 0.46; } .el-map .legend .sw.q3 { opacity: 0.64; } .el-map .legend .sw.q4 { opacity: 0.82; }
+.el-map .legend .sw.none { background: var(--surface); border-style: dashed; }
+
+/* Detail card on hover, focus or tap */
+.el-card { position: fixed; z-index: 30; width: min(280px, calc(100vw - 16px)); padding: 10px 12px; box-shadow: 0 6px 24px rgb(0 0 0 / 0.18); pointer-events: none; font-size: var(--s-sm); }
+.el-card .facts.compact { margin: 6px 0; }
+.card-parties { margin: 0; padding-left: 18px; }
+.card-parties li span.num { color: var(--muted); }
+
+/* Two-handled range for a census figure */
+.dual-range { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; border: 0; padding: 0; margin: 0; font-size: var(--s-sm); color: var(--muted); }
+.dual-range legend { float: left; padding: 0; margin-right: 6px; }
+.dual-range input[type="range"] { width: 110px; accent-color: var(--accent); }
+.el-shown { margin-top: -18px; }
+
+/* Change since the last election: one arrow per district */
+.shift-table .arrow-cell { width: 170px; }
+.shift-table svg.arrow { width: 160px; height: 14px; display: block; }
+.shift-table svg.arrow line { stroke: var(--ink-2); stroke-linecap: round; }
+.shift-table svg.arrow path, .shift-table svg.arrow circle { fill: var(--ink); }
+.flow-table caption { text-align: left; caption-side: top; padding-bottom: 6px; }
+.flow-table td.same { background: var(--accent-soft); }
+.place-results h3.spaced { margin-top: 22px; }

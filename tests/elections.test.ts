@@ -5,11 +5,11 @@ import { afterAll, describe, expect, it } from "vitest";
 import { checkResults } from "../scripts/results-check.ts";
 import { compile } from "../scripts/compile.ts";
 import { notDirectlyElected, notLegallyElected } from "../src/lib/elections.ts";
-import { byDistrict, leaderOf, shift, weightedFit } from "../src/lib/vote-explorer.ts";
+import { byDistrict, byUnit, leaderFlows, leaderOf, shift, sumRows, toCsv, topParties, weightedFit } from "../src/lib/vote-explorer.ts";
 import { GraphIndex } from "../src/lib/graph-index.ts";
 import { PUBLISH, publicGraph } from "../src/lib/policy.ts";
 import type { CensusFile, Graph, ResultsFile } from "../src/schema.ts";
-import { electionsBody } from "../src/views/elections.ts";
+import { districtCsv, electionsBody, placeResults } from "../src/views/elections.ts";
 import { personView, postView } from "../src/views/entities.ts";
 
 const DATA = new URL("../data", import.meta.url).pathname;
@@ -299,5 +299,77 @@ describe("elections page", () => {
     const out = electionsBody(ctx(ix), { results: [hostile], census: [] }, new URLSearchParams("m=name:%3Cimg%20src%3Dx%20onerror%3D%22alert(1)%22%3E")).html;
     expect(out).not.toContain("<img src=x");
     expect(out).toContain("&lt;img src=x");
+  });
+});
+
+describe("province totals, filters, lead changes and CSV", () => {
+  const census: CensusFile = {
+    census: "2023",
+    title: "Census 2023",
+    source: PBS,
+    definitions: { population: "Enumerated population", literacy_pct: "Share aged 10 and over who can read and write" },
+    districts: [
+      { district: "pk-pb-lahore", population: 100, literacy_pct: 80 },
+      { district: "pk-kp-swat", population: 100, literacy_pct: 55 },
+    ],
+    checked: "2026-10-27",
+  };
+  const data = { results: [ge2018, ge2024], census: [census] };
+
+  it("adds every held constituency to its province, so provinces sum to the national figures", () => {
+    const units = byUnit(ge2024, (c) => ix.placeTrail(c)[1]?.id);
+    expect([...units.keys()].sort()).toEqual(["pk-kp", "pk-pb"]);
+    const sum = sumRows([...units.values()]);
+    const national = byDistrict(ge2024).national;
+    expect(sum.registered).toBe(national.registered);
+    expect(sum.polled).toBe(national.polled);
+    expect(units.get("pk-pb")!.leader).toBe("party-pmln");
+  });
+
+  it("ranks parties and counts where the lead changed", () => {
+    expect(topParties(byDistrict(ge2024).national, 2).map((p) => p.party)).toEqual(["independent", "party-pmln"]);
+    const flows = leaderFlows(shift(byDistrict(ge2018), byDistrict(ge2024), "turnout").rows);
+    expect(flows).toEqual([
+      { from: "party-pmln", to: "party-pmln", districts: 1, registered: 2000 },
+      { from: "party-pti", to: "independent", districts: 1, registered: 900 },
+    ]);
+  });
+
+  it("writes CSV that spreadsheets can't run as formulas", () => {
+    const csv = toCsv(["a", "b"], [["=HYPERLINK(1)", 'say "hi", ok'], [-3, "+1"]]);
+    expect(csv).toBe(`a,b\r\n'=HYPERLINK(1),"say ""hi"", ok"\r\n-3,'+1\r\n`);
+  });
+
+  it("applies the same filters to the summary, the table and the CSV", () => {
+    const params = new URLSearchParams("prov=pk-pb");
+    const out = electionsBody(ctx(ix), data, params).html;
+    expect(out).toContain("Shown: 1 of 2 districts");
+    expect(out).toContain("the national figures above count every constituency");
+    const csv = districtCsv(ctx(ix), data, params).trim().split("\r\n");
+    expect(csv).toHaveLength(2);
+    expect(csv[1]).toMatch(/^pk-pb-lahore,Lahore District,Punjab,con-na-120 con-na-121,2000,/);
+    const ranged = districtCsv(ctx(ix), data, new URLSearchParams("lo=50&hi=60")).trim().split("\r\n");
+    expect(ranged.map((l) => l.split(",")[0]).slice(1)).toEqual(["pk-kp-swat"]);
+    const big = districtCsv(ctx(ix), data, new URLSearchParams("min=1000000")).trim().split("\r\n");
+    expect(big).toHaveLength(1);
+  });
+
+  it("draws the province map and the lead-change table", () => {
+    const out = electionsBody(ctx(ix), data, new URLSearchParams()).html;
+    expect(out).toContain('data-unit="pk-pb"');
+    expect(out).toContain("No seats in this house");
+    expect(out).toContain("Where the lead changed");
+    expect(out).toContain("not how any voter moved");
+  });
+
+  it("drills down: a constituency shows its candidates, and an older result says the seat was redrawn", () => {
+    const named = structuredClone(ge2024);
+    named.results[0].votes[0].candidate = "Candidate A";
+    const out = placeResults(ctx(ix), { results: [ge2018, named], census: [] }, "con-na-120").html;
+    expect(out).toContain("Candidate A");
+    expect(out).toContain("may have covered a different area");
+    const district = placeResults(ctx(ix), { results: [ge2018, named], census: [] }, "pk-pb-lahore").html;
+    expect(district).toContain("NA-121");
+    expect(district).toContain("as drawn before the 2023 delimitation");
   });
 });

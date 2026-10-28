@@ -193,3 +193,71 @@ export function shift(before: ByDistrict, after: ByDistrict, m: Measure): Shift 
   const unmatched = [...new Set([...a.keys(), ...b.keys()])].filter((d) => !(a.has(d) && b.has(d))).sort();
   return { nationalBefore, nationalAfter, rows: rows.sort((x, y) => x.district.localeCompare(y.district)), unmatched };
 }
+
+/** Adds up any set of rows (a filtered view): the page says these are the shown districts only. */
+export function sumRows(rows: readonly Tally[]): Tally & { turnoutPct: number } {
+  const t = empty();
+  for (const r of rows) {
+    t.registered += r.registered;
+    t.polled += r.polled;
+    t.valid += r.valid;
+    t.rejected += r.rejected;
+    for (const [k, v] of r.votes) t.votes.set(k, (t.votes.get(k) ?? 0) + v);
+  }
+  return { ...t, turnoutPct: pct(t.polled, t.registered) };
+}
+
+/**
+ * Results by a larger unit (province or territory). Every constituency lies in one province, so
+ * these add up to the national figures exactly; `unitOf` maps a constituency to its unit.
+ */
+export function byUnit(file: ResultsFile, unitOf: (constituency: string) => string | undefined): Map<string, Tally & { turnoutPct: number; leader: PartyKey; leaderPct: number }> {
+  const per = new Map<string, Tally>();
+  for (const r of file.results) {
+    const u = !r.not_held && unitOf(r.constituency);
+    if (!u) continue;
+    const t = per.get(u) ?? empty();
+    add(t, r);
+    per.set(u, t);
+  }
+  return new Map(
+    [...per].map(([u, t]) => {
+      const [leader, n] = leaderOf(t.votes);
+      return [u, { ...t, turnoutPct: pct(t.polled, t.registered), leader, leaderPct: pct(n, t.valid) }];
+    }),
+  );
+}
+
+/** Parties by votes, largest first, with their share of valid votes. */
+export function topParties(t: Tally, n = 3): { party: PartyKey; votes: number; pct: number }[] {
+  return [...t.votes]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, n)
+    .map(([party, votes]) => ({ party, votes, pct: pct(votes, t.valid) }));
+}
+
+/**
+ * Which party had the most votes in each district, before and after: districts and registered voters
+ * per pair. It shows where the lead changed, not how any voter moved.
+ */
+export function leaderFlows(rows: readonly ShiftRow[]): { from: PartyKey; to: PartyKey; districts: number; registered: number }[] {
+  const m = new Map<string, { from: PartyKey; to: PartyKey; districts: number; registered: number }>();
+  for (const r of rows) {
+    const k = `${r.leaderBefore}\u0000${r.leaderAfter}`;
+    const f = m.get(k) ?? { from: r.leaderBefore, to: r.leaderAfter, districts: 0, registered: 0 };
+    f.districts++;
+    f.registered += r.registered;
+    m.set(k, f);
+  }
+  return [...m.values()].sort((a, b) => b.districts - a.districts || a.from.localeCompare(b.from) || a.to.localeCompare(b.to));
+}
+
+/** RFC 4180 CSV; text cells that start with = + - @ are prefixed with ' so spreadsheets don't run them. Numbers stay numbers. */
+export function toCsv(header: readonly string[], rows: readonly (string | number)[][]): string {
+  const cell = (v: string | number) => {
+    if (typeof v === "number") return String(v);
+    const s = /^[=+\-@\t\r]/.test(v) ? `'${v}` : v;
+    return /[",\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  };
+  return [header, ...rows].map((r) => r.map(cell).join(",")).join("\r\n") + "\r\n";
+}
