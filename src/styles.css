@@ -1805,3 +1805,90 @@ ol.rels.services {
 .case-timeline .case-src {
   white-space: nowrap;
 }
+
+/* Elections and census: scatter of a census figure against a vote measure */
+.scatter-chart svg { width: 100%; height: auto; max-width: 720px; display: block; }
+.scatter-chart .grid { stroke: var(--line); stroke-width: 1; }
+.scatter-chart .tick, .scatter-chart .axis { fill: var(--muted); font-size: 11px; }
+.scatter-chart .axis { fill: var(--ink-2); font-size: 12px; }
+.scatter-chart .dot { fill: var(--accent); fill-opacity: 0.35; stroke: var(--accent); stroke-width: 1; }
+.scatter-chart a:hover .dot, .scatter-chart a:focus .dot { fill-opacity: 0.8; }
+.scatter-chart a:focus { outline: none; }
+.scatter-chart a:focus .dot { stroke: var(--ink); stroke-width: 2; }
+.scatter-chart .fit { stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.how-to-read ul { margin: 8px 0 0; padding-left: 18px; }
+.how-to-read li { margin: 4px 0; }
+
+/* Elections: province map shaded in five even steps; every value is also written on the map and in its table */
+.el-map .mapbox svg { width: 100%; max-width: 520px; height: auto; display: block; }
+.el-map .unit { stroke: var(--ink-2); stroke-width: 0.8; fill: var(--accent); cursor: pointer; }
+.el-map .unit.q0 { fill-opacity: 0.1; }
+.el-map .unit.q1 { fill-opacity: 0.28; }
+.el-map .unit.q2 { fill-opacity: 0.46; }
+.el-map .unit.q3 { fill-opacity: 0.64; }
+.el-map .unit.q4 { fill-opacity: 0.82; }
+.el-map .unit.none { fill: var(--surface); stroke-dasharray: 3 2; cursor: default; }
+.el-map .unit:focus { outline: none; }
+.el-map .unit:focus-visible, .el-map .unit:hover { stroke: var(--ink); stroke-width: 2; }
+.el-map .unit.on { stroke: var(--ink); stroke-width: 3; }
+.el-map .unit-value { font: 600 12px "IBM Plex Sans", sans-serif; fill: var(--ink); paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; pointer-events: none; }
+.el-map .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: var(--s-sm); color: var(--muted); margin: 6px 0 10px; }
+.el-map .legend .sw { display: inline-block; width: 14px; height: 10px; margin-right: 5px; border: 1px solid var(--ink-2); vertical-align: -1px; background: var(--accent); }
+.el-map .legend .sw.q0 { opacity: 0.1; } .el-map .legend .sw.q1 { opacity: 0.28; } .el-map .legend .sw.q2 { opacity: 0.46; } .el-map .legend .sw.q3 { opacity: 0.64; } .el-map .legend .sw.q4 { opacity: 0.82; }
+.el-map .legend .sw.none { background: var(--surface); border-style: dashed; }
+
+/* Detail card on hover, focus or tap */
+.el-card { position: fixed; z-index: 30; width: min(280px, calc(100vw - 16px)); padding: 10px 12px; box-shadow: 0 6px 24px rgb(0 0 0 / 0.18); pointer-events: none; font-size: var(--s-sm); }
+.el-card .facts.compact { margin: 6px 0; }
+.card-parties { margin: 0; padding-left: 18px; }
+.card-parties li span.num { color: var(--muted); }
+
+/* Two-handled range for a census figure */
+.dual-range { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; border: 0; padding: 0; margin: 0; font-size: var(--s-sm); color: var(--muted); }
+.dual-range legend { float: left; padding: 0; margin-right: 6px; }
+.dual-range input[type="range"] { width: 110px; accent-color: var(--accent); }
+.el-shown { margin-top: -18px; }
+
+/* Change since the last election: one arrow per district */
+.shift-table .arrow-cell { width: 170px; }
+.shift-table svg.arrow { width: 160px; height: 14px; display: block; }
+.shift-table svg.arrow line { stroke: var(--ink-2); stroke-linecap: round; }
+.shift-table svg.arrow path, .shift-table svg.arrow circle { fill: var(--ink); }
+.flow-table caption { text-align: left; caption-side: top; padding-bottom: 6px; }
+.flow-table td.same { background: var(--accent-soft); }
+.place-results h3.spaced { margin-top: 22px; }
+
+/* Elections: party colours always sit beside the party's name */
+.swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: 0; flex: none; box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.2); }
+.party-tag { white-space: nowrap; }
+/* A percentage with a small bar behind it */
+.cell-bar { display: inline-block; width: 44px; height: 6px; margin-right: 8px; border-radius: 3px; background: var(--line); vertical-align: 1px; overflow: hidden; }
+.cell-bar span { display: block; height: 100%; background: var(--accent); }
+/* Signed changes: the arrow and sign carry the direction. No red or green: a change is not marked good or bad */
+.delta { white-space: nowrap; }
+/* Headline figures with the earlier election beside them */
+.el-kpis .kpi { cursor: default; }
+.el-kpis .kpi:hover { background: var(--surface); }
+/* Map and party bars side by side on wide screens, as a map beside its data panel */
+.el-overview { display: grid; gap: 24px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 960px) { .el-overview { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: start; } }
+.map-mode { margin: 6px 0 8px; }
+.map-mode a.chip-btn { text-decoration: none; }
+.el-map .unit.lead { fill-opacity: 0.85; }
+.party-bars .bar-track { position: relative; }
+.party-bars .was { position: absolute; top: -2px; bottom: -2px; width: 2px; margin-left: -1px; background: var(--ink); }
+.party-bars tr.on th a { font-weight: 600; text-decoration: underline; }
+.scatter-chart .dot { fill-opacity: 0.55; stroke: var(--ink-2); }
+.scatter-chart .mean { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 2 3; }
+.scatter-chart .mean-label { fill: var(--muted); }
+.scatter-chart .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: var(--s-sm); margin: 6px 0 0; }
+.party-bars .bar-track .v { white-space: normal; line-height: 1.2; }
+.party-bars .bar-track .v .hint { display: block; font-size: var(--s-xs); }
+.party-bars table.bars th[scope="row"] { width: 32%; }
+.party-bars .bar-track .v .hint { white-space: nowrap; }
+td.num:has(> .cell-bar) { white-space: nowrap; }
+.scatter-chart .mean-label { paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
+.el-kpis b { font-size: clamp(1.25rem, 5.6vw, var(--s-2xl)); overflow-wrap: anywhere; }
+.party-bars .was { top: 50%; bottom: auto; height: 20px; transform: translateY(-50%); }
+.party-bars .bar-track .v { position: relative; z-index: 1; padding-left: 4px; background: var(--surface); }
+@media (max-width: 520px) { .party-bars table.bars th[scope="row"] { width: 30%; } .party-bars .bar-track .v .hint { white-space: normal; } }

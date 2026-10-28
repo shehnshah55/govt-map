@@ -11,7 +11,7 @@
  */
 import { z } from "zod";
 import { isSafeUrl, SAFE_URL_MESSAGE } from "./lib/safe-url.ts";
-import { ASSET_SOURCE_HOSTS, isArchiveUrl, isAssetSource, isEcpSource, isOfficialSiteUrl } from "./lib/policy.ts";
+import { ASSET_SOURCE_HOSTS, isArchiveUrl, isAssetSource, isEcpSource, isOfficialSiteUrl, isPbsSource } from "./lib/policy.ts";
 
 /** Every URL field: https only (see src/lib/safe-url.ts). Plain z.string().url() would accept javascript: and data: URLs. */
 export const SafeUrl = z.string().refine(isSafeUrl, { message: SAFE_URL_MESSAGE });
@@ -465,6 +465,73 @@ export const ElectionCheck = z.object({
   notes: z.string().optional(),
 });
 
+/** A count of votes or voters. */
+const Count = z.number().int().nonnegative();
+
+/**
+ * Votes for one party, or for one independent candidate, in a constituency, as the ECP lists them.
+ * `party` is a party id from data/parties.yaml; a party not recorded there is given by `party_name`
+ * exactly as the ECP prints it. Independents are `party: independent`: any party a candidate is said
+ * to be backed by is not in ECP results and is not inferred here.
+ */
+const PartyVotes = z
+  .object({ party: z.string().optional(), party_name: z.string().optional(), candidate: z.string().optional(), votes: Count })
+  .refine((v) => !!v.party !== !!v.party_name, { message: "give exactly one of party (an id, or independent) and party_name" });
+
+/** One constituency's result: ECP's consolidated figures (Form 47 or the final Form 49). */
+export const ConstituencyResult = z.object({
+  /** Constituency jurisdiction id, e.g. con-na-122. */
+  constituency: z.string().regex(/^con-[a-z]+-\d+$/),
+  /** District ids the constituency covers, from the ECP delimitation notification. */
+  districts: z.array(z.string()).min(1),
+  registered: Count,
+  /** Votes polled: valid plus rejected. */
+  polled: Count,
+  valid: Count,
+  rejected: Count,
+  votes: z.array(PartyVotes).min(1),
+  source: EcpSource,
+  /** The election was postponed, countermanded or annulled here; the row is kept but not counted. */
+  not_held: z.string().optional(),
+});
+
+/** One house in one general election (data/results/<election>-<house>.json). */
+export const ResultsFile = z.object({
+  election: z.string().regex(/^ge-\d{4}$/),
+  /** The house: na (National Assembly), pp (Punjab), ps (Sindh), pk (Khyber Pakhtunkhwa), pb (Balochistan). */
+  house: z.enum(["na", "pp", "ps", "pk", "pb"]),
+  title: z.string(),
+  /** The ECP's own published totals for this house, so the sum of the rows can be checked against them. */
+  totals: z.object({ registered: Count, polled: Count, source: EcpSource }).optional(),
+  results: z.array(ConstituencyResult).min(1),
+  checked: z.string(),
+});
+
+const PbsSource = Source.refine((src) => isPbsSource(src.url), { message: "must be a Pakistan Bureau of Statistics publication (pbs.gov.pk)" });
+const Percent = z.number().min(0).max(100);
+
+/** District figures from one census (data/census/districts-<year>.json). */
+export const CensusFile = z.object({
+  census: z.string().regex(/^\d{4}$/),
+  title: z.string(),
+  source: PbsSource,
+  /** What each figure means, as PBS defines it (e.g. literacy: share of people aged 10 and over who can read and write). */
+  definitions: z.object({ population: z.string(), literacy_pct: z.string().optional(), urban_pct: z.string().optional() }),
+  districts: z
+    .array(
+      z.object({
+        district: z.string(),
+        population: Count,
+        literacy_pct: Percent.optional(),
+        urban_pct: Percent.optional(),
+        /** The district table, when it is published separately from the file's source. */
+        source: PbsSource.optional(),
+      }),
+    )
+    .min(1),
+  checked: z.string(),
+});
+
 export const Law = z
   .object({
   id: z.string().regex(/^[a-z0-9-]+$/),
@@ -649,6 +716,9 @@ export type Branch = z.infer<typeof Branch>;
 export type OrgKind = z.infer<typeof OrgKind>;
 export type Sector = z.infer<typeof Sector>;
 export type Source = z.infer<typeof Source>;
+export type ConstituencyResult = z.infer<typeof ConstituencyResult>;
+export type ResultsFile = z.infer<typeof ResultsFile>;
+export type CensusFile = z.infer<typeof CensusFile>;
 export type LegalRef = z.infer<typeof LegalRef>;
 export type Organization = z.infer<typeof Organization>;
 export type Position = z.infer<typeof Position>;

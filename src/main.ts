@@ -13,6 +13,7 @@ import { figureEvidenceView, figuresView } from "./views/figures.ts";
 import { FIGURE_IDS } from "./lib/analytics.ts";
 import { familiesView, familyView } from "./views/families.ts";
 import { findView, sourcesView } from "./views/sources.ts";
+import { electionsView, hasElectionData, withPlaceResults } from "./views/elections.ts";
 import { redirectOldPath } from "./lib/find.ts";
 import { redactPath } from "./lib/redact.ts";
 import { aboutView, accountabilityView, exploreView, homeView, lawsView, searchView, sectorView, sectorsView } from "./views/pages.ts";
@@ -63,8 +64,10 @@ function page(path: string): View | undefined {
       return postView(ctx, seg[1]);
     case "person":
       return personView(ctx, seg[1]);
-    case "place":
-      return placeView(ctx, seg[1]);
+    case "place": {
+      const view = placeView(ctx, seg[1]);
+      return view && withPlaceResults(ctx, seg[1], view);
+    }
     case "law":
       return lawView(ctx, seg[1]);
     case "laws":
@@ -107,6 +110,8 @@ function page(path: string): View | undefined {
       return findView(ctx, params.get("q") ?? "");
     case "sources":
       return sourcesView(ctx);
+    case "elections":
+      return electionsView(ctx, params);
     case "about":
       return aboutView(ctx, __SINGLE__);
   }
@@ -310,5 +315,12 @@ if (location.hash === "#app") {
   } catch {
     /* sandboxed */
   }
+}
+// the elections page exists only once ECP results are in data/results/
+if (hasElectionData) {
+  const link = document.createElement("a");
+  link.href = "#/elections";
+  link.textContent = "Elections and census";
+  document.querySelector('.nav .menu a[href="#/elected"]')?.after(link);
 }
 render(hashRoute());
