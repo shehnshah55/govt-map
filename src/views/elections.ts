@@ -56,8 +56,24 @@ function partyOptions(d: ByDistrict): PartyKey[] {
 
 const measureLabel = (ctx: Ctx, m: Measure) => (m === "turnout" ? "Turnout" : `${partyLabel(ctx, m.party)} share of valid votes`);
 
+/** A party's colour, as on the parliament seating chart. It always sits beside the party's name, never alone. */
+export function partyColor(ctx: Ctx, key: PartyKey): string {
+  const own = key.startsWith("party-") ? ctx.ix.org.get(key)?.color : undefined;
+  return own ?? (key === "independent" ? "var(--unknown)" : "var(--line-strong)");
+}
+const swatch = (ctx: Ctx, key: PartyKey) => html`<i class="swatch" style="background:${partyColor(ctx, key)}" aria-hidden="true"></i>`;
+const partyTag = (ctx: Ctx, key: PartyKey) => html`<span class="party-tag">${swatch(ctx, key)}${partyLabel(ctx, key)}</span>`;
+/** A percentage with a small bar behind it on a 0–100 scale (their coloured metric pills). */
+const cellBar = (v: number) => html`<span class="cell-bar" aria-hidden="true"><span style="width:${Math.max(0, Math.min(100, v)).toFixed(1)}%"></span></span>${p1(v)}`;
+/** A signed change: the arrow and sign carry the direction; it is never coloured good or bad. */
+const delta = (n: number, unit: "%" | "pts") => {
+  const r = Math.round(n * 10) / 10;
+  if (r === 0) return html`<span class="delta">no change</span>`;
+  return html`<span class="delta ${r > 0 ? "up" : "down"}">${r > 0 ? "▲ +" : "▼ −"}${Math.abs(r).toFixed(1)}${unit === "%" ? "%" : " pts"}</span>`;
+};
+
 /** Scatter of a census figure (x) against the measure (y), one circle per district sized by registered voters. */
-function scatter(ctx: Ctx, points: { id: string; x: number; y: number; w: number }[], xLabel: string, yLabel: string): Raw {
+function scatter(ctx: Ctx, points: { id: string; x: number; y: number; w: number; leader: PartyKey }[], xLabel: string, yLabel: string): Raw {
   const W = 640;
   const H = 380;
   const m = { t: 16, r: 16, b: 44, l: 52 };
@@ -75,23 +91,27 @@ function scatter(ctx: Ctx, points: { id: string; x: number; y: number; w: number
     ticks(x0, x1).map((t) => `<line class="grid" x1="${sx(t).toFixed(1)}" x2="${sx(t).toFixed(1)}" y1="${m.t}" y2="${H - m.b}"/><text class="tick" x="${sx(t).toFixed(1)}" y="${H - m.b + 16}" text-anchor="middle">${t}%</text>`).join("") +
       ticks(y0, y1).map((t) => `<line class="grid" x1="${m.l}" x2="${W - m.r}" y1="${sy(t).toFixed(1)}" y2="${sy(t).toFixed(1)}"/><text class="tick" x="${m.l - 6}" y="${(sy(t) + 4).toFixed(1)}" text-anchor="end">${t}%</text>`).join(""),
   );
+  const mean = points.reduce((a, p) => a + p.w * p.y, 0) / Math.max(1, points.reduce((a, p) => a + p.w, 0));
+  const meanLine = raw(`<line class="mean" x1="${m.l}" x2="${W - m.r}" y1="${sy(mean).toFixed(1)}" y2="${sy(mean).toFixed(1)}"/><text class="tick mean-label" x="${W - m.r - 4}" y="${(sy(mean) - 5).toFixed(1)}" text-anchor="end">average ${p1(mean)}</text>`);
+  const leaders = [...new Set(points.map((p) => p.leader))];
   const line = fit ? raw(`<line class="fit" x1="${sx(x0).toFixed(1)}" y1="${sy(fit.intercept + fit.slope * x0).toFixed(1)}" x2="${sx(x1).toFixed(1)}" y2="${sy(fit.intercept + fit.slope * x1).toFixed(1)}"/>`) : "";
   return html`<figure class="chart scatter-chart">
     <figcaption><span class="chart-title">${yLabel} against ${xLabel.toLowerCase()}, by district</span></figcaption>
     <svg viewBox="0 0 ${W} ${H}" role="group" aria-label="${`Scatter plot of ${yLabel} against ${xLabel}, one circle per district. The table below lists the same figures.`}">
       <defs><clipPath id="scatter-clip"><rect x="${m.l}" y="${m.t}" width="${W - m.l - m.r}" height="${H - m.t - m.b}"/></clipPath></defs>
-      ${grid}<g clip-path="url(#scatter-clip)">${line}</g>
+      ${grid}<g clip-path="url(#scatter-clip)">${meanLine}${line}</g>
       ${points
         .sort((a, b) => b.w - a.w)
         .map(
-          (p) => html`<a href="#/place/${p.id}" data-card-id="${p.id}"><circle class="dot" cx="${sx(p.x).toFixed(1)}" cy="${sy(p.y).toFixed(1)}" r="${(3 + 11 * Math.sqrt(p.w / wMax)).toFixed(1)}"><title>${`${districtName(ctx, p.id)}: ${xLabel} ${p1(p.x)}, ${yLabel} ${p1(p.y)}, ${n0(p.w)} registered voters`}</title></circle></a>`,
+          (p) => html`<a href="#/place/${p.id}" data-card-id="${p.id}"><circle class="dot" style="fill:${partyColor(ctx, p.leader)}" cx="${sx(p.x).toFixed(1)}" cy="${sy(p.y).toFixed(1)}" r="${(3 + 11 * Math.sqrt(p.w / wMax)).toFixed(1)}"><title>${`${districtName(ctx, p.id)}: ${xLabel} ${p1(p.x)}, ${yLabel} ${p1(p.y)}, ${n0(p.w)} registered voters, most votes ${partyLabel(ctx, p.leader)}`}</title></circle></a>`,
         )}
       <text class="axis" x="${(m.l + W - m.r) / 2}" y="${H - 6}" text-anchor="middle">${xLabel} (census)</text>
       <text class="axis" transform="rotate(-90)" x="${-(m.t + H - m.b) / 2}" y="14" text-anchor="middle">${yLabel}</text>
     </svg>
-    <p class="chart-basis">${
+    <div class="legend">${leaders.map((k) => html`<span>${partyTag(ctx, k)}</span>`)}<span class="hint">Circle colour: party with the most votes in the district.</span></div>
+    <p class="chart-basis">Dotted level line: average weighted by registered voters. ${
       fit
-        ? `Line: least-squares fit weighted by registered voters, over ${fit.n} districts; correlation r = ${fit.r.toFixed(2)}. A correlation describes these districts together; it does not say why voters voted as they did, nor how any one person voted.`
+        ? `Sloped line: least-squares fit weighted by registered voters, over ${fit.n} districts; correlation r = ${fit.r.toFixed(2)}. A correlation describes these districts together; it does not say why voters voted as they did, nor how any one person voted.`
         : "Too few districts with both figures to draw a fit."
     } Circle size: registered voters.</p>
   </figure>`;
@@ -130,7 +150,9 @@ export function selection(ctx: Ctx, data: ElectionData, params: URLSearchParams)
   const sh = earlier ? shift(byDistrict(earlier), d, measure) : undefined;
   const shRows = sh?.rows.filter((r) => keep(r.district, r.registered, byDist.get(r.district))) ?? [];
   const filtered = !!prov || min > 0 || ranged;
-  return { houses, h, files, file, d, parties, measure, census, indicators, xi, provinces, prov, min, lo, hi, ranged, joined, earlier, sh, shRows, filtered };
+  const prev = earlier ? byDistrict(earlier) : undefined;
+  const mapLead = params.get("map") === "lead";
+  return { houses, h, files, file, d, parties, measure, census, indicators, xi, provinces, prov, min, lo, hi, ranged, joined, earlier, sh, shRows, filtered, prev, mapLead };
 }
 
 type Sel = ReturnType<typeof selection>;
@@ -166,7 +188,7 @@ export function districtCsv(ctx: Ctx, data: ElectionData, params: URLSearchParam
 function card(ctx: Ctx, id: string, name: string, t: Tally & { turnoutPct: number }, extra: Raw | string = ""): Raw {
   return html`<template data-card="${id}"><div class="eyebrow">${name}</div>
     <dl class="facts compact"><dt>Registered</dt><dd class="num">${n0(t.registered)}</dd><dt>Turnout</dt><dd class="num">${p1(t.turnoutPct)}</dd></dl>
-    <ol class="card-parties">${topParties(t).map((p) => html`<li><span>${partyLabel(ctx, p.party)}</span> <span class="num">${p1(p.pct)}</span></li>`)}</ol>${extra}</template>`;
+    <ol class="card-parties">${topParties(t).map((p) => html`<li>${partyTag(ctx, p.party)} <span class="num">${p1(p.pct)}</span></li>`)}</ol>${extra}</template>`;
 }
 
 /** Province map: each unit shaded by the measure in five even steps, its value written on it. */
@@ -186,10 +208,11 @@ function provinceMap(ctx: Ctx, s: Sel): Raw {
     .map((f) => {
       const id = f.properties.id;
       const t = units.get(id);
-      const cls = t ? `unit q${step(measureOf(t, s.measure))}${s.prov === id ? " on" : ""}` : "unit none";
-      const label = t ? `${name(id)}: ${p1(measureOf(t, s.measure))}` : `${name(id)}: no seats in this house`;
+      const cls = t ? `unit ${s.mapLead ? "lead" : `q${step(measureOf(t, s.measure))}`}${s.prov === id ? " on" : ""}` : "unit none";
+      const label = t ? `${name(id)}: ${s.mapLead ? `most votes ${partyLabel(ctx, t.leader)} (${p1(t.leaderPct)})` : p1(measureOf(t, s.measure))}` : `${name(id)}: no seats in this house`;
+      const fill = t && s.mapLead ? ` style="fill:${esc(partyColor(ctx, t.leader))}"` : "";
       return t
-        ? `<path class="${cls}" d="${base.draw(f.geometry.coordinates)}" data-unit="${esc(id)}" data-card-id="${esc(id)}" tabindex="0" role="button" aria-pressed="${s.prov === id}" aria-label="${esc(label)}. Select to show its districts."><title>${esc(label)}</title></path>`
+        ? `<path class="${cls}"${fill} d="${base.draw(f.geometry.coordinates)}" data-unit="${esc(id)}" data-card-id="${esc(id)}" tabindex="0" role="button" aria-pressed="${s.prov === id}" aria-label="${esc(label)}. Select to show its districts."><title>${esc(label)}</title></path>`
         : `<path class="${cls}" d="${base.draw(f.geometry.coordinates)}"><title>${esc(label)}</title></path>`;
     })
     .join("");
@@ -198,21 +221,30 @@ function provinceMap(ctx: Ctx, s: Sel): Raw {
     .map((f) => {
       const [x, y] = base.centroid(f.geometry.coordinates);
       const id = f.properties.id;
-      return `<text class="unit-value" x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" aria-hidden="true">${esc(p1(measureOf(units.get(id)!, s.measure)))}</text>`;
+      return `<text class="unit-value" x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" aria-hidden="true">${esc(s.mapLead ? partyLabel(ctx, units.get(id)!.leader) : p1(measureOf(units.get(id)!, s.measure)))}</text>`;
     })
     .join("");
   const legend = Array.from({ length: 5 }, (_, i) => vmin + ((vmax - vmin) * i) / 5);
+  const title = s.mapLead ? "Party with the most votes" : measureLabel(ctx, s.measure);
   return html`<figure class="chart el-map">
-    <figcaption><span class="chart-title">${measureLabel(ctx, s.measure)} by province and territory, ${yearOf(s.file.election)}</span></figcaption>
-    <div class="mapbox">${raw(`<svg viewBox="0 0 ${W} ${H}" role="group" aria-label="Map of ${esc(measureLabel(ctx, s.measure))} by province. Select a province to show only its districts. The table below lists the same figures.">${base.svgDefs}${base.shapes}<g class="units">${paths}</g>${labels}</svg>`)}</div>
-    <div class="legend" aria-hidden="true">${legend.map((v, i) => html`<span><i class="sw q${i}"></i>${p1(v)}+</span>`)}<span><i class="sw none"></i>No seats in this house</span></div>
+    <figcaption><span class="chart-title">${title} by province and territory, ${yearOf(s.file.election)}</span></figcaption>
+    <nav class="filters map-mode" aria-label="What the map shows">
+      <a class="chip-btn" href="#/elections?${withParam(s, "map", "")}" ${s.mapLead ? "" : raw('aria-current="page"')}>${measureLabel(ctx, s.measure)}</a>
+      <a class="chip-btn" href="#/elections?${withParam(s, "map", "lead")}" ${s.mapLead ? raw('aria-current="page"') : ""}>Party with the most votes</a>
+    </nav>
+    <div class="mapbox">${raw(`<svg viewBox="0 0 ${W} ${H}" role="group" aria-label="Map of ${esc(title)} by province. Select a province to show only its districts. The table below lists the same figures.">${base.svgDefs}${base.shapes}<g class="units">${paths}</g>${labels}</svg>`)}</div>
+    <div class="legend" aria-hidden="true">${
+      s.mapLead
+        ? [...new Set([...units.values()].map((t) => t.leader))].map((k) => html`<span>${partyTag(ctx, k)}</span>`)
+        : legend.map((v, i) => html`<span><i class="sw q${i}"></i>${p1(v)}+</span>`)
+    }<span><i class="sw none"></i>No seats in this house</span></div>
     <div class="tablewrap" tabindex="0" role="region" aria-label="Results by province and territory"><table class="num-table compact">
       <thead><tr><th>Province or territory</th><th>Registered</th><th>Turnout</th><th>Most votes</th>${s.measure === "turnout" ? "" : html`<th>${measureLabel(ctx, s.measure)}</th>`}</tr></thead>
       <tbody>${[...units].sort((a, b) => b[1].registered - a[1].registered).map(
-        ([id, t]) => html`<tr><td><a href="#/elections?${withParam(s, "prov", id)}">${name(id)}</a></td><td class="num">${n0(t.registered)}</td><td class="num">${p1(t.turnoutPct)}</td><td>${partyLabel(ctx, t.leader)} <span class="hint num">${p1(t.leaderPct)}</span></td>${s.measure === "turnout" ? "" : html`<td class="num">${p1(measureOf(t, s.measure))}</td>`}</tr>`,
+        ([id, t]) => html`<tr><td><a href="#/elections?${withParam(s, "prov", id)}">${name(id)}</a></td><td class="num">${n0(t.registered)}</td><td class="num">${cellBar(t.turnoutPct)}</td><td>${partyTag(ctx, t.leader)} <span class="hint num">${p1(t.leaderPct)}</span></td>${s.measure === "turnout" ? "" : html`<td class="num">${cellBar(measureOf(t, s.measure))}</td>`}</tr>`,
       )}</tbody>
     </table></div>
-    <p class="chart-basis">Every constituency lies in one province or territory, so these add up to the national figures. Shading is in five even steps between the lowest and highest value shown; the value is written on each unit.</p>
+    <p class="chart-basis">Every constituency lies in one province or territory, so these add up to the national figures. ${s.mapLead ? "Each unit is in the colour of the party with the most votes there; the party is written on it." : "Shading is in five even steps between the lowest and highest value shown; the value is written on each unit."}</p>
     ${[...units].map(([id, t]) => card(ctx, id, name(id), t))}
   </figure>`;
 }
@@ -223,11 +255,13 @@ function withParam(s: Sel, key: string, value: string): string {
   if (s.measure !== "turnout") p.set("m", s.measure.party);
   if (s.xi) p.set("x", s.xi);
   if (s.min) p.set("min", String(s.min));
+  if (s.prov) p.set("prov", s.prov);
+  if (s.mapLead) p.set("map", "lead");
   if (s.ranged) {
     p.set("lo", String(s.lo));
     p.set("hi", String(s.hi));
   }
-  p.set(key, value);
+  value ? p.set(key, value) : p.delete(key);
   return p.toString();
 }
 
@@ -246,12 +280,61 @@ function arrow(before: number, after: number, registered: number, maxReg: number
   );
 }
 
+/** Headline figures, each with the earlier election beside it and the change below (their split KPI cells). */
+function kpiCards(s: Sel): Raw {
+  const now = s.d.national;
+  const was = s.prev?.national;
+  const rel = (a: number, b: number) => (b > 0 ? (100 * (a - b)) / b : 0);
+  const rejected = (t: Tally) => (100 * t.rejected) / Math.max(1, t.polled);
+  const items: [string, string, string | undefined, Raw | undefined][] = [
+    ["Registered voters", n0(now.registered), was && n0(was.registered), was && delta(rel(now.registered, was.registered), "%")],
+    ["Turnout", p1(now.turnoutPct), was && p1(was.turnoutPct), was && delta(now.turnoutPct - was.turnoutPct, "pts")],
+    ["Valid votes", n0(now.valid), was && n0(was.valid), was && delta(rel(now.valid, was.valid), "%")],
+    ["Rejected votes", p1(rejected(now)), was && p1(rejected(was)), was && delta(rejected(now) - rejected(was), "pts")],
+  ];
+  return html`<div class="kpis el-kpis">${items.map(
+    ([label, value, before, change]) => html`<div class="kpi"><span class="kpi-label">${label}, ${yearOf(s.file.election)}</span><b class="num">${value}</b>${
+      before ? html`<span class="kpi-detail num">${yearOf(s.earlier!.election)}: ${before} · ${change}</span>` : ""
+    }</div>`,
+  )}</div>`;
+}
+
+/** Vote share by party for what is shown, with the earlier election's share as a tick; a party opens its share everywhere. */
+function partyBars(ctx: Ctx, s: Sel): Raw {
+  const rows = s.joined.map((j) => j.row);
+  const now = s.filtered ? sumRows(rows) : s.d.national;
+  const keep = new Set(rows.map((r) => r.district));
+  const was = s.prev && (s.filtered ? sumRows(s.prev.rows.filter((r) => keep.has(r.district))) : s.prev.national);
+  const top = topParties(now, 8).filter((p) => p.pct >= 1);
+  const others = Math.max(0, 100 - top.reduce((a, p) => a + p.pct, 0));
+  const max = Math.max(1, ...top.map((p) => p.pct), ...top.map((p) => (was ? (100 * (was.votes.get(p.party) ?? 0)) / Math.max(1, was.valid) : 0)));
+  // bars stop at 62% of the track, so the value and the earlier mark always fit on the same scale
+  const w = (v: number) => `${((62 * v) / max).toFixed(1)}%`;
+  return html`<figure class="chart party-bars">
+    <figcaption><span class="chart-title">Vote share by party, ${yearOf(s.file.election)}${s.filtered ? ", districts shown" : ""}</span></figcaption>
+    <table class="bars">
+      <thead class="visually-hidden"><tr><th scope="col">Party</th><th scope="col">Share of valid votes</th></tr></thead>
+      <tbody>${top.map((p) => {
+        const before = was ? (100 * (was.votes.get(p.party) ?? 0)) / Math.max(1, was.valid) : undefined;
+        const on = s.measure !== "turnout" && s.measure.party === p.party;
+        return html`<tr class="${on ? "on" : ""}">
+          <th scope="row"><a href="#/elections?${withParam(s, "m", p.party)}" ${on ? raw('aria-current="true"') : ""}>${partyTag(ctx, p.party)}</a></th>
+          <td><span class="bar-track"><span class="bar" style="width:${w(p.pct)};background:${partyColor(ctx, p.party)}"></span>${
+            before !== undefined ? html`<span class="was" style="left:${w(before)}" title="${`${yearOf(s.earlier!.election)}: ${p1(before)}`}"></span>` : ""
+          }<span class="v">${p1(p.pct)}${before !== undefined ? html` <span class="hint">(${yearOf(s.earlier!.election)}: ${p1(before)})</span>` : ""}</span></span></td>
+        </tr>`;
+      })}${others >= 0.05 ? html`<tr class="muted"><th scope="row">Others</th><td><span class="bar-track"><span class="bar" style="width:${w(others)}"></span><span class="v">${p1(others)}</span></span></td></tr>` : ""}</tbody>
+    </table>
+    <p class="chart-basis">Share of valid votes${s.filtered ? " in the districts shown" : ""}.${was ? ` The thin mark is each party's ${yearOf(s.earlier!.election)} share${s.filtered ? " in the same districts" : ""}.` : ""} Select a party to show its share across this page.</p>
+  </figure>`;
+}
+
 /** The page body for loaded data; pure, so it can be tested without a browser. */
 export function electionsBody(ctx: Ctx, data: ElectionData, params: URLSearchParams): Raw {
   const s = selection(ctx, data, params);
   const { d, file, measure, census, xi, earlier, sh } = s;
   const yLabel = measureLabel(ctx, measure);
-  const points = xi ? s.joined.filter((j) => j.census?.[xi] !== undefined).map((j) => ({ id: j.row.district, x: j.census![xi]!, y: measureOf(j.row, measure), w: j.row.registered })) : [];
+  const points = xi ? s.joined.filter((j) => j.census?.[xi] !== undefined).map((j) => ({ id: j.row.district, x: j.census![xi]!, y: measureOf(j.row, measure), w: j.row.registered, leader: j.row.leader })) : [];
   const relative = params.get("cmp") === "relative";
   const spanVotes = d.spanning.reduce((n, r) => n + r.polled, 0);
   const shown = sumRows(s.joined.map((j) => j.row));
@@ -273,10 +356,9 @@ export function electionsBody(ctx: Ctx, data: ElectionData, params: URLSearchPar
       ${s.indicators.length ? html`<label>Census figure <select id="el-x">${s.indicators.map((k) => option(k, INDICATOR[k], k === xi))}</select></label>` : ""}
     </div>
 
+    ${kpiCards(s)}
     <dl class="facts el-national">
-      <dt>Registered voters</dt><dd class="num">${n0(d.national.registered)}</dd>
-      <dt>Votes polled</dt><dd class="num">${n0(d.national.polled)} (turnout ${p1(d.national.turnoutPct)})</dd>
-      <dt>Valid votes</dt><dd class="num">${n0(d.national.valid)}; rejected ${n0(d.national.rejected)}</dd>
+      <dt>Votes polled</dt><dd class="num">${n0(d.national.polled)}: ${n0(d.national.valid)} valid, ${n0(d.national.rejected)} rejected</dd>
       <dt>Constituencies counted</dt><dd class="num">${d.national.constituencies}${d.notHeld.length ? `, plus ${d.notHeld.length} where the poll was not held or not completed` : ""}</dd>
       <dt>Source</dt><dd><a href="${safeHref(file.results[0].source.url)}" target="_blank" rel="noopener noreferrer">Election Commission of Pakistan</a>${file.totals ? html`; totals checked against the <a href="${safeHref(file.totals.source.url)}" target="_blank" rel="noopener noreferrer">ECP's published totals</a>` : ""}. Checked ${file.checked}.</dd>
     </dl>
@@ -293,7 +375,7 @@ export function electionsBody(ctx: Ctx, data: ElectionData, params: URLSearchPar
       </ul>
     </details>
 
-    ${provinceMap(ctx, s)}
+    <div class="el-overview">${provinceMap(ctx, s)}${partyBars(ctx, s)}</div>
 
     <div class="toolbar filters" data-el-filters>
       <span class="hint">Show districts:</span>
@@ -331,9 +413,9 @@ export function electionsBody(ctx: Ctx, data: ElectionData, params: URLSearchPar
             <td><a href="#/place/${row.district}">${districtName(ctx, row.district)}</a><div class="hint">${row.constituencies.length} constituenc${row.constituencies.length === 1 ? "y" : "ies"}</div></td>
             <td>${provinceOf(ctx, row.district)?.name ?? ""}</td>
             <td class="num">${n0(row.registered)}</td>
-            <td class="num">${p1(row.turnoutPct)}</td>
-            <td>${partyLabel(ctx, row.leader)} <span class="hint num">${p1(row.leaderPct)}</span></td>
-            ${measure === "turnout" ? "" : html`<td class="num">${p1(measureOf(row, measure))}</td>`}
+            <td class="num">${cellBar(row.turnoutPct)}</td>
+            <td>${partyTag(ctx, row.leader)} <span class="hint num">${p1(row.leaderPct)}</span></td>
+            ${measure === "turnout" ? "" : html`<td class="num">${cellBar(measureOf(row, measure))}</td>`}
             ${xi ? html`<td class="num">${c?.[xi] !== undefined ? p1(c[xi]!) : html`<span class="hint">not in census file</span>`}</td>` : ""}
           </tr>`,
         )}</tbody>
@@ -362,8 +444,8 @@ export function electionsBody(ctx: Ctx, data: ElectionData, params: URLSearchPar
                   <td><a href="#/place/${r.district}">${districtName(ctx, r.district)}</a></td>
                   <td class="num">${p1(r.before)}</td><td class="num">${p1(r.after)}</td>
                   <td class="arrow-cell">${arrow(r.before, r.after, r.registered, maxReg, scale)}</td>
-                  <td class="num">${pp(relative ? r.relative : r.raw)}</td>
-                  <td>${r.leaderBefore === r.leaderAfter ? partyLabel(ctx, r.leaderAfter) : `${partyLabel(ctx, r.leaderBefore)} → ${partyLabel(ctx, r.leaderAfter)}`}</td>
+                  <td class="num">${delta(relative ? r.relative : r.raw, "pts")}</td>
+                  <td>${r.leaderBefore === r.leaderAfter ? partyTag(ctx, r.leaderAfter) : html`${partyTag(ctx, r.leaderBefore)} → ${partyTag(ctx, r.leaderAfter)}`}</td>
                 </tr>`,
               )}</tbody>
             </table></div>

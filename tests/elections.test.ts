@@ -9,7 +9,7 @@ import { byDistrict, byUnit, leaderFlows, leaderOf, shift, sumRows, toCsv, topPa
 import { GraphIndex } from "../src/lib/graph-index.ts";
 import { PUBLISH, publicGraph } from "../src/lib/policy.ts";
 import type { CensusFile, Graph, ResultsFile } from "../src/schema.ts";
-import { districtCsv, electionsBody, placeResults } from "../src/views/elections.ts";
+import { districtCsv, electionsBody, partyColor, placeResults } from "../src/views/elections.ts";
 import { personView, postView } from "../src/views/entities.ts";
 
 const DATA = new URL("../data", import.meta.url).pathname;
@@ -371,5 +371,37 @@ describe("province totals, filters, lead changes and CSV", () => {
     const district = placeResults(ctx(ix), { results: [ge2018, named], census: [] }, "pk-pb-lahore").html;
     expect(district).toContain("NA-121");
     expect(district).toContain("as drawn before the 2023 delimitation");
+  });
+});
+
+describe("formatting: split figures, party bars, party colours", () => {
+  const data = { results: [ge2018, ge2024], census: [] };
+
+  it("shows each headline figure beside the earlier election, and calls a tiny change no change", () => {
+    const out = electionsBody(ctx(ix), data, new URLSearchParams()).html;
+    expect(out).toContain("Registered voters, 2024");
+    expect(out).toMatch(/2018: 2,600 · <span class="delta up">▲ \+42\.3%<\/span>/);
+    const same = electionsBody(ctx(ix), { results: [ge2024, { ...ge2024, election: "ge-2018" }], census: [] }, new URLSearchParams()).html;
+    expect(same).toContain('<span class="delta">no change</span>');
+  });
+
+  it("lists party shares with the earlier share, each linking to that party's view", () => {
+    const out = electionsBody(ctx(ix), data, new URLSearchParams()).html;
+    expect(out).toContain("Vote share by party, 2024");
+    expect(out).toMatch(/href="#\/elections\?h=na&amp;e=ge-2024&amp;m=party-pmln"/);
+    expect(out).toContain("(2018: ");
+  });
+
+  it("colours the map by the party with the most votes, with the party written on it", () => {
+    const out = electionsBody(ctx(ix), data, new URLSearchParams("map=lead")).html;
+    expect(out).toContain("Party with the most votes by province and territory");
+    expect(out).toContain(`style="fill:${partyColor(ctx(ix), "party-pmln")}"`);
+    expect(out).toMatch(/class="unit-value"[^>]*>PML-N</);
+  });
+
+  it("uses a party's own colour, a neutral one for independents, and never one from unknown text", () => {
+    expect(partyColor(ctx(ix), "party-pmln")).toMatch(/^#[0-9a-f]{6}$/i);
+    expect(partyColor(ctx(ix), "independent")).toBe("var(--unknown)");
+    expect(partyColor(ctx(ix), 'name:"><script>')).toBe("var(--line-strong)");
   });
 });

@@ -1857,3 +1857,38 @@ ol.rels.services {
 .flow-table caption { text-align: left; caption-side: top; padding-bottom: 6px; }
 .flow-table td.same { background: var(--accent-soft); }
 .place-results h3.spaced { margin-top: 22px; }
+
+/* Elections: party colours always sit beside the party's name */
+.swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: 0; flex: none; box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.2); }
+.party-tag { white-space: nowrap; }
+/* A percentage with a small bar behind it */
+.cell-bar { display: inline-block; width: 44px; height: 6px; margin-right: 8px; border-radius: 3px; background: var(--line); vertical-align: 1px; overflow: hidden; }
+.cell-bar span { display: block; height: 100%; background: var(--accent); }
+/* Signed changes: the arrow and sign carry the direction. No red or green: a change is not marked good or bad */
+.delta { white-space: nowrap; }
+/* Headline figures with the earlier election beside them */
+.el-kpis .kpi { cursor: default; }
+.el-kpis .kpi:hover { background: var(--surface); }
+/* Map and party bars side by side on wide screens, as a map beside its data panel */
+.el-overview { display: grid; gap: 24px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 960px) { .el-overview { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: start; } }
+.map-mode { margin: 6px 0 8px; }
+.map-mode a.chip-btn { text-decoration: none; }
+.el-map .unit.lead { fill-opacity: 0.85; }
+.party-bars .bar-track { position: relative; }
+.party-bars .was { position: absolute; top: -2px; bottom: -2px; width: 2px; margin-left: -1px; background: var(--ink); }
+.party-bars tr.on th a { font-weight: 600; text-decoration: underline; }
+.scatter-chart .dot { fill-opacity: 0.55; stroke: var(--ink-2); }
+.scatter-chart .mean { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 2 3; }
+.scatter-chart .mean-label { fill: var(--muted); }
+.scatter-chart .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: var(--s-sm); margin: 6px 0 0; }
+.party-bars .bar-track .v { white-space: normal; line-height: 1.2; }
+.party-bars .bar-track .v .hint { display: block; font-size: var(--s-xs); }
+.party-bars table.bars th[scope="row"] { width: 32%; }
+.party-bars .bar-track .v .hint { white-space: nowrap; }
+td.num:has(> .cell-bar) { white-space: nowrap; }
+.scatter-chart .mean-label { paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
+.el-kpis b { font-size: clamp(1.25rem, 5.6vw, var(--s-2xl)); overflow-wrap: anywhere; }
+.party-bars .was { top: 50%; bottom: auto; height: 20px; transform: translateY(-50%); }
+.party-bars .bar-track .v { position: relative; z-index: 1; padding-left: 4px; background: var(--surface); }
+@media (max-width: 520px) { .party-bars table.bars th[scope="row"] { width: 30%; } .party-bars .bar-track .v .hint { white-space: normal; } }
